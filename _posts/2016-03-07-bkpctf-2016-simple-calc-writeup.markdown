@@ -2,7 +2,8 @@
 layout: post
 title:  "BKPCTF 2016 - Simple Calc"
 date:   2016-03-07 22:51:04 +1100
-categories: ctf bkpctf 2016
+categories:
+post_author: hugsy
 ---
 
 ### Info ###
