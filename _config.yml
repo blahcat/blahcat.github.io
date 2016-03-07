@@ -1,0 +1,12 @@
+title: Eat, Sleep, Hack, Repeat
+email: ctf AT [nospam]blah DOT cat
+description: >
+
+  void live(){ sleep(); hack(); live(); }
+
+baseurl: ""
+url: "https://blahcat.github.io"
+twitter_username: ctf_blahcat
+github_username:  blahcat
+
+markdown: kramdown
