@@ -23,6 +23,8 @@ It will ask for a number of calculations (say *N*) to perform and will
 `malloc()` *N*x4 bytes in the heap. If we decompile with
 [IDA](https://www.hex-rays.com/products/ida/), it'll look something like this:
 
+<!--more-->
+
 ![](https://i.imgur.com/aFaqYf6.png)
 
 Then a loop of *N* iterations will commence,

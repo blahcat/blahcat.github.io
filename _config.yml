@@ -10,3 +10,5 @@ twitter_username: ctf_blahcat
 github_username:  blahcat
 
 markdown: kramdown
+
+excerpt_separator: <!--more-->
