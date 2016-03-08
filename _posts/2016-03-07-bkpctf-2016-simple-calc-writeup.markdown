@@ -8,6 +8,9 @@ author: hugsy
 
 ### Info ###
 
+The vulnerable file is
+[here](http://s000.tinyupload.com/index.php?file_id=89756110683962777183).
+
 {% highlight bash %}
 ~/cur/simple_calc $ file b28b103ea5f1171553554f0127696a18c6d2dcf7
 b28b103ea5f1171553554f0127696a18c6d2dcf7: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 2.6.24, BuildID[sha1]=3ca876069b2b8dc3f412c6205592a1d7523ba9ea, not stripped
