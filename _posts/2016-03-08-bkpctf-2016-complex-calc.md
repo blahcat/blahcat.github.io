@@ -42,12 +42,15 @@ of the function by simply passing a NULL pointer. Now, `free()` will always
 proceed with the address given as first parameter (therefore stored in $rdi).
 
 So let's see how `free()`
-works. [Some blogs](https://kitctf.de/writeups/0ctf2015/freenote/) explained very well how
+works. [Some blogs](https://kitctf.de/writeups/0ctf2015/freenote/) already explain very well how
 [Glibc heap is structured](https://sploitfun.wordpress.com/2015/02/10/understanding-glibc-malloc/)
 and how
 [heap](http://phrack.org/issues/57/9.html)
-[corruptions](http://winesap.logdown.com/posts/261369-plaid-ctf-2015-plaiddb-writeup). So
-I will assume you know as well. Each chunk is represented like this :
+[corruptions](http://winesap.logdown.com/posts/261369-plaid-ctf-2015-plaiddb-writeup)
+work. So
+I will assume you know as well.
+
+To stand on common ground, here is what a heap chunk looks like :
 
 ![heap](https://i.imgur.com/EVnKlBg.png)
 
