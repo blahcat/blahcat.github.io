@@ -2,7 +2,7 @@ title: Eat, Sleep, Hack, Repeat
 email: ctf AT [nospam]blah DOT cat
 description: >
 
-  void live(){ sleep(); hack(); live(); }
+  void live(){ eat(); sleep(); hack(); live(); }
 
 baseurl: ""
 url: "https://blahcat.github.io"
