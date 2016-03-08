@@ -47,22 +47,21 @@ works. [Some blogs](https://kitctf.de/writeups/0ctf2015/freenote/) already expla
 and how
 [heap](http://phrack.org/issues/57/9.html)
 [corruptions](http://winesap.logdown.com/posts/261369-plaid-ctf-2015-plaiddb-writeup)
-work. So
-I will assume you know as well.
+work. So I will assume you know as well.
 
-To stand on common ground, here is what a heap chunk looks like :
+To stand on common ground, here is what a heap chunk looks like:
 
 ![heap](https://i.imgur.com/EVnKlBg.png)
 
-So when `free()` is called, some checks are made to know how the chunk must be
+When `free()` is called, some checks are made to know how the chunk must be
 deallocated:
 
-   1. If it size is below `MMAP_THRESHOLD` (default 128KB), then the chunk is
+   1. If its size is below `MMAP_THRESHOLD` (default 128KB), then the chunk is
       deallocated and inserted into the free chunk doubly linked list. The
       pointers of the list are updated using the `unlink` macro.
    1. If the size is higher than `MMAP_THRESHOLD`, then the chunk was not
       allocated via the `brk`/`sbrk` syscall, but mapped in memory via the
-      syscall `mmap`. If this heap is mmaped, then it size will will be a
+      syscall `mmap`. If this heap chunk is mmaped, then its size will be a
       multiple of 2 (i.e. size & 2 = 2).
 
 This actually shows quite well in the flow graph:
@@ -97,17 +96,17 @@ code. Perfect! Let's go with this!
 
 ### Exploitation ###
 
-So we are going to use the arithmetic operators and result location in the
-`.bss` since they are at known locations, bearing in mind that each of them is
-only a DWORD (whereas we are here on x86-64 architecture). We want to set the
-following mapping
+So we are going to use the arithmetic operators and result locations in the
+`.bss` since they are at predictable, bearing in mind that each one of them is
+only a DWORD (whereas we are here on x86-64 architecture). We will want to set
+the following mapping:
 
 {% highlight bash %}
-.bss:00000000006C4A88 add_result      dd ?                    ;  previous chunk size
+.bss:00000000006C4A88 add_result      dd ?                    ; <-- previous chunk size
 .bss:00000000006C4A8C                 align 10h
 .bss:00000000006C4A90 div_operator_1  dd ?                    ; <-- chunk size (need to | 2 for flag IS_MMAPED)
 .bss:00000000006C4A94 div_operator_2  dd ?                    ; <--
-.bss:00000000006C4A98 div_result      dd ?                    ; <-- free (@ this chunk)
+.bss:00000000006C4A98 div_result      dd ?                    ; <-- free will point @this chunk
 .bss:00000000006C4A9C                 align 10h
 {% endhighlight %}
 
@@ -159,11 +158,9 @@ div_operator_2=0x9f.
 The rest of the exploit is exactly similar to the one used for `simple_calc`!
 
 Fire up!
-{% highlight python %}
+{% highlight bash %}
 $ ./complex_calc.py                                                                                                                                       [23:43]
-[+] Connected to localhost:5500
-[*] Attach to gdb and press enter
-
+[+] Connected to simplecalc.bostonkey.party:5500
 [+] Running 47 calculations
 [+] Building fake chunk 0x6c4a98
 [+] prev_size=0x1000+0x11110a88=0x11111a88
@@ -171,6 +168,7 @@ $ ./complex_calc.py                                                             
 [+] Got it, interacting (Ctrl-C to break)
 [+] Get a PTY with ' python -c "import pty;pty.spawn('/bin/bash')"  '
 cat key
+BKPCTF{th3 l4st 1 2 3z}
 {% endhighlight %}
 
 And we get `BKPCTF{th3 l4st 1 2 3z}`
