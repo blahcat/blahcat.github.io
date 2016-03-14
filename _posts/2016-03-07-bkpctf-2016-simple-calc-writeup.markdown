@@ -14,7 +14,7 @@ The vulnerable file is
 {% highlight bash %}
 ~/cur/simple_calc $ file b28b103ea5f1171553554f0127696a18c6d2dcf7
 b28b103ea5f1171553554f0127696a18c6d2dcf7: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 2.6.24, BuildID[sha1]=3ca876069b2b8dc3f412c6205592a1d7523ba9ea, not stripped
-~/cur/simple_calc $ checksec.sh --file b28b103ea5f1171553554f0127696a18c6d2dcf7                                                                                              [22:30]
+~/cur/simple_calc $ checksec.sh --file b28b103ea5f1171553554f0127696a18c6d2dcf7
 RELRO           STACK CANARY      NX            PIE             RPATH      RUNPATH      FILE
 Partial RELRO   No canary found   NX enabled    No PIE          No RPATH   No RUNPATH   b28b103ea5f1171553554f0127696a18c6d2dcf7
 {% endhighlight %}
