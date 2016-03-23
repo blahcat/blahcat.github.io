@@ -8,4 +8,4 @@ About hacks, CTF, and stuff...
 
 Contributors:
 
-   - {% include icon-github.html username="hugsy" %} || {% include icon-twitter.html username="hugsy" %}
+   - {% include icon-github.html username="hugsy" %} || {% include icon-twitter.html username="_hugsy_" %}
