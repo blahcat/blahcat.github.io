@@ -2,6 +2,7 @@
 layout: post
 title: 0ctf 2016 - Warmup write-up
 author: hugsy
+tags: exploit gef ida 0ctf-2016 x86
 ---
 
 I participated to [0ctf](https://ctf.0ops.net/) but only had time to play for
