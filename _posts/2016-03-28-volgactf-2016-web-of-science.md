@@ -188,7 +188,7 @@ All done mate !
 
 Final word (or image):
 
-![](http://i.imgur.com/PjfFC2f.jpg)
+![](https://i.imgur.com/PjfFC2f.jpg)
 
 Full exploit is : [gef-exploit.py](https://gist.github.com/hugsy/deae32e1da40e7b8c754)
 
