@@ -83,7 +83,7 @@ When saving the stack buffer is then copied to the .bss segment:
 {% endhighlight %}
 
 One stricking thing is of course the massive use of `gets()` everywhere for user
-input.
+input. So we think immediately to stack-based buffer overflow.
 
 The `view_paper()` function (at 0x400D52) receives a pointer to a paper and
 displays its information using `printf()` - which makes us understand what
@@ -94,7 +94,7 @@ triggered the `gef` plugin for format string.
 
 ### Exploitation ###
 
-The exploitation process shows shows something like this:
+The exploitation process will go something like this:
 
    1. Use of the format string vulnerabilities to leak stack until we get the
       canary using `printf()`
@@ -125,10 +125,10 @@ So this lines up the following sequential steps:
     s.read_until("Paper abstract: ")
     s.write("%7$p.%163$p" + "\n")
 {% endhighlight %}
-   A stack address was found at "$7$p" and the canary at "%163$p".
+   A stack address was found at `"$7$p"` and the canary at `"%163$p"`.
 
    - We need to view the paper to actually trigger the format string information
-     leaks:
+     leak:
 {% highlight python %}
     s.read_until("> ")
     s.write("5\n") # view_paper_info
