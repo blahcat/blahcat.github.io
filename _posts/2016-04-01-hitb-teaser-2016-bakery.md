@@ -57,14 +57,14 @@ strncmp(ingredient, "BAKE", 4);
 
 If we enter `BAKE`, it will simply jump to the buffer allocated by `mmap` from
 above:
-```
+{% highlight asm %}
 .text:0000000000400EB8                 mov     rax, [rbp+mmap_buf]
 .text:0000000000400EBF                 mov     [rbp+var_108], rax
 .text:0000000000400EC6                 mov     rdx, [rbp+mmap_buf]
 .text:0000000000400ECD                 mov     rax, [rbp+var_108]
 .text:0000000000400ED4                 mov     rdi, rdx
 .text:0000000000400ED7                 call    rax
-```
+{% endhighlight %}
 
 Otherwise, it will check using `strstr()` if our ingredient we entered is in the
 list of valid ingredients. If the sub-string was found, it calls a function at
@@ -86,12 +86,12 @@ int func_400B15(char* input, int init)
 
 The result is then `and`-ed to 0xff and written at current location in the mmap
 allocated buffer
-```
+{% highlight asm %}
 .text:0000000000400E77                 mov     rax, [rbp+p_mmap_buf]
 .text:0000000000400E7E                 movzx   edx, [rbp+result]
 .text:0000000000400E85                 mov     [rax], dl
 .text:0000000000400E87                 add     [rbp+p_mmap_buf], 1
-```
+{% endhighlight %}
 The pointer to the `mmap` buffer is incremented.
 
 
