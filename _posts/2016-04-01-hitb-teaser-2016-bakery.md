@@ -30,7 +30,7 @@ Full RelRO:                                       No
 
 It is a baking program, that allows to build your own recipe.
 
-<!-- more -->
+<!--more-->
 
 ### Vulnerability ###
 
