@@ -242,7 +242,7 @@ menu()         |       |     size         |
                |       |    RetAddr       |                                 |
                |       +------------------+                                 |
                |       |      SFP         |                                 |
-context of     |       +------------------+  <------ $rbp points here, so $rbp-0x7e is sure to land
+context of     |       +------------------+  <------ $rbp points here, so $rbp+0x7e is sure to land
                |       |                  |          to the stack of menu()
 allocate()     |       |                  |
                |       |                  |
@@ -255,7 +255,7 @@ allocate()     |       |                  |
 
 So now, we can point `head_free_list_ptr` to a location we fully control. All we
 need to write at this address a large value, for example 0x1000 so that when
-inspecting this address, allocate_buffer() will believe the buffer in the stack
+inspecting this address, `allocate_buffer()` will believe the buffer in the stack
 is large enough for the new allocation:
 
 {% highlight python %}
