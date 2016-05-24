@@ -15,7 +15,7 @@ So yes, we'll be dealing with some heap fun.
 
 {% highlight bash %}
 gef➤  !file ./heapfun4u
-./heapfun4u.bin: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.24, BuildID[sha1]=b019e6cbed93d55ebef500e8c4dec79ce592fa42, stripped
+./heapfun4u: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.24, BuildID[sha1]=b019e6cbed93d55ebef500e8c4dec79ce592fa42, stripped
 gef➤  checksec
 [+] checksec for '/home/vagrant/heapfun4u'
 Canary:                                           No
