@@ -211,7 +211,7 @@ the last call to `allocate_buffer()` is made. Luckily, as said early, the
 command "Nice guy" will provide use with such information.
 
 The stack layout is hard to fully control at the level of the
-`allocate_buffer()` function. However, this function is called by the `menu()`
+`allocate_buffer()` function. However, this function is called by the `main()`
 function, which uses a very large buffer (0x100 bytes) to store values read from stdin:
 
 {% highlight bash%}
@@ -228,9 +228,9 @@ Additionally, its location is very easy to pinpoint:
                ^       +------------------+
                |       |    RetAddr       |
                |       +------------------+
-context of     |       |   SFP of menu    |
+context of     |       |   SFP of main    |
                |       +------------------+
-menu()         |       |     size         |
+main()         |       |     size         |
                |       |  buffer[0x100]   |
                |       |                  | <-------------------------------+
                |       |                  |                                 |
@@ -243,7 +243,7 @@ menu()         |       |     size         |
                |       +------------------+                                 |
                |       |      SFP         |                                 |
 context of     |       +------------------+  <------ $rbp points here, so $rbp+0x7e is sure to land
-               |       |                  |          to the stack of menu()
+               |       |                  |          to the stack of main()
 allocate()     |       |                  |
                |       |                  |
                |       |                  |
