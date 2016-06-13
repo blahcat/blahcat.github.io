@@ -358,7 +358,7 @@ Now run it, enjoy the shell and a good coffee ☕
 
 ![armpwn](https://i.imgur.com/uzlxQx8.png)
 
-The complete shellcode can be found
+The complete exploit code can be found
 [here](https://gist.github.com/hugsy/45d1c23f33f09126fe0838c1fe057687).
 
 ## Final notes ##
