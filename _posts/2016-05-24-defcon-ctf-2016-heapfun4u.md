@@ -15,7 +15,7 @@ So yes, we'll be dealing with some heap fun.
 
 {% highlight bash %}
 gef➤  !file ./heapfun4u
-./heapfun4u.bin: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.24, BuildID[sha1]=b019e6cbed93d55ebef500e8c4dec79ce592fa42, stripped
+./heapfun4u: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.24, BuildID[sha1]=b019e6cbed93d55ebef500e8c4dec79ce592fa42, stripped
 gef➤  checksec
 [+] checksec for '/home/vagrant/heapfun4u'
 Canary:                                           No
@@ -211,7 +211,7 @@ the last call to `allocate_buffer()` is made. Luckily, as said early, the
 command "Nice guy" will provide use with such information.
 
 The stack layout is hard to fully control at the level of the
-`allocate_buffer()` function. However, this function is called by the `menu()`
+`allocate_buffer()` function. However, this function is called by the `main()`
 function, which uses a very large buffer (0x100 bytes) to store values read from stdin:
 
 {% highlight bash%}
@@ -228,9 +228,9 @@ Additionally, its location is very easy to pinpoint:
                ^       +------------------+
                |       |    RetAddr       |
                |       +------------------+
-context of     |       |   SFP of menu    |
+context of     |       |   SFP of main    |
                |       +------------------+
-menu()         |       |     size         |
+main()         |       |     size         |
                |       |  buffer[0x100]   |
                |       |                  | <-------------------------------+
                |       |                  |                                 |
@@ -242,8 +242,8 @@ menu()         |       |     size         |
                |       |    RetAddr       |                                 |
                |       +------------------+                                 |
                |       |      SFP         |                                 |
-context of     |       +------------------+  <------ $rbp points here, so $rbp-0x7e is sure to land
-               |       |                  |          to the stack of menu()
+context of     |       +------------------+  <------ $rbp points here, so $rbp+0x7e is sure to land
+               |       |                  |          to the stack of main()
 allocate()     |       |                  |
                |       |                  |
                |       |                  |
@@ -255,7 +255,7 @@ allocate()     |       |                  |
 
 So now, we can point `head_free_list_ptr` to a location we fully control. All we
 need to write at this address a large value, for example 0x1000 so that when
-inspecting this address, allocate_buffer() will believe the buffer in the stack
+inspecting this address, `allocate_buffer()` will believe the buffer in the stack
 is large enough for the new allocation:
 
 {% highlight python %}
