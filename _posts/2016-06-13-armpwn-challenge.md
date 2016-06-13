@@ -4,7 +4,7 @@ title: "ARMPWN challenge write-up"
 date: 2016-06-13 12:21:05 +1100
 comments: false
 author: hugsy
-tags: pwn arm gef gdb ida ropgadget pwntools
+tags: exploit arm gef gdb ida ropgadget pwntools
 ---
 
 ## Info ##
@@ -15,8 +15,8 @@ my exploit helper [`gdb-gef`](https://github.com/hugsy/gef.git) and I saw
 there a perfect practice case. On top of that, I had nothing better to do
 yesterday ☺
 
-This is challenge was really fun, and made so much easier thanks to `gef` especially to
-defeat real-life protections (NX/ASLR/PIC/Canary), and on a different architecture (Intel is so
+This challenge was really fun, and made so much easier thanks to `gef` especially to
+defeat real life protections (NX/ASLR/PIC/Canary), and on a different architecture (Intel is so
 '90). This is mostly why I'm doing this write-up, but feel curious and do it by
 yourself. Fun time ahead guaranteed ☺
 
