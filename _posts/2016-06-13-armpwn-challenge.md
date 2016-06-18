@@ -9,20 +9,23 @@ tags: exploit arm gef gdb ida ropgadget pwntools
 
 ## Info ##
 
-A few weeks ago, I came accross {% include icon-twitter.html username="@5aelo" %} repo called [armpwn](https://github.com/saelo/armpwn) for people wanting
+A few weeks ago, I came across a GitHub repository created by {% include
+icon-twitter.html username="@5aelo" %}, called
+[armpwn](https://github.com/saelo/armpwn) for people wanting
 to have a bit of ARM fun. I had recently spent some time adding new features and perfectionning old ones to
-my exploit helper [`gdb-gef`](https://github.com/hugsy/gef.git) and I saw
+my exploit helper for GDB, [`gef`](https://github.com/hugsy/gef.git) and I saw
 there a perfect practice case. On top of that, I had nothing better to do
 yesterday ☺
 
 This challenge was really fun, and made so much easier thanks to `gef` especially to
-defeat real life protections (NX/ASLR/PIC/Canary), and on a different architecture (Intel is so
-'90). This is mostly why I'm doing this write-up, but feel curious and do it by
-yourself. Fun time ahead guaranteed ☺
+defeat real life protections (NX/ASLR/PIC/Canary), and on a non-x86 architecture (Intel is so
+'90). This is mostly why I'm doing this write-up, but feel curious and try it by
+yourself. Fun time ahead  ☺
 
 [5aelo](https://github.com/saelo/armpwn/blob/master/README.md#how-to-use-this-repository) suggests a few
 approaches to tackle it, I decided to go "Total Pwn", meaning discovering
-everything about the binary.
+everything about the binary. There is also links to Qemu images ready-to-use,
+for people who don't have (or don't want to use a RPI).
 
 __Challenge__:
 Try to go from anonymous access to remote code execution on the `websrv` process
@@ -50,7 +53,7 @@ repo, I don't feel too bad publishing my own.
 Just like for a regular pentest, all we know here is that the port 80/tcp is open,
 and accessing to `/` redirect us to a page to turn on and off a LED (supposed
 connected to the GPIO on our RaspberryPi). Not exactly fancy...
-By sending a simple `ncat` request, things get suddenly more interesting:
+By sending a simple [`ncat`](https://nmap.org/ncat) request, things get suddenly more interesting:
 ![toadd](https://i.imgur.com/Zw0BH8c.png)
 
 *__Hint__:* Other tools were tested and failed. The reason for that is that they
@@ -85,7 +88,7 @@ Next, the binary analysis.
 
 ## Reversing the binary ##
 
-We can use `IDA` to start with the static analysis. After a quick examination,
+We can use [`IDA`](https://www.hex-rays.com/products/ida/support/download.shtml) to start with the static analysis. After a quick examination,
 the overall structure reveals itself quite clearly.
 The behaviour for the main process can be described with this pseudo-code:
 
@@ -108,10 +111,10 @@ while(1){
 The use of `fork()` is a good news as we know that we will be able to reuse
 any address we leaked.
 
-The forked process executes `treat_requests()` and is more interesting: the
+The forked process which executes `treat_requests()` is more interesting: the
 function starts by reading 0x800 bytes and
 look for the marker of end for HTTP headers (`CRLF`*2).  If not found, it will
-keep looping. Otherwise, the block read will search for the header `Content-Length` and if
+keep iterating through the loop. Otherwise, the block read will search for the header `Content-Length` and if
 found, will call `strtol()` on it to convert the pointer into a long
 integer (let's call it `N`).
 ![](https://i.imgur.com/awC1RfU.png)
