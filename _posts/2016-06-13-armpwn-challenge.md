@@ -4,6 +4,7 @@ title: "ARMPWN challenge write-up"
 date: 2016-06-13 12:21:05 +1100
 comments: false
 author: hugsy
+author_twitter: _hugsy_
 tags: exploit arm gef gdb ida ropgadget pwntools
 ---
 

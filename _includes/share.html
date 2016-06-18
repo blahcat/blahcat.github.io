@@ -1,6 +1,10 @@
 <b>Share this post:</b>
 <a class="fa fa-twitter-square"
-   href="https://twitter.com/intent/tweet?text={{ include.title }} by @{{include.author}} via @{{site.twitter_username}}&url={{site.url}}{{include.url}}"
+   {% if include.author %}
+   href="https://twitter.com/intent/tweet?text={{ include.title }} by @{{include.author}} via @{{site.twitter_username}}:&url={{site.url}}{{include.url}}"
+   {% else %}
+   href="https://twitter.com/intent/tweet?text={{ include.title }} via @{{site.twitter_username}}:&url={{site.url}}{{include.url}}"
+   {% endif%}
    target="_blank">
 </a>
 
