@@ -2,8 +2,8 @@
 layout: post
 title:  "BKPCTF 2016 - Simple Calc"
 date:   2016-03-07 22:51:04 +1100
-categories:
 author: hugsy
+author_twitter: _hugsy_
 tags:  exploit gef ida bkpctf-2016 x86
 ---
 

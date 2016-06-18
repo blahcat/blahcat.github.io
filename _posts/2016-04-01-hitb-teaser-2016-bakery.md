@@ -2,6 +2,7 @@
 layout: post
 title: HITB 2016 - Backery write-up
 author: hugsy
+author_twitter: _hugsy_
 tags: exploit hitb
 ---
 

@@ -4,6 +4,7 @@ title: VolgaCTF 2016 - Web of Science
 categories:
 tags: exploit volgactf-2016 x86
 author: hugsy
+author_twitter: _hugsy_
 ---
 
 

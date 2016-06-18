@@ -2,6 +2,7 @@
 layout: post
 title: BKPCTF 2016 - Complex Calc
 author: hugsy
+author_twitter: _hugsy_
 tags: exploit gef ida bkpctf-2016 x86 heap-overflow
 ---
 

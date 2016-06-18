@@ -2,6 +2,7 @@
 layout: post
 title: DEFCON CTF 2016 - heapfun4u
 author: hugsy
+author_twitter: _hugsy_
 tags:  exploit defcon-2016 x86 heap
 ---
 
