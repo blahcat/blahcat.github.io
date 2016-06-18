@@ -1,4 +1,7 @@
-title: The real Blah Cats !
+# Site settings
+header-img: img/home-bg.png
+copyright_name: Blah Cats
+title: BlahCat 4 Lyfe
 email: ctf AT [nospam]blah DOT cat
 description: >
 
@@ -6,9 +9,17 @@ description: >
 
 baseurl: ""
 url: "https://blahcat.github.io"
+email_username:  ctf AT [nospam]blah DOT cat
 twitter_username: ctf_blahcat
 github_username:  blahcat
 
-markdown: kramdown
-
 excerpt_separator: <!--more-->
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+paginate: 5
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+
+gems: [jekyll-paginate, jekyll-feed]
