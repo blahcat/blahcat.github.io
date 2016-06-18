@@ -1,39 +1,39 @@
 <b>Share this post:</b>
 <a class="fa fa-twitter-square"
    {% if include.author %}
-   href="https://twitter.com/intent/tweet?text={{ include.title }} by @{{include.author}} via @{{site.twitter_username}}:&url={{site.url}}{{include.url}}"
+   href="https://twitter.com/intent/tweet?text={{ include.title }} by @{{include.author}} via @{{site.twitter_username}}:&url={{include.url| prepend: site.url}}"
    {% else %}
-   href="https://twitter.com/intent/tweet?text={{ include.title }} via @{{site.twitter_username}}:&url={{site.url}}{{include.url}}"
+   href="https://twitter.com/intent/tweet?text={{ include.title }} via @{{site.twitter_username}}:&url={{include.url|prepend: site.url}}"
    {% endif%}
    target="_blank">
 </a>
 
 <a class="fa fa-google-plus-square"
-   href="https://plus.google.com/share?url={{site.url}}{{include.url}}"
+   href="https://plus.google.com/share?url={{include.url|prepend: site.url}}"
    target="_blank">
 </a>
 
 <a class="fa fa-facebook-square"
-   href="https://www.facebook.com/sharer/sharer.php?u={{site.url}}{{include.url}}"
+   href="https://www.facebook.com/sharer/sharer.php?u={{include.url|prepend: site.url}}"
    target="_blank">
 </a>
 
 <a class="fa fa-reddit-square"
-   href="https://www.reddit.com/submit?url={{site.url}}{{include.url}}&title={{ include.title }} by @{{include.author}} via @{{site.twitter_username}}"
+   href="https://www.reddit.com/submit?url={{include.url|prepend: site.url}}&title={{ include.title }} by @{{include.author}} via @{{site.twitter_username}}"
    target="_blank">
 </a>
 
 <a class="fa fa-linkedin-square"
-   href="https://www.linkedin.com/cws/share?token&isFramed=false&url={{site.url}}{{include.url}}"
+   href="https://www.linkedin.com/cws/share?token&isFramed=false&url={{include.url|prepend: site.url}}"
    target="_blank">
 </a>
 
 <a class="fa fa-tumblr-square"
-   href="https://www.tumblr.com/widgets/share/tool/preview?shareSource=legacy&canonicalUrl=&url={{site.url}}{{include.url}}"
+   href="https://www.tumblr.com/widgets/share/tool/preview?shareSource=legacy&canonicalUrl=&url={{include.url|prepend: site.url}}"
    target="_blank">
 </a>
 
 <a class="fa fa-pinterest-square"
-   href="https://log.pinterest.com/?type=pinmarklet&pmUrl={{site.url}}{{include.url}}"
+   href="https://log.pinterest.com/?type=pinmarklet&pmUrl={{include.url|prepend: site.url}}"
    target="_blank">
 </a>
