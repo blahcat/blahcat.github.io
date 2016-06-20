@@ -22,5 +22,6 @@ to, you can also shoot us an [email](mailto:{{ site.email }}).
 
 ## Blogs we like ##
 
-  * [TheGoonies](https://thegoonies.rocks/)
-  * [Bernardo Rodrigues](https://w00tsec.blogspot.com/)
+  * {% include icon-link.html href="https://thegoonies.rocks/" title="TheGoonies"%}
+  * {% include icon-link.html href="https://w00tsec.blogspot.com/"
+    title="Bernardo Rodrigues" %}
