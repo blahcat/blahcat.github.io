@@ -26,7 +26,7 @@ yourself. Fun time ahead  ☺
 [5aelo](https://github.com/saelo/armpwn/blob/master/README.md#how-to-use-this-repository) suggests a few
 approaches to tackle it, I decided to go "Total Pwn", meaning discovering
 everything about the binary. There is also links to Qemu images ready-to-use,
-for people who don't have (or don't want to use a RPI).
+for people who don't have (or don't want to use) a RPI.
 
 __Challenge__:
 Try to go from anonymous access to remote code execution on the `websrv` process
