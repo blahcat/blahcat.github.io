@@ -97,6 +97,7 @@ def pwn(s):
 
 We execute and a SIGSEGV was well caught (as seen with
 [`gef`](https://github.com/hugsy/gef)) :
+
 {% include image.html src="https://i.imgur.com/rn4XSOR.png" alt="gef" %}
 
 However, the faulty instruction is in the `free()` following the `memcpy()` and
