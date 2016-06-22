@@ -1,7 +1,1 @@
-<a href="{{include.src}}" target="_blank">
-  {% if include.alt %}
-  <img src="{{include.src}}" alt="{{include.alt}}" />
-  {% else %}
-  <img src="{{include.src}}" />
-  {% endif %}
-</a>
+<a href="{{include.src}}" target="_blank">{% if include.alt %}<img src="{{include.src}}" alt="{{include.alt}}" />{% else %}<img src="{{include.src}}" />{% endif %}</a>
