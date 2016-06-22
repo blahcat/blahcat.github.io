@@ -37,7 +37,7 @@ One of my new toys for quite a few months now is IDA Python plugin
 [diaphora](https://github.com/joxeankoret/diaphora) by Joxean Koret (aka
 {% include icon-twitter.html username="matalaz" %}). By diffing then, the issue is immediately visible:
 
-![bindiff](https://i.imgur.com/0tkaNNT.png)
+{% include image.html src="https://i.imgur.com/0tkaNNT.png" alt="bindiff" %}
 
 The `free()` function was modified so we cannot benefit from the graceful exit
 of the function by simply passing a NULL pointer. Now, `free()` will always
@@ -53,7 +53,7 @@ work. So I will assume you know as well.
 
 To stand on common ground, here is what a heap chunk looks like:
 
-![heap](https://i.imgur.com/EVnKlBg.png)
+{% include image.html alt="heap" src="https://i.imgur.com/EVnKlBg.png" %}
 
 When `free()` is called, some checks are made to know how the chunk must be
 deallocated:
@@ -67,7 +67,8 @@ deallocated:
       multiple of 2 (i.e. size & 2 = 2).
 
 This actually shows quite well in the flow graph:
-![](https://i.imgur.com/omGULMz.png)
+
+{% include image.html alt="flowgraph" src="https://i.imgur.com/omGULMz.png" %}
 
 Since we control what is written in the heap (same method than `simple_calc`),
 we can control whether we want to deallocate using `unlink` or `munmap` (simply
@@ -116,7 +117,8 @@ We will point the $rdi used by the `free()` call pointing to `div_result`. But
 now which value should we use then for operator_1 and operator_2 ?
 
 Let's go back to `free()` flow graph:
-![](https://i.imgur.com/7ZEy4nD.png)
+
+{% include image.html alt="flowgraph-free" src="https://i.imgur.com/7ZEy4nD.png" %}
 
 As we see, several conditions must be filled:
 
