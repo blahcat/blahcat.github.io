@@ -3,7 +3,7 @@ layout: page
 title: About
 permalink: /about/
 header-img: "img/about-bg.jpg"
-description: About hacks, CTF, and (most low-level) stuff...
+description: About hacks, CTF, and (mostly low-level related) stuff...
 ---
 
 ## Stay in touch ##
