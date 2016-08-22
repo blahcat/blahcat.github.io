@@ -1,0 +1,510 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="author" content="_hugsy_">
+  <meta name="description" content="Ruxmon presentation August 2016: GDB Enhanced Features">
+  <meta name="keywords" content="gdb, exploit, pwn, reverse engineering, python">
+  <title>Awesome GDB</title>
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/league.css">
+  <link rel="stylesheet" href="lib/css/zenburn.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <script>
+   var link = document.createElement( 'link' );
+   link.rel = 'stylesheet';
+   link.type = 'text/css';
+   link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+   document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+   <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->
+ </head>
+
+ <body>
+  <div class="reveal">
+   <div class="slides">
+
+    <section>
+     <h1>Making  GDB  cool  again</h1>
+     <small><i class="fa fa-twitter" aria-hidden="true">&nbsp;<a href="http://twitter.com/_hugsy_">@_hugsy_</a></i>
+      &nbsp;&nbsp;&nbsp;
+      <i class="fa fa-github" aria-hidden="true">&nbsp;<a href="http://github.com/hugsy">hugsy</a></i></small>
+    </section>
+
+    <section>
+     <h2>$ who</h2>
+     <table>
+      <tr>
+       <td>
+        <ul>
+         <li>I like playing with low-level stuff
+          <ul>
+           <li>assembly, exploit, reverse</li>
+          </ul>
+         </li>
+         <li>CTF playor, code reviewor, bug bounty collector
+          <ul>
+           <li>online, on-site, crackmes, etc.</li>
+          </ul>
+         </li>
+        </ul>
+       </td>
+       <td>
+        <img data-src="http://i.imgur.com/smqDASi.jpg" width="200px" alt="avatar" style="transform: rotate(15); -webkit-transform: rotate(15deg);"/>
+       </td>
+      </tr>
+     </table>
+    </section>
+
+    <section>
+     <h2>From the Dark Age came GDB</h2>
+     <p>~1986</p>
+     <p>Multi-platform Un*x debugger (originally for VAX and M68K)</p>
+     <p>Open Source from Day 1* (RMS was a large committer)</p>
+     <p>Pure C + Bison</p>
+
+     <aside class="notes">
+      OpenSource but hard to grab sources from gdb < 2
+      gnu parser of dwarf format
+      bison to parse .y -> .c
+     </aside>
+    </section>
+
+    <section>
+     <h2>Then Linux Arose</h2>
+     <p>1991</p>
+     <p>GCC+GDB+<s>Vim</s>Emacs became quick the reference dev combination</p>
+     <p>GDB got massive improvements from FOSS community</p>
+     <blockquote cite="Part of GDB 2 GPL License, 1986">
+      &ldquo;
+      In other words, go ahead and share GDB, don't try to stop anyone else from sharing it farther. Help stamp out software hoarding!
+      &rdquo;
+     </blockquote>
+    </section>
+
+    <section>
+     <h2>The Golden Age</h2>
+     <p>1993 - 2003</p>
+     <p>Grew big, v.4.x(~1.3MB) <i class="fa fa-right-arrow"></i> v.6.x(>13MB)</p>
+     <p><b>THE</b> debugger for Un*x, BSD, etc.</p>
+
+     <img data-src="https://upload.wikimedia.org/wikipedia/commons/e/e3/GDB-screenshot.gif" width="350" />
+
+     <aside class="notes">
+      The scripting engine allows to save in a file some commands that can be sourced directly
+      into the GDB session. Not really scripting (no API and such).
+      DDD added GDB support
+      Implemented flexible API
+      Simple scripting engine
+      Number of new architectures integrated
+     </aside>
+
+    </section>
+
+    <section>
+     <h2>And Then</h2>
+     <p>2004 - 2008</p>
+     <p>
+      <span class="fragment">Not much</span>
+     </p>
+     <p>
+      <span class="fragment">Mostly bug fixes, new architectures added, more comments/docs, better code structure</span>
+     </p>
+     <p>
+      <span class="fragment">
+       Desperation, anguish submerged devs<br/>
+       <img data-src="http://i.imgur.com/IDBwO0W.jpg" width="200px"/>
+      </span>
+     </p>
+
+     <aside class="notes">
+      GDB was entirely functional, people were not dev it, they were using it.
+      However, not that many massive improvements
+     </aside>
+    </section>
+
+    <section>
+     <section>
+      <h2>fG! GdbInit</h2>
+      <p>Best tool for exploit dev (~2008)</p>
+      <p>Big GDB script with dirty procedures and hardcoded values</p>
+      <br/><br/><br/>
+      <a href="#" class="navigate-down"><i class="fa fa-arrow-down"></i></a>
+     </section>
+
+     <section>
+      <img data-src="https://i.imgur.com/qYVIexH.png" height="300px"/>
+      <br/>
+      <i class="fa fa-arrow-down"></i>
+      <br/>
+      <img data-src="https://i.imgur.com/tvOYXj6.png" height="200px"/>
+      <br/>
+      <a href="#" class="navigate-down"><i class="fa fa-arrow-down"></i></a>
+
+      <aside class="notes">
+       Massive improvement to understand the context globally
+       but ... (next slide)
+      </aside>
+     </section>
+
+     <section>
+      <img data-src="https://i.imgur.com/d3jKU05.png"/>
+      <br/>
+      <a href="#" class="navigate-down"><i class="fa fa-arrow-down"></i></a>
+      <aside class="notes">
+       Code is very messy, hard to maintain/extend
+      </aside>
+     </section>
+
+     <section>
+      <h2>fG! GdbInit</h2>
+      <ul>
+       <li>Worked really well</li>
+       <li>But</li>
+       <ul>
+        <li>x86 only</li>
+        <li>hard to read/maintain</li>
+       </ul>
+      </ul>
+      <aside class="notes">
+       Still fG! gdbinit was awesome and used a lot
+      </aside>
+     </section>
+    </section>
+
+    <section>
+     <h2>The Revelation</h2>
+     <p>2008-2009</p>
+     <p>First series of patches to export GDB API to <span style="color: red;">Python</span></p>
+
+     <br/>
+
+     <span class="fragment">
+     <p>2011-08-23</p>
+     <p>GDB 7.0 with <span style="color: red;">Python</span> scripting  <a href="https://sourceware.org/gdb/wiki/GDB_7.0_Release"> released</a></p>
+     </span>
+
+     <aside class="notes">
+      Initiated and handled in great part by Tom Tromey (provided some good tuts on python/gdb)
+      GDB 7 was the first major realease with gdb/python
+     </aside>
+    </section>
+
+    <section>
+     <img data-src="http://i.imgur.com/kK5dPp6.jpg">
+    </section>
+
+
+    <section>
+     <section>
+      <h2>O'rly?</h2>
+      <ul>
+       <li>Extend GDB features</li>
+       <li>Create new commands</li>
+       <li>Create new internal functions (breakpoints, hook events, etc.)</li>
+      </ul>
+
+      <br/>
+      <p>Awesome article by <a href="http://0vercl0k.tuxfamily.org/bl0g/?p=226">0verclock</a>:
+       “<em>GDB, meet Python</em>”</p>
+
+      <a href="#" class="navigate-down"><i class="fa fa-arrow-down"></i></a>
+     </section>
+
+     <section>
+      <h2>Demo</h2>
+      <iframe src="https://vine.co/v/5MUbAqUTlnm/embed/simple" width="600" height="600" frameborder="0"></iframe><script src="https://platform.vine.co/static/scripts/embed.js"></script>
+      <aside class="notes">
+       quick live demo to show basic commands
+       >> print
+       >> gdb.execute()
+       >> gdb.parse_and_eval()
+       >> gdb.breakpoints()
+      </aside>
+     </section>
+    </section>
+
+    <section>
+     <h2>Some cool projects came to life</h2>
+     <ul>
+      <li>Exploit oriented</li>
+      <ul>
+       <li>PEDA (<a href="https://github.com/longld/peda">https://github.com/longld/peda</a>)</li>
+       <li>!exploitable (<a href="https://github.com/jfoote/exploitable">https://github.com/jfoote/exploitable</a>)</li>
+       <li>gdb-heap (<a href="https://fedorahosted.org/gdb-heap">https://fedorahosted.org/gdb-heap</a>)</li>
+       <li>And more...</li>
+      </ul>
+
+      <br/>
+
+      <p>
+       <li>UI oriented</li>
+       <ul>
+        <li>Voltron (<a href="https://github.com/snare/voltron">https://github.com/snare/voltron</a>)</li>
+        <li>GDB-Dashboard (<a href="https://github.com/cyrus-and/gdb-dashboard">https://github.com/cyrus-and/gdb-dashboard</a>)</li>
+        <li>And more...</li>
+       </ul>
+      </p>
+     </ul>
+    </section>
+
+    <section>
+     <section>
+      <p><span style="color:red">G</span>DB <span style="color:red">E</span>nhanced <span style="color:red">F</span>eatures</p>
+      <p>i.e. <span style="color: cyan;">GDB</span> on steroid for debugging, reversing, exploiting</p>
+      <p class="fragment">Started as a collection of files with GDB Python commands</p>
+      <p class="fragment">Then merged into one consistent, extensible tool</p>
+     </section>
+
+     <section>
+      <h2>GEF</h2>
+      <ul>
+       <li>Built by curiosity, improved by CTF </li>
+       <li><i class="fa fa-arrow-right">Must be fast</i>
+        <ul>
+         <li>Fast to install on a "new" environment</li>
+         <li>Fast access to information about registers, memory, code</li>
+        </ul>
+       </li>
+      </ul>
+
+      <aside class="notes">
+       fast install (one file)
+       fast and comprehensive access to current context info (reg/mem/fd/etc.)
+      </aside>
+     </section>
+
+
+     <section>
+      <h2>GEF</h2>
+      <ul>
+       <li>Intel x86-32 /x86-64</li>
+       <li>ARM v5/v6/v7/AARCH64 (so yes, even Android)</li>
+       <li>PowerPC / PowerPC64</li>
+       <li>MIPS / MIPS64</li>
+       <li>SPARC / SPARC v9 (i.e. SPARC64)</li>
+       <li>easy to add more archs...</li>
+      </ul>
+      <aside class="notes">
+       by design works for py2/py3 (py3 support for peda is very hackish)
+      </aside>
+     </section>
+
+     <section>
+      <img data-src="https://media.giphy.com/media/srb6bXZHbgDsc/giphy.gif" width="500px">
+     </section>
+
+     <section>
+      <p>Some of the features</p>
+      <p class="fragment">... live for some</p>
+      <p class="fragment">... just images &amp; videos for other</p>
+
+      <aside class="notes">
+       First going through the basic features
+      </aside>
+
+     </section>
+
+     <section>
+      <p>Displaying a comprehensive context</p>
+      <img data-src="https://i.imgur.com/XMZKPdw.png" width="800px"/>
+     </section>
+
+     <section>
+      <p>Derefencing automatically pointers (WinDBG <em>poi</em> style)</p>
+      <p>"Normal" way</p>
+      <img data-src="https://i.imgur.com/QE3vNgW.png" width="500px" />
+      <br/>
+      <i class="fa fa-arrow-down"></i>
+      <p>"GEF" way</p>
+      <img data-src="https://i.imgur.com/fTf4gKt.png" />
+
+      <aside class="notes">
+       GEF will also attempt to parse C strings and print them as such
+      </aside>
+
+     </section>
+
+     <section>
+      <p>Get precise info on memory mapping.</p>
+      <br/>
+      <table>
+       <tr>
+        <td>
+         <!-- vmmap -->
+         <img data-src="https://i.imgur.com/1QifQ3J.png" />
+        </td>
+        <td>
+         <!-- xinfo -->
+         <img data-src="https://i.imgur.com/u4fqr0E.png"  />
+        </td>
+       </tr>
+      </table>
+     </section>
+
+     <section>
+      <p>Get generic info on the binary.</p>
+      <br/>
+      <img data-src="https://i.imgur.com/Tyf5OMK.png"/>
+     </section>
+
+     <section>
+      <p>Automatically detect vulnerable format strings</p>
+      <br/>
+      <img data-src="https://pbs.twimg.com/media/CPZJjIiVEAERLeN.png:large" width="700px" />
+     </section>
+
+     <section>
+      <p>Interact with IDA Pro Disassembler.</p>
+      <br/>
+      <table>
+       <tr>
+        <td>
+         <!-- send command from gef -->
+         <img data-src="" />
+        </td>
+        <td>
+         <!-- inside ida -->
+         <img data-src="" />
+        </td>
+       </tr>
+      </table>
+     </section>
+
+     <section>
+      <p>Easily search patterns in all memory sections</p>
+      <br/>
+      <img data-src="https://i.imgur.com/gw769Lr.png"/>
+     </section>
+
+     <section>
+      <p>Perfect integration with <code>gdb remote debugging</code> functionality</p>
+      <br/>
+      <p>Perfect for debugging native Android apps!</p>
+     </section>
+
+     <section>
+      <p>Want to redirect a file descriptor to a file ?</p>
+      <a href="#" class="navigate-down"><i class="fa fa-arrow-down"></i></a>
+     </section>
+
+     <section>
+      <script type="text/javascript" async data-preload="true" data-size="small"
+              src="https://asciinema.org/a/2o9bhveyikb1uvplwakjftxlq.js"
+              id="asciicast-2o9bhveyikb1uvplwakjftxlq"></script>
+     </section>
+
+     <section>
+      <p>Or want to change permissions of a page ?</p>
+      <a href="#" class="navigate-down"><i class="fa fa-arrow-down"></i></a>
+     </section>
+
+     <section>
+      <script type="text/javascript" async data-preload="true" data-size="small"
+              src="https://asciinema.org/a/54noulja01k3cgctawjeio8xl.js"
+              id="asciicast-54noulja01k3cgctawjeio8xl"></script>
+     </section>
+
+     <section>
+      <p>Latest features!</p>
+      <br/>
+      <p>Runtime decompilation!</p>
+      <img data-src="https://pbs.twimg.com/media/Co2gisTVUAA7W-1.jpg"/>
+     </section>
+
+     <section>
+      <p>Latest features!</p>
+      <br/>
+      <p>User-defined structures</p>
+     </section>
+
+     <section>
+      <script type="text/javascript" async data-preload="true" data-size="small"
+              src="https://asciinema.org/a/bhsguibtf4iqyyuomp3vy8iv2.js"
+              id="asciicast-bhsguibtf4iqyyuomp3vy8iv2"></script>
+     </section>
+
+
+     <section>
+      <p><span style="color:red;">GEF</span> has <b>NO</b> mantory dependency</p>
+      <p class="fragment">Works out of the box on any GDB compiled with Python2/3</p>
+      <p class="fragment">... but can integrate other Python libraries for...</p>
+     </section>
+
+     <section data-src="">
+      <p>Dumping ROP gadgets and generating ROP chains (ROPChain, Ropper)</p>
+     </section>
+
+     <section data-src="">
+      <p>Emulating instructions from the current to predict the behaviour (Unicorn-Engine)</p>
+      <p class="fragment">(... yes there is an emulator embedded with gdb)</p>
+     </section>
+
+
+     <section>
+      <p><span style="color:red">~40</span> commands already implemented</p>
+      <p class="fragment">All working on ANY architecture (X86, ARM, MIPS, etc.)</p>
+
+      <aside class="notes">
+       remote debugging, kernel debugging, heap analysis, live tracing,
+       plans for more commands
+       regular submissions for new commands/new architectures (latest -> full support aarch64)
+      </aside>
+     </section>
+    </section>
+
+    <section>
+     <h2>Morale</h2>
+     <p>Python API for GDB is awesome</p>
+     <p>Let's do more of it</p>
+     <aside class="notes">
+      GDB is overall way behind WinDBG
+      Stuff like Python API can allow to fill the void by making community develop cool feature to improve it
+     </aside>
+    </section>
+
+    <section>
+     <h2>End, Questions?</h2>
+     <p>They <small>(didn’t)</small> talk about GEF :</p>
+     <ul>
+      <li>“Omaagadd!!” - John Travolta</li>
+      <li>“GEF is why I wanted a Linux subsystem for Windows” - Bill Gates</li>
+      <li>“LAAANNNNAAAA!! Danger zone!!” - Sterling Archer</li>
+      <li>“Hodor!!” - Hodor</li>
+     </ul>
+
+     <p>Tool: <a href="https://github.com/hugsy/gef">https://github.com/hugsy/gef</a></p>
+     <p>Slides: <a href="https://blahcat.github.io/slides/ruxmon-2016-08-gef/">https://blahcat.github.io/slides/ruxmon-2016-08-gef/</a></p>
+     <p><i class="fa fa-twitter"><a href="https://twitter.com/_hugsy_">@_hugsy_</a></i></p>
+    </section>
+
+   </div>
+  </div>
+
+  <script src="lib/js/head.min.js"></script>
+  <script src="js/reveal.js"></script>
+
+  <script>
+   Reveal.initialize({
+    history: true,
+    progress: true,
+    slideNumber: false,
+    transition: 'default',
+    transitionSpeed: 'default',
+    center: true,
+    fragments: true,
+    slideNumber: true,
+
+    dependencies: [
+     { src: 'plugin/markdown/marked.js' },
+     { src: 'plugin/markdown/markdown.js' },
+     { src: 'plugin/notes/notes.js', async: true },
+     { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+    ]
+   });
+  </script>
+ </body>
+</html>
