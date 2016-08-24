@@ -3,7 +3,7 @@ layout: page
 title: About
 permalink: /about/
 header-img: "img/about-bg.jpg"
-description: About hacks, CTF, and (most low-level) stuff...
+description: About hacks, CTF, and (mostly low-level related) stuff...
 ---
 
 ## Stay in touch ##
@@ -23,4 +23,5 @@ to, you can also shoot us an [email](mailto:{{ site.email }}).
 ## Blogs we like ##
 
   * {% include link.html href="https://thegoonies.rocks/" title="TheGoonies"%}
-  * {% include link.html href="https://w00tsec.blogspot.com/" title="Bernardo Rodrigues" %}
+  * {% include link.html href="https://w00tsec.blogspot.com/" title="Bernardo" %}
+  * {% include link.html href="https://bugnotfound.com" title="Danilo" %}
