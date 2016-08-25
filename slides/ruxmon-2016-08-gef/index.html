@@ -20,7 +20,8 @@
   </script>
   <!--[if lt IE 9]>
    <script src="lib/js/html5shiv.js"></script>
-  <![endif]-->
+   <![endif]-->
+  <script src="https://platform.vine.co/static/scripts/embed.js"></script>
  </head>
 
  <body>
@@ -189,7 +190,7 @@
 
      <aside class="notes">
       Initiated and handled in great part by Tom Tromey (provided some good tuts on python/gdb)
-      GDB 7 was the first major realease with gdb/python
+      GDB 7 was the first major realease with GDB/python
      </aside>
     </section>
 
@@ -205,18 +206,37 @@
        <li>Extend GDB features</li>
        <li>Create new commands</li>
        <li>Create new internal functions (breakpoints, hook events, etc.)</li>
+       <li>Totally architecture agnostic</li>
       </ul>
 
       <br/>
+
       <p>Awesome article by <a href="http://0vercl0k.tuxfamily.org/bl0g/?p=226">0verclock</a>:
-       “<em>GDB, meet Python</em>”</p>
+        “<em>GDB, meet Python</em>”
+      </p>
 
       <a href="#" class="navigate-down"><i class="fa fa-arrow-down"></i></a>
      </section>
 
      <section>
+       <h2>Basic commands</h2>
+
+       <ul>
+         <li><em>gdb.parse_and_eval("[SYMBOL OR ADDRESS]")</em></li>
+         <li><em>gdb.execute("[GDB_COMMAND]", to_string=True)</em></li>
+         <li><em>gdb.prompt_hook</em></li>
+         <li><em>gdb.breakpoints</em></li>
+         <li><em>gdb.events.*.connect</em></li>
+       </ul>
+
+       <hr/>
+
+       <p>Complete docs on <a href="https://sourceware.org/gdb/onlinedocs/gdb/Python-API.html">Sourceware</a></p>
+     </section>
+
+     <section>
       <h2>Demo</h2>
-      <iframe src="https://vine.co/v/5MUbAqUTlnm/embed/simple" width="600" height="600" frameborder="0"></iframe><script src="https://platform.vine.co/static/scripts/embed.js"></script>
+      <iframe src="https://vine.co/v/5MUbAqUTlnm/embed/simple" width="600" height="600" frameborder="0"></iframe>
       <aside class="notes">
        quick live demo to show basic commands
        >> print
