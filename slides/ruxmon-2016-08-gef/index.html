@@ -449,37 +449,65 @@
 
 
      <section>
+      <h2>Still not convinced?</h2>
+     </section>
+
+     <section>
       <p><span style="color:red;">GEF</span> has <b>NO</b> mantory dependency</p>
-      <p class="fragment">Works out of the box on any GDB compiled with Python2/3</p>
+      <p class="fragment">Works out of the box on any GDB compiled with Python2 / Python3</p>
       <p class="fragment">... but can integrate other Python libraries for...</p>
      </section>
 
-     <section data-src="">
-      <p>Dumping ROP gadgets and generating ROP chains (ROPChain, Ropper)</p>
+     <section>
+      <p class="fragment">Dumping ROP gadgets and generating ROP chains (ROPChain, Ropper)</p>
+      <p class="fragment">Emulating instructions from the current to predict the behaviour (Unicorn-Engine)</p>
+      <p class="fragment">(... yes it is an emulator embedded with gdb)</p>
+      <p class="fragment">Lookup online for known shellcode (@ShellStorm DB)</p>
+      <p class="fragment">... Or write your own directly in memory (Keystone)</p>
+      <p class="fragment">etc. etc.</p>
      </section>
-
-     <section data-src="">
-      <p>Emulating instructions from the current to predict the behaviour (Unicorn-Engine)</p>
-      <p class="fragment">(... yes there is an emulator embedded with gdb)</p>
-     </section>
-
 
      <section>
-      <p><span style="color:red">~40</span> commands already implemented</p>
+      <img data-src="https://i.imgur.com/560iKoW.jpg">
+     </section>
+
+     <section>
+      <p><span style="color:red">~50</span> commands already implemented</p>
       <p class="fragment">All working on ANY architecture (X86, ARM, MIPS, etc.)</p>
+      <p class="fragment">Constantly improving</p>
 
       <aside class="notes">
-       remote debugging, kernel debugging, heap analysis, live tracing,
-       plans for more commands
-       regular submissions for new commands/new architectures (latest -> full support aarch64)
+       Remote debugging, kernel debugging, heap analysis, live tracing,
+       Plans for more commands
       </aside>
      </section>
+
+     <section>
+      <p>Future</p>
+      <hr/>
+      <ul>
+       <li>Replace PEDA</li>
+       <li>More bug fixes/new commands</li>
+       <li>Massive improvements from Open-Source community (thanks to all the contributors)</li>
+      </ul>
+
+      <aside class="notes">
+       PEDA is less and less maintained (snake oil of peda2), hackish py3 support
+       Porting peda to other architecture would mean a profound structural change that no one seems to engage
+       Turn to <em>gef</em> (or <em>pwndbg</em>) for the future of ELF dynamic analysis
+       Massive thanks
+      </aside>
+     </section>
+
     </section>
 
     <section>
      <h2>Morale</h2>
+
      <p>Python API for GDB is awesome</p>
      <p>Let's do more of it</p>
+     <p>Ultimate goal: reach the awesomeness of WinDBG</p>
+
      <aside class="notes">
       GDB is overall way behind WinDBG
       Stuff like Python API can allow to fill the void by making community develop cool feature to improve it
