@@ -17,8 +17,8 @@ I also gave demos of my tool [`gef`](https://github.com/hugsy/gef.git), an
 architecture-agnostic exploitation helper for GDB to show the awesomeness of
 Python API for GDB.
 
-Find my
-{% include link.html src="/slides/ruxmon-2016-08-gef" title="slides here" %}.
+Find my [slides here](https://blahcat.github.io/slides/ruxmon-2016-08-gef) or
+get [the PDF formatted version](https://blahcat.github.io/slides/ruxmon-2016-08-gef/?print-pdf)
 
 Feel free to let me know your feedbacks on
 {% include link.html src="https://webchat.freenode.net/?channel=##gef" title="gef new IRC channel" %}!
