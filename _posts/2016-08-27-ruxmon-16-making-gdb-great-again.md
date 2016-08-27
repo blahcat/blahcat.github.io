@@ -9,7 +9,9 @@ tags:  ruxmon gdb python gef
 
 ### Ruxmon : Making GDB awesome again ###
 
-I did a small presentation last Friday at {% include link.html src="http://ruxmon.com/melbourne" title="Ruxmon Melbourne" %} about GDB, its Python API and how it can be used to make awesome new stuff.
+I did a small presentation last Friday at
+[Ruxmon Melbourne](http://ruxmon.com/melbourne) about GDB, its Python API and
+how it can be used to make awesome new stuff.
 
 I also gave demos of my tool [`gef`](https://github.com/hugsy/gef.git), an
 architecture-agnostic exploitation helper for GDB to show the awesomeness of
