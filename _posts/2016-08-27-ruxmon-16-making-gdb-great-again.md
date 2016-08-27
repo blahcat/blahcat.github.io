@@ -21,4 +21,4 @@ Find my [slides here](https://blahcat.github.io/slides/ruxmon-2016-08-gef) or
 get [the PDF formatted version](https://blahcat.github.io/slides/ruxmon-2016-08-gef/?print-pdf)
 
 Feel free to let me know your feedbacks on
-{% include link.html src="https://webchat.freenode.net/?channel=##gef" title="gef new IRC channel" %}!
+{% include link.html href="https://webchat.freenode.net/?channel=##gef" title="gef new IRC channel" %}!
