@@ -7,7 +7,7 @@ author_twitter: _hugsy_
 tags:  ruxmon gdb python gef
 ---
 
-### Ruxmon : Making GDB awesome again ###
+### Ruxmon August 2016: Making GDB awesome again ###
 
 I did a small presentation last Friday at
 [Ruxmon Melbourne](http://ruxmon.com/melbourne) about GDB, its Python API and
