@@ -1,11 +1,11 @@
 # Site settings
 header-img: img/home-bg.png
 copyright_name: Blah Cats
-title: BlahCat 4 Lyfe
+title: Blah Cats
 email: ctf AT [nospam]blah DOT cat
 description: >
 
-  void live(){ eat(); sleep(); hack(); live(); }
+  Tales of a life in binary...
 
 baseurl: ""
 url: "https://blahcat.github.io"
