@@ -5,6 +5,8 @@ categories:
 tags: exploit volgactf-2016 x86
 author: hugsy
 author_twitter: _hugsy_
+author_email: hugsy@[RemoveThisPart]blah.cat
+author_github: hugsy
 ---
 
 

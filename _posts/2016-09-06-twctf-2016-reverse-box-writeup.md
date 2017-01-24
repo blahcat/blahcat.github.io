@@ -3,6 +3,8 @@ layout: post
 title: TWCTF 2016 - reverse_box writeup
 author: hugsy
 author_twitter: _hugsy_
+author_email: hugsy@[RemoveThisPart]blah.cat
+author_github: hugsy
 tags: twctf-2016 reverse binary-ninja gef unicorn-engine
 ---
 

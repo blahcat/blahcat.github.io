@@ -3,6 +3,8 @@ layout: post
 title: HITB 2016 - Bakery write-up
 author: hugsy
 author_twitter: _hugsy_
+author_email: hugsy@[RemoveThisPart]blah.cat
+author_github: hugsy
 tags: exploit hitb
 ---
 

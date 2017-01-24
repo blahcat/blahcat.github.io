@@ -4,6 +4,8 @@ title: Ruxmon 08/2016 - Making GDB great again
 date:   2016-08-27 11:52:34 +1100
 author: hugsy
 author_twitter: _hugsy_
+author_email: hugsy@[RemoveThisPart]blah.cat
+author_github: hugsy
 tags:  ruxmon gdb python gef
 ---
 
@@ -17,8 +19,11 @@ I also gave demos of my tool [`gef`](https://github.com/hugsy/gef.git), an
 architecture-agnostic exploitation helper for GDB to show the awesomeness of
 [Python API](https://sourceware.org/gdb/onlinedocs/gdb/Python-API.html) for GDB.
 
-Find my [slides here](https://blahcat.github.io/slides/ruxmon-2016-08-gef) or
-get [the PDF formatted version](https://blahcat.github.io/slides/ruxmon-2016-08-gef/?print-pdf)
+Find my {% include link.html
+href="https://blahcat.github.io/slides/ruxmon-2016-08-gef" title="slides here"
+%} or
+get {% include link.html title="the PDF formatted version"
+href="https://blahcat.github.io/slides/ruxmon-2016-08-gef/?print-pdf" %}
 
 And send me your insults/feedbacks on
 {% include link.html href="https://webchat.freenode.net/?channels=##gef" title="gef new IRC channel" %}!

@@ -3,6 +3,8 @@ layout: post
 title: DEFCON CTF 2016 - feedme
 author: hugsy
 author_twitter: _hugsy_
+author_email: hugsy@[RemoveThisPart]blah.cat
+author_github: hugsy
 tags:  exploit defcon-2016 x86 brop
 ---
 

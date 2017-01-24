@@ -3,6 +3,8 @@ layout: post
 title: 0ctf 2016 - Warmup write-up
 author: hugsy
 author_twitter: _hugsy_
+author_email: hugsy@[RemoveThisPart]blah.cat
+author_github: hugsy
 tags: exploit gef ida 0ctf-2016 x86
 ---
 

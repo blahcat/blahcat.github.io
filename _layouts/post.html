@@ -4,57 +4,107 @@ layout: default
 
 <!-- Post Header -->
 <header class="intro-header" style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="post-heading">
-          <h1>{{ page.title }}</h1>
-          {% if page.subtitle %}
-          <h2 class="subheading">{{ page.subtitle }}</h2>
-          {% endif %}<br>
-          <span class="meta" style="color: white;">
-            • Posted by {% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif %}
-            on {{ page.date | date: "%B %-d, %Y" }}
-            {% if page.tags %}  <br>
-            {% for tag in page.tags %}
-            • {{tag}}
-            {% endfor %}
-            {% endif %}
-          </span>
-        </div>
-      </div>
+ <div class="container">
+  <div class="row">
+   <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div class="post-heading">
+     <h1>{{ page.title }}</h1>
+     {% if page.subtitle %}
+     <h2 class="subheading">{{ page.subtitle }}</h2>
+     {% endif %}<br>
+     <span class="meta" style="color: white;">
+      • Posted by {% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif %}
+      on {{ page.date | date: "%B %-d, %Y" }}
+      {% if page.tags %}  <br>
+      {% for tag in page.tags %}
+      • {{tag}}
+      {% endfor %}
+      {% endif %}
+     </span>
     </div>
+   </div>
   </div>
+ </div>
 </header>
 
 <!-- Post Content -->
 <article>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+ <div class="container">
+  <div class="row">
+   <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 
 	{{ content }}
 
-        <hr>
+    <hr>
 
-        {% include share.html author=page.author_twitter url=page.url title=page.title %}
+    {% include share.html author=page.author_twitter url=page.url title=page.title %}
 
-        <ul class="pager">
-          {% if page.previous.url %}
-          <li class="previous">
-            <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">&larr; Previous Post</a>
-          </li>
-          {% endif %}
-          {% if page.next.url %}
-          <li class="next">
-            <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">Next Post &rarr;</a>
-          </li>
-          {% endif %}
-        </ul>
+    <ul class="pager">
+     {% if page.previous.url %}
+     <li class="previous">
+      <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">&larr; Previous Post</a>
+     </li>
+     {% endif %}
+     {% if page.next.url %}
+     <li class="next">
+      <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">Next Post &rarr;</a>
+     </li>
+     {% endif %}
+    </ul>
+   </div>
 
-      </div>
+   <aside class="sidebar col-lg-2">
+    <section class="panel panel-default titleFont">
+     <div class="panel-heading"><h3 class="panel-title">Latest Posts</h3></div>
+     <div id="recent_posts" class="list-group">
+      {% for post in site.posts limit:5 %}
+      {% if post.url == page.url %}
+      <i class="list-group-item ">{{post.title}}</i>
+      {% else %}
+      <a class="list-group-item " href="{{post.url}}">{{post.title}}</a>
+      {% endif %}
+      {% endfor %}
+     </div>
+    </section>
+
+    <div style="text-align:center;" >
+     <img src="/img/{{page.author}}.png" alt="Avatar for {{page.author}}" style="display: block;">
+     <b>Author:</b>
+     <em>{{page.author}}</em>
+     <br>
+
+     {% if page.author_twitter %}
+     <a href="https://twitter.com/{{page.author_twitter}}">
+      <span class="fa-stack fa-lg">
+       <i class="fa fa-circle fa-stack-2x"></i>
+       <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+     </a>
+     {% endif %}
+
+     {% if page.author_email %}
+     <a href="mailto:{{page.author_email}}">
+      <span class="fa-stack fa-lg">
+       <i class="fa fa-circle fa-stack-2x"></i>
+       <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+      </span>
+     </a>
+     {% endif %}
+
+     {% if page.author_github %}
+     <a href="https://github.com/{{page.author_github}}">
+      <span class="fa-stack fa-lg">
+       <i class="fa fa-circle fa-stack-2x"></i>
+       <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+     </a>
+     {% endif %}
+
     </div>
+   </aside>
+
   </div>
+ </div>
 </article>
 
 <hr>
