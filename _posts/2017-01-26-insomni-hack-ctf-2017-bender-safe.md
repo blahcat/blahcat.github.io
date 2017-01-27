@@ -65,7 +65,7 @@ The binary execution starts where the challenge `bender_safe` left off, with the
 OTP validation. We then get into a simple menu offering 3 choices:
 
 
-{% highlight bash %}
+{% highlight text %}
 This is Bender's password vault storage
 I have 54043195528445952 bytes of memory for storage!
 Although 54043195528444928 of which is used to store my fembots videos...HiHiHi!
