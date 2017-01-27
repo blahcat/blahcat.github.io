@@ -154,8 +154,8 @@ gef➤  p/x $a0-4
 0x7fff62d8
 gef➤  x/x 0x7fff62d8
 0x7fff62d8:     0x0000000d   # << current size, before the call to read_passwords(
-gef➤  advance *0x004019c4
-
+gef➤  advance *0x004019c4 
+                             # << enter an empty first password (only \n)
 gef➤  x/x 0x7fff62d8
 0x7fff62d8:     0x0000000a   # << new size, after the call
 {% endhighlight %}
