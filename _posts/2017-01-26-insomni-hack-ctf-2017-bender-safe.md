@@ -208,7 +208,7 @@ Endian architecture:
 ![](https://i.imgur.com/NYLt8XQ.png)
 
 
-#### Rop-ing to a fixed area ####
+#### ROP-ing to a fixed area ####
 
 
 So great, we can control `$ra`, and therefore call any location. But the MIPS ABI
@@ -319,7 +319,13 @@ sc = "".join([chr(x) for x in sc])
 r.send(sc)
 {% endhighlight %}
 
-
+>
+> **Update**: as [@0xGrimmlin](https://twitter.com/0xGrimmlin) [mentioned](https://twitter.com/0xGrimmlin/status/824959540349112321), during the CTF, 
+> the challenge was actually chroot-ed, so technically this shellcode would
+> not have worked, but you could similarly build another one doing 
+> open/read/write(stdout)  
+> 
+ 
 #### Fire ####
 
 We have now all the components to launch our exploit. The final version is
