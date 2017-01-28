@@ -1,23 +1,25 @@
-<img id="{{include.id}}" src="{{include.src}}" alt="{{include.alt}}" >
+{% assign random = include.src + include.alt | slugify  %}
 
-<div id="modal-{{include.id}}" class="modal">
+<img id="img-{{random}}" src="{{include.src}}" alt="{{include.alt}}" >
+
+<div id="modal-{{random}}" class="modal">
  <span class="close">&times;</span>
- <img class="modal-content" id="img01">
- <div id="caption"></div>
+ <img class="modal-content" id="modal-img-{{random}}">
+ <div id="caption-{{random}}"></div>
 </div>
 
 <script>
- var modal = document.getElementById('modal-{{include.id}}');
- var img = document.getElementById('{{include.id}}');
- var modalImg = document.getElementById("img01");
- var captionText = document.getElementById("caption");
+ var img = document.getElementById('img-{{random}}');
+ var modal = document.getElementById('modal-{{random}}');
+ var modalImg = document.getElementById("modal-img-{{random}}");
+ var captionText = document.getElementById("caption-{{random}}");
  img.onclick = function(){
   modal.style.display = "block";
   modalImg.src = this.src;
   captionText.innerHTML = this.alt;
  }
- var span = document.getElementsByClassName("close")[0];
- span.onclick = function() {
+
+ modal.onclick = function() {
   modal.style.display = "none";
  }
 </script>
