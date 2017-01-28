@@ -164,7 +164,8 @@ use
 [this script](https://github.com/elttam/canary-fun/blob/master/read_canary_from_pid.py) locally
 to compare the values for the canary:
 
-{% include image.html src="https://i.imgur.com/IWpuMIy.png" alt="demo" %}
+{% include image.html src="https://i.imgur.com/IWpuMIy.png" alt="Running
+the exploit" id=1 %}
 
 
 
