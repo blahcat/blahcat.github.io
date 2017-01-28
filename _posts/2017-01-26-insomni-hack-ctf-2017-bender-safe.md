@@ -312,7 +312,7 @@ shellcode = [
 ]
 
 arch, mode, endian = keystone.KS_ARCH_MIPS, keystone.KS_MODE_MIPS32, keystone.KS_MODE_BIG_ENDIAN
-ks = keystoneks = keystone.Ks(arch, mode | endian)
+ks = keystone.Ks(arch, mode | endian)
 sc, cnt = ks.asm(shellcode)
 log.info("keystone compiled %d instructions" % cnt)
 sc = "".join([chr(x) for x in sc])
