@@ -36,7 +36,7 @@ If you are on Linux, run in a terminal (or double-click) on the `./start.sh`
 script, when our Windows friend would simply need to double-click the `./start.bat`.
 
 Each VM will also TCP forward its SSH port for easy interaction. On Linux, just
-run `./ssh.bat`. Windows users will need tools like [`PuTTY`](http://www.putty.org).
+run `./ssh.sh`. Windows users will need tools like [`PuTTY`](http://www.putty.org).
 
 Those images are battery-included, development tools, compilation and debugging
 tools too. Ever wondered what SPARC assembly looks like? Always feeling itchy to
