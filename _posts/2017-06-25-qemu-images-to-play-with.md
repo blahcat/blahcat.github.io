@@ -52,6 +52,11 @@ Without further ado:
 Unless stated otherwise, `root` password is `root`, and an low privilege account
 called `user` is created.
 
+> **Update**: the current ARMv6 image is based on a Raspberry Pi
+> image. Therefore, the username is `pi` , password `raspberry` and is sudoer
+> NOPASSWD. I will update the image soon to fix this.
+
+
 {%include image.html alt="vbox-qemu" src="/img/vbox.png"%}
 
 
