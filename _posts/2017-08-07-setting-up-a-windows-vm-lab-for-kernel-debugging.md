@@ -16,7 +16,7 @@ In this part, we'll cover in details how to get everything setup using Linux as
 host, VirtualBox as hypervisor and Windows virtual images from [Modern.IE](https://modern.ie).
 
 __*Note*__: there is nothing ground-breaking here, those posts are mostly notes and
-reminders for the future. [Other people] did a fantastic job covering the same
+reminders for the future. [Other people](https://hshrzd.wordpress.com/2017/05/28/starting-with-windows-kernel-exploitation-part-1-setting-up-the-lab/) did a fantastic job covering the same
 topic, so you might probably be more interested into reading those 😁
 
 I like working on a Linux host, so using [VirtualKD](virtualkd.sysprogs.org)
@@ -24,8 +24,7 @@ isn't an option. So my setup is:
 
   - Debian testing x64 as host
   - [VirtualBox](https://www.virtualbox.org) as hypervisor
-  -
-    A
+  - A
   [Windows 7 x64 VM](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/) acting
   as debugger.
   - And 2 debuggees:
@@ -34,7 +33,16 @@ isn't an option. So my setup is:
 
 As a comodity, I've created a
 [`Vagrantfile`](https://github.com/hugsy/modern.ie-vagrant) to simplify the VM
-creation process using [`Vagrant`](https://vagrantup.com).
+creation process using [`Vagrant`](https://vagrantup.com). You can create a new
+Windows VM like this
+
+{% highlight bash %}
+$ git clone https://github.com/hugsy/modern.ie-vagrant Windows7
+$ cd Windows7
+$ FIRSTBOOT=1 vagrant up --provision
+{% endhighlight %}
+
+and go grab a coffee ☕
 
 
 ## Preparing the Debugger VM
