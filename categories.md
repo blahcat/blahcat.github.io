@@ -28,5 +28,3 @@ categories.
 | 1 | [Setting up a Windows VM lab for kernel debugging](/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging) | _hugsy_ |
 | 2  | [A Primer to Windows x64 shellcoding](/2017/08/14/a-primer-to-windows-x64-shellcoding) | _hugsy_  |
 | 3  | [First exploit in Windows Kernel (HEVD)](#) _(soon)_ | _hugsy_  |
-| 4  | [From 1-Day to NT System: Understanding the vulnerability](#) _(soon)_  | _hugsy_  |
-| 5  | [From 1-Day to NT System: Exploiting the vulnerability](#) _(soon)_ | _hugsy_  |
