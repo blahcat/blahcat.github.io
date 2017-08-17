@@ -31,7 +31,7 @@ layout: default
 <article>
  <div class="container">
   <div class="row">
-   <div class="col-lg-10 col-lg-offset-0 col-md-10 col-md-offset-1">
+   <div class="col-lg-10 col-lg-offset-0 col-md-10 col-md-offset-0">
 
 	{{ content }}
 
@@ -53,15 +53,15 @@ layout: default
     </ul>
    </div>
 
-   <aside class="sidebar col-lg-2">
+   <aside class="sidebar col-md-2">
     <section class="panel panel-default titleFont">
      <div class="panel-heading"><h3 class="panel-title">Latest Posts</h3></div>
      <div id="recent_posts" class="list-group">
       {% for post in site.posts limit:5 %}
       {% if post.url == page.url %}
-      <i class="list-group-item ">{{post.title}}</i>
+      <i class="list-group-item " style="font-size: small;">{{post.title}}</i>
       {% else %}
-      <a class="list-group-item " href="{{post.url}}">{{post.title}}</a>
+      <a class="list-group-item " href="{{post.url}}" style="font-size: small;">{{post.title}}</a>
       {% endif %}
       {% endfor %}
      </div>
