@@ -5,8 +5,8 @@
  */
 
 body {
-  font-family: 'Lora', 'Times New Roman', serif;
-  font-size: 20px;
+  font-family: 'Open Sans', serif;
+  font-size: 16px;
   background-color: rgba(128, 128, 128, 0.45);
   color: #404040;
 }
@@ -23,7 +23,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   font-weight: 800;
 }
 a {
