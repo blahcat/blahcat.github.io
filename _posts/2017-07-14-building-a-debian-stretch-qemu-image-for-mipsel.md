@@ -25,7 +25,7 @@ After releasing
 created to test [`GEF`](https://github.com/hugsy/gef), I've received
 tons of demands from people asking for more images, but also for some DYI procedures.
 
-Through this blog post I intend to do both, by providing a step-by-step how-to
+As {%include icon-twitter.html username="@Fox0x01"%} already covered fairly exhaustively {%include link.html title="how to build an QEMU ARMv6 compatible VM" href="https://azeria-labs.com/emulate-raspberry-pi-with-qemu/"%}, through this blog post I intend to provide a step-by-step how-to
 on building a Debian Stretch Malta MIPS32el image.
 
 **Note**: there is no miracle here, I've just spend a long time googling for
