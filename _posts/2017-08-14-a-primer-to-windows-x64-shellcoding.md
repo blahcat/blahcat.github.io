@@ -297,3 +297,4 @@ Until then, take care!
  1. [Introduction To Windows Shellcode Development](https://securitycafe.ro/2015/10/30/introduction-to-windows-shellcode-development-part1/)
  1. [x64 Kernel Privilege Escalation](http://mcdermottcybersecurity.com/articles/x64-kernel-privilege-escalation)
  1. [Well-Known Security IDentifiers](https://support.microsoft.com/en-ca/help/243330/well-known-security-identifiers-in-windows-operating-systems)
+ 1. [Understanding Windows Shellcode](http://hick.org/code/skape/papers/win32-shellcode.pdf)
