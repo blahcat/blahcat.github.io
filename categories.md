@@ -28,4 +28,5 @@ categories.
 | 1  | [Setting up a Windows VM lab for kernel debugging](/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging) | _hugsy_ |
 | 2  | [A Primer to Windows x64 shellcoding](/2017/08/14/a-primer-to-windows-x64-shellcoding) | _hugsy_  |
 | 3  | [First exploit in Windows Kernel (HEVD)](/2017/08/18/first-exploit-in-windows-kernel-hevd) | _hugsy_  |
-| 4  | [Write-What-Where exploits in Windows Kernel (HEVD)](#) _(soon)_ | _hugsy_  |
+| 4  | [Arbitrary Write (aka Write-What-Where) exploits (HEVD)](/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd/) | _hugsy_  |
+| 5  | [Kernel pool exploits (HEVD)](#) _(being written)_ | _hugsy_  |
