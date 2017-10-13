@@ -36,8 +36,7 @@ My complete arsenal was (in no particular order):
 
   * [Modern-IE Windows VM](https://github.com/hugsy/modern.ie-vagrant)
   * [IDA Pro](https://www.hex-rays.com)
-    * [IDA SignSrch](https://github.com/nihilus/IDA_Signsrch) (thanks to
-      {%include icon-twitter.html username="aymansagy"%} for that!)
+    * [IDA SignSrch](https://github.com/nihilus/IDA_Signsrch)
   * [WinDBG](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger)
   * [CFF Explorer](http://www.ntcore.com/exsuite.php)
   * [HxD](https://mh-nexus.de/en/hxd)
@@ -47,7 +46,7 @@ My complete arsenal was (in no particular order):
   * [Binary Ninja](https://binary.ninja)
     * [Binja-AVR](https://github.com/hugsy/binja-avr)
     * [Binja-covfefe](https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c)
-  * GBD + [GEF](https://github.com/hugsy/gef)
+  * GDB + [GEF](https://github.com/hugsy/gef)
   * [SimAVR](https://github.com/buserror/simavr)
   * [JDB](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jdb.html)
   * [JADX](https://github.com/skylot/jadx)
@@ -62,6 +61,7 @@ My complete arsenal was (in no particular order):
   * [Interactive Delphi Reconstructor](https://github.com/crypto2011/IDR)
   * [Wireshark](https://wireshark.org)
   * [Diaphora](https://github.com/joxeankoret/diaphora)
+  * [xdotool](http://www.semicomplete.com/projects/xdotool)
 
 
 And a lot of C and Python snippets...
@@ -234,7 +234,9 @@ a
 and calling the function at 0x1014E20 when a file is found. That's where stuff
 gets interesting.
 
-![](/img/flareon-2017/d9d6b730545915c4d7a94f05ff7b42ab7b5ba9fa5a9bc119147d6a35dd357c18.png)
+{%include image.html
+src="/img/flareon-2017/d9d6b730545915c4d7a94f05ff7b42ab7b5ba9fa5a9bc119147d6a35dd357c18.png"
+%}
 
 `notepad` maps the file in memory, checks if it started with `MZ`, gets the
 value at offset 0x3c, then jump to
@@ -249,12 +251,13 @@ the
 of the current program (`notepad.exe`) and the PE file mapped to memory. If
 those 2 values are the ones expected, then 2 functions are called successively:
 
- 1. 0x1014350 which will format the timestamp of the mapped file and
- `MessageBox`-it
- 1. 01014BAC which will open a file `key.bin` and write 8 bytes from some offset
+ 1. Function @ 0x1014350 which will format the timestamp of the mapped file and
+ `MessageBox`-it ![](/img/flareon-2017/3321b96da80e52cd9e26eda05122bb1bd58a18216d6aeb1b4205162d2ed6dbf6.png)
+ 1. Function @ 0x1014BAC which will open a file `key.bin` in
+    `flareon2016challenge` folder and write 8 bytes from some offset
     in the mapped file into it.
 
-![](/img/flareon-2017/3321b96da80e52cd9e26eda05122bb1bd58a18216d6aeb1b4205162d2ed6dbf6.png)
+
 
 Or in horrible pseudo-code:
 
@@ -288,7 +291,7 @@ So now we know how the decoding key is built, but we don't know which PE to
 use. This guessing game made me lose too much time. The hint was to use 2016 PE
 files from last year's FlareOn challenge.
 
-In the several folders of
+In the many folders of
 the [FlareOn3 archive](http://flare-on.com/files/Flare-On3_Challenges.zip)
 (pass: flare), we could find several PE files whose timestamps match perfectly
 with the ones we are looking for. All we need now is drop those files in the
@@ -694,7 +697,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 
 This DLL, `flareon.dll`, can be easily extracted with a simple `dd` command, and
 shows some strings like "`soooooo_sorry_zis_is_not_ze_flag`", but not really
-interesting. Debugging the binary with `dnSpy` gives a whole new view as to what
+interesting (yet). Debugging the binary with `dnSpy` gives a whole new view as to what
 it's doing: the function `Smth()` receives a Base64 encoded string, which once decoded is
 AES decrypted with the key "`soooooo_sorry_zis_is_not_ze_flag`". The result is a
 Powershell script that is being invoked, and that is another maze game, entirely
@@ -805,7 +808,8 @@ But still no flag. The hex-encoded block right nexto `RIGHT_PATH` says to:
 'findkevinmandia\r\n'
 {% endhighlight %}
 
-By going back to the Powershell script using Powershell ISE, seek the function
+By going back to the Powershell script using Powershell ISE, we notice that the
+only place Kevin is mentioned is in the function `Invoke-Say()`. We then seek the function
 `Invoke-Say()` and force the `if` branch to be taken by setting the `$helmet`
 variable to not None, and the `$key` to the path we found:
 
@@ -976,17 +980,16 @@ The challenge is in a text file
 named [`remorse.ino.hex`](/static/flareon-2017/9/remorse.ino.hex). This format
 (Intel HEX)
 is frequently used for sharing encoded firmwares, and so the `python-intelhex`
-module provides a useful script to convert it back to binary (`hex2bin.py`).
-
-From the string inside the firmware, we learn that this firmware is meant to be
+module provides a useful script to convert it back to binary
+(`hex2bin.py`). From the string inside the firmware, we learn that this firmware
+is meant to be
 used on
 a [Arduino Uno board](https://www.arduino.cc/en/Main/arduinoBoardUno/). This
 board embeds an Atmel AVR 8bit CPU, running at 16MHz. Easily
-enough, Google points us to the [datasheet of the processor](http://www.atmel.com/Images/Atmel-42735-8-bit-AVR-Microcontroller-ATmega328-328P_Datasheet.pdf)
-
-Being new to AVR, I stop the challenge for long enough to read a good part of
-the datasheet, which proved to be extremely useful for the rest of this
-exercise.
+enough, Google points us to the [datasheet of the processor.](http://www.atmel.com/Images/Atmel-42735-8-bit-AVR-Microcontroller-ATmega328-328P_Datasheet.pdf)
+Being totally new to AVR, I stop the challenge at that point for long enough to
+read a good part of the datasheet, which proved to be extremely useful for the
+rest of this exercise.
 
 With a much better understanding of AVR, I setup a SimAVR environment and also
 compiled `simduino`, which allows me to connect a GDB to it, and debug the runtime:
@@ -1071,9 +1074,9 @@ named [`shell.php`](/static/flareon-2017/10/shell.php). It was solvable in 3 dif
 ### Step 1: get the key length ###
 
 This script is a mess so the cleaned version was
-pushed [here](https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e).
+pushed [here](https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-clean-php).
 
-This challenge is not about cracking the MD5 hash given, but reversing the way
+This challenge is [not about cracking the MD5 hash given](http://hash-killer.com/view/141984), but reversing the way
 the variable `$block` is manipulated with the XOR operation. We don't know the
 key `$param`, including its length. However, we do know that after [L4](https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-clean-php-L4) the
 `strlen($param)` will be in [32..64]. Additionally, we know after this line that
@@ -1181,7 +1184,7 @@ And back to square 1, we have 3 new base64-encoded blocks to decode. Depending
 on the value given in the `$_POST['t']` (can be 'c', 's' or 'w'), will split the
 key every 3 character, starting from index 0, 1, or 2 (respectively).
 
-I took a huge assumption here, which was that `$key` would the flag to end the
+I took a huge assumption here, which was that `$key` would be the flag to end the
 challenge. Therefore, even though we don't know its length (yet), we know that
 it ends with `@flare-on.com`.
 
@@ -1263,7 +1266,8 @@ the keys out.
 This challenge was out of space! And so fun! It comes as a PE32 file
 named [`covfefe.exe`](/static/flareon-2017/11/covfefe.exe).
 
-The most notable string ([http://bitly.com/98K8eH](http://bitly.com/98K8eH)) points us nostalgically to
+The most notable string ([http://bitly.com/98K8eH](http://bitly.com/98K8eH))
+from the PE points us nostalgically to
 Rick Astley timeless masterpiece, "Never Gonna Give You Up".
 
 Many other strings appear, but are weirdly aligned to one DWORD per character:
@@ -1348,7 +1352,7 @@ the Flare-On Challenge. If you can't then you do not win it.
 
 ## Solution ##
 
-This level only could have been the entire CTF. It came as files:
+This level alone could have been an entire CTF. It came as 2 files:
 
   1. an 85KB PE32 file, [`coolprogram.exe`](/static/flareon-2017/12/coolprogram.exe)
   1. a 5.5MB PCAP trace,
@@ -1485,8 +1489,8 @@ the `!address` showed that some new memory areas were allocated in the address
 space, all with `PAGE_EXECUTE_READWRITE` permission, all starting with
 `LM...`. Searching for the constant 0x4d4c ('LM' in little endian), IDA spotted
 the instruction `004053CE cmp     edx, 4D4Ch`, which happens to be followed by a
-call to `Kernel32::VirtualAlloc()` with `PAGE_EXECUTE_READWRITE` (0x40) set for
-permission. I then used WinDBG to dump all those modules:
+call to `Kernel32!VirtualAlloc()` with `PAGE_EXECUTE_READWRITE` (0x40) set for
+permission, then a `LoadLibraryA`. This must be it, so we can now use WinDBG to dump all those modules:
 
 {% highlight text %}
 0:000> bp 004053ce ; g
@@ -1544,7 +1548,7 @@ modules could be summarized in the table below:
 | 6.dll | BA0504FCC08F9121D16FD3FED1710E60 | Base64 (with custom alphabet) implementation  | COMP|
 | x.dll | B2E5490D2654059BBBAB7F2A67FE5FF4 | Modified [XTEA](https://en.wikipedia.org/wiki/XTEA)  | CRPT |
 | z.dll | 5FD8EA0E9D0A92CBE425109690CE7DA2 | [zlib](https://zlib.net) | COMP |
-| f.dll | F47C51070FA8698064B65B3B6E7D30C6 | *didn't see the need for reversing* | COMP |
+| f.dll | F47C51070FA8698064B65B3B6E7D30C6 | *didn't see the need for reversing* | ? |
 | s.dll | F46D09704B40275FB33790A362762E56 | Send/Receive commands  | CMD |
 | m.dll | A3AECCA1CB4FAA7A9A594D138A1BFBD5 | Desktop Screenshot | CMD |
 
@@ -1559,15 +1563,13 @@ And here is where the header field `DataSize2` (at header+0x10) comes in handy:
 actions triggered by crypto or compression modules can produce an output whose
 length is different from the original `header.DataSize`. So the field
 `DataSize2` indicates the size of the output **after** the cryptographic or
-compression operation has been done.
+compression operation has been done. Although some crypto operations were used, the key (and IV when needed) could
+always be found in the message header.
 
-Although some crypto operations were used, the key (and IV when needed) could
-always be found in the message header. However, this allows some pretty complex
-structures (for example `Base64( zlib_deflate( XTEA(data) ) )` ), which makes it
-absolutely impossible to determine the value of `data` solely with static
-analysis.
-
-So if we want to reconstruct the data, we must write a parser at some point to
+Chaining modules together allows to create some pretty complex
+output (for example `Base64( zlib_deflate( XTEA(data) ) )` ), that would be
+absolutely impossible to reverse correctly, solely with the static analysis of
+the PCAP file. So if we want to reconstruct the data, we must write a parser at some point to
 parse the data of the PCAP (the final version of the parser can be [found here](https://gist.github.com/hugsy/9b141827b66843ebbabc183731649f53#file-level12-py)).
 
 
@@ -1755,7 +1757,8 @@ completed the 12 challenges). IMHO, some challenges (like the end of challenge 4
 or 10) involved too much guessing, which can be very (VERY) frustrating.
 
 But all in all, it was a fun experience... And thank you for whomever prepared
-challenge 12, it was **huge** in all the possible meanings!
+challenge 12, it was **huge** in all the possible meanings, and it must
+certainly have required a serious patience to build!
 
 And final thanks to {% include icon-twitter.html username="alex_k_polyakov" %},
 {% include icon-twitter.html username="n4x0r31" %} and {% include
