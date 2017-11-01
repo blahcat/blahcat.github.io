@@ -214,7 +214,7 @@ mode for it. But unlike Windows 7, now we have to setup the network properties:
 
 {% highlight text %}
 C:\> bcdedit /dbgsettings net hostip:ip.of.debugger.vm port:50000 key:Kernel.Debugging.Is.Fun
-C:\> bcdedit /set {dbgsettings} busparams:<BusNumber>:<DeviceNumber>:<FunctionNumber>
+C:\> bcdedit /set {dbgsettings} busparams <BusNumber>.<DeviceNumber>.<FunctionNumber>
 {% endhighlight %}
 
 {% include image.html title="Setup kernel debugging mode on Windows 8" src="/img/win-kernel-debug/win8-setup-kernel-mode.png" %}
