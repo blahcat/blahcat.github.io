@@ -21,7 +21,7 @@ A few weeks back, I came across {%include icon-twitter.html
 username="@Fox0x01"%} {%include link.html title="awesome tutorial"
 href="https://azeria-labs.com/writing-arm-assembly-part-1/"%} to get
 started with learning debugging and exploitation techniques on ARM. If you
-haven't checked it out, make sure you add this on you to-read list.
+haven't checked it out, make sure you add this on your to-read list.
 
 I have been initially developping [`gef`](https://github.com/hugsy/gef.git) for
 the same reason, to learn more about non-x86 architectures. So in the same
@@ -32,10 +32,10 @@ architectures!
 All you need is [Qemu](http://www.qemu.org). Then download the link to your
 image, and unzip the archive.
 
-If you are on Linux, run in a terminal (or double-click) on the `./start.sh`
+If you are on Linux/OSX, run in a terminal (or double-click) on the `./start.sh`
 script, when our Windows friend would simply need to double-click the `./start.bat`.
 
-Each VM will also TCP forward its SSH port for easy interaction. On Linux, just
+Each VM will also TCP forward its SSH port for easy interaction. On Linux/OSX, just
 run `./ssh.sh`. Windows users will need tools like [`PuTTY`](http://www.putty.org).
 
 Those images are battery-included, development tools, compilation and debugging
@@ -75,12 +75,12 @@ they are using extremely old kernels and/or Linux distributions, making it too
 hard for a quick plug-n-play experience.
 
 Interestingly when developing `gef`, I talked with many people interested in
-learning about non-x86 archs but felt like they _<quote>_ don't know where to
-start _</quote>_. So my hope is that those images will be the start to a lot of
+learning about non-x86 archs but felt like they _don't know where to
+start_. So my hope is that those images will be the start to a lot of
 fun.
 
 All the VMs come with 2 compiled ELF binaires: a very simple `hello-world`
-to start easy with the new architecture, and a `simple-bof`, which is a simple
+to start easy with the new architecture, run it, start `gdb`-ing around it to understand the architecture basics (memory layout, function call convention, GOT+PLT, stack canary, etc.) and a `simple-bof`, which is a simple
 Stack Overflow ELF to start on the way of understanding memory corruption.
 
 
@@ -102,4 +102,4 @@ Hope you'll enjoy it!
 Oh and if you happen to be wandering in Black Hat Las Vegas 2017, come say hi at
 {%include link.html title="the Black Hat Arsenal booth" href="https://www.blackhat.com/us-17/arsenal/schedule/index.html#gdb-enhanced-features-gef-8048"%}
 
-Cheers.
+Cheers!
