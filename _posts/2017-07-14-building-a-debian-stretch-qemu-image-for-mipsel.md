@@ -10,7 +10,7 @@ header-img: "img/qemu-img.png"
 ---
 
 
-## Building a Debian Stretch (9.0) QEMU image running MIPSel ##
+## Building a Debian Stretch (9) QEMU image running MIPSel ##
 
 > **TL;DR**
 > Two new images, Debian Stretch on MIPSel and MIPS64el were added to
@@ -40,13 +40,13 @@ device. No need to download any ISO or such, simply download:
 - the initrd (the distro installer):
 
 {% highlight bash %}
-$ wget http://ftp.debian.org/debian/dists/Debian9.0/main/installer-mipsel/current/images/malta/netboot/initrd.gz
+$ wget http://ftp.debian.org/debian/dists/Debian9.2/main/installer-mipsel/current/images/malta/netboot/initrd.gz
 {% endhighlight %}
 
 - a kernel to boot on:
 
 {% highlight bash %}
-$ wget http://ftp.debian.org/debian/dists/Debian9.0/main/installer-mipsel/current/images/malta/netboot/vmlinux-4.9.0-3-4kc-malta
+$ wget http://ftp.debian.org/debian/dists/Debian9.2/main/installer-mipsel/current/images/malta/netboot/vmlinux-4.9.0-4-4kc-malta
 {% endhighlight %}
 
 You also need a hard drive to install the OS on:
@@ -67,7 +67,7 @@ Start the installation with:
 $ qemu-system-mipsel -M malta -m 1G \
   -hda ./disk.qcow2 \
   -initrd ./initrd.gz \
-  -kernel ./vmlinux-4.9.0-3-4kc-malta -append "nokaslr" \
+  -kernel ./vmlinux-4.9.0-4-4kc-malta -append "nokaslr" \
   -nographic
 {% endhighlight %}
 
@@ -138,7 +138,7 @@ $ sudo mount /dev/nbd0p1 mnt
 Extract the initramfs file (`initrd.img`) from `MOUNT_PATH/boot/`
 
 {% highlight bash %}
-$ cp mnt/boot/initrd.img-4.9.0-3-4kc-malta . && sync
+$ cp mnt/boot/initrd.img-4.9.0-4-4kc-malta . && sync
 {% endhighlight %}
 
 And unmount the NBD device.
@@ -151,8 +151,8 @@ You can now boot the VM with the following command:
 {% highlight bash %}
 $ qemu-system-mipsel -M malta -m 1G \
   -hda ./disk.qcow2 \
-  -initrd ./initrd.img-4.9.0-3-4kc-malta \
-  -kernel ./vmlinux-4.9.0-3-4kc-malta -append "nokaslr root=/dev/sda1" \
+  -initrd ./initrd.img-4.9.0-4-4kc-malta \
+  -kernel ./vmlinux-4.9.0-4-4kc-malta -append "nokaslr root=/dev/sda1" \
   -nographic
 {% endhighlight %}
 
@@ -177,8 +177,8 @@ The `start.sh` usually looks like
 {% highlight bash %}
 #!/bin/bash
 
-KERNEL=./vmlinux-4.9.0-3-5kc-malta
-INITRD=./initrd.img-4.9.0-3-5kc-malta
+KERNEL=./vmlinux-4.9.0-4-5kc-malta
+INITRD=./initrd.img-4.9.0-4-5kc-malta
 HDD=./disk.qcow2
 SSH_PORT=22055
 EXTRA_PORT=33055
@@ -211,6 +211,7 @@ For Windows, simply convert `script.sh` to Batch.
 Since I've built in parallel a Malta MIPS32el and MIPS64el for this tutorial,
 both have been added to the {%include link.html title="folder on Mega.nz"
 href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA"%}
+vvyT
 
 The MIPS64el was created **exactly** the same way, except that QEMU required the
 proper CPU version to boot correctly:
@@ -219,12 +220,12 @@ proper CPU version to boot correctly:
 $ qemu-system-mips64el -M malta -cpu MIPS64R2-generic -m 1G \
   -hda ./disk.qcow2 \
   -initrd ./initrd.gz \
-  -kernel ./vmlinux-4.9.0-3-5kc-malta -append "nokaslr" \
+  -kernel ./vmlinux-4.9.0-4-5kc-malta -append "nokaslr" \
   -nographic
 {% endhighlight %}
 
 The adequate files were downloaded from
-[here](http://ftp.debian.org/debian/dists/Debian9.0/main/installer-mips64el)
+[here](http://ftp.debian.org/debian/dists/Debian9.2/main/installer-mips64el)
 
 
 ### A few known issues ###
@@ -263,3 +264,7 @@ setup.
 
 I hope you now have all the information to make your own QEMU images.
 Thanks for reading!
+
+> 
+> _Note_ (2017-11-15): links updated
+>
