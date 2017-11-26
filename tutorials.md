@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Tutorials
-permalink: /categories/
+permalink: /tutorials/
 header-img: "img/about-bg.jpg"
 ---
 
@@ -12,7 +12,7 @@ categories.
 ### GEF Screencasts ###
 
 | Id | Article | Author  |
-|:---|:-------:|--------:|
+|:---|:--------|--------:|
 | 1 | [GDB Enhanced Features (GEF) tutorial : GEF 101](https://www.youtube.com/watch?v=KWG7prhH-ks) | _hugsy_ |
 | 2 | [Customizing GEF](https://www.youtube.com/watch?v=Pnv-FeWu4DE)  | _hugsy_  |
 | 3 | [Automatic Runtime Analysis with GEF](https://www.youtube.com/watch?v=DoGPfi9zs6M)  | _hugsy_  |
@@ -24,9 +24,18 @@ categories.
 ### Windows Kernel Exploitation  ###
 
 | Id | Article | Author  |
-|:-|:--:|-:|
+|:---|:--------|--------:|
+| 0  | [WinDBG cheatsheet](#) _(soon)_ | _hugsy_ |
 | 1  | [Setting up a Windows VM lab for kernel debugging](/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging) | _hugsy_ |
 | 2  | [A Primer to Windows x64 shellcoding](/2017/08/14/a-primer-to-windows-x64-shellcoding) | _hugsy_  |
 | 3  | [First exploit in Windows Kernel (HEVD)](/2017/08/18/first-exploit-in-windows-kernel-hevd) | _hugsy_  |
 | 4  | [Arbitrary Write (aka Write-What-Where) exploits (HEVD)](/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd/) | _hugsy_  |
-| 5  | [Kernel pool exploits (HEVD)](#) _(being written)_ | _hugsy_  |
+| 5  | [Kernel pool exploits (HEVD)](#) _(soon)_ | _hugsy_  |
+
+
+### Web Browser Exploitation  ###
+
+
+| Id | Article | Author  |
+|----|:--------|--------:|
+| 1  | n/a yet |         |
