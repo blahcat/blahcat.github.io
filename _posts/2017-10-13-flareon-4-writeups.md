@@ -1654,10 +1654,10 @@ decompression or decryption. In some cases, the implementation of the algorithm
 was not standard (for example RC4), so I had to rewrite from scratch according
 to the reversed DLL solely. Particularly the ApLib module was a pain to use properly.
 
-But it was critical that our implementation stick strictly to the one from the
+But it was critical that our implementation strictly stick  to the one from the
 module. So a lot (a LOOOOOT) of testing was required all the time, as even a one
 byte mistake could make the content of a packet unreadable for the upper layer,
-or not manage to decrypt files later on...
+leading to not be able to decrypt files later on...
 
 But after some long hours perfecting the decrypting script, [the result](https://gist.github.com/hugsy/9b141827b66843ebbabc183731649f53#file-level12-py) pays off
 directly, and all traffic is now in plaintext, revealing some crispy information:
@@ -1666,7 +1666,7 @@ directly, and all traffic is now in plaintext, revealing some crispy information
 
 ![](/img/flareon-2017/54e0782509ce641e04edd2b4bb2fef3d80f31c6640451952464ff9d50b5cb851.png)
 
-2 new files can found from the extract:
+2 new files can be found from the extract:
 
   1. `cf.exe` a C# compiled file
   1. a 561972 byte file beginning with the pattern `cryp`
