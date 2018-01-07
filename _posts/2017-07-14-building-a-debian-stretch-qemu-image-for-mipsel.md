@@ -5,7 +5,7 @@ author: hugsy
 author_twitter: _hugsy_
 author_email: hugsy@[RemoveThisPart]blah.cat
 author_github: hugsy
-tags: linux qemu debug mipsel mips64el
+tags: howto qemu mipsel mips64el
 header-img: "img/qemu-img.png"
 ---
 
@@ -265,6 +265,6 @@ setup.
 I hope you now have all the information to make your own QEMU images.
 Thanks for reading!
 
-> 
+>
 > _Note_ (2017-11-15): links updated
 >
