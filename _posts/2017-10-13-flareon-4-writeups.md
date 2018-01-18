@@ -27,7 +27,7 @@ For quick jump:
 
 
 All the challenges are in the ZIP file that you
-can [download here](/static/flareon-2017/FlareOn4.zip).
+can [download here](https://mega.nz/#F!lVQzXZZQ!bZkK8Q2XkLb0O-RE-hCl1g).
 
 
 # The Arsenal #
@@ -78,7 +78,9 @@ valid email address in the @flare-on.com domain.
 
 ## Solution ##
 
-By checking the [HTML source code](/static/flareon-2017/1/login.html), we see:
+By checking the [HTML source
+code](https://mega.nz/#!1EQhhLrT!uWOWRRGc-8Lx2D0iLxkSk3qMSK-xcWBV8Pnj8CYTaRg),
+we see:
 
 ![](/img/flareon-2017/17161f3635f37c0b278c18262e4a29eb4f21675316ff9a086557e390ca3be67e.png)
 
@@ -104,7 +106,8 @@ a compiled x86 binary? Let's see if you are still as quick.
 
 ## Solution ##
 
-[`IgniteMe.exe`](/static/flareon-2017/2/IgniteMe.exe) is a small PE that reads
+[`IgniteMe.exe`](https://mega.nz/#!gBIF0aYQ!82SWKCVa3hw2sI3f_2AsaHaoVwj2zux5ORXXfNMi2F4)
+is a small PE that reads
 what a buffer from stdin and chain-xor it in reverse (with an IV set to `4` by
 function at 0x00401000) and then compared to an `encoded_key` located at
 0x0403000:
@@ -141,7 +144,7 @@ points you may manage to earn yourself along the way.
 
 ## Solution ##
 
-[`greek_to_me`](/static/flareon-2017/3/greek_to_me.exe) is a PE file that will
+[`greek_to_me`](https://mega.nz/#!4cpGWS5S!QCTrpXnC8q4WYnMHaxbqFA4mPDOVC4q2toAYGKSfe68) is a PE file that will
 start by binding and listen tcp/2222, and receive 4 bytes from the socket. This
 value read will be used to decode the instructions at 0x40107c to 0x4010ee:
 
@@ -204,7 +207,7 @@ You're using a VM to run these right?
 ## Solution ##
 
 This challenge was very fun at the beginning, but the last part really sucked:
-[`notepad.exe`](/static/flareon-2017/4/notepad.exe) is a small PE that by all
+[`notepad.exe`](https://mega.nz/#!IZA3nbLK!qdpuFX29rpXHBfEdXRWMq5R-gHw-5QHiN9cAMhx2vsk) is a small PE that by all
 appearance spawns Windows classic `notepad`. I was fooled for a bit at first by
 the instruction to this challenge, I expected a malware or something hostile,
 but it is nothing of the sort. Disassembling the `start` in IDA shows a bunch of
@@ -324,7 +327,7 @@ You're doing great. Let's take a break from all these hard challenges and play a
 
 ## Solution ##
 
-[`pewpewboat.exe`](/static/flareon-2017/5/pewpewboat.exe) is not a PE file but an
+[`pewpewboat.exe`](https://mega.nz/#!pdgDDITS!CCXq80gh7M2YxOosfdd_jKXG2N9uUSG_1_5NLY_rbFg) is not a PE file but an
 x64 ELF that starts a nice ASCII implementation
 of [the Battleship game](https://en.wikipedia.org/wiki/Battleship_(game)).
 
@@ -476,7 +479,7 @@ engineering.
 
 ## Solution ##
 
-[`payload.dll`](/static/flareon-2017/6/payload.dll) is a PE32+ DLL x86-64. The
+[`payload.dll`](https://mega.nz/#!Nd5g3ToA!ArZp4KMqteCSQQwywP2LE-xdYly-UoQEBoig4CfCuIY) is a PE32+ DLL x86-64. The
 DLL doesn't sweat much info out of the box, so I decide to use both dynamic and
 static analysis. Although the static part is perfectly handled by IDA, I wanted
 the dynamic analysis to be custom so I had to make a small loader for this
@@ -678,7 +681,7 @@ because you weren't supposed to make it this far.
 ## Solution ##
 
 
-[`zsud.exe`](/static/flareon-2017/7/zsud.exe) is a PE32 binary. Running
+[`zsud.exe`](https://mega.nz/#!BQIlHJ6Z!_-qOpHyiXaZqq2CV_o42du5blCGmkzrlJKrXs6WG2oU) is a PE32 binary. Running
 `strings` and `binwalk` against it immediately shows 2 things:
 
   1. this binary is C# compiled
@@ -847,7 +850,7 @@ because you weren't supposed to make it this far.
 ## Solution ##
 
 This really fun challenge offers an Android APK
-file, [`flair.apk`](/static/flareon-2017/8/flair.apk). The static analysis was
+file, [`flair.apk`](https://mega.nz/#!xFoXkTRa!L3h7J_copL4NuA3pEW0bR5Acrz7LeLXVFTV2sb_Ha08). The static analysis was
 exclusively done with JADX and I used the awesome GenyMotion + JDB for the dynamic analysis.
 
 This app presents itself as a traditional Android app, `com.flare_on.flair`:
@@ -977,7 +980,7 @@ jibberish that looks like HEX. We transcribed it, can you solve it?
 ## Solution ##
 
 The challenge is in a text file
-named [`remorse.ino.hex`](/static/flareon-2017/9/remorse.ino.hex). This format
+named [`remorse.ino.hex`](https://mega.nz/#!NFQwXKYQ!OhtgRSr6U4yRBMnflhIwGgMZJXYaEeMnJG-1m0bWFJ4). This format
 (Intel HEX)
 is frequently used for sharing encoded firmwares, and so the `python-intelhex`
 module provides a useful script to convert it back to binary
@@ -1069,7 +1072,7 @@ we just need you to complete this real quick for our records.
 ## Solution ##
 
 Another guessing game type of challenge. The challenge comes as a PHP script
-named [`shell.php`](/static/flareon-2017/10/shell.php). It was solvable in 3 different steps:
+named [`shell.php`](https://mega.nz/#!MUAWhDTQ!qzAe4c6O0ADp3YyfCNVF0gimNSs44kvpLWwqcoldoKs). It was solvable in 3 different steps:
 
 ### Step 1: get the key length ###
 
@@ -1264,7 +1267,7 @@ the keys out.
 ## Solution ##
 
 This challenge was out of space! And so fun! It comes as a PE32 file
-named [`covfefe.exe`](/static/flareon-2017/11/covfefe.exe).
+named [`covfefe.exe`](https://mega.nz/#!EdIHXLxD!ctm5aE88lVss0EafshM0APMebGDSjhEcXajC6F8GVYc).
 
 The most notable string ([http://bitly.com/98K8eH](http://bitly.com/98K8eH))
 from the PE points us nostalgically to
@@ -1354,9 +1357,9 @@ the Flare-On Challenge. If you can't then you do not win it.
 
 This level alone could have been an entire CTF. It came as 2 files:
 
-  1. an 85KB PE32 file, [`coolprogram.exe`](/static/flareon-2017/12/coolprogram.exe)
+  1. an 85KB PE32 file, [`coolprogram.exe`](https://mega.nz/#!ARJTwKTI!E2LSMjIHfh4bQDMDyfaxP8hKtYnWJ2IyEbqiRLyH7uQ)
   1. a 5.5MB PCAP trace,
-     [`20170801_1300_filtered.pcap`](/static/flareon-2017/12/20170801_1300_filtered.pcap)
+     [`20170801_1300_filtered.pcap`](https://mega.nz/#!oZZygDab!c1pCq8ieSkTtTqkyaLk4he421AehJW18U-L_v_pa5MI)
 
 
 ### Extracting secondstage.exe ###
