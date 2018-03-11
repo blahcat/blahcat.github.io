@@ -44,11 +44,11 @@ And that's exactly where LIEF kicks in... How about using LIEF to export one (or
 many) functions from the ELF binary we target, into a shared object, and then use
 LibFuzzer to fuzz it! On top of that, we can also use the
 compilers [sanitizers](https://github.com/google/sanitizers/) to track invalid
-memory access!
+memory access! But would that even work?
 
-After successfully playing on simple PoCs, I realized this technique was
-relevant to dig into, so I chose to put it to practice by trying to find real
-vulnerabilities.
+It turns out it did, big time and after successfully playing on simple PoCs, I
+realized this technique was relevant to dig into, so I chose to put it to
+practice by trying to find real vulnerabilities.
 
 
 ## Concrete example: finding CVE-2018-6789 ##
@@ -84,7 +84,9 @@ HEAD is now at 38e3d2df Compiler-quietening
 # and compile with PIE + ASAN
 $ cd src ; cp src/EDITME Local/Makefile && cp exim_monitor/EDITME Local/eximon.conf
 # edit Local/Makefile to add a few options like an EXIM_USER, etc.
-$ FULLECHO='' LFLAGS+="-L/usr/lib/llvm-6.0/lib/clang/6.0.0/lib/linux/ -lasan -pie" CFLAGS+="-fPIC -fsanitize=address" LDFLAGS+="-lasan -pie -ldl -lm -lcrypt" LIBS+="-lasan -pie"  make  -e clean all
+$ FULLECHO='' LFLAGS+="-L/usr/lib/llvm-6.0/lib/clang/6.0.0/lib/linux/ -lasan -pie" \
+  CFLAGS+="-fPIC -fsanitize=address" LDFLAGS+="-lasan -pie -ldl -lm -lcrypt" \
+  LIBS+="-lasan -pie" make -e clean all
 {% endhighlight %}
 
 _Note_: in some cases, the use of ASAN fails to create the config file required
@@ -129,8 +131,8 @@ $  checksec ./build-Linux-x86_64/exim
 
 ### Exporting the targeted functions ###
 
-From the writeup, the vulnerable function is `b64decode()` in `src/base64.c`
-whose [prototype](https://github.com/Exim/exim/blob/38e3d2dff7982736f1e6833e06d4aab4652f337a/src/src/base64.c#L152-L153) is:
+From the write-up, the vulnerable function is `b64decode()` in `src/base64.c`
+whose {% include link.html title="prototype" href="https://github.com/Exim/exim/blob/38e3d2dff7982736f1e6833e06d4aab4652f337a/src/src/base64.c#L152-L153"%} is:
 
 {% highlight c %}
 int b64decode(const uschar *code, uschar **ptr)
@@ -206,7 +208,7 @@ We can now use this skeleton to build a LibFuzzer-based fuzzer around this:
 
 {% gist hugsy/3ef3e4309d1f102aa4318c09b4043b09 %}
 
-Compile and run, and admire:
+Compile it, run it, and be amazed 😎 :
 
 {% highlight text %}
 $ clang-6.0 -DUSE_LIBFUZZER -O1 -g -fsanitize=fuzzer loader.cpp -no-pie -o fuzzer -ldl
@@ -223,8 +225,8 @@ INFO: A corpus is not provided, starting from an empty corpus
 We're running more than 1 million executions/second/core on the function
 `b64decode`, not bad eh?
 
-And after a 1 second, we get the heap overflow found by {% include icon-twitter.html
-username="@mehqq_" %}, CVE-2018-6789:
+And in less than a 1 second, we get the heap overflow found by {% include
+icon-twitter.html username="@mehqq_" %}, CVE-2018-6789:
 
 {% include image.html src="/img/libfuzzer-lief/fuzz-result.png" title="exim-libfuzzer"%}
 
@@ -234,22 +236,26 @@ username="@mehqq_" %}, CVE-2018-6789:
 Although this technique is not as click-and-play like AFL since it requires a
 bit more work, it offers non-negligeable pros:
 
-  - excellent reliability, makes easy for fuzzing network services -> focus on
+  - excellent reliability, makes easy for fuzzing network services → focus on
     parsing functions (no network stack to handle etc.). perfect for can focus on
     specific points (packet parsing, message processing, etc.)
   - crazy performance: no need to spawn the whole binary
   - there is actually no need for the source code, we can use LibFuzzer on
     black-box binaries
+  - low hardware requirements allow to fuzz at very high rate even on weak
+    hardware (and [transform your RaspberryPis into a fuzzing cluster](https://github.com/hugsy/raspi-fuzz-cluster) 😎)
 
-But there are also cons:
+But nothing ever being perfect, there are obviously also cons:
 
   - need to code almost every fuzzer (so only for C/C++ coding people)
   - specific edge cases you might need to consider (beware of memleaks!!)
-  - we must know the function prototype. This is easy through the source code
-    for FOSS projects, but black-box binaries may require some reversing. Tools
-    like [Binary Ninja](https://binary.ninja) Commercial License may also be of
-    great help for automating this task.
+  - we must determine the function prototype. This is easy when the source code
+    is open (FOSS projects), but black-box binaries may require some prior
+    reversing. Tools like [Binary Ninja](https://binary.ninja) Commercial
+    License may also be of great help for automating this task.
 
 All in all, it is a pretty neat approach made possible through 2 awesome
 tools. I do hope LIEF development keeps being active to bring us more goodies
 like this!
+
+Thanks for reading 😁 !
