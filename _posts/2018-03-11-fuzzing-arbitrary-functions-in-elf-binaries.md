@@ -3,6 +3,7 @@ layout: post
 title: Fuzzing arbitrary functions in ELF binaries
 author: hugsy
 author_twitter: _hugsy_
+author_email: hugsy@[RemoveThisPart]blah.cat
 author_github: hugsy
 header-img: img/libfuzzer-lief/header.png
 tags: fuzzing elf lief libfuzzer cve-2018-6789 exim
