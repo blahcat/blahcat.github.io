@@ -23,7 +23,7 @@ easily adding arbitrary functions to an ELF export table. I highly recommend to
 dig through this post if you haven't done so already.
 
 When I was done reading, I realized one of the many good applications to this
-feature would be fuzzing. But why use [AFL](http://lcamtuf.coredump.cx/afl) you
+feature would be fuzzing. But why not use [AFL](http://lcamtuf.coredump.cx/afl) you
 may ask? Well, AFL is an awesome (awesome awesome) tool, but it  fuzzes the
 whole binary by providing some local mutated input. This has 2 disadvantages for
 precise, targeted function fuzzing:
