@@ -58,7 +58,7 @@ week, {% include icon-twitter.html username="mehqq_" %} released {% include
 link.html title="a great blog post about CVE-2018-6789"
 href="https://devco.re/blog/2018/03/06/exim-off-by-one-RCE-exploiting-CVE-2018-6789-en/"
 %} detailing
-the exploit steps for an off-by-one vulnerability he discovered in Exim. The
+the exploit steps for an off-by-one vulnerability she discovered in Exim. The
 issue was fixed
 in
 [cf3cd306062a08969c41a1cdd32c6855f1abecf1](https://github.com/Exim/exim/commit/cf3cd306062a08969c41a1cdd32c6855f1abecf1) and
@@ -147,7 +147,7 @@ $ readelf -a ./build-Linux-x86_64/exim
   3382: 00000000000cb0bd  2441 FUNC    GLOBAL DEFAULT   14 b64decode
 {% endhighlight %}
 
-So now we know that we want to export the the function `b64decode` at PIE offset
+So now we know that we want to export the function `b64decode` at PIE offset
 0xcb0bd. We can use the following simple script to export the functions using
 LIEF (>=0.9):
 
