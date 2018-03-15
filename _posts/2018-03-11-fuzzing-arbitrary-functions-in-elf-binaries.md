@@ -231,6 +231,12 @@ icon-twitter.html username="@mehqq_" %}, CVE-2018-6789:
 
 {% include image.html src="/img/libfuzzer-lief/fuzz-result.png" title="exim-libfuzzer"%}
 
+> 
+> **Note**: I was notified by {% include icon-twitter.html username="mehqq_" %} that this is OOB read 
+> is a different bug. I will post an update soon showcasing the actual bug instead.
+> My bad for the confusion.
+>
+
 
 ## Final words ##
 
