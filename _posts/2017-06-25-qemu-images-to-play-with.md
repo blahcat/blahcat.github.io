@@ -15,6 +15,11 @@ header-img: "img/qemu-img.png"
 > corruption on non x86 environments
 > {%include link.html title="here" href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA"%}.
 
+> **Update _(2018/05/15)_**
+> The Mega.NZ repository was cloned to Google Drive, available
+> {%include link.html title="here" href="https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing"%}
+
+
 ## Become a ninja on non-x86 architectures !
 
 A few weeks back, I came across {%include icon-twitter.html
