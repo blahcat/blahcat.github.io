@@ -53,6 +53,7 @@ learn about memory corruption on PowerPC? Wait no more!
 Without further ado:
 
   * {%include link.html title="Link to Mega.nz" href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA"%}
+  * {%include link.html title="Link to Google Drive" href="https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing" %}.
 
 Unless stated otherwise, `root` password is `root`, and an low privilege account
 called `user` is created.
