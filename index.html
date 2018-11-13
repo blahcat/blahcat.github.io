@@ -13,9 +13,10 @@ description: "Tales of a binary encoded life..."
     <p class="post-meta">
       Posted by
       {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %}
-      on {{ post.date | date: "%B %-d, %Y" }}<br/>
+      on {{ post.date | date: "%B %-d, %Y" }}
+      <br/>
     {% if post.tags %}
-      Tags: {{ post.tags | join ', '}}
+      Tags: {{ post.tags }}
     {% endif %}
     </p>
 </div>

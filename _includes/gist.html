@@ -1,0 +1,12 @@
+<details>
+    <summary>
+        <div markdown="span" class="alert alert-info" role="alert">
+            <i class="fa fa-info-circle"></i>
+            <b>
+                View {% if include.name %}{{include.name}}{% else %}code{%endif%}
+            </b>
+            (click to expand)
+        </div>
+    </summary>
+    {% gist include.id  %}
+</details>

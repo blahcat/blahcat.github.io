@@ -9,17 +9,16 @@
 </div>
 
 <script>
- var img = document.getElementById('img-{{random}}');
- var modal = document.getElementById('modal-{{random}}');
- var modalImg = document.getElementById("modal-img-{{random}}");
- var captionText = document.getElementById("caption-{{random}}");
- img.onclick = function(){
-  modal.style.display = "block";
-  modalImg.src = this.src;
-  captionText.innerHTML = this.alt;
- }
-
- modal.onclick = function() {
-  modal.style.display = "none";
- }
+    var img = document.getElementById('img-{{random}}');
+    var modal = document.getElementById('modal-{{random}}');
+    var modalImg = document.getElementById("modal-img-{{random}}");
+    var captionText = document.getElementById("caption-{{random}}");
+    img.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+    modal.onclick = function() {
+        modal.style.display = "none";
+    }
 </script>
