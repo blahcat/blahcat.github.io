@@ -111,7 +111,7 @@ To take the real life example of a self-decrypting packer, that would allocate s
 Done! Then you can `.writemem` that code into a file that IDA can disassemble.
 
 >
-> _Update_:
+> _Update (11/11/2018)_ :
 >
 > And since all this goodness can be used from JavaScript (via the `host.namespace.Debugger` namespace), it's really not far to write scripts for automatically dump such payloads, track heap allocations, enumerate all files created etc. And it came to me a surprise (not really actually, {% include icon-twitter.html username="@0vercl0k" %} just told me), that when using the `ttd.exe` binary as a standalone, one can pass the `-children` flag allowing TTD to also record children processes.
 
