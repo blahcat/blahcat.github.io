@@ -16,7 +16,7 @@ If WinDbg was already setting the standard of what modern debuggers should be li
 
 ## Introduction
 
-Since the feature got publicly available last year, there's not that many coverage, and I finally took some time to fiddle with it for various cases (from malware analysis to CTF) I figured I could contribute with a quick write-up.
+Since the feature got publicly available last year, there hasn't been that much coverage on the topic and as I finally took some time to fiddle with it for various cases (from malware analysis to CTF) I figured I could contribute with a quick write-up.
 
 As the name implies, Time-Travel Debugging is a tool that will allow to travel through the runtime of process that you create or attach to. It'll monitor everything then store it a separate indexed database file, that can be fed to WinDbg Preview. The debugger will then have a Read-Only access on the execution, allowing to jump back and forth to desired points of the runtime. That's already quite nice, but what makes it more powerful is the integration with the Data Model (via the `dx` command) and the JS API.
 
