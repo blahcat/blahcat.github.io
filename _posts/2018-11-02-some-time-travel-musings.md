@@ -16,7 +16,7 @@ If WinDbg was already setting the standard of what modern debuggers should be li
 
 ## Introduction
 
-Since the feature got publicly available last year, there's not that many coverage, and I finally took some time to fiddle with it for various cases (from malware analysis to CTF) I figured I could contribute with a quick write-up.
+Since the feature got publicly available last year, there hasn't been that much coverage on the topic and as I finally took some time to fiddle with it for various cases (from malware analysis to CTF) I figured I could contribute with a quick write-up.
 
 As the name implies, Time-Travel Debugging is a tool that will allow to travel through the runtime of process that you create or attach to. It'll monitor everything then store it a separate indexed database file, that can be fed to WinDbg Preview. The debugger will then have a Read-Only access on the execution, allowing to jump back and forth to desired points of the runtime. That's already quite nice, but what makes it more powerful is the integration with the Data Model (via the `dx` command) and the JS API.
 
@@ -110,7 +110,11 @@ To take the real life example of a self-decrypting packer, that would allocate s
 
 Done! Then you can `.writemem` that code into a file that IDA can disassemble.
 
-And since all this goodness can be used from JavaScript (via the `host.namespace.Debugger` namespace), it's really not far to write scripts for automatically dump such payloads, track heap allocations, enumerate all files created etc. And it came to me a surprise (not really actually, {% include icon-twitter.html username="@0vercl0k" %} just told me), that when using the `ttd.exe` binary as a standalone, one can pass the `-children` flag allowing TTD to also record children processes.
+>
+> _Update (11/11/2018)_ :
+>
+> And since all this goodness can be used from JavaScript (via the `host.namespace.Debugger` namespace), it's really not far to write scripts for automatically dump such payloads, track heap allocations, enumerate all files created etc. And it came to me a surprise (not really actually, {% include icon-twitter.html username="@0vercl0k" %} just told me), that when using the `ttd.exe` binary as a standalone, one can pass the `-children` flag allowing TTD to also record children processes.
+
 
 <blockquote class="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">The Time-Travel Debugging tool from <a href="https://twitter.com/hashtag/WinDbg?src=hash&amp;ref_src=twsrc%5Etfw">#WinDbg</a> Preview can be used as a standalone binary (ttd.exe)<br><br>Copy the TTD\ directory and you can use TTD without <a href="https://twitter.com/hashtag/WinDbg?src=hash&amp;ref_src=twsrc%5Etfw">#WinDbg</a>, allowing you to script your <a href="https://twitter.com/hashtag/TTD?src=hash&amp;ref_src=twsrc%5Etfw">#TTD</a> recording useful for:<br>- <a href="https://twitter.com/hashtag/fuzzing?src=hash&amp;ref_src=twsrc%5Etfw">#fuzzing</a> crash replay<br>- <a href="https://twitter.com/hashtag/malware?src=hash&amp;ref_src=twsrc%5Etfw">#malware</a> analysis<br>- bug tracking <a href="https://t.co/yYZrkNRmD1">pic.twitter.com/yYZrkNRmD1</a></p>&mdash; windbgtips (@windbgtips) <a href="https://twitter.com/windbgtips/status/1061684978612789248?ref_src=twsrc%5Etfw">November 11, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -120,7 +124,7 @@ And since all this goodness can be used from JavaScript (via the `host.namespace
 
 Back to the notepad session. Even though no file was saved to disk, I did type some stuff on the keyboard, so I figured that they must have been recorded somewhere by TTD. Let's hunt them down!
 
-Notepad uses Windows' Messaging mechanism so that when a key is stroke, an event is passed down to notepad (or any other app fwiw) who decides whether to pick it up or not (the Windows Message internals is not the focus of this post but [this is a pretty good introduction](https://en.wikibooks.org/wiki/Windows_Programming/Message_Loop_Architecture)), to know whether the canvas must be redrawn, the window close, etc. This messaging system being articulated around fetching messages (via [`user32!GetMessage`](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmessage)) and pushing them (via [`user32!SendMessage`](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessage)). The `GetMessage()` function prototype is :
+Notepad uses Windows' Messaging mechanism so that when a key is stroke, an event is passed down to notepad (or any other app fwiw) who decides whether to pick it up or not (the Windows Message internals is not the focus of this post but [this is a pretty good introduction](http://www.winprog.org/tutorial/message_loop.html)), to know whether the canvas must be redrawn, the window close, etc. This messaging system being articulated around fetching messages (via [`user32!GetMessage`](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmessage)) and pushing them (via [`user32!SendMessage`](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessage)). The `GetMessage()` function prototype is :
 
 ```c
 BOOL GetMessage(
