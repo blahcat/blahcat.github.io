@@ -6,7 +6,7 @@ author_twitter: _hugsy_
 author_email: hugsy@[RemoveThisPart]blah.cat
 author_github: hugsy
 header-img: img/{1910FC37-E777-418F-83EC-2A2543969515}.jpg
-tags: [windows, javascript, windbg, malware, object-manager]
+tags: [windows, kernel, windbg, javascript, object-manager]
 ---
 
 
