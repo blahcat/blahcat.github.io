@@ -189,3 +189,10 @@ should unlikely die during the time of a session making such nice syscall a good
 
 That's it for this little daily experiment.
 Until next time, cheers ☕️
+
+
+### Some links for further reading
+
+ - https://media.blackhat.com/bh-dc-11/Mandt/BlackHat_DC_2011_Mandt_kernelpool-wp.pdf
+ - https://j00ru.vexillium.org/2018/07/exploiting-a-windows-10-pagedpool-off-by-one/
+ - http://www.alex-ionescu.com/?p=231
