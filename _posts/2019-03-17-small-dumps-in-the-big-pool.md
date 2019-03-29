@@ -91,8 +91,6 @@ syscall with the undocumented
 as class information, which provides **exactly** what we were looking for: the enumeration of all large pools with their kernel
 addresses, their size, and their tag.
 
-{% include note.html text="... although `NtQuerySystemInformation()` cannot be called from low integrity processes" %}
-
 This is enough to dump such information:
 
 ```c
