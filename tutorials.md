@@ -25,7 +25,7 @@ categories.
 
 | Id | Article | Author  |
 |:---|:--------|--------:|
-| 0  | [WinDBG cheatsheet](#) _(soon)_ | _hugsy_ |
+| 0  | [WinDBG cheatsheet](https://github.com/hugsy/defcon_27_windbg_workshop/blob/master/windbg_cheatsheet.md) | _hugsy_ |
 | 1  | [Setting up a Windows VM lab for kernel debugging](/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging) | _hugsy_ |
 | 2  | [A Primer to Windows x64 shellcoding](/2017/08/14/a-primer-to-windows-x64-shellcoding) | _hugsy_  |
 | 3  | [First exploit in Windows Kernel (HEVD)](/2017/08/18/first-exploit-in-windows-kernel-hevd) | _hugsy_  |
@@ -33,9 +33,4 @@ categories.
 | 5  | [Kernel pool exploits (HEVD)](#) _(soon)_ | _hugsy_  |
 
 
-### Web Browser Exploitation  ###
 
-
-| Id | Article | Author  |
-|----|:--------|--------:|
-| 1  | n/a yet |         |
