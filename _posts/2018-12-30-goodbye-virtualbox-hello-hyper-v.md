@@ -55,6 +55,12 @@ PS C:\Users\hugsy> Set-VM "Ubuntu 18.04 x64" -EnhancedSessionTransportType HvSoc
 
 For Fedora/RedHat, it {%include link.html href="https://bugzilla.redhat.com/show_bug.cgi?id=1553453" title="may also be working"%}.
 
+> Update (2019/04/28):
+> If you're using a different WM, you may also need to edit your `~/.xsession` to set proper WM value. For instance
+```
+env -u SESSION_MANAGER -u DBUS_SESSION_BUS_ADDRESS mate-session  # for mate (could be unity, xfce4-session, gnome3, etc.) 
+```
+
 {% include note.html text="To switch back to the regular view, simply click on **View** → uncheck **Enhanced session**." %}
 
 

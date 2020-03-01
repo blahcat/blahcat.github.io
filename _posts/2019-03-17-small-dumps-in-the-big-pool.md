@@ -89,8 +89,6 @@ syscall with the undocumented
 as class information, which provides **exactly** what we were looking for: the enumeration of all large pools with their kernel
 addresses, their size, and their tag.
 
-{% include note.html text="... although `NtQuerySystemInformation()` cannot be called from low integrity processes" %}
-
 This is enough to dump such information:
 
 ```c
@@ -169,7 +167,7 @@ Some more advanced feng-shui can be achieved using `NtSetInformationThread(Threa
 covered in a later post. Although convienent and really stealth, this technique is not bullet-proof since the syscall (if successful) is logged and may be exposed with ETW (see `nt!EtwTraceThreadSetName`).
 
 What about local DoS? Well yes, it is a pretty simple to destabilize the system by resource exhaustion by creating a loop of `CreateThread()` + `AllocateBigPool($newThread)`: since it is possible to make each thread of a process allocate a chunk of 0x10000 bytes, simple math will show that creating a somewhat acceptable number of threads, say 0x1000 will bring the total allocation to 0x10000000 bytes (268MB). Not only can the number of threads per process be increased, but the same process can be launched many times. As mentioned earlier, the `_ETHREAD!ThreadName` field is allocated as
-[`NonPagedPoolNx`](https://docs.microsoft.com/en-us/windows/desktop/memory/memory-pools) so all those chunks will never be paged out or freed until the thread (or process) is finished/terminated. Although this DoS is pretty dummy and useless, the only annoying part is that it can be triggered by even low integrity/privilege processes.
+[`NonPagedPoolNx`](https://docs.microsoft.com/en-us/windows/desktop/memory/memory-pools) so all those chunks will never be paged out or freed until the thread (or process) is finished/terminated. Although this DoS is pretty dummy and useless, the only annoying part is that it can be triggered by even low integrity/privilege processes. Running [it](https://gist.github.com/hugsy/a94392e6aeaf87335d06d06a0c05ff96) leads to an interesting scenario of memory pressure where the CPUs are not used but the system is unusable since pool allocation request will fail.
 
 As a side note, on my test VM (Windows 10 RS5 with 2 vCpus and 2GB of RAM), I could force a process to spawn ~0xb900 threads before the system became unusable.
 
@@ -187,3 +185,10 @@ should unlikely die during the time of a session making such nice syscall a good
 
 That's it for this little daily experiment.
 Until next time, cheers ☕️
+
+
+### Some links for further reading
+
+ - [BlackHat DC 2011 - Mandt - Kernel Pool exploitation](https://media.blackhat.com/bh-dc-11/Mandt/BlackHat_DC_2011_Mandt_kernelpool-wp.pdf)
+ - [Exploiting a Windows 10 PagedPool off-by-one](https://j00ru.vexillium.org/2018/07/exploiting-a-windows-10-pagedpool-off-by-one/)
+ - [Sheep Year Kernel Heap Fengshui: Spraying in the Big Kids’ Pool](http://www.alex-ionescu.com/?p=231)
