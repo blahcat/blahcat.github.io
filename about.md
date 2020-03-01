@@ -3,8 +3,16 @@ layout: page
 title: About
 permalink: /about/
 header-img: "img/about-bg.jpg"
-description: About hacks, CTF, and (mostly low-level related) stuff...
+description: (stuff)
 ---
+
+
+## About ##
+
+This blog is all about technical stuff, no ads, no cookie or whatever to accept. Just content.
+Unless specified otherwise, all content is released under the [CopyLeft license](https://www.gnu.org/licenses/copyleft.en.html), and the all code (own tools, snippets, etc.) under the [MIT license](https://opensource.org/licenses/MIT).
+
+
 
 ## Stay in touch ##
 
@@ -13,16 +21,19 @@ icon-twitter.html username="ctf_blahcat" %} for updates! If you __really__ have
 to, you can also shoot us an [email](mailto:{{ site.email }}).
 
 
-## Contributors ##
 
-   * {% include icon-github.html username="hugsy" %} || {% include icon-twitter.html username="_hugsy_" %}
+## Friend blogs ##
+
+  * [TheGooniesCTF blog](https://thegoonies.github.io/){:target="_blank"}
+  * [Bernardo](https://w00tsec.blogspot.com/){:target="_blank"}
+  * [Danilo](https://bugnotfound.com){:target="_blank"}
+  * [grazfather](http://grazfather.github.io/){:target="_blank"}
 
 
----
+## Recommended blogs ##
 
-## Blogs we like ##
+### Windows internals
 
-  * {% include link.html href="https://thegoonies.rocks/" title="TheGoonies"%}
-  * {% include link.html href="https://w00tsec.blogspot.com/" title="Bernardo" %}
-  * {% include link.html href="https://bugnotfound.com" title="Danilo" %}
-  * {% include link.html href="http://grazfather.github.io/" title="grazfather" %}
+  * [windows-internals.com](https://windows-internals.com/){:target="_blank"}
+  * [tiraniddo.dev](https://tiraniddo.dev){:target="_blank"}
+  * [rayanfam.com](https://rayanfam.com/){:target="_blank"}

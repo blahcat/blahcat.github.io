@@ -1,0 +1,21 @@
+---
+title: Authors
+layout: page
+description: "Who's who?"
+---
+
+<h2>
+    Blog contributors
+</h2>
+
+
+<div>
+    <ul>
+    {% for author in site.authors %}
+        <li>
+            <a href="/authors/{{author.name}}/">{{author.name}}</a>
+            ({{ site.posts | where: "author", author.name | size}} articles)
+        </li>
+    {% endfor %}
+    </ul>
+</div>

@@ -23,3 +23,7 @@ paginate: 5
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","examples.md"]
 
 plugins: [jekyll-paginate, jekyll-feed, jekyll-gist]
+
+collections:
+  authors:
+    output: true

@@ -1,18 +1,16 @@
 ---
 layout: post
 title: Small dumps in the big pool
+subheading: Or, on how to use the (Windows 10) new field `_ETHREAD.ThreadName` to stabilize kernel RW primitives
 author: hugsy
-author_twitter: _hugsy_
-author_email: hugsy@[RemoveThisPart]blah.cat
-author_github: hugsy
 header-img: img/f4300721f56d68c92db76aa03c3bbd54.png
-tags: [windows internals, kernel]
+tags: [windows, kernel]
 ---
 
-Or how the (Windows 10) new field `_ETHREAD.ThreadName` can be used to stabilize RW primitive.
 
 
-## SetThreadDescription() as a way to allocate kernel pools
+
+## SetThreadDescription() as a way to allocate controlled kernel pools
 
 Keeping on with experimenting with Windows 10 I noticed a field part of the `nt!_ETHREAD` structure, called `ThreadName`.
 For a minute, the field name misled me to think threads were now
