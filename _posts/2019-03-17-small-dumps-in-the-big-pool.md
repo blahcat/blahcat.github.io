@@ -4,6 +4,7 @@ title: Small dumps in the big pool
 subheading: Or, on how to use the (Windows 10) new field `_ETHREAD.ThreadName` to stabilize kernel RW primitives
 author: hugsy
 header-img: img/f4300721f56d68c92db76aa03c3bbd54.png
+header-font: black
 tags: [windows, kernel]
 ---
 
