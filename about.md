@@ -40,6 +40,7 @@ to, you can also shoot us an [email](mailto:{{ site.email }}).
   * [vergiliusproject.com](https://vergiliusproject.com){:target="_blank"}
   * [rayanfam.com](https://rayanfam.com/){:target="_blank"}
   * [codemachine.com](https://www.codemachine.com/){:target="_blank"}
+  * [revers.engineering](https://revers.engineering/){:target="_blank"}
   
 #### User  
 
