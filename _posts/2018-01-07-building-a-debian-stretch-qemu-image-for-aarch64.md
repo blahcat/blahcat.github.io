@@ -111,7 +111,7 @@ $ qemu-system-aarch64 -smp 2 -M virt -cpu cortex-a57 -m 1G \
     -device scsi-hd,drive=rootimg \
     -device e1000,netdev=net0 \
     -net nic \
-    -netdev user,hostfwd=tcp:127.0.0.1:2222-:22,,id=net0 \
+    -netdev user,hostfwd=tcp:127.0.0.1:2222-:22,id=net0 \
     -nographic
 {% endhighlight %}
 
