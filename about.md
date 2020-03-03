@@ -32,8 +32,15 @@ to, you can also shoot us an [email](mailto:{{ site.email }}).
 
 ## Recommended blogs ##
 
-### Windows internals
+### Windows internals 
+
+#### Kernel
 
   * [windows-internals.com](https://windows-internals.com/){:target="_blank"}
-  * [tiraniddo.dev](https://tiraniddo.dev){:target="_blank"}
+  * [vergiliusproject.com](https://vergiliusproject.com){:target="_blank"}
   * [rayanfam.com](https://rayanfam.com/){:target="_blank"}
+  * [codemachine.com](https://www.codemachine.com/){:target="_blank"}
+  
+#### User  
+
+  * [tiraniddo.dev](https://tiraniddo.dev){:target="_blank"}
