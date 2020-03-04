@@ -23,11 +23,11 @@ This page centralizes series of posts from this blog into their corresponding ca
 
 ### GEF practice environment  ###
 
-| Id   | Environment                                                                                                                                                             |                  Author |
-| :--- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
-| 1    | [Repository of QEMU images to practice on different architectures - Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA)                                        | [hugsy](/authors/hugsy) |
-| 2    | [Repository of QEMU images to practice on different architectures - Google Drive](https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing) | [hugsy](/authors/hugsy) |
-| 3    | [Practice with GEF online](https://demo.gef.blah.cat)                                                                                                                   | [hugsy](/authors/hugsy) |
+| Id   | Environment                                                                                                                                                                               |                  Author |
+| :--- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
+| 1    | [Repository of QEMU images to practice on different architectures - Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA){:target="_blank"}                                        | [hugsy](/authors/hugsy) |
+| 2    | [Repository of QEMU images to practice on different architectures - Google Drive](https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing){:target="_blank"} | [hugsy](/authors/hugsy) |
+| 3    | [Practice with GEF online](https://demo.gef.blah.cat){:target="_blank"}                                                                                                                   | [hugsy](/authors/hugsy) |
 
 
 ## Windows Exploitation  ##
