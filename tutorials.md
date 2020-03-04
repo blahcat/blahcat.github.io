@@ -8,6 +8,8 @@ header-img: "img/about-bg.jpg"
 This page centralizes series of posts from this blog into their corresponding categories.
 
 
+## Linux exploitation ##
+
 ### GEF Screencasts ###
 
 | Id   | Article                                                                                                         |                  Author |
@@ -19,8 +21,18 @@ This page centralizes series of posts from this blog into their corresponding ca
 | 5    | [Creating and Using Custom structure with GEF](https://www.youtube.com/watch?v=pid2aW7Bt_w){:target="_blank"}   | [hugsy](/authors/hugsy) |
 | 6    | [Extending GEF](https://www.youtube.com/watch?v=QsBn1nIOnWk){:target="_blank"}                                  | [hugsy](/authors/hugsy) |
 
+### GEF practice environment  ###
 
-### Windows Kernel Exploitation  ###
+| Id   | Environment                                                                                                                                                             |                  Author |
+| :--- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
+| 1    | [Repository of QEMU images to practice on different architectures - Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA)                                        | [hugsy](/authors/hugsy) |
+| 2    | [Repository of QEMU images to practice on different architectures - Google Drive](https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing) | [hugsy](/authors/hugsy) |
+| 3    | [Practice with GEF online](https://demo.gef.blah.cat)                                                                                                                   | [hugsy](/authors/hugsy) |
+
+
+## Windows Exploitation  ##
+
+### Kernel ###
 
 | Id   | Article                                                                                                                                 |                  Author |
 | :--- | :-------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
