@@ -1,7 +1,7 @@
 <b>Share this post:</b>
 <a class="fa fa-twitter-square"
    {% if author %}
-   href="https://twitter.com/intent/tweet?text={{ page.title }} by @{{author.name}} via @{{site.twitter_username}}:&url={{page.url| prepend: site.url}}"
+   href="https://twitter.com/intent/tweet?text={{ page.title }} by @{{author.twitter}} via @{{site.twitter_username}}:&url={{page.url| prepend: site.url}}"
    {% else %}
    href="https://twitter.com/intent/tweet?text={{ page.title }} via @{{site.twitter_username}}:&url={{page.url|prepend: site.url}}"
    {% endif%}
