@@ -122,7 +122,7 @@ That's all for this quick post!
 
 ✌
 
-## Disclose timeline
+## Disclosure timeline
 
   * 2019-12-09 : Bug found
   * 2020-02-08 : Finally found some time to do some analysis
