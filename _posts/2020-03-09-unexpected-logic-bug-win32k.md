@@ -9,7 +9,7 @@ header-font: black
 
 ## The short version
 
-The short version is that there's a small logic bug in  `user32!EndTask()` which does really check the `HWND` handle passed when forcelly killing the process, allowing unprivileged process to BSoD the host by killing a critical process (`csrss`). And bonus the PoC code #FitsInATweet:
+The short version is that there's a small logic bug in  `user32!EndTask()` which doesn't really check the `HWND` handle passed when forcefully killing the process, allowing unprivileged process to BSoD the host by killing the critical process `csrss`. And as a bonus the PoC code #FitsInATweet:
 
 ```c
 int WinMain(HINSTANCE h, HINSTANCE ins, LPSTR cmd, int nb)
