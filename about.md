@@ -16,9 +16,7 @@ Unless specified otherwise, all content is released under the [CopyLeft license]
 
 ## Stay in touch ##
 
-Follow us on {% include icon-github.html username="blahcat" %} or {% include
-icon-twitter.html username="ctf_blahcat" %} for updates! If you __really__ have
-to, you can also shoot us an [email](mailto:{{ site.email }}).
+Follow us on {% include icon-github.html username="blahcat" %} or {% include icon-twitter.html username="ctf_blahcat" %} for updates! If you __really__ have to, you can also shoot us an [email](mailto:{{ site.email }}).
 
 
 
