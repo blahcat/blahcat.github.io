@@ -30,8 +30,8 @@ the `procfs` structure.
 All the details regarding the following attack on the canary are explained in
 this blog post, so I will assume that you are familiar with it. If you're not:
 
-  * the full article is {% include link.html title="here" href="https://www.elttam.com.au/blog/playing-with-canaries" %}
-  * the code repository is {% include link.html title="there" href="https://github.com/elttam/canary-fun" %}
+  * the full article is [here](https://www.elttam.com.au/blog/playing-with-canaries){:target="_blank"}
+  * the code repository is [there](https://github.com/elttam/canary-fun){:target="_blank"}
 
 In the article, I imagined the attack scenario would apply perfectly well to a
 Web or FTP server, and would occur following those steps:
@@ -39,7 +39,7 @@ Web or FTP server, and would occur following those steps:
   1. dump `/proc/self/auxv` to get the `AT_RANDOM` location
   2. read `/proc/self/mem` and force an `lseek` access to reach the location found
      above via
-     the [HTTP header Range](https://tools.ietf.org/html/rfc7233#page-8) (for
+     the [HTTP header Range](https://tools.ietf.org/html/rfc7233#page-8){:target="_blank"} (for
      instance `Range: bytes=<0xAT_RANDOM_LOCATION>-<0xAT_RANDOM_LOCATION+16>`)
   3. Truncate the received buffer to `sizeof(register)`
   4. Nullify the last byte (`result &= ~0xff`)
@@ -47,21 +47,21 @@ Web or FTP server, and would occur following those steps:
 That was the theory, which made perfect sense, but I wanted a practice
 case.
 
-Earlier this year, I [had some fun with ARMPWN](/2016/06/12/armpwn-challenge), a vulnerable web server
+Earlier this year, I [had some fun with ARMPWN](/2016/06/12/armpwn-challenge){:target="_blank"}, a vulnerable web server
 created by  {% include icon-twitter.html username="@5aelo" %} to practice
 exploitation on ARM, so I have decided to use it for a practical, yet very
 realistic exploit case.
 
 You can download:
 
-  - [the new websrv.c here](https://gist.github.com/00d74ecac86297efc6772e415f307176)
-  - [or simply the patch here](https://gist.github.com/c2dbc3e3c11836dcebf53a2189f35976)
+  - [the new websrv.c here](https://gist.github.com/00d74ecac86297efc6772e415f307176){:target="_blank"}
+  - [or simply the patch here](https://gist.github.com/c2dbc3e3c11836dcebf53a2189f35976){:target="_blank"}
 
 
 ## Patch analysis
 
 This cheap patch provides to the "new" `websrv` the (pseudo-)capability to
-[parse the HTTP Range header](https://gist.github.com/hugsy/00d74ecac86297efc6772e415f307176#file-websrv-c-L181-L201)
+[parse the HTTP Range header](https://gist.github.com/hugsy/00d74ecac86297efc6772e415f307176#file-websrv-c-L181-L201){:target="_blank"}
 provided by the client. This is basically how modern Web servers (Apache, nginx)
 treat this header.
 
@@ -98,7 +98,7 @@ Vector.
 This approach is a lot more stable and stealthier than canary brute-forcing,
 since we don't rely on any memory corruption/process crash to determine the
 valid bytes of the canary
-[as we did before](/2016/06/12/armpwn-challenge#leaking-the-canary).
+[as we did before](/2016/06/12/armpwn-challenge#leaking-the-canary){:target="_blank"}.
 
 
 ### Find AT_RANDOM from the Auxiliary Vector
@@ -164,8 +164,7 @@ use
 [this script](https://github.com/elttam/canary-fun/blob/master/read_canary_from_pid.py) locally
 to compare the values for the canary:
 
-{% include image.html src="https://i.imgur.com/IWpuMIy.png" alt="Running
-the exploit" id=1 %}
+{% include image.html src="https://i.imgur.com/IWpuMIy.png" alt="Running the exploit" id=1 %}
 
 
 
