@@ -1,11 +1,19 @@
 ---
 layout: page
-title: Tutorials
-permalink: /tutorials/
+title: Series
+permalink: /categories/
 header-img: "img/about-bg.jpg"
 ---
 
-This page centralizes series of posts from this blog into their corresponding categories.
+This page centralizes series of posts from this blog into their corresponding categories:
+
+- [Linux exploitation](#linux-exploitation)
+  - [GEF Screencasts](#gef-screencasts)
+  - [GEF practice environment](#gef-practice-environment)
+- [Windows Exploitation](#windows-exploitation)
+  - [Kernel](#kernel)
+  - [Driver development](#driver-development)
+
 
 
 ## Linux exploitation ##
@@ -21,13 +29,14 @@ This page centralizes series of posts from this blog into their corresponding ca
 | 5    | [Creating and Using Custom structure with GEF](https://www.youtube.com/watch?v=pid2aW7Bt_w){:target="_blank"}   | [hugsy](/authors/hugsy) |
 | 6    | [Extending GEF](https://www.youtube.com/watch?v=QsBn1nIOnWk){:target="_blank"}                                  | [hugsy](/authors/hugsy) |
 
+
 ### GEF practice environment  ###
 
 | Id   | Environment                                                                                                                                                                               |                  Author |
 | :--- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
 | 1    | [Repository of QEMU images to practice on different architectures - Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA){:target="_blank"}                                        | [hugsy](/authors/hugsy) |
 | 2    | [Repository of QEMU images to practice on different architectures - Google Drive](https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing){:target="_blank"} | [hugsy](/authors/hugsy) |
-| 3    | [Practice with GEF online](https://demo.gef.blah.cat){:target="_blank"}                                                                                                                   | [hugsy](/authors/hugsy) |
+| 3    | [Practice with GEF online](https://demo.gef.blah.cat){:target="_blank"}  (username: `gef` password: `gef-demo`)                                                                           | [hugsy](/authors/hugsy) |
 
 
 ## Windows Exploitation  ##
@@ -44,3 +53,9 @@ This page centralizes series of posts from this blog into their corresponding ca
 | 5    | [Kernel pool exploits (HEVD)](#){:target="blank"}    _(soon)_                                                                           | [hugsy](/authors/hugsy) |
 
 
+### Driver development ###
+
+| Id   | Article                                                               |                  Author |
+| :--- | :-------------------------------------------------------------------- | ----------------------: |
+| 0    | [Setting things up](#){:target="blank"}    _(soon)_                   | [hugsy](/authors/hugsy) |
+| 1    | [IO Manager, Driver & Device Objects](#){:target="blank"}    _(soon)_ | [hugsy](/authors/hugsy) |
