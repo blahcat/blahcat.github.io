@@ -337,7 +337,7 @@ The whole series of " Getting Physical: Extreme abuse of Intel based Paging Syst
 Other useful resources:
  - [3] ["What Makes It Page? The Windows 7 x64 Virtual Memory Manager" - M. Martignetti](https://www.amazon.com/What-Makes-Page-Windows-Virtual/dp/1479114294){:name="3"}
  - ["Gynvael's Hacking Livestream #30: Windows Kernel Debugging Part III" - A. "honorary_bot" Shishkin](https://www.youtube.com/watch?v=7zTtVYjjquA)
-
+ - ["Windows 8 Kernel Memory Protections Bypass" - J. Fetiveau](https://labs.f-secure.com/archive/windows-8-kernel-memory-protections-bypass/)
 
 *[CPL]: Current Privilege Level
 *[DPL]: Descriptor Privilege Level
