@@ -98,6 +98,7 @@ To experiment this behavior, we can create a simple program that will only `int3
 ```c
 #include <windows.h>
 
+
 int main() {__asm__("int3;"); return 0;}
 ```
 
@@ -302,12 +303,15 @@ size_of_page = 0x1000
 size_of_entry = 8
 
 # loop in the PML4
+
 for index in range(system_pml4_root, system_pml4_root+size_of_page, size_of_entry):
 
   # get the entry
+
   entry = u64( read_physical_memory(index) )
 
   # compare to the root (after trimming the 12 lsb)
+
   if (entry >> 12) == (system_pml4_root >> 12):
     print("self-reference entry is at index: %d" % index)
 ```
