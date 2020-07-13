@@ -167,7 +167,7 @@ To summarize (or if you just jumped to the end of this section), what's awesome 
 
 ## What about Windows 10 RS1+?
 
-Up until Windows 10 TH2, the magic 0x1ed for the Self-Reference PML4 entry was 0x1ed as mentioned above. But what about Windows 10 from 1607? Well Microsoft uped their game, as a [constant battle for improving Windows security](https://www.blackhat.com/docs/us-16/materials/us-16-Weston-Windows-10-Mitigation-Improvements.pdf){:target="blank"} the index is randomized at boot-time, so 0x1ed is now one of the 512 possible values (i.e. 9-bit index) that the Self-Reference entry index can have. And side effect, it also broke some of their own tools, like the `!pte2va` WinDbg command.
+Up until Windows 10 TH2, the magic index for the Self-Reference PML4 entry was 0x1ed as mentioned above. But what about Windows 10 from 1607? Well Microsoft uped their game, as a [constant battle for improving Windows security](https://www.blackhat.com/docs/us-16/materials/us-16-Weston-Windows-10-Mitigation-Improvements.pdf){:target="blank"} the index is randomized at boot-time, so 0x1ed is now one of the 512 possible values (i.e. 9-bit index) that the Self-Reference entry index can have. And side effect, it also broke some of their own tools, like the `!pte2va` WinDbg command.
 
 On Windows 2004 x64, 0xFFFFF680`00000000 points to nothing (at least most of the times 🤓)
 ```
