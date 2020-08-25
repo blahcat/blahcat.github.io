@@ -10,8 +10,9 @@ This page centralizes series of posts from this blog into their corresponding ca
 - [Linux exploitation](#linux-exploitation)
   - [GEF Screencasts](#gef-screencasts)
   - [GEF practice environment](#gef-practice-environment)
-- [Windows Exploitation](#windows-exploitation)
-  - [Kernel](#kernel)
+- [Windows Exploitation](#windows)
+  - [User](#user-mode-exploitation)
+  - [Kernel](#kernel-mode-exploitation)
   - [Driver development](#driver-development)
 
 
@@ -39,9 +40,22 @@ This page centralizes series of posts from this blog into their corresponding ca
 | 3    | [Practice with GEF online](https://demo.gef.blah.cat){:target="_blank"}  (username: `gef` password: `gef-demo`)                                                                           | [hugsy](/authors/hugsy) |
 
 
-## Windows Exploitation  ##
+## Windows Series ##
 
-### Kernel ###
+
+### User mode Exploitation ###
+
+| Id   | Article                                                               |                  Author |
+| :--- | :-------------------------------------------------------------------- | ----------------------: |
+| 0    | [Setting things up](#){:target="blank"}    _(soon)_                   | [hugsy](/authors/hugsy) |
+| 1    | [Windows Stack-Based Buffer Overflow](#){:target="blank"}    _(soon)_ | [hugsy](/authors/hugsy) |
+| 2    | [Windows SEH Stack-Based Buffer Overflow](#){:target="blank"}    _(todo)_ |  |
+| 3    | [Windows Heap Based Buffer Overflow](#){:target="blank"}    _(todo)_ |  |
+| 4    | [Windows DLL Hijacking](#){:target="blank"}    _(todo)_ |  |
+
+
+
+### Kernel mode Exploitation ###
 
 | Id   | Article                                                                                                                                 |                  Author |
 | :--- | :-------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
@@ -50,7 +64,7 @@ This page centralizes series of posts from this blog into their corresponding ca
 | 2    | [A Primer to Windows x64 shellcoding](/2017/08/14/a-primer-to-windows-x64-shellcoding){:target="blank"}                                 | [hugsy](/authors/hugsy) |
 | 3    | [First exploit in Windows Kernel (HEVD)](/2017/08/18/first-exploit-in-windows-kernel-hevd){:target="blank"}                             | [hugsy](/authors/hugsy) |
 | 4    | [Arbitrary Write (aka Write-What-Where) exploits (HEVD)](/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd){:target="blank"} | [hugsy](/authors/hugsy) |
-| 5    | [Kernel pool exploits (HEVD)](#){:target="blank"}    _(soon)_                                                                           | [hugsy](/authors/hugsy) |
+| 5    | [Double-Fectch (HEVD)](#){:target="blank"}    _(soon)_                                                                                  | [hugsy](/authors/hugsy) |
 
 
 ### Driver development ###
