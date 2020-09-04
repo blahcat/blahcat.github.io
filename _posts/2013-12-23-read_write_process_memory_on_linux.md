@@ -5,7 +5,6 @@ author: hugsy
 tags:
 - linux
 - kernel
-header-font: black
 date: 2013-12-23 00:00 +0000
 ---
 
