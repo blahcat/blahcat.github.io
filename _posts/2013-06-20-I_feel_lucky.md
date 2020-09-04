@@ -20,7 +20,7 @@ I decided to look into it at first with not much hope, thinking the exploit woul
 
 But the [patch](http://security.FreeBSD.org/patches/SA-13:06/mmap.patch) gave me a better idea of the issue:
 
-```patch
+{% highlight patch %}
 Index: sys/vm/vm_map.c
 ===================================================================
 --- sys/vm/vm_map.c	(revision 251636)
@@ -30,7 +30,6 @@ Index: sys/vm/vm_map.c
  		return (KERN_PROTECTION_FAILURE);
  	}
 +	if ((fault_typea & VM_PROT_COPY) != 0 &&
-
 +	    (entry->max_protection & VM_PROT_WRITE) == 0 &&
 +	    (entry->eflags & MAP_ENTRY_COW) == 0) {
 +		vm_map_unlock_read(map);
@@ -39,7 +38,7 @@ Index: sys/vm/vm_map.c
 
  	/*
  	 * If this page is not pageable, we have to get it for all possible
-```
+{% endhighlight %}
 
 It kindda gave a good pointer of where to start: the usual rule for setuid dictates that a write access should immediately imply losing the elevated privilege. But this is where the bug was: by `mmap` a setuid binary (which any user can do), I can then choose to `ptrace` the process, and use `PT_WRITE` command to overwrite the `mmap`-ed memory, effectively overwriting the setuid binary!
 
