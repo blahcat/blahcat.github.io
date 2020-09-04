@@ -8,21 +8,15 @@ tags:
 date: 2013-12-23 00:00 +0000
 ---
 
-Even though well known methods exist to bypass ptrace deactivation on a process
-when spawning (fake `ptrace()` preloading, breakpoint on `ptrace()`, etc... ), it is
-trickier when process is already protected.
+Even though well known methods exist to bypass ptrace deactivation on a process when spawning (fake `ptrace()` preloading, breakpoint on `ptrace()`, etc... ), it is
+trickier when process is already protected. 
 
-Thankfully Linux 3.2+ was generous enough to provide read/write capabilities to
-another process with 2 new system calls: sys_process_vm_readv and
-sys_process_vm_writev. (see https://github.com/torvalds/linux/blob/master/arch/x86/syscalls/syscall_64.tbl#L319)
+Thankfully Linux 3.2+ was generous enough to provide read/write capabilities to another process with 2 new system calls: `sys_process_vm_readv` and `sys_process_vm_writev`. (see [the source code](https://github.com/torvalds/linux/blob/master/arch/x86/syscalls/syscall_64.tbl#L319)). For our Windows friend, those new syscalls are similar to `ReadProcessMemory()` and `WriteProcessMemory()`.
 
 The manual says:
-> These system calls transfer data between the address space of the calling
-> process  ("the  local  process") and the process identified by pid ("the remote
-> process").  The data moves directly  between  the address spaces of the two
-> processes, without passing through kernel space.
+> These system calls transfer data between the address space of the calling process  ("the  local  process") and the process identified by pid ("the remote process").  The data moves directly  between  the address spaces of the two processes, without passing through kernel space.
 
-A running process protected like this:
+A running process can be `ptrace`d like this:
 
 ``` c
 if (ptrace(PTRACE_TRACEME, 0, 0, 0) < 0) {
@@ -31,7 +25,7 @@ if (ptrace(PTRACE_TRACEME, 0, 0, 0) < 0) {
 }
 ```
 
-can hence still have its memory read :
+As such, it would acquire an exclusive lock, preventing any other ptrace instance (say a debugger) to manipulate its memory (that's like ELF anti-debug 101). But it can hence still have its memory read:
 
 ``` c
 struct iovec local[1], remote[1];
