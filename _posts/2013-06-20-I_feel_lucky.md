@@ -23,17 +23,25 @@ But the [patch](http://security.FreeBSD.org/patches/SA-13:06/mmap.patch) gave me
 ```patch
 Index: sys/vm/vm_map.c
 ===================================================================
+
 --- sys/vm/vm_map.c	(revision 251636)
+
 +++ sys/vm/vm_map.c	(working copy)
+
 @@ -3761,6 +3761,12 @@ RetryLookup:;
  		vm_map_unlock_read(map);
  		return (KERN_PROTECTION_FAILURE);
  	}
 +	if ((fault_typea & VM_PROT_COPY) != 0 &&
+
 +	    (entry->max_protection & VM_PROT_WRITE) == 0 &&
+
 +	    (entry->eflags & MAP_ENTRY_COW) == 0) {
+
 +		vm_map_unlock_read(map);
+
 +		return (KERN_PROTECTION_FAILURE);
+
 +	}
 
  	/*
