@@ -8,7 +8,7 @@ jobs:
       - uses: ethomson/send-tweet-action@v1
         if: github.event_name == 'push' && contains( join(github.event.commits.*.message), 'New blog post')
         with:
-          status: ${{ join(github.event.commits.*.message) }}
+          status: ${{ join(github.event.commits.*.message) }}... Check it out on https://blahcat.github.io!
           consumer-key: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
           consumer-secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET }}
           access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
