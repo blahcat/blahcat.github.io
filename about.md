@@ -30,7 +30,7 @@ Follow us on {% include icon-github.html username="blahcat" %} or {% include ico
 
 ## Recommended blogs ##
 
-### Windows internals 
+### Windows internals
 
 #### Kernel
 
@@ -39,7 +39,8 @@ Follow us on {% include icon-github.html username="blahcat" %} or {% include ico
   * [rayanfam.com](https://rayanfam.com/){:target="_blank"}
   * [codemachine.com](https://www.codemachine.com/){:target="_blank"}
   * [revers.engineering](https://revers.engineering/){:target="_blank"}
-  
-#### User  
+  * [zodiacon's blog](https://scorpiosoftware.net/){:target="_blank"}
+
+#### User
 
   * [tiraniddo.dev](https://tiraniddo.dev){:target="_blank"}
