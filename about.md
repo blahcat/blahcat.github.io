@@ -32,7 +32,6 @@ Follow us on {% include icon-github.html username="blahcat" %} or {% include ico
 
 ### Windows internals
 
-#### Kernel
 
   * [windows-internals.com](https://windows-internals.com/){:target="_blank"}
   * [vergiliusproject.com](https://vergiliusproject.com){:target="_blank"}
@@ -40,7 +39,7 @@ Follow us on {% include icon-github.html username="blahcat" %} or {% include ico
   * [codemachine.com](https://www.codemachine.com/){:target="_blank"}
   * [revers.engineering](https://revers.engineering/){:target="_blank"}
   * [zodiacon's blog](https://scorpiosoftware.net/){:target="_blank"}
-
-#### User
-
+  * [ivanlef0u's blog](https://www.ivanlef0u.tuxfamily.org/){:target="_blank"} & [repo](http://ivanlef0u.fr/repo/){:target="_blank"}
+  * [0vercl0k's blog](https://0vercl0k.tuxfamily.org/bl0g/){:target="_blank"}
+  * [WinBindex](https://m417z.com/winbindex/){:target="_blank"}
   * [tiraniddo.dev](https://tiraniddo.dev){:target="_blank"}

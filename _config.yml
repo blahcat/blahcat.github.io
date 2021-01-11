@@ -15,15 +15,53 @@ github_username:  blahcat
 
 excerpt_separator: <!--more-->
 
-# Build settings
+
 markdown: kramdown
 highlighter: rouge
 permalink: pretty
-paginate: 5
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","examples.md"]
+paginate: 10
+exclude:
+  - "less"
+  - "node_modules"
+  - "Gruntfile.js"
+  - "package.json"
+  - "README.md"
+  - "examples.md"
 
-plugins: [jekyll-paginate, jekyll-feed, jekyll-gist]
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-gist
+  - jekyll-spaceship
+
 
 collections:
   authors:
     output: true
+
+
+
+jekyll-spaceship:
+  processors:
+    - table-processor
+    - mermaid-processor
+    - media-processor
+  mermaid-processor:
+    mode: default  # mode value 'pre-fetch' for fetching image at building stage
+    css:
+      class: mermaid
+    syntax:
+      code: 'mermaid!'
+      custom: ['@startmermaid', '@endmermaid']
+    config:
+      theme: default
+    src: https://mermaid.ink/svg/
+  media-processor:
+    default:
+      id: 'media-{id}'
+      class: 'media'
+      width: '100%'
+      height: 350
+      frameborder: 0
+      style: 'max-width: 600px; outline: none;'
+      allow: 'encrypted-media; picture-in-picture'

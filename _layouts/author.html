@@ -81,7 +81,7 @@ img#image-author {
             <ul>
                 {% for post in author_posts %}
                 <li>
-                    <a href="{{post.url}}">{{post.title}}</a>
+                    {{post.date | date: "%B %d, %Y"}} - <b><a href="{{post.url}}">{{post.title}}</a></b> ({{post.tags | join: ", "}})
                 </li>
                 {% endfor %}
             </ul>

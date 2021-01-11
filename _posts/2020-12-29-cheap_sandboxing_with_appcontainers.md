@@ -26,7 +26,7 @@ As the MSDN mentions, AppContainers operates on 6 levels of isolation, each prog
  - The **[File isolation](https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#file-isolation){:target="_blank"}**
     operates by creating for the AppContained process its own sandbox and named object subtree. This allows the kernel to finely control access to the FS by the contained process.
  - The **[Network isolation](https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#network-isolation){:target="_blank"}**
-    will prevent any communication from/to the process over the network unless explicitly given explicit permissions (and they have relatively explicit names, for instance `WinCapabilityInternetClientSid` to allow Internet access as a client - see [[WELL_KNOWN_SID_TYPE enumeration]](https://docs.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-well_known_sid_type))
+    will prevent any communication from/to the process over the network unless explicitly given permissions (and they have relatively explicit names, for instance `WinCapabilityInternetClientSid` to allow Internet access as a client - see [[WELL_KNOWN_SID_TYPE enumeration]](https://docs.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-well_known_sid_type))
  - The **[Process isolation](https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#process-isolation){:target="_blank"}**
     makes the process unable to get a handle to any process outside the sandbox
  - And **[Window isolation](https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#window-isolation){:target="_blank"}** which
@@ -55,7 +55,7 @@ As for file/folder objects, they will be located in `%LOCALAPPDATA%\Packages\<Na
 
 ## Building an AppContainer Process
 
-_Note_: All the snippets below are C/C++ used in my [`pwn++`](https://github.com/hugsy/pwn--){:target="_blank"} library. Refer to the source code for the full implementation. Additionally, as I was already implementing my own version, I stumbled upon [@zodiacon](https://twitter.com/zodiacon){:target="_blank"}'s article[[1]](#1) and implementation[[2]](#2){:target="_blank"}. You might prefer reading/using it if you want a serious implementation.
+_Note_: All the snippets below are C/C++ used in my [`pwn++`](https://github.com/hugsy/pwn--){:target="_blank"} library. Refer to the source code for the full implementation. Additionally, as I was already implementing my own version, I stumbled upon [@zodiacon](https://twitter.com/zodiacon){:target="_blank"}'s article[[1]](#ref_1) and implementation[[2]](#ref_2). You might prefer reading/using it if you want a serious implementation.
 
 
 ### Create an AppContainer profile
@@ -136,7 +136,7 @@ Surprisingly not hard to implement in C/C++ (and by extension also in C#), I'm s
 
 ## Result
 
-The ~~complete~~ functional command line tool AppContainMe[3] that uses the AppContainer implementation allows to launch contained process:
+The ~~complete~~ functional command line tool AppContainMe[[3]](#ref_3) that uses the AppContainer implementation allows to launch contained process:
 
 ```
 PS> d:\code\pwn++\x64\release\appcontainme.exe
@@ -190,9 +190,9 @@ That's pretty much it for this small post about AppContainers. If you want to pl
 
 Shout out to Pavel Yosivovich for his article and tool on AppContainer. And credits to COVID lockdown for giving me time to get back to finishing writing articles. More to come 😉...
 
- - [1] [Fun with AppContainers](https://scorpiosoftware.net/2019/01/15/fun-with-appcontainers/){:target="_blank"}
- - [2] [zodiacon/RunAppContainer - Github](https://github.com/zodiacon/RunAppContainer){:target="_blank"}
- - [3] [hugsy/pwn++ - Github](https://github.com/hugsy/pwn--/blob/dev/AppContainMe/main.cpp){:target="_blank"}
+ - <a name="ref_1">[1]</a> [Fun with AppContainers](https://scorpiosoftware.net/2019/01/15/fun-with-appcontainers/){:target="_blank"}
+ - <a name="ref_2">[2]</a> [zodiacon/RunAppContainer - Github](https://github.com/zodiacon/RunAppContainer){:target="_blank"}
+ - <a name="ref_3">[3]</a> [hugsy/pwn++ - Github](https://github.com/hugsy/pwn--/blob/dev/AppContainMe/main.cpp){:target="_blank"}
 
 
 Peace ✌
