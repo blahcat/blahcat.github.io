@@ -19,11 +19,9 @@ I also gave demos of my tool [`gef`](https://github.com/hugsy/gef.git), an
 architecture-agnostic exploitation helper for GDB to show the awesomeness of
 [Python API](https://sourceware.org/gdb/onlinedocs/gdb/Python-API.html) for GDB.
 
-Find my {% include link.html
-href="https://blahcat.github.io/slides/ruxmon-2016-08-gef" title="slides here"
-%} or
-get {% include link.html title="the PDF formatted version"
-href="https://blahcat.github.io/slides/ruxmon-2016-08-gef/?print-pdf" %}
+Find the
+{% include link.html title="PDF slides here"
+href="http://christophe.alladoum.free.fr/public/ruxmon-08-16/ruxmon_2016-09_gdb_enhanced_features.pdf" %}
 
 And send me your insults/feedbacks on
 {% include link.html href="https://webchat.freenode.net/?channels=##gef" title="gef new IRC channel" %}!
