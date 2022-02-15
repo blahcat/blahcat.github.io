@@ -254,7 +254,7 @@ By knowing how cells work it is possible to know how subkeys will be linked: sub
 
 The important one is `SubKeyLists` which is an array of 2 (... you guessed it ...) Cell Indexes (`HCELL_INDEX`). The reasons each array has 2 entries, is to differentiate between Permanent SubKeys (at index 0), and Volatile subKeys (at index 1). To iterate through a tree, there needs to be a root. And the hive root node cell index is given by the field `RootCell` of the `_HBASE_BLOCK`, which the hive handle always holds a reference to, via the `BaseBlock` field:
 
-```mermaid!
+```mermaid
 graph LR;
     A[_HHIVE] -- ".BaseBlock" --> B["_HBASE_BLOCK"];
     B -- "GetCellAddress(.RootCell)" --> C["_CM_INDEX[0]"];
@@ -278,7 +278,7 @@ nt!_DUAL
 ```
 
 To summarize more graphically
-```mermaid!
+```mermaid
 graph LR;
 
 Z(nt!CmpHiveListHead) --> X["_CMHIVE"];
@@ -301,7 +301,7 @@ nt!_HMAP_ENTRY
    +0x010 MemAlloc         : Uint4B
 ```
 
-```mermaid!
+```mermaid
 graph LR;
     A[_HMAP_DIRECTORY] --> B["_HMAP_TABLE[0]"];
     A[_HMAP_DIRECTORY] --> C["_HMAP_TABLE[1]"];
