@@ -11,10 +11,10 @@ description: "Tales of a binary encoded life..."
     <div class="post-meta">
         <div class="container">
             <div class="row">
-                <div class="col-sm-6 text-left">
+                <div class="col-sm-5 text-left">
                     <small>Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}</small>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-4 text-right">
                 {% if post.tags %}
                 {% for tag in post.tags | sort %}
                 <span class="badge badge-pill badge-{{ "primary secondary success danger warning info" | split: " " | sample }}">
