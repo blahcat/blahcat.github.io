@@ -31,17 +31,11 @@ description: "Tales of a binary encoded life..."
             </div>
         </div>
         <div class="row">
-              <div class="col col-lg-6 mb-4 mb-lg-0">
-                <figure class="bg-white p-3 rounded" style="border-left: .25rem solid #a34e78;">
+              <div class="col col-sm-12">
                   <blockquote class="blockquote pb-2">
-                    <p>
-                      {{ post.content | strip_html | truncatewords:75 }}[...]
-                    </p>
+                    <p class="small">{{ post.content | strip_html | truncatewords:75 }}[...]</p>
                   </blockquote>
-                  <figcaption class="blockquote-footer mb-0 font-italic">
-                      <a href="{{post.url}}">More</a> <small>(Reading Time: {{post.content | number_of_words / 200 | ceil }} min)</small>
-                  </figcaption>
-                </figure>
+                  <a href="{{post.url}}">Read</a> <small>(Reading Time: {{ (post.content | number_of_words) / 200 | ceil }} min)</small>
               </div>
         </div>
     </div>
