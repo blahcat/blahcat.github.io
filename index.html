@@ -12,7 +12,12 @@ description: "Tales of a binary encoded life..."
         <div class="container">
             <div class="row">
                 <div class="col-sm-5 text-left">
-                    <small>Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}</small>
+                    <small>Posted by 
+                        {% if post.author %}
+                        <a href="/authors/{{post.author}}">{{ post.author }}</a>
+                        {% else %}
+                        {{ site.title }}
+                        {% endif %} on {{ post.date | date: "%B %-d, %Y" }}</small>
                 </div>
                 <div class="col-sm-4 text-right">
                 {% if post.tags %}
@@ -24,6 +29,20 @@ description: "Tales of a binary encoded life..."
                 {% endif %}
                 </div>
             </div>
+        </div>
+        <div class="row">
+              <div class="col col-lg-6 mb-4 mb-lg-0">
+                <figure class="bg-white p-3 rounded" style="border-left: .25rem solid #a34e78;">
+                  <blockquote class="blockquote pb-2">
+                    <p>
+                      {{ post.content | strip_html | truncatewords:75 }}[...]
+                    </p>
+                  </blockquote>
+                  <figcaption class="blockquote-footer mb-0 font-italic">
+                      <a href="{{post.url}}">More</a> <small>(Reading Time: {{post.content | number_of_words / 200 | ceil }} min)</small>
+                  </figcaption>
+                </figure>
+              </div>
         </div>
     </div>
 </div>
