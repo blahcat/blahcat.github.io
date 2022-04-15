@@ -12,8 +12,7 @@ description: "Tales of a binary encoded life..."
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 text-left">
-                Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %}
-                on {{ post.date | date: "%B %-d, %Y" }}
+                    <small>Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}</small>
                 </div>
                 <div class="col-sm-6 text-right">
                 {% if post.tags %}
