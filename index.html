@@ -35,7 +35,7 @@ description: "Tales of a binary encoded life..."
                   <blockquote class="blockquote pb-2">
                     <p class="small">{{ post.content | strip_html | truncatewords:75 }}[...]</p>
                   </blockquote>
-                  <a href="{{post.url}}">Read</a> <small>(Reading Time: {{ (post.content | number_of_words) / 200 | ceil }} min)</small>
+                  <small><a href="{{post.url}}">Continue reading</a> </small>
               </div>
         </div>
     </div>
