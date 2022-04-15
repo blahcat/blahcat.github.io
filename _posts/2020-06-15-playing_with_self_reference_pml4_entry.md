@@ -12,7 +12,7 @@ header-font: black
 date: 2020-06-15 00:00 +0000
 ---
 Sometimes you read about a [completely awesome exploitation technique](#1), so you want to go deeper. So this is my notes about how trying to totally understand the exploitation of [CVE-2020-0796](#2), I ended up struggling finding good explanation about a critical structure of Windows paging mechanism: the "Self-Reference PML4 Entry".
-
+<!--more-->
 _Disclaimer_: If you came here for new stuff, so let me put your mind at peace: There's nothing new here, I don't claim to find anything what's being found and said by people way smarter, and I have probably understood it wrong anyway so don't judge/quote me. Also the post will only talk be about x64 and Windows here (and having a (L)KD open can help to follow along).
 
 
