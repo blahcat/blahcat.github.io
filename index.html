@@ -9,17 +9,23 @@ description: "Tales of a binary encoded life..."
         <h2><b>{{ post.title }}</b></h2>
     </a>
     <p class="post-meta">
-        Posted by
-        {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %}
-        on {{ post.date | date: "%B %-d, %Y" }}
-        &nbsp; &nbsp; &nbsp;
-        {% if post.tags %}
-        {% for tag in post.tags | sort %}
-        <span class="badge badge-pill badge-{{ "primary secondary success danger warning info" | split: " " | sample }}">
-            {{tag}}
-        </span>
-        {% endfor %}
-        {% endif %}
+        <div class="container">
+            <div class="row">
+            <div class="text-left">
+            Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %}
+            on {{ post.date | date: "%B %-d, %Y" }}
+            </div>
+            <div class="text-right">
+            {% if post.tags %}
+            {% for tag in post.tags | sort %}
+            <span class="badge badge-pill badge-{{ "primary secondary success danger warning info" | split: " " | sample }}">
+                {{tag}}
+            </span>
+            {% endfor %}
+            {% endif %}
+            </div>
+            </div>
+        </div>
     </p>
 </div>
 <hr>
