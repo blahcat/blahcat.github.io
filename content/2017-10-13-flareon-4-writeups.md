@@ -232,9 +232,7 @@ a
 and calling the function at 0x1014E20 when a file is found. That's where stuff
 gets interesting.
 
-{%include image.html
-src="/assets/images/flareon-2017/d9d6b730545915c4d7a94f05ff7b42ab7b5ba9fa5a9bc119147d6a35dd357c18.png"
-%}
+![image_alt]/assets/images/flareon-2017/d9d6b730545915c4d7a94f05ff7b42ab7b5ba9fa5a9bc119147d6a35dd357c18.png)
 
 `notepad` maps the file in memory, checks if it started with `MZ`, gets the
 value at offset 0x3c, then jump to
