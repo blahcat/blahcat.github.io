@@ -1,3 +1,4 @@
 pelican==4.7.2
 pelican-sitemap==1.0.2
-ghp-import
+Markdown==3.3.7
+ghp-import==2.1.0
