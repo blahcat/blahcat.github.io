@@ -210,7 +210,7 @@ The stack layout is hard to fully control at the level of the
 `allocate_buffer()` function. However, this function is called by the `main()`
 function, which uses a very large buffer (0x100 bytes) to store values read from stdin:
 
-{% highlight bash%}
+```text
 .text:0000000000400905 ; int __cdecl main(int, char **, char **)
 .text:0000000000400905 main proc near
 .text:0000000000400905
@@ -220,7 +220,7 @@ function, which uses a very large buffer (0x100 bytes) to store values read from
 
 Additionally, its location is very easy to pinpoint:
 
-{% highlight bash%}
+```text
                |       |    RetAddr       |
 context of     |       |   SFP of main    |
 main()         |       |     size         |
@@ -232,7 +232,7 @@ main()         |       |     size         |
                V       |                  |                                 |
                |       |    RetAddr       |                                 |
                |       |      SFP         |                                 |
-               |       |                  |          to the stack of main()
+               |       |                  |          to the stack of main() V
 allocate()     |       |                  |
                |       |                  |
                |       |                  |
