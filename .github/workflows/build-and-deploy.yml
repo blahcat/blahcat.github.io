@@ -27,6 +27,7 @@ jobs:
       - name: Build the site
         run: |
           pip install -r requirements.txt
+          source ~/.bashrc
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git clone --branch master --single-branch https://github.com/hugsy/attila.git themes/attila
