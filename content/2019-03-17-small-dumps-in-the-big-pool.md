@@ -38,7 +38,9 @@ Finally, the user buffer will be `memmove`-ed into this new pool.
 Since the unicode buffer and its size are fully user controlled, this means that the syscall `NtSetInformationThread(0x26)` provides a way to allocate an
 arbitrary sized pool in the kernel, for each thread we create and/or can open a handle to via `OpenThread()`.
 
-{% include note.html text="The code was tested on Windows 10 RS5 x64. To work on x32 one might need to adjust the offsets. Also Windows must be at least 1607." %}
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+The code was tested on Windows 10 RS5 x64. To work on 32b one might need to adjust the offsets. Also Windows must be at least 1607.
+</div>
 
 The following code is enough to populate the `_ETHREAD.ThreadName` of a designed thread:
 

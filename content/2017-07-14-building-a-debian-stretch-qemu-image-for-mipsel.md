@@ -16,17 +16,13 @@ category: tutorial
 
 ### Introduction ###
 
-After releasing
-[the QEMU images](https://blahcat.github.io/2017/06/25/qemu-images-to-play-with/) I've
-created to test [`GEF`](https://github.com/hugsy/gef), I've received
-tons of demands from people asking for more images, but also for some DYI procedures.
+After releasing [the QEMU images](https://blahcat.github.io/2017/06/25/qemu-images-to-play-with/) I've created to test [`GEF`](https://github.com/hugsy/gef), I've received tons of demands from people asking for more images, but also for some DYI procedures.
 
-As {%include icon-twitter.html username="@Fox0x01"%} already covered fairly exhaustively {%include link.html title="how to build an QEMU ARMv6 compatible VM" href="https://azeria-labs.com/emulate-raspberry-pi-with-qemu/"%}, through this blog post I intend to provide a step-by-step how-to
-on building a Debian Stretch Malta MIPS32el image.
+As  [@Fox0x01](https://twitter.com/@Fox0x01){:target="_blank" class="fa fa-twitter"} already covered fairly exhaustively [how to build an QEMU ARMv6 compatible VM][https://azeria-labs.com/emulate-raspberry-pi-with-qemu/){:target="_blank"}, through this blog post I intend to provide a step-by-step how-to on building a Debian Stretch Malta MIPS32el image.
 
-**Note**: there is no miracle here, I've just spend a long time googling for
-solution every time I was facing a problem. This tuto is more for a being a
-personal reminder for the future times I need to build an image :)
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+There is no miracle here, I've just spend a long time googling for solution every time I was facing a problem. This tuto is more for a being a personal reminder for the future times I need to build an image 😊
+</div>
 
 
 ### Pre-requisites ###
@@ -50,9 +46,7 @@ You also need a hard drive to install the OS on:
 $ qemu-img create -f qcow2 disk.qcow2 20G
 ```
 
-Since we're using the Debian net installer, we will need an Internet
-connection. Also don't be surprised to see your CPU activity jump up and your
-fans get louder!
+Since we're using the Debian net installer, we will need an Internet connection. Also don't be surprised to see your CPU activity jump up and your fans get louder!
 
 
 ## Installing Debian
@@ -80,16 +74,16 @@ kernel will try to decompress `initrd`. The reason is:
 Then your MIPSel (Malta-flavor) system boots, and you end up in the regular
 `ncurses` Debian installer.
 
-{%include image.html src="http://i.imgur.com/IqDge4n.png" alt="1.debian.installer.png"%}
+![1.debian.installer.png"%](https://i.imgur.com/IqDge4n.png)
 
 Let the installer do its magic.
 
-{%include image.html alt="3.debian.partition.png" src="http://i.imgur.com/Lg6Db5x.png"%}
+![3.debian.partition.png](https://i.imgur.com/Lg6Db5x.png)
 
 Since it's a VM for test and lab stuff, the guided partitionning is more than
 enough (and select `All files in one partition`). Feel free to tweak that part.
 
-{%include image.html alt="2.debian.installation.png" src="http://i.imgur.com/iv31UxH.png"%}
+![2.debian.installation.png](https://i.imgur.com/iv31UxH.png)
 
 I usually install only the minimum OS to get a running shell once I boot. For
 there I install everything from `apt-get`. With a proper `openssh-server`
@@ -101,13 +95,13 @@ installed, I then create 2 scripts:
 
 Debian will detect no boot loader, and show the following warning:
 
-{%include image.html alt="7.debian.end_installer.png" src="http://i.imgur.com/fuxZCDU.png"%}
+![7.debian.end_installer.png](https://i.imgur.com/fuxZCDU.png)
 
 So remember to append `root=/dev/sda1` to `-append` option before running your
 Qemu.
 
 Then the installation will finish successfully:
-{%include image.html alt="6.debian.complete.png" src="http://i.imgur.com/qFvh3cM.png"%}
+![6.debian.complete.png](http://i.imgur.com/qFvh3cM.png)
 
 
 ### Fixing the last quirks ###
@@ -152,7 +146,7 @@ $ qemu-system-mipsel -M malta -m 1G \
   -nographic
 ```
 
-{%include image.html alt="9.first.boot.png" src="http://i.imgur.com/6h0Wxed.png"%}
+![9.first.boot.png](http://i.imgur.com/6h0Wxed.png)
 
 On all the images I've created, Debian doesn't properly DHCP the Ethernet
 interface (get a wrong name for the interface), so it must be done manually at
@@ -205,9 +199,7 @@ For Windows, simply convert `script.sh` to Batch.
 ### Download the new images ###
 
 Since I've built in parallel a Malta MIPS32el and MIPS64el for this tutorial,
-both have been added to the {%include link.html title="folder on Mega.nz"
-href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA"%}
-vvyT
+both have been added to the [folder on Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA){:target="_blank"}
 
 The MIPS64el was created **exactly** the same way, except that QEMU required the
 proper CPU version to boot correctly:
