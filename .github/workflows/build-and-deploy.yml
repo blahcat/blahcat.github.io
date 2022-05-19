@@ -36,6 +36,7 @@ jobs:
           pelican-themes --install themes/attila
           pelican content -o output -s pelicanconf.py
           ghp-import output --no-jekyll --branch=gh-pages --force --message="Generated new content"
+          git checkout gh-pages
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
