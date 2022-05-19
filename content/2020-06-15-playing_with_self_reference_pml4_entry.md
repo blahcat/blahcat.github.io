@@ -129,7 +129,7 @@ So let's translate a special VA 0xFFFFF6FB\`7DBED000‬ to a physical address (P
  *   offset           : 0x000
 ```
 
-_Note_: the output is from my [`PageExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/PageExplorer.js){:target="_blank"} WinDbg script.
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> the output is from my [`PageExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/PageExplorer.js){:target="_blank"} WinDbg script.</div>
 
 The PML4E of the current process can be reached at `CR3 + 0x1ed*@$ptrsize`: but the content is the base physical address of the PML4 itself again! So the PDPE will itself also translate to the PML4 and so on until we read the `PTE+offset` which again will return the base address of the PML4 (because `offset=0`)! So what we get is an easy way to read the content of not just the PML4 itself, but any page directory, and all simply by knowing that 9-bit value (and therefore, calculating the corresponding PXE)! So you can artificially create VA simply by their offset, for instance to read the PageTable instead?
 
@@ -277,7 +277,7 @@ Across several reboots in my VM labs, only 2 matches are shown consistently
 
 
 
-_Note_: if you have other values on your environment (Qemu, VMware), feel free to contact me and I'll update the table with the result of the KD command
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> if you have other values on your environment (Qemu, VMware), feel free to contact me and I'll update the table with the result of the KD command</div>
 
 ```text
 dx @$cursession.Processes.Where( p => p.Name == "System").First().KernelObject.Pcb.DirectoryTableBase & ~0xfff

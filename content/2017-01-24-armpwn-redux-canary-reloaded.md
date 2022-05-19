@@ -136,7 +136,7 @@ s.send(m)
 ```
 
 
-_Note_: `yama/ptrace_scope` must be set to 0 to be able to read the process
+<div markdown="span" class="alert-warning"><i class="fa fa-info-circle">&nbsp;Warning:</i> `yama/ptrace_scope` must be set to 0 to be able to read the process</div>
 memory.
 
 
