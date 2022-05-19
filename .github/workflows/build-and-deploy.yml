@@ -1,0 +1,27 @@
+name: Build and Deploy
+
+#
+# The publishing workflow works as follows:
+# - drafts is created in a branch (usually `dev`)
+# - publishing simply means doing a PR to main
+# - when the PR is merged, this workflow must be executed first to deploy the content
+# - other workflows (like notifications) can be executed after a successful deployment
+#
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nelsonjchen/gh-pages-pelican-action@0.1.5
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GH_PAGES_BRANCH: gh-pages
+          PELICAN_CONFIG_FILE: pelicanconf.py
+          PELICAN_CONTENT_FOLDER: content

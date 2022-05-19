@@ -1,0 +1,20 @@
+article
+{
+	font-family: Roboto;
+	font-style: normal;
+	text-align: justify;
+}
+
+a[class="category_link"]
+{
+	border-radius: 25px;
+	border: 2px solid #73AD21;
+	padding: 5px;
+}
+
+a[class="tag_link"]
+{
+	border-radius: 25px;
+	border: 2px solid #8a0e6b;
+	padding: 2px;
+}
