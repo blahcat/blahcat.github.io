@@ -1,3 +1,0 @@
-Source code of https://blahcat.github.io
-
-If you read this, it really means you have nothing better to do ...
