@@ -50,15 +50,18 @@ PS C:\Users\hugsy> Set-VM "Ubuntu 18.04 x64" -EnhancedSessionTransportType HvSoc
     ![image_alt](https://github.com/Microsoft/linux-vm-tools/raw/master/wiki/media/xorglogin.PNG)
  5. Login as usual and enjoy the enhanced mode.
 
-For Fedora/RedHat, it {%include link.html href="https://bugzilla.redhat.com/show_bug.cgi?id=1553453" title="may also be working"%}.
+For Fedora/RedHat, it [may also be working](https://bugzilla.redhat.com/show_bug.cgi?id=1553453).
 
 > Update (2019/04/28):
 > If you're using a different WM, you may also need to edit your `~/.xsession` to set proper WM value. For instance
-```
+
+```text
 env -u SESSION_MANAGER -u DBUS_SESSION_BUS_ADDRESS mate-session  # for mate (could be unity, xfce4-session, gnome3, etc.)
 ```
 
-{% include note.html text="To switch back to the regular view, simply click on **View** → uncheck **Enhanced session**." %}
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+To switch back to the regular view, simply click on **View** → uncheck **Enhanced session**.
+</div>
 
 
 ## Sharing folders

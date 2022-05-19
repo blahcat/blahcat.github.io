@@ -97,7 +97,7 @@ So basically, if we create a process (say `cmd.exe`), and overwrite its token
 with the `System` token value we found (0xffffc0002f405590), our process will be
 running as `System`. Let's try!
 
-{%include image.html src="/assets/images/win-kernel-debug/token-bump-via-windbg-1.png" %}
+![image_alt](/assets/images/win-kernel-debug/token-bump-via-windbg-1.png)
 
 We search our process using `kd`:
 
@@ -119,7 +119,7 @@ kd> eq 0xffffe000babfd900+0x348 0xffffc0002f405590
 
 And tada ...
 
-{%include image.html src="/assets/images/win-kernel-debug/token-bump-via-windbg-2.png" %}
+![image_alt](/assets/images/win-kernel-debug/token-bump-via-windbg-2.png)
 
 Now we know how to transform any unprivileged process into a privileged one
 using `kd`.

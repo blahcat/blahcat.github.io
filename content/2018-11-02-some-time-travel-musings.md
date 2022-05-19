@@ -46,7 +46,7 @@ That's already quite fun, but WinDbg can go a lot further.
 
 WinDbg can use LINQ to query the TTD database, to synthetize a lot more of runtime information in a very painless way. To do so, a new attribute `TTD` was added to the runtime variables `$curprocess`
 
-```
+```text
 0:000> dx @$curprocess.TTD
 @$curprocess.TTD
     Lifetime         : [2C:0, 2EB0F:0]
@@ -56,7 +56,7 @@ WinDbg can use LINQ to query the TTD database, to synthetize a lot more of runti
 
 and `$cursession`
 
-```
+```text
 0:000> dx @$cursession.TTD
 @$cursession.TTD                 : [object Object]
     Calls            [Returns call information from the trace for the specified set of methods: TTD.Calls("module!method1", "module!method2", ...) For example: dx @$cursession.TTD.Calls("user32!SendMessageA")]
@@ -68,18 +68,20 @@ and `$cursession`
     Utility          : Methods that can be useful when analyzing time travel traces
 ```
 
-{% include note.html text="You might want to enable DML too (by running the command `.prefer_dml 1`) if you want to click your way through those methods." %}
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+You might want to enable DML too (by running the command `.prefer_dml 1`) if you want to click your way through those methods.
+</div>
 
 Among some of the most interesting parts, we can now query function calls, like
 
-```
+```text
 0:000> dx @$cursession.TTD.Calls("ntdll!mem*").Count()
 @$cursession.TTD.Calls("ntdll!mem*").Count() : 0x2ef8
 ```
 
 Will count the number of calls to function matching `ntdll!mem*` pattern, or even filter function calls per parameter
 
-```
+```text
 0:000> dx @$cursession.TTD.Calls("Kernel*!VirtualAlloc*").Where( c => c.Parameters[3] == 0x40 ).Count()
 $cursession.TTD.Calls("Kernel*!VirtualAlloc*").Where( c => c.Parameters[3] == 0x40).Count() : 0x1
 ```
@@ -89,7 +91,7 @@ Which will filter the calls to function matching `Kernel*!VirtualAlloc*` pattern
 
 Another useful feature is the memory access, exposed by
 
-```
+```text
 0:000> dx $cursession.TTD
   [...]
   Memory       [Returns memory access information for specified address range: TTD.Memory(startAddress, endAddress [, "rwec"])]
@@ -97,7 +99,7 @@ Another useful feature is the memory access, exposed by
 
 To take the real life example of a self-decrypting packer, that would allocate some memory (likely in RWX), then decrypt the code and finally jump to it. If we were to reverse such packer, we don't care much about how the payload is decrypted (could be a simple XOR, could be AES, could be custom crypto, etc.), what we only care about is what the code looks like once decrypted. And that becomes stupidly easy with TTD + DDM:
 
-```
+```text
 // Isolate the address(es) newly allocated as RWX
 0:000> dx @$cursession.TTD.Calls("Kernel*!VirtualAlloc*").Where( f => f.Parameters[3] == 0x40 ).Select( f => new {Address : f.ReturnValue } )
 
