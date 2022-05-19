@@ -31,13 +31,12 @@ jobs:
         run: |
           pip install -r requirements.txt
           source ~/.bashrc
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config --local user.name "hugsy"
           git clone --branch master --single-branch https://github.com/hugsy/attila.git themes/attila
           pelican-themes --install themes/attila
           pelican content -o output -s pelicanconf.py
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_ACCESS_TOKEN }}
           branch: gh-pages
