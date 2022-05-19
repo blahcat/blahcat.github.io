@@ -38,4 +38,4 @@ jobs:
       - name: Publish the site
         run: |
           ghp-import output --no-jekyll --branch=gh-pages --force --message="Generated new content"
-          git push origin gh-pages
+          git push --force origin gh-pages
