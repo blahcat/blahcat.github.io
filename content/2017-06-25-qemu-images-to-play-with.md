@@ -2,7 +2,7 @@ date: 2017-06-25 00:00:00
 modified: 2017-06-25 00:00:00
 title: Some Qemu images to play with
 author: hugsy
-tags: linux,exploit,debug,arm,mips,aarch64,powerpc,sparc
+tags: linux,pwn,debug,arm,mips,aarch64,powerpc,sparc
 header-img: "img/qemu-img.png"
 category: misc
 

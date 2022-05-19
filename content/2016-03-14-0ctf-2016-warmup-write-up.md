@@ -48,7 +48,6 @@ contain 32 bytes, so we have a classic stack overflow. A part of the challenge
 is however due to the fact that our controlled part is quite limited
 (i.e. 52-32=20 bytes=5 DWORD).
 
-<!--more-->
 
 
 ### Exploitation ###

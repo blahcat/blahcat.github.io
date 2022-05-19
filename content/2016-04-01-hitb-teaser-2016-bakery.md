@@ -30,7 +30,6 @@ Full RelRO:                                       No
 
 It is a baking program, that allows to build your own recipe.
 
-<!--more-->
 
 ### Vulnerability ###
 
@@ -196,7 +195,4 @@ You win! The flag is HITB{24d467d954cc08efbfa6acd8341e55d7}
 bakery@ip-172-31-31-97:/home/bakery$
 ```
 
-Fun challenge, thanks to the whole HITB crew for their continuous inventivity.
-
-And as usual, the full exploit can be found
-[here](https://gist.github.com/hugsy/06ff00997c9d07099f27).
+Fun challenge, thanks to the whole HITB crew for their continuous creativity. And as usual, the full exploit can be found [here](https://gist.github.com/hugsy/06ff00997c9d07099f27).

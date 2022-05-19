@@ -42,7 +42,6 @@ Without any static analysis, we immediately spot that many (if not all)
 control the format field. That's good, we can leverage that later to bypass the
 canary protection. So far, so good ☺
 
-<!--more-->
 
 So what does the binary do? It starts by call the function at 0x04007CD which
 checks if we are human by prompting us to solve an addition with randomly

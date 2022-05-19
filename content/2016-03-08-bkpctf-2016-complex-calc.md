@@ -30,7 +30,6 @@ similar. Both are statically compiled, same protections, the vulnerability is
 located at the same spot (i.e. stack overflow with a malloc-ed buffer we fully
 control). Let's do some bindiffing!
 
-<!--more-->
 
 One of my new toys for quite a few months now is IDA Python plugin
 [diaphora](https://github.com/joxeankoret/diaphora) by Joxean Koret (aka

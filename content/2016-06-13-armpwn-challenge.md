@@ -28,7 +28,6 @@ __Challenge__:
 Try to go from anonymous access to remote code execution on the `websrv` process
 running on a Raspberry-Pi `rpi2-1:80`.
 
-<!--more-->
 
 ```bash
 pi@rpi2-1 ~ $ uname -a

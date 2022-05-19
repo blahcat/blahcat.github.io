@@ -7,7 +7,6 @@ tags: windows, kernel, mmu, x64
 cover: assets/images/f7803990-4baa-4a9a-a09b-0cde30694fa6.png
 
 Sometimes you read about a [completely awesome exploitation technique](#1), so you want to go deeper. So this is my notes about how trying to totally understand the exploitation of [CVE-2020-0796](#2), I ended up struggling finding good explanation about a critical structure of Windows paging mechanism: the "Self-Reference PML4 Entry".
-<!--more-->
 _Disclaimer_: If you came here for new stuff, so let me put your mind at peace: There's nothing new here, I don't claim to find anything what's being found and said by people way smarter, and I have probably understood it wrong anyway so don't judge/quote me. Also the post will only talk be about x64 and Windows here (and having a (L)KD open can help to follow along).
 
 

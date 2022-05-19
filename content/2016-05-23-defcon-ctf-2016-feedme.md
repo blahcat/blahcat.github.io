@@ -10,6 +10,7 @@ category: ctf
 The vulnerable [file](http://s000.tinyupload.com/?file_id=04844403034783715754)
 was given with the instructions:
 
+    :::text
     Don't forget to feed me
     http://www.scs.stanford.edu/brop/
 
@@ -72,7 +73,6 @@ Flags: [ carry  parity  adjust  zero  sign  trap  INTERRUPT  direction  overflow
 
 The interesting function is at 0x08049036:
 
-<!--more-->
 
 ![do-feedme](https://i.imgur.com/WLAWsAW.png)
 

@@ -4,7 +4,7 @@ title: Arbitrary Write primitive in Windows kernel (HEVD)
 author: hugsy
 category: tutorial
 cover: assets/images/win-kernel-debug/hevd-www-hal-interrupt.png
-tags: pwn,windows,hevd,kernel,exploit,write-what-where
+tags: pwn,windows,hevd,kernel,pwn,write-what-where
 
 Back again to modern Windows kernel exploitation!
 

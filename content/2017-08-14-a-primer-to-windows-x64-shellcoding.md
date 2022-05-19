@@ -3,7 +3,7 @@ modified: 2017-08-14 00:00:00
 title: A Primer to Windows x64 shellcoding
 author: hugsy
 cover: assets/images/win-kernel-debug/bg.png
-tags: windows,kernel,debugging,exploit,token,shellcode
+tags: windows,kernel,debugging,pwn,token,shellcode
 category: tutorial
 
 Continuing on the path to Windows kernel exploitation...

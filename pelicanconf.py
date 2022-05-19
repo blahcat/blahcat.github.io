@@ -87,8 +87,8 @@ SITEMAP = {
 # Post and Pages path
 ARTICLE_URL              = 'posts/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
 ARTICLE_SAVE_AS          = 'posts/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
-PAGE_URL                 = 'pages/{slug}/'
-PAGE_SAVE_AS             = 'pages/{slug}/index.html'
+PAGE_URL                 = 'pages/{slug}.html'
+PAGE_SAVE_AS             = 'pages/{slug}.html'
 YEAR_ARCHIVE_SAVE_AS     = 'archives/{date:%Y}/index.html'
 MONTH_ARCHIVE_SAVE_AS    = 'archives/{date:%Y}/{date:%m}/index.html'
 

@@ -44,7 +44,6 @@ Continuing.
 Here you go: 0x7fffffffe16c
 ```
 
-<!--more-->
 
 
 ### Vulnerability ###

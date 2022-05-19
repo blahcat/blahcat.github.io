@@ -12,7 +12,6 @@ points), not really hard. There
 it, but none of them used the technique I used to solve it in only a few
 minutes. So I figured I could throw in my 50c and write this post.
 
-<!--more-->
 
 ### Info ###
 
