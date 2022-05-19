@@ -28,7 +28,7 @@ I was curious to see what could be done so I decided to record via WinDbg a simp
 
 Typed some stuff and closed notepad. WinDbg starts by reading the trace and indexing the database, and breaks at the loader entry point. The indexes (look like `XX:YY` where `X` and `Y` are hex-digits) are like coordinates that can be used to travel around so we can move to an absolute position like
 
-```
+```text
 0:000> !tt 7213:36
 Setting position: 7213:36
 (12c4.1dcc): Break instruction exception - code 80000003 (first/second chance not available)
@@ -135,7 +135,8 @@ BOOL GetMessage(
 ```
 
 It is easily possible to filter those calls as mentioned earlier:
-```
+
+```text
 0:000> dx @$cursession.TTD.Calls("user32!GetMessage*")
 @$cursession.TTD.Calls("user32!GetMessage*").Count() : 0x1e8
 ```
@@ -160,7 +161,7 @@ typedef struct tagMSG {
 
 We can now monitor all the memory accesses to the address 0xa30fb6fc00
 
-```
+```text
 0:000> dx -r1 -nv (*((wintypes!MSG *)0xa30fb6fc00))
 (*((wintypes!MSG *)0xa30fb6fc00))                 : {msg=0x102 wp=0x74 lp=0x140001} [Type: MSG]
     [+0x000] hwnd             : 0x12044a [Type: HWND__ *]
@@ -174,7 +175,7 @@ We can now monitor all the memory accesses to the address 0xa30fb6fc00
 
 `MSG.wParam` in particular will hold the value of the keycode when the key is stroke, so we can also narrow it to ASCII characters
 
-```
+```text
 0:000> dx -g @$cursession.TTD.Memory(0xa30fb6fc10, 0xa30fb6fc10+8, "w").Where(m => m.Value >= 0x20 && m.Value < 0x80)
 ===============================================================================================================================================================================
 =           = (+) EventType   = (+) ThreadId = (+) UniqueThreadId = (+) TimeStart = (+) TimeEnd = (+) AccessType = (+) IP            = (+) Address     = (+) Size = (+) Value =
@@ -190,7 +191,7 @@ We can now monitor all the memory accesses to the address 0xa30fb6fc00
 
 That's a lot more interesting so we use LINQ even further to print the characters directly by casting the Value to `char` and we get
 
-```
+```text
 0:000> dx -g @$cursession.TTD.Memory(0xa30fb6fc10, 0xa30fb6fc10+8, "w").Where(m => m.Value >= 0x20 && m.Value < 0x80).Select( c => (char)c.Value )
 ====================
 =                  =
@@ -224,6 +225,7 @@ This concludes this light post about TTD and its DDM integration.
 TTD brings a new approach to traditional debugging which is a huge plus. Not only that, but its integration in WinDbg with LINQ and DDM makes it even more powerful, and I hope this small post helped in making those tools more approachable.
 
 In the mean time, I'll leave you with some links to dig deeper:
+
 - [Debugger data model, Javascript & x64 exception handling](https://doar-e.github.io/blog/2017/12/01/{:target="_blank"}debugger-data-model/)
 - [Channel9 - Introduction to Time Travel Debuging]({:target="_blank"}
 https://www.youtube.com/watch?v=5U73Vxb4Jk8)

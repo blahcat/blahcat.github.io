@@ -11,32 +11,21 @@ Or, on how to use the (Windows 10) new field `_ETHREAD.ThreadName` to stabilize 
 
 ## SetThreadDescription() as a way to allocate controlled kernel pools
 
-Keeping on with experimenting with Windows 10 I noticed a field part of the `nt!_ETHREAD` structure, called `ThreadName`.
-For a minute, the field name misled me to think threads were now
-[Named Objects](https://docs.microsoft.com/en-us/windows/desktop/sync/object-names) on Windows. What it is instead, is a
-convenient and native way to name a thread, any thread by attaching a `UNICODE_STRING` structure to it. Thanks to
-<a class="fa fa-twitter" href="https://twitter.com/@PetrBenes" target="_blank"> @PetrBenes</a>'s invaluable [`ntdiff`](https://ntdiff.github.io/) it became clear
-that this field was introduced with Windows 10, more specifically 1607.
+Keeping on with experimenting with Windows 10 I noticed a field part of the `nt!_ETHREAD` structure, called `ThreadName`. For a minute, the field name misled me to think threads were now [Named Objects](https://docs.microsoft.com/en-us/windows/desktop/sync/object-names) on Windows. What it is instead, is a convenient and native way to name a thread, any thread by attaching a `UNICODE_STRING` structure to it. Thanks to <a class="fa fa-twitter" href="https://twitter.com/@PetrBenes" target="_blank"> @PetrBenes</a>'s invaluable [`ntdiff`](https://ntdiff.github.io/) it became clear that this field was introduced with Windows 10, more specifically 1607.
 
 ![ntdiff](/assets/images/small-pool/ntdiff.png)
 
 [Source](https://ntdiff.github.io/#versionLeft=Win8.1_U1%2Fx64%2FSystem32&filenameLeft=ntoskrnl.exe&typeLeft=Standalone%2F_ETHREAD&versionRight=Win10_1607_RS1%2Fx64%2FSystem32&filenameRight=ntoskrnl.exe&typeRight=Standalone%2F_ETHREAD)
 
-So how to use it? Is it even reachable? The answer was as immediate as [Googling "windows set thread name"](http://lmgtfy.com/?q=windows+10+set+thread+name) which
-leads to an [MSDN article](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-set-a-thread-name-in-native-code?view=vs-2017). This
-article mentions the [`SetThreadDescription()`](https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-setthreaddescription) in `processthreadsapi.h`. Disassembling `kernelbase.dll` shows that this function is merely a wrapper around the syscall `NtSetInformationThread()` with a
-`ThreadInformationClass` set to 0x26 (`ThreadNameInformation`).
+So how to use it? Is it even reachable? The answer was as immediate as [Googling "windows set thread name"](http://lmgtfy.com/?q=windows+10+set+thread+name) which leads to an [MSDN article](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-set-a-thread-name-in-native-code?view=vs-2017). This article mentions the [`SetThreadDescription()`](https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-setthreaddescription) in `processthreadsapi.h`. Disassembling `kernelbase.dll` shows that this function is merely a wrapper around the syscall `NtSetInformationThread()` with a `ThreadInformationClass` set to 0x26 (`ThreadNameInformation`).
 
 ![ida-setthreaddescription](/assets/images/small-pool/ida-setthreaddescription.png)
 
-Once in `ntoskrnl` (IDA), the syscall performs various checks (is the `_ETHREAD.ThreadName` already allocated, is the input size and buffer correct etc.),
-and then call `ExAllocatePoolWithTag()` with a tag of `ThNm` and as `NonPagedPoolNx`, and the size provided by the `UNICODE_STRING` structure, plus `sizeof(UNICODE_STRING)`.
-Finally, the user buffer will be `memmove`-ed into this new pool.
+Once in `ntoskrnl` (IDA), the syscall performs various checks (is the `_ETHREAD.ThreadName` already allocated, is the input size and buffer correct etc.), and then call `ExAllocatePoolWithTag()` with a tag of `ThNm` and as `NonPagedPoolNx`, and the size provided by the `UNICODE_STRING` structure, plus `sizeof(UNICODE_STRING)`. Finally, the user buffer will be `memmove`-ed into this new pool.
 
 ![ntsetinformationthread-1](/assets/images/small-pool/ntsetinformationthread-1.png)
 
-Since the unicode buffer and its size are fully user controlled, this means that the syscall `NtSetInformationThread(0x26)` provides a way to allocate an
-arbitrary sized pool in the kernel, for each thread we create and/or can open a handle to via `OpenThread()`.
+Since the unicode buffer and its size are fully user controlled, this means that the syscall `NtSetInformationThread(0x26)` provides a way to allocate an arbitrary sized pool in the kernel, for each thread we create and/or can open a handle to via `OpenThread()`.
 
 <div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
 The code was tested on Windows 10 RS5 x64. To work on 32b one might need to adjust the offsets. Also Windows must be at least 1607.
@@ -51,10 +40,9 @@ The accute observer may notice that only `THREAD_SET_LIMITED_INFORMATION` class 
 ![image_alt](/assets/images/small-pool/setthreadname-1.png)
 
 
-From WinDbg, the `!poolfind` command can be used to filter by tag name, in this case `ThNm` (0x6d4e6854), or query `!pool` with the
-address from the field `_ETHREAD!ThreadName`. This confirms that we fully control the content and size of pools. To be in the large pool, the chunk must be of at least 0x1000 bytes, making the minimum actual pool data size of 0x1000-0x10 bytes (for the header). And for the maxiumum allocatable size, during this experiment it was shown possible to allocate thread name up to 0xfff0 bytes (65520):
+From WinDbg, the `!poolfind` command can be used to filter by tag name, in this case `ThNm` (0x6d4e6854), or query `!pool` with the address from the field `_ETHREAD!ThreadName`. This confirms that we fully control the content and size of pools. To be in the large pool, the chunk must be of at least 0x1000 bytes, making the minimum actual pool data size of 0x1000-0x10 bytes (for the header). And for the maxiumum allocatable size, during this experiment it was shown possible to allocate thread name up to 0xfff0 bytes (65520):
 
-```
+```text
 C:\Users\IEUser\Desktop>pslist -nobanner -d notepad
 Thread detail for MSEDGEWIN10:
 
@@ -78,17 +66,7 @@ Ok cool, but so what?
 
 ## Leverage as exploit primitive
 
-Although there's no vulnerability there, one could use this technique to dump some data in the kernel in a vulnerability exploitation
-scenario such as an arbitrary write. One possible use case would be to store the addresses of a ROP sequence to disable SMEP.
-However, to achieve this
-the attacker must know the address where this pool in the kernel. Luckily we found the answer in the kernel "Large Pool" allocator.
-[Former analysis on the big pool allocator](http://www.alex-ionescu.com/?p=231) have shown some interesting properties, but what
-makes it perfect is the
-[`NtQuerySystemInformation()`](https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntquerysysteminformation)
-syscall with the undocumented
-[`SystemBigPoolInformation`](https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/bigpool_entry.htm)(0x42)
-as class information, which provides **exactly** what we were looking for: the enumeration of all large pools with their kernel
-addresses, their size, and their tag.
+Although there's no vulnerability there, one could use this technique to dump some data in the kernel in a vulnerability exploitation scenario such as an arbitrary write. One possible use case would be to store the addresses of a ROP sequence to disable SMEP. However, to achieve this the attacker must know the address where this pool in the kernel. Luckily we found the answer in the kernel "Large Pool" allocator. [Former analysis on the big pool allocator](http://www.alex-ionescu.com/?p=231) have shown some interesting properties, but what makes it perfect is the [`NtQuerySystemInformation()`](https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntquerysysteminformation) syscall with the undocumented [`SystemBigPoolInformation`](https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/bigpool_entry.htm)(0x42) as class information, which provides **exactly** what we were looking for: the enumeration of all large pools with their kernel addresses, their size, and their tag.
 
 This is enough to dump such information:
 
@@ -113,14 +91,14 @@ If large enough the buffer `pBuffer` will be populated by the kernel by `N` entr
 
 Entry0
 {
-0x08 ULONG_PTR Entry0.Address
-0x10 DWORD Entry0.PoolSize
-0x18 DWORD Entry0.PoolTag
+  0x08 ULONG_PTR Entry0.Address
+  0x10 DWORD Entry0.PoolSize
+  0x18 DWORD Entry0.PoolTag
 }
 
 Entry1
 {
-0x20 Entry1.Address
+  0x20 Entry1.Address
 [...]
 ```
 
@@ -164,11 +142,9 @@ z:\> AllocateLargePool.exe 26948 4096
 [+] Data from buffer 000001BCD71A0000 (16 bytes) written at FFFFD8001E966010
 ```
 
-Some more advanced feng-shui can be achieved using `NtSetInformationThread(ThreadNameInformation)` which will be
-covered in a later post. Although convienent and really stealth, this technique is not bullet-proof since the syscall (if successful) is logged and may be exposed with ETW (see `nt!EtwTraceThreadSetName`).
+Some more advanced feng-shui can be achieved using `NtSetInformationThread(ThreadNameInformation)` which will be covered in a later post. Although convienent and really stealth, this technique is not bullet-proof since the syscall (if successful) is logged and may be exposed with ETW (see `nt!EtwTraceThreadSetName`).
 
-What about local DoS? Well yes, it is a pretty simple to destabilize the system by resource exhaustion by creating a loop of `CreateThread()` + `AllocateBigPool($newThread)`: since it is possible to make each thread of a process allocate a chunk of 0x10000 bytes, simple math will show that creating a somewhat acceptable number of threads, say 0x1000 will bring the total allocation to 0x10000000 bytes (268MB). Not only can the number of threads per process be increased, but the same process can be launched many times. As mentioned earlier, the `_ETHREAD!ThreadName` field is allocated as
-[`NonPagedPoolNx`](https://docs.microsoft.com/en-us/windows/desktop/memory/memory-pools) so all those chunks will never be paged out or freed until the thread (or process) is finished/terminated. Although this DoS is pretty dummy and useless, the only annoying part is that it can be triggered by even low integrity/privilege processes. Running [it](https://gist.github.com/hugsy/a94392e6aeaf87335d06d06a0c05ff96) leads to an interesting scenario of memory pressure where the CPUs are not used but the system is unusable since pool allocation request will fail.
+What about local DoS? Well yes, it is a pretty simple to destabilize the system by resource exhaustion by creating a loop of `CreateThread()` + `AllocateBigPool($newThread)`: since it is possible to make each thread of a process allocate a chunk of 0x10000 bytes, simple math will show that creating a somewhat acceptable number of threads, say 0x1000 will bring the total allocation to 0x10000000 bytes (268MB). Not only can the number of threads per process be increased, but the same process can be launched many times. As mentioned earlier, the `_ETHREAD!ThreadName` field is allocated as [`NonPagedPoolNx`](https://docs.microsoft.com/en-us/windows/desktop/memory/memory-pools) so all those chunks will never be paged out or freed until the thread (or process) is finished/terminated. Although this DoS is pretty dummy and useless, the only annoying part is that it can be triggered by even low integrity/privilege processes. Running [it](https://gist.github.com/hugsy/a94392e6aeaf87335d06d06a0c05ff96) leads to an interesting scenario of memory pressure where the CPUs are not used but the system is unusable since pool allocation request will fail.
 
 As a side note, on my test VM (Windows 10 RS5 with 2 vCpus and 2GB of RAM), I could force a process to spawn ~0xb900 threads before the system became unusable.
 
@@ -176,13 +152,7 @@ As a side note, on my test VM (Windows 10 RS5 with 2 vCpus and 2GB of RAM), I co
 
 ## Final words
 
-This post has shown that the apparently innocent new field `_ETHREAD.ThreadName` that appeared in Windows 1607
-can be subverted to do a lot more than intended. But that's definitely not all, some more esoteric (*cough* malware)
-could use this for stealth data persistence, or even covert channel (writing a tiny chat application based on the code
-above was fairly simple, and is left as an exercise to the reader).
-The thread name pool stays reachable in memory either until the thread is terminated, or another call to
-`NtSetInformationThread(ThreadNameInformation)` is done to this thread. This is convenient because some threads
-should unlikely die during the time of a session making such nice syscall a good place for hiding *stuff*.
+This post has shown that the apparently innocent new field `_ETHREAD.ThreadName` that appeared in Windows 1607 can be subverted to do a lot more than intended. But that's definitely not all, some more esoteric (*cough* malware) could use this for stealth data persistence, or even covert channel (writing a tiny chat application based on the code above was fairly simple, and is left as an exercise to the reader). The thread name pool stays reachable in memory either until the thread is terminated, or another call to `NtSetInformationThread(ThreadNameInformation)` is done to this thread. This is convenient because some threads should unlikely die during the time of a session making such nice syscall a good place for hiding *stuff*.
 
 That's it for this little daily experiment.
 Until next time, cheers ☕️

@@ -1,0 +1,22 @@
+name: Check URLs are valid
+
+on:
+  # check every day at midnight
+  schedule:
+    - cron: '0 0 * * *'
+  # or on every pull request to main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: gaurav-nelson/github-action-markdown-link-check@1.0.13
+      with:
+        use-quiet-mode: 'yes'
+        folder-path: 'content/'
+        base-branch: main
+        config-file: '.github/mlc_config.json'

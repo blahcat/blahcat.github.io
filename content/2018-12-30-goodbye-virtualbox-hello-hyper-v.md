@@ -97,9 +97,10 @@ And this will conclude my pesky rant 😀
 
 
 Some links to conclude:
- - https://github.com/Microsoft/linux-vm-tools
- - https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/
- - https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v
+
+ - [https://github.com/Microsoft/linux-vm-tools](https://github.com/Microsoft/linux-vm-tools){:target="_blank"}
+ - [https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/](https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/){:target="_blank"}
+ - [https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v](https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v){:target="_blank"}
 
 
 Cheatsheet over...

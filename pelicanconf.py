@@ -22,6 +22,7 @@ LINKS = (
   ('Bernardo', 'https://w00tsec.blogspot.com/'),
   ('Danilo', 'https://bugnotfound.com'),
   ('grazfather', 'http://grazfather.github.io/'),
+  ('Diary of a Reverse Engineer', 'https://doar-e.github.io/'),
   ('Connor McGarr', 'https://connormcgarr.github.io'),
   ('tiraniddo.dev', 'https://tiraniddo.dev'),
   ('zodiacon\'s blog', 'https://scorpiosoftware.net/')
@@ -94,10 +95,10 @@ MONTH_ARCHIVE_SAVE_AS    = 'archives/{date:%Y}/{date:%m}/index.html'
 # Tags and Category path
 CATEGORY_URL          = 'category/{slug}'
 CATEGORY_SAVE_AS      = 'category/{slug}/index.html'
-CATEGORIES_SAVE_AS    = 'categories.html'
+CATEGORIES_SAVE_AS    = 'categories/index.html'
 TAG_URL               = 'tag/{slug}'
 TAG_SAVE_AS           = 'tag/{slug}/index.html'
-TAGS_SAVE_AS          = 'tags.html'
+TAGS_SAVE_AS          = 'tags/index.html'
 DRAFT_URL             = 'drafts/{slug}.html'
 
 # Author

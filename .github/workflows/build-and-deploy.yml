@@ -20,8 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          persist-credentials: false
-          fetch-depth: 0
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
       - uses: actions/setup-python@v3
         with:
           python-version: '3.10'
@@ -31,15 +30,12 @@ jobs:
         run: |
           pip install -r requirements.txt
           source ~/.bashrc
-          git config --local user.name "hugsy"
+          git config --global user.name "hugsy"
+          git config --global user.email "hugsy@users.noreply.github.com"
           git clone --branch master --single-branch https://github.com/hugsy/attila.git themes/attila
           pelican-themes --install themes/attila
           pelican content -o output -s pelicanconf.py
+      - name: Publish the site
+        run: |
           ghp-import output --no-jekyll --branch=gh-pages --force --message="Generated new content"
-          git checkout gh-pages
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_ACCESS_TOKEN }}
-          branch: gh-pages
-          force: true
+          git push origin gh-pages

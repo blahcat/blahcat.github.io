@@ -129,7 +129,7 @@ So now we know that we want to export the function `b64decode` at PIE offset
 0xcb0bd. We can use the following simple script to export the functions using
 LIEF (>=0.9):
 
-{% gist hugsy/d48780a2000925902a7e31ff0240479a %}
+<script src="https://gist.github.com/hugsy/d48780a2000925902a7e31ff0240479a.js"></script>
 
 We also need to export `store_reset_3()` which is used to free the structures.
 
@@ -184,7 +184,7 @@ arbitrary functions a child game.
 
 We can now use this skeleton to build a LibFuzzer-based fuzzer around this:
 
-{% gist hugsy/3ef3e4309d1f102aa4318c09b4043b09 %}
+<script src="https://gist.github.com/hugsy/3ef3e4309d1f102aa4318c09b4043b09.js"></script>
 
 Compile it, run it, and be amazed 😎 :
 
