@@ -11,7 +11,7 @@ This is a short blog post that I decided to finish recently after looking for a 
  1. was free/open-source & robustly tested
  2. easily hackable to my need (custom permissions on file/folder/registry, on network access, on device access etc.)
  3. little to no modification to my system
-
+<!--more-->
 So off-the-shelf sandboxing products were disregarded immediately because they almost always fail on point #2 and **always** fail on point #1 as they'll tend to increase attack surface (which is kindda the opposite of the objective here). So quickly Google turned me to [Windows AppContainers](https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation){:target="_blank"} which the MSDN details the [implementation](https://docs.microsoft.com/en-us/windows/win32/secauthz/implementing-an-appcontainer){:target="_blank"} well-enough.
 
 AppContainers are not new and by the look of it, they are here to stay. They were introduced in Windows 8 as an in-kernel isolation mechanism (a-la seccomp for Linux) and are the default model for UWP applications which a simple look at the new Calculator in Process Hacker shows immediately:
