@@ -19,9 +19,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: nelsonjchen/gh-pages-pelican-action@0.1.5
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          GH_PAGES_BRANCH: gh-pages
-          PELICAN_CONFIG_FILE: pelicanconf.py
-          PELICAN_CONTENT_FOLDER: content
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+          cache: 'pip'
+      - name: Build the site
+        run: |
+          pip install -r requirements.txt
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git clone --branch master --single-branch https://github.com/hugsy/attila.git themes/attila
+          pelican-theme --install themes/attila
+          pelican content -o output -s pelicanconf.py
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
