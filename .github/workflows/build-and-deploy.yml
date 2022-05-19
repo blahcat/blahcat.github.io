@@ -35,7 +35,7 @@ jobs:
           git clone --branch master --single-branch https://github.com/hugsy/attila.git themes/attila
           pelican-themes --install themes/attila
           pelican content -o output -s pelicanconf.py
-          ghp-import output --no-jekyll --branch=gh-pages
+          ghp-import output --no-jekyll --branch=gh-pages --force --message="Generated new content"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
