@@ -168,7 +168,7 @@ __Note__: Looking for references about HAL interrupt table corruption, I came ac
 # Building the exploit
 
 __Note__: Some convenience functions of this exploit are located in
-the [`KePwnLib.h`](https://github.com/hugsy/hevd/blob/master/KePwnLib.h) library I wrote. Feel free to use it!
+the [`KePwnLib.h`](https://github.com/hugsy/hevd/blob/feb6d67ca5f5f3c0718042b42e22adbeee6aee62/KePwnLib.h) library I wrote. Feel free to use it!
 
 The very first part of the exploit is very similar to what we did in the former post, with the new IOCTL code:
 
@@ -263,7 +263,7 @@ NtQueryIntervalProfile(dummy1, &dummy2);
 
 ## Assembling all the pieces
 
-The clean final exploit can be found [here](https://github.com/hugsy/hevd/blob/master/ArbitraryOverwrite/exploit.c).
+The clean final exploit can be found [here](https://github.com/hugsy/hevd/blob/c04e46ababbb78913ef228c31389370f17d8e48a/ArbitraryOverwrite/exploit.c).
 
 ![image_alt](/assets/images/win-kernel-debug/hevd-www-final-exploit.png)
 

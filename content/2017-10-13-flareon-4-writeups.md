@@ -41,7 +41,7 @@ My complete arsenal was (in no particular order):
   * [AIP Monitor](http://www.rohitab.com/apimonitor)
   * [SysInternals Suite](https://docs.microsoft.com/en-us/sysinternals)
   * [Binary Ninja](https://binary.ninja)
-    * [Binja-AVR](https://github.com/hugsy/binja-avr)
+    * [Binja-AVR](https://github.com/fluxchief/binaryninja_avr)
     * [Binja-covfefe](https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c)
   * GDB + [GEF](https://github.com/hugsy/gef)
   * [SimAVR](https://github.com/buserror/simavr)
