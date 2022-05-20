@@ -5,11 +5,11 @@ author: hugsy
 category: ctf
 tags: pwn,linux,insomnihack,mips,stack-overflow,rop,shellcode,keystone
 
-[Insomni'hack CTF 2017](https://teaser.insomnihack.ch) offered a serie of 3
+[Insomni'hack CTF 2017](https://web.archive.org/web/20170102081524/https://teaser.insomnihack.ch/) offered a series of 3
 challenges (i.e. 3 different flags) on the same binary, called `bender_safe`:
 
   * `bender_safe` was a Reversing challenge (50 pts) to [discover the correct
-    validation sequence](https://advancedpersistentjest.com/2017/01/23/writeup-bender_safe-insomnihack-2017-teaser/);
+    validation sequence](https://web.archive.org/web/20210518073631/https://advancedpersistentjest.com/2017/01/23/writeup-bender_safe-insomnihack-2017-teaser/);
   * `bender_safer` (this one) was a Pwnable challenge (300 pts), which could only be done once
     the first challenge was solved;
   * `bender_safest` was a Shellcoding challenge (150 pts), which could only be

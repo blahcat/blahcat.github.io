@@ -11,12 +11,12 @@ on:
 
 jobs:
   link-check:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - uses: gaurav-nelson/github-action-markdown-link-check@1.0.13
+    - name: Link Checker
+      uses: lycheeverse/lychee-action@v1.4.1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
-        use-quiet-mode: 'yes'
-        folder-path: 'content/'
-        base-branch: main
-        config-file: '.github/mlc_config.json'
+        # Check all markdown in '/content'
+        args: --exclude-mail --no-progress 'content/**/*.md'
+        # Fail action on broken links
+        fail: true

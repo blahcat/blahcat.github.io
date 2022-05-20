@@ -73,8 +73,7 @@ overwrite the current process' token by overwriting directly the
 to perform any further privileged operation on the system (naturally it is
 assumed here that we know the current process structure's address - through an
 infoleak or else). Back in 2012, [@cesarcer](https://twitter.com/@cesarcer){:target="_blank" class="fa fa-twitter"}  covered this very situation in his Black Hat
-presentation
-[Easy Local Windows Kernel Exploitation](https://media.blackhat.com/bh-us-12/Briefings/Cerrudo/BH_US_12_Cerrudo_Windows_Kernel_WP.pdf).
+presentation [Easy Local Windows Kernel Exploitation](https://web.archive.org/web/20160909195733/https://media.blackhat.com/bh-us-12/Briefings/Cerrudo/BH_US_12_Cerrudo_Windows_Kernel_WP.pdf).
 
 Although this second way would allow to work around SMEP, for the sake of
 this post we'll go with the first approach as it is the most commonly used.
@@ -127,7 +126,7 @@ the address of our shellcode mapped in a RWX location in userland, then
 use the undocumented `NtQueryIntervalProfile` to trigger it, we will make the
 kernel execute our shellcode! And game over :)
 
-For those unfamiliar with the [Hardware Abstraction Layer (or HAL)](wiki.osdev.org/Hardware_Abstraction_Layer),
+For those unfamiliar with the [Hardware Abstraction Layer (or HAL)](https://wiki.osdev.org/Hardware_Abstraction_Layer),
 it is a software layer aiming to provide a common unified interface to heterogeneous hardware (motherboard, CPUs, network cards, etc.). On Windows, it resides in [`hal.dll`](https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/windows-kernel-mode-hal-library) that is invoked by `ntoskrnl.exe`:
 
 ```bash
@@ -278,8 +277,7 @@ protect sensitive locations, including the SSDT and HAL (among other). Since thi
 technique will modify the HAL table, PG will detect it and force a
 
 Although PG bypass is not the subject of this post, it should be noted that
-[several](http://uninformed.org/index.cgi?v=3&a=3&p=7) [public](http://uninformed.org/index.cgi?v=6&a=1&p=25) [papers](http://fyyre.ru/vault/bootloader_v2.txt) and
-[tools](https://github.com/hfiref0x/UPGDSED) cover ways to bypass it.
+[several](http://uninformed.org/index.cgi?v=3&a=3&p=7) [public](http://uninformed.org/index.cgi?v=6&a=1&p=25) [papers](https://web.archive.org/web/20180312140501/http://fyyre.ru/vault/bootloader_v2.txt) and [tools](https://github.com/hfiref0x/UPGDSED) cover ways to bypass it.
 
 
 # Conclusion

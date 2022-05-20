@@ -33,7 +33,7 @@ This page centralizes series of posts from this blog into their corresponding ca
 | :--- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
 | 0    | [Repository of QEMU images to practice on different architectures - Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA){:target="_blank"}                                        | [hugsy](/author/hugsy) |
 | 1    | [Repository of QEMU images to practice on different architectures - Google Drive](https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing){:target="_blank"} | [hugsy](/author/hugsy) |
-| 2    | [Practice with GEF online](https://demo.gef.blah.cat){:target="_blank"}  (username: `gef` password: `gef-demo`)                                                                           | [hugsy](/author/hugsy) |
+| 2    | [Practice with GEF online](https://github.com/hugsy/gef#:~:text=Or%20try%20it%20online).){:target="_blank"}  (username: `gef` password: `gef-demo`)                                                                           | [hugsy](/author/hugsy) |
 
 
 ## Windows Series ##

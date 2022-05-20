@@ -16,7 +16,7 @@ category: tutorial
 
 ### Introduction ###
 
-After releasing [the QEMU images](https://blahcat.github.io/2017/06/25/qemu-images-to-play-with/) I've created to test [`GEF`](https://github.com/hugsy/gef), I've received tons of demands from people asking for more images, but also for some DYI procedures.
+After releasing [the QEMU images](/posts/2017/06/25/qemu-images-to-play-with.html) I've created to test [`GEF`](https://github.com/hugsy/gef), I've received tons of demands from people asking for more images, but also for some DYI procedures.
 
 As  [@Fox0x01](https://twitter.com/@Fox0x01){:target="_blank" class="fa fa-twitter"} already covered fairly exhaustively [how to build an QEMU ARMv6 compatible VM][https://azeria-labs.com/emulate-raspberry-pi-with-qemu/){:target="_blank"}, through this blog post I intend to provide a step-by-step how-to on building a Debian Stretch Malta MIPS32el image.
 
@@ -38,7 +38,7 @@ $ wget http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mipsel/curre
 - a kernel to boot on:
 
 ```bash
-$ wget http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mipsel/current/images/malta/netboot/vmlinux-4.9.0-4-4kc-malta
+$ wget http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mipsel/current/images/malta/netboot/vmlinux-4.9.0-13-4kc-malta
 ```
 
 You also need a hard drive to install the OS on:

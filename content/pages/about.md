@@ -24,7 +24,7 @@ or <a class="fa fa-github" href="https://github.com/blahcat" target="_blank">&nb
   - [codemachine.com](https://www.codemachine.com/){:target="_blank"}
   - [revers.engineering](https://revers.engineering/){:target="_blank"}
   - [zodiacon's blog](https://scorpiosoftware.net/){:target="_blank"}
-  - [ivanlef0u's blog](https://www.ivanlef0u.tuxfamily.org/){:target="_blank"} & [repo](http://ivanlef0u.fr/repo/){:target="_blank"}
+  - [ivanlef0u's blog](https://www.ivanlef0u.tuxfamily.org/){:target="_blank"}
   - [0vercl0k's blog](https://0vercl0k.tuxfamily.org/bl0g/){:target="_blank"}
   - [WinBindex](https://m417z.com/winbindex/){:target="_blank"}
   - [tiraniddo.dev](https://www.tiraniddo.dev){:target="_blank"}
