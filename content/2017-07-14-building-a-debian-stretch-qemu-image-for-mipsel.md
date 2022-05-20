@@ -32,13 +32,13 @@ device. No need to download any ISO or such, simply download:
 - the initrd (the distro installer):
 
 ```bash
-$ wget http://ftp.debian.org/debian/dists/Debian9.2/main/installer-mipsel/current/images/malta/netboot/initrd.gz
+$ wget http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mipsel/current/images/malta/netboot/initrd.gz
 ```
 
 - a kernel to boot on:
 
 ```bash
-$ wget http://ftp.debian.org/debian/dists/Debian9.2/main/installer-mipsel/current/images/malta/netboot/vmlinux-4.9.0-4-4kc-malta
+$ wget http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mipsel/current/images/malta/netboot/vmlinux-4.9.0-4-4kc-malta
 ```
 
 You also need a hard drive to install the OS on:
@@ -213,7 +213,7 @@ $ qemu-system-mips64el -M malta -cpu MIPS64R2-generic -m 1G \
 ```
 
 The adequate files were downloaded from
-[here](http://ftp.debian.org/debian/dists/Debian9.2/main/installer-mips64el)
+[here](http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mips64el)
 
 
 ### A few known issues ###

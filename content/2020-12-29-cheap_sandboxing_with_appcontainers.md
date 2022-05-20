@@ -96,7 +96,7 @@ This was slightly trickier: to expose a specific capability or file/folder acces
 
 ### Insert the capability set to the startup info
 
-Not unlike [process reparenting](https://github.com/hugsy/pwn--/blob/dev/ProcessReparent/main.cpp), appcontainerization requires to define a set of attribute as part of the extended startup information structure:
+Not unlike [process reparenting](https://github.com/hugsy/pwn--/tree/dev/tools/win32/ProcessReparent/main.cpp), appcontainerization requires to define a set of attribute as part of the extended startup information structure:
 
 ```c++
     SIZE_T size;
@@ -175,10 +175,10 @@ Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
 So that confirms all the "isolation" points that are stated in the MSDN. It also works perfectly well for Win32 GUI apps, for PDF Readers
 ![PDF Reader](/assets/images/1e3a7b9c-7ef6-481d-a803-d0a969b3eab4.png)
 
-Also, for having lightweight web browsing sessions (like with [`qtweb.exe`](http://www.qtweb.net/download.html))
+Also, for having lightweight web browsing sessions (like with [`qtweb.exe`](http://www.qtweb.net/))
 ![Web browser](/assets/images/283fd853-c2c7-4846-9b7c-242bfe1b02a1.png)
 
-That's pretty much it for this small post about AppContainers. If you want to play out-of-the-box with `AppContainMe`, a release archive with all the files is [here](/static/appcontainme-release.7z).
+That's pretty much it for this small post about AppContainers. If you want to play out-of-the-box with `AppContainMe`, a release archive with all the files is [here](https://github.com/hugsy/pwn--/releases).
 
 
 ## Credits & Links
@@ -187,7 +187,7 @@ Shout out to Pavel Yosivovich for his article and tool on AppContainer. And cred
 
  - <a name="ref_1">[1]</a> [Fun with AppContainers](https://scorpiosoftware.net/2019/01/15/fun-with-appcontainers/){:target="_blank"}
  - <a name="ref_2">[2]</a> [zodiacon/RunAppContainer - Github](https://github.com/zodiacon/RunAppContainer){:target="_blank"}
- - <a name="ref_3">[3]</a> [hugsy/pwn++ - Github](https://github.com/hugsy/pwn--/blob/dev/AppContainMe/main.cpp){:target="_blank"}
+ - <a name="ref_3">[3]</a> [hugsy/pwn++ - Github](https://github.com/hugsy/pwn--/tree/dev/tools/win32/AppContainMe){:target="_blank"}
 
 
 Peace ✌
