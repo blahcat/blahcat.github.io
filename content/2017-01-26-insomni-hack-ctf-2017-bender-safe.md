@@ -5,11 +5,11 @@ author: hugsy
 category: ctf
 tags: pwn,linux,insomnihack,mips,stack-overflow,rop,shellcode,keystone
 
-[Insomni'hack CTF 2017](https://teaser.insomnihack.ch) offered a serie of 3
+[Insomni'hack CTF 2017](https://web.archive.org/web/20170102081524/https://teaser.insomnihack.ch/) offered a series of 3
 challenges (i.e. 3 different flags) on the same binary, called `bender_safe`:
 
   * `bender_safe` was a Reversing challenge (50 pts) to [discover the correct
-    validation sequence](https://advancedpersistentjest.com/2017/01/23/writeup-bender_safe-insomnihack-2017-teaser/);
+    validation sequence](https://web.archive.org/web/20210518073631/https://advancedpersistentjest.com/2017/01/23/writeup-bender_safe-insomnihack-2017-teaser/);
   * `bender_safer` (this one) was a Pwnable challenge (300 pts), which could only be done once
     the first challenge was solved;
   * `bender_safest` was a Shellcoding challenge (150 pts), which could only be
@@ -23,8 +23,7 @@ available, I chose to write one.
 
 ### Info ###
 
-The vulnerable file [`bender_safe`](/static/insomnihack_2017/bender_safe/bender_safe), is a
-32-bit MIPS (Big-Endian) binary.
+The vulnerable file `bender_safe` is a 32-bit MIPS (Big-Endian) binary.
 
 ```bash
 gef➤  !file ./bender_safe
@@ -285,7 +284,7 @@ For some reasons, the different shellcodes I had from external resources did not
 work. So I decided to use [Keystone Engine](http://www.keystone-engine.org) to
 write one. Instead of writing totally from scratch, I used a template created
 earlier as part of my project
-[`cemu`](https://github.com/hugsy/cemu/blob/master/templates/mipsbe_sys_exec_bin_sh.asm)
+[`cemu`](https://github.com/hugsy/cemu/blob/dev/cemu/examples/mipsbe_sys_exec_bin_sh.asm)
  and adapted it:
 
 ```python

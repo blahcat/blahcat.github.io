@@ -7,7 +7,7 @@ cover: assets/images/flareon-2017-header.png
 tags: reverse,flareon,windows,pe,linux,elf,arduino,avr
 
 This year, I happened to finally have a chance to be in a good position to play
-[Flare-On CTF](https://flare-on.com), a yearly CTF published by [FireEye](https://www.fireeye.com/blog/threat-research/2017/08/fourth-annual-flare-on-challenge.html). This
+[Flare-On CTF](https://flare-on.com), a yearly CTF published by [FireEye](https://web.archive.org/web/20170831191227/https://www.fireeye.com/blog/threat-research/2017/08/fourth-annual-flare-on-challenge.html). This
 year's edition offered 12 reverse-engineering challenges to solve in 6 weeks.
 
 This post is mostly a dump of the notes taken during all the challenges. Link to
@@ -41,7 +41,7 @@ My complete arsenal was (in no particular order):
   * [AIP Monitor](http://www.rohitab.com/apimonitor)
   * [SysInternals Suite](https://docs.microsoft.com/en-us/sysinternals)
   * [Binary Ninja](https://binary.ninja)
-    * [Binja-AVR](https://github.com/hugsy/binja-avr)
+    * [Binja-AVR](https://github.com/fluxchief/binaryninja_avr)
     * [Binja-covfefe](https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c)
   * GDB + [GEF](https://github.com/hugsy/gef)
   * [SimAVR](https://github.com/buserror/simavr)
@@ -711,7 +711,7 @@ and analysing the output:
 
 ```python
 def send(directions, description, verbose=False):
-    url = "http://192.168.221.4:9998/some/thing.asp?k={k:s}&e={e:s}".format(k=directions, e=description)
+    url = "http://"+"192.168.221.4:9998/some/thing.asp?k={k:s}&e={e:s}".format(k=directions, e=description)
     h = requests.get(url)
     if h.status_code==200 or "@" in h.text: return h.text
     return None
@@ -973,9 +973,9 @@ module provides a useful script to convert it back to binary
 (`hex2bin.py`). From the string inside the firmware, we learn that this firmware
 is meant to be
 used on
-a [Arduino Uno board](https://www.arduino.cc/en/Main/arduinoBoardUno/). This
+a [Arduino Uno board](http://store.arduino.cc/products/arduino-uno-rev3/). This
 board embeds an Atmel AVR 8bit CPU, running at 16MHz. Easily
-enough, Google points us to the [datasheet of the processor.](http://www.atmel.com/Images/Atmel-42735-8-bit-AVR-Microcontroller-ATmega328-328P_Datasheet.pdf)
+enough, Google points us to the [datasheet of the processor.](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf)
 Being totally new to AVR, I stop the challenge at that point for long enough to
 read a good part of the datasheet, which proved to be extremely useful for the
 rest of this exercise.
@@ -1063,7 +1063,7 @@ named [`shell.php`](https://mega.nz/#!MUAWhDTQ!qzAe4c6O0ADp3YyfCNVF0gimNSs44kvpL
 This script is a mess so the cleaned version was
 pushed [here](https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-clean-php).
 
-This challenge is [not about cracking the MD5 hash given](http://hash-killer.com/view/141984), but reversing the way
+This challenge is not about cracking the MD5 hash given, but reversing the way
 the variable `$block` is manipulated with the XOR operation. We don't know the
 key `$param`, including its length. However, we do know that after [L4](https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-clean-php-L4) the
 `strlen($param)` will be in [32..64]. Additionally, we know after this line that
@@ -1586,7 +1586,7 @@ in plaintext, like this
 Whereas others are compressed and/or encrypted by the different algorithms
 mentioned above. However, they are all sent sequentially. Once all the fragments
 extracted by the parser, they were merged into a raw file. Thanks to a good tip
-by <a class="fa fa-twitter" href="https://twitter.com/alex_k_polyakov" target="_blank"> alex_k_polyakov</a>, I used the
+by <i class="fa fa-twitter"> alex_k_polyakov</i>, I used the
 website [RawPixels.net](http://rawpixels.net), and when setting a resolution of
 1420x720, the following capture showed up:
 
@@ -1743,7 +1743,7 @@ But all in all, it was a fun experience... And thank you for whomever prepared
 challenge 12, it was **huge** in all the possible meanings, and it must
 certainly have required a serious patience to build!
 
-And final thanks to <a class="fa fa-twitter" href="https://twitter.com/alex_k_polyakov" target="_blank"> alex_k_polyakov</a>,
-<a class="fa fa-twitter" href="https://twitter.com/n4x0r31" target="_blank"> n4x0r31</a> and <a class="fa fa-twitter" href="https://twitter.com/@aymansagy" target="_blank"> @aymansagy</a>.
+And final thanks to <i class="fa fa-twitter"> alex_k_polyakov</i>,
+<i class="fa fa-twitter"> n4x0r31</i> and <a class="fa fa-twitter" href="https://twitter.com/@aymansagy" target="_blank"> @aymansagy</a>.
 
 See you next year for Flare-On 5!

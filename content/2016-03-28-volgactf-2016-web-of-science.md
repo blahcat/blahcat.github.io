@@ -7,7 +7,6 @@ category: ctf
 
 ### Info ###
 
-The vulnerable file is [here](http://s000.tinyupload.com/?file_id=13236613895475757799).
 
 ```bash
 gef➤  !file ./web_of_science

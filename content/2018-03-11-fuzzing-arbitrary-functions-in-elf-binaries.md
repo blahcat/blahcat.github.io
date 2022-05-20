@@ -223,7 +223,7 @@ Although this technique is not as click-and-play like AFL since it requires a bi
   - there is actually no need for the source code, we can use LibFuzzer on
     black-box binaries
   - low hardware requirements allow to fuzz at very high rate even on weak
-    hardware (and [transform your RaspberryPis into a fuzzing cluster](https://github.com/hugsy/raspi-fuzz-cluster) 😎)
+    hardware (and transform your RaspberryPis into a fuzzing cluster 😎)
 
 But nothing ever being perfect, there are obviously also cons:
 

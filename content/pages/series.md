@@ -3,13 +3,13 @@ tags: pwn
 
 This page centralizes series of posts from this blog into their corresponding categories:
 
-* [Linux exploitation](#linux-exploitation)
-     - [GEF Screencasts](#gef-screencasts)
-     - [GEF practice environment](#gef-practice-environment)
-* [Windows Exploitation](#windows)
-     - [User](#user-mode-exploitation)
-     - [Kernel](#kernel-mode-exploitation)
-     - [Driver development](#driver-development)
+- [Linux exploitation](#linux-exploitation)
+  - [GEF Screencasts](#gef-screencasts)
+  - [GEF practice environment](#gef-practice-environment)
+- [Windows Series](#windows-series)
+  - [User mode Exploitation](#user-mode-exploitation)
+  - [Kernel mode Exploitation](#kernel-mode-exploitation)
+  - [Driver development](#driver-development)
 
 
 
@@ -33,7 +33,7 @@ This page centralizes series of posts from this blog into their corresponding ca
 | :--- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
 | 0    | [Repository of QEMU images to practice on different architectures - Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA){:target="_blank"}                                        | [hugsy](/author/hugsy) |
 | 1    | [Repository of QEMU images to practice on different architectures - Google Drive](https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing){:target="_blank"} | [hugsy](/author/hugsy) |
-| 2    | [Practice with GEF online](https://demo.gef.blah.cat){:target="_blank"}  (username: `gef` password: `gef-demo`)                                                                           | [hugsy](/author/hugsy) |
+| 2    | [Practice with GEF online](https://github.com/hugsy/gef#:~:text=Or%20try%20it%20online).){:target="_blank"}  (username: `gef` password: `gef-demo`)                                                                           | [hugsy](/author/hugsy) |
 
 
 ## Windows Series ##
@@ -56,10 +56,10 @@ This page centralizes series of posts from this blog into their corresponding ca
 | Id   | Article                                                                                                                                 |                  Author |
 | :--- | :-------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
 | 0    | [WinDBG cheatsheet](https://github.com/hugsy/defcon_27_windbg_workshop/blob/master/windbg_cheatsheet.md){:target="blank"}               | [hugsy](/author/hugsy) |
-| 1    | [Setting up a Windows VM lab for kernel debugging](/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging){:target="blank"}       | [hugsy](/author/hugsy) |
-| 2    | [A Primer to Windows x64 shellcoding](/2017/08/14/a-primer-to-windows-x64-shellcoding){:target="blank"}                                 | [hugsy](/author/hugsy) |
-| 3    | [First exploit in Windows Kernel (HEVD)](/2017/08/18/first-exploit-in-windows-kernel-hevd){:target="blank"}                             | [hugsy](/author/hugsy) |
-| 4    | [Arbitrary Write (aka Write-What-Where) exploits (HEVD)](/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd){:target="blank"} | [hugsy](/author/hugsy) |
+| 1    | [Setting up a Windows VM lab for kernel debugging](/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging){:target="blank"}       | [hugsy](/author/hugsy) |
+| 2    | [A Primer to Windows x64 shellcoding](/posts/2017/08/14/a-primer-to-windows-x64-shellcoding){:target="blank"}                                 | [hugsy](/author/hugsy) |
+| 3    | [First exploit in Windows Kernel (HEVD)](/posts/2017/08/18/first-exploit-in-windows-kernel-hevd){:target="blank"}                             | [hugsy](/author/hugsy) |
+| 4    | [Arbitrary Write (aka Write-What-Where) exploits (HEVD)](/posts/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd){:target="blank"} | [hugsy](/author/hugsy) |
 | 5    | [Double-Fetch (HEVD)](#){:target="blank"}    _(soon)_                                                                                  | [hugsy](/author/hugsy) |
 
 

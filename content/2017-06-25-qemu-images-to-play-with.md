@@ -48,7 +48,7 @@ Unless stated otherwise, `root` password is `root`, and an low privilege account
 
 ## But why ?
 
-Already existing fantastic projects such as [Vagrant](https://atlas.hashicorp.com/boxes/search){:target="_blank"} for Linux/*nix and [modern.ie](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/){:target="_blank"} for Windows help us getting quickly functional environments we can use in labs. But they are only providing Intel-based images.
+Already existing fantastic projects such as [Vagrant](https://app.vagrantup.com/boxes/search){:target="_blank"} for Linux/*nix and [modern.ie](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/){:target="_blank"} for Windows help us getting quickly functional environments we can use in labs. But they are only providing Intel-based images.
 
 The closest thing to what I wanted when I started exploring exotic architectures was [aurel32 Qemu pages](https://people.debian.org/~aurel32/qemu/), which provides great Qemu images. Unfortunately, they are using extremely old kernels and/or Linux distributions, making it too hard for a quick plug-n-play experience.
 

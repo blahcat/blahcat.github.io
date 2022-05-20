@@ -160,6 +160,6 @@ Until next time, cheers ☕️
 
 ### Some links for further reading
 
- - [BlackHat DC 2011 - Mandt - Kernel Pool exploitation](https://media.blackhat.com/bh-dc-11/Mandt/BlackHat_DC_2011_Mandt_kernelpool-wp.pdf)
+ - [BlackHat DC 2011 - Mandt - Kernel Pool exploitation](https://web.archive.org/web/20150419185055/https://media.blackhat.com/bh-dc-11/Mandt/BlackHat_DC_2011_Mandt_kernelpool-wp.pdf)
  - [Exploiting a Windows 10 PagedPool off-by-one](https://j00ru.vexillium.org/2018/07/exploiting-a-windows-10-pagedpool-off-by-one/)
  - [Sheep Year Kernel Heap Fengshui: Spraying in the Big Kids’ Pool](http://www.alex-ionescu.com/?p=231)

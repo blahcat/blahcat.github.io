@@ -10,13 +10,13 @@ This is the first on a series of posts on Windows kernel debugging and
 exploitation.
 
 In this part, we'll cover in details how to get everything setup using Linux as
-host, VirtualBox as hypervisor and Windows virtual images from [Modern.IE](https://modern.ie).
+host, VirtualBox as hypervisor and Windows virtual images from [Modern.IE](http://modern.ie).
 
 __*Note*__: there is nothing ground-breaking here, those posts are mostly notes and
 reminders for the future. [Other people](https://hshrzd.wordpress.com/2017/05/28/starting-with-windows-kernel-exploitation-part-1-setting-up-the-lab/) did a fantastic job covering the same
 topic, so you might probably be more interested into reading those 😁
 
-I like working on a Linux host, so using [VirtualKD](virtualkd.sysprogs.org)
+I like working on a Linux host, so using [VirtualKD](https://virtualkd.sysprogs.org)
 isn't an option. So my setup is:
 
   - Debian testing x64 as host

