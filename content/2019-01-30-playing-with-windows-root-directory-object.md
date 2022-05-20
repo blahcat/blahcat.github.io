@@ -33,14 +33,14 @@ NTSTATUS NtQueryDirectoryObject(
 [source](https://github.com/hfiref0x/WinObjEx64/blob/6f6d4480d724e3430b49ff15da1b01c12793c499/Source/WinObjEx64/ntos/ntos.h#L8583-L8598){:target="_blank"}
 
 
-Those tools are excellent, I use them big time but I was curious if it was possible to extend the data model to expose object tree in a similar fashion. Because the problem in KM (as we can see in Ivan's post) is that the structures hold a lot of pointers, LIST_ENTRYs and other goodies that must be dereferenced manually which turns out to be a tidious task. Also that approach prevents from easily querying the directory object.
+Those tools are excellent, I use them big time but I was curious if it was possible to extend the data model to expose object tree in a similar fashion. Because the problem in KM (as we can see in Ivan's post) is that the structures hold a lot of pointers, `LIST_ENTRY`s and other goodies that must be dereferenced manually which turns out to be a tidious task. Also that approach prevents from easily querying the directory object.
 
 But hold your breath, here comes the Debugger Data Model...
 
 
 ## Extending WinDbg data model to expose the directory objects
 
-With the [help of Alex Ionescu pointing out my shortcomings](https://github.com/hugsy/windbg_js_scripts/pull/1) - but always for my benefit -, I ended up with writing [`ObjectExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/master/ObjectExplorer.js), a surprisingly short JS scripts for WinDbg, which parses and exposes in a structured way the content of `nt!ObpRootDirectoryObject`.
+With the [help of Alex Ionescu pointing out my shortcomings](https://github.com/hugsy/windbg_js_scripts/pull/1) - but always for my benefit -, I ended up with writing [`ObjectExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/45926ab380ba6185cc8e210d77f1a7c56ec05323/scripts/ObjectExplorer.js), a surprisingly short JS scripts for WinDbg, which parses and exposes in a structured way the content of `nt!ObpRootDirectoryObject`.
 
 ![image_alt](/assets/images/{D1BF677A-5CFD-4C16-8ABA-1492397D7E17}.jpg)
 

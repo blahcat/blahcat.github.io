@@ -228,7 +228,7 @@ In the mean time, I'll leave you with some links to dig deeper:
 
 - [Debugger data model, Javascript & x64 exception handling](https://doar-e.github.io/blog/2017/12/01/debugger-data-model/){:target="_blank"}
 - [Channel9 - Introduction to Time Travel Debuging](https://www.youtube.com/watch?v=5U73Vxb4Jk8){:target="_blank"}
-- [Channel9 - Advanced Time Travel Debugging](https://channel9.msdn.com/Shows/Defrag-Tools/Defrag-Tools-186-Time-Travel-Debugging-Advanced){:target="_blank"}
+- [Channel9 - Advanced Time Travel Debugging](https://docs.microsoft.com/en-us/shows/defrag-tools/186-time-travel-debugging-advanced){:target="_blank"}
 - [WinDbg YouTube Playlist](https://www.youtube.com/playlist?list=PLjAuO31Rg973XOVdi5RXWlrC-XlPZelGn){:target="_blank"}
 
 Cheers!
