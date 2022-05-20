@@ -9,7 +9,7 @@ cover: assets/images/qemu-img.png
 ## Introduction
 
 After [releasing my QEMU
-images](https://blahcat.github.io/2017/06/25/qemu-images-to-play-with/) and then publishing a post on [how to build a QEMU image for Debian MIPSel](http://blahcat.github.io/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel/), I still received many demands for information on building more VMs, and among those, the most popular one was AARCH64 (or ARM64).
+images](/posts/2017/06/25/qemu-images-to-play-with.html) and then publishing a post on [how to build a QEMU image for Debian MIPSel](/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html), I still received many demands for information on building more VMs, and among those, the most popular one was AARCH64 (or ARM64).
 
 If you're just interested in downloading the ready-to-use AARCH64 image, just go to the [Mega](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA) repository.
 
@@ -25,13 +25,13 @@ Net Installer, so you will require:
 
 
 ```bash
-$ wget http://ftp.debian.org/debian/dists/Debian9.3/main/installer-arm64/current/images/netboot/debian-installer/arm64/initrd.gz
+$ wget http://ftp.debian.org/debian/dists/Debian9.13/main/installer-arm64/current/images/netboot/debian-installer/arm64/initrd.gz
 ```
 
 - the kernel to boot on for the installation:
 
 ```bash
-$ wget http://ftp.debian.org/debian/dists/Debian9.3/main/installer-arm64/current/images/netboot/debian-installer/arm64/linux
+$ wget http://ftp.debian.org/debian/dists/Debian9.13/main/installer-arm64/current/images/netboot/debian-installer/arm64/linux
 ```
 
 You also need a hard drive to install the OS on:

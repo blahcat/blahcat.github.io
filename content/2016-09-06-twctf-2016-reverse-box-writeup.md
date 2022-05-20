@@ -7,7 +7,7 @@ category: ctf
 
 The `reverse_box` challenge of TWCTF 2016 was a warmup challenge (only 50
 points), not really hard. There
-[are](http://www.megabeets.net/twctf-2016-reverse-reverse-box/) [plenty](http://hamidx9.ir/solutions/2016/tw_mma_ctf/reverse_box/) of
+[are plenty of](http://www.megabeets.net/twctf-2016-reverse-reverse-box/)
 [writeups](https://github.com/ByteBandits/writeups/tree/master/mma-ctf-2016/re/reverse-box/sudhackar) for
 it, but none of them used the technique I used to solve it in only a few
 minutes. So I figured I could throw in my 50c and write this post.
@@ -15,9 +15,7 @@ minutes. So I figured I could throw in my 50c and write this post.
 
 ### Info ###
 
-The vulnerable file
-is [here](http://s000.tinyupload.com/?file_id=14348123165988557694) (sha1:
-1e11da1636e4a6b71683de5c23634b98827d3b3d), given with the description:
+The vulnerable file (sha1: 1e11da1636e4a6b71683de5c23634b98827d3b3d) was given with the description:
 
 ```bash
 $ ./reverse_box ${FLAG}

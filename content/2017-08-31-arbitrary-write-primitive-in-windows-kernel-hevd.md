@@ -291,7 +291,7 @@ See you next time ✌
 
 ## Related links
 
-  1. [Abusing GDI for Ring0 exploit primitives](https://www.coresecurity.com/blog/abusing-gdi-for-ring0-exploit-primitives):
+  1. [Abusing GDI for Ring0 exploit primitives](https://www.coresecurity.com/core-labs/articles/abusing-gdi-for-ring0-exploit-primitives):
     Another interesting way to exploit WWW conditions by Diego Juarez through GDI
   1. [Calling conventions for different C++ compilers and operating systems](http://www.agner.org/optimize/calling_conventions.pdf)
   1. [An excellent reference of Windows internal structures by Geoff Chappell](https://www.geoffchappell.com/studies/windows/km)

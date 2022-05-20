@@ -5,14 +5,13 @@ author: hugsy
 tags: pwn,hitb
 category: ctf
 
-I participated to [HITB Teaser CTF](https://ctf.0ops.net/) only to have a bit of
+I participated to [HITB Teaser CTF](https://ctftime.org/event/325/) only to have a bit of
 fun with there pwnable challenge(s) which I find usually fun and
 instructive. The teaser only offered one pwnable challenge, named `bakery`.
 
 
 ### Info ###
 
-The vulnerable file is [here](http://s000.tinyupload.com/?file_id=02989717986988330189)
 
 ```bash
 gef➤  !file ./bakery.910abf341053d25831ecb465b7ddf738

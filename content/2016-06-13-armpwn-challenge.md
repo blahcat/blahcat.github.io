@@ -170,7 +170,7 @@ New connection from 192.168.69.134 on port 49539
 
 So (at least) one of the vulnerabilities is a standard stack overflow. We can
 confirm that by visualizing the execution flow with `GDB` debugger with `gef`
-extension with [`trace-run`](https://gef.readthedocs.io/en/latest/features/#trace-run-command).
+extension with [`trace-run`](https://gef.readthedocs.io/en/master/commands/trace-run/).
 
 ```bash
 gef➤  ps -sa websrv

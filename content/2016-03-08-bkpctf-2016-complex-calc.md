@@ -6,13 +6,11 @@ date: 2016-03-08 00:00:00
 modified: 2016-03-08 00:00:00
 
 
-The challenge is the sequel to `simple_calc`. If you haven't read our [write-up](/2016/03/07/bkpctf-2016-simple-calc-writeup.html), now is the time 😊
+The challenge is the sequel to `simple_calc`. If you haven't read our [write-up](/posts/2016/03/07/bkpctf-2016-simple-calc-writeup.html), now is the time 😊
 
 
 ### Info ###
 
-The vulnerable file is
-[here](http://s000.tinyupload.com/?file_id=13818394247839189362).
 
 ```bash
 ~ $ file d60001db1a24eca410c5d102410c3311d34d832c
@@ -42,7 +40,7 @@ of the function by simply passing a NULL pointer. Now, `free()` will always
 proceed with the address given as first parameter (therefore stored in $rdi).
 
 So let's see how `free()`
-works. [Some blogs](https://kitctf.de/writeups/0ctf2015/freenote/) already explain very well how
+works. [Some blogs](https://kitctf.de/writeups/0ctf2015/freenote) already explain very well how
 [Glibc heap is structured](https://sploitfun.wordpress.com/2015/02/10/understanding-glibc-malloc/)
 and how
 [heap](http://phrack.org/issues/57/9.html)

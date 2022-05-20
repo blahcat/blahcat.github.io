@@ -27,5 +27,5 @@ or <a class="fa fa-github" href="https://github.com/blahcat" target="_blank">&nb
   - [ivanlef0u's blog](https://www.ivanlef0u.tuxfamily.org/){:target="_blank"} & [repo](http://ivanlef0u.fr/repo/){:target="_blank"}
   - [0vercl0k's blog](https://0vercl0k.tuxfamily.org/bl0g/){:target="_blank"}
   - [WinBindex](https://m417z.com/winbindex/){:target="_blank"}
-  - [tiraniddo.dev](https://tiraniddo.dev){:target="_blank"}
+  - [tiraniddo.dev](https://www.tiraniddo.dev){:target="_blank"}
   - [Connor McGarr](https://connormcgarr.github.io){:target="_blank"}

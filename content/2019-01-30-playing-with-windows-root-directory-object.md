@@ -85,6 +85,6 @@ and we get:
 
 You get the gist. Pretty cool, right?
 
-Although it's already fully functional, [`ObjectExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/master/ObjectExplorer.js) script will be improved gradually. If you have feedbacks or suggestions, I'd be happy to hear about them.
+Although it's already fully functional, [`ObjectExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/main/scripts/ObjectExplorer.js) script will be improved gradually. If you have feedbacks or suggestions, I'd be happy to hear about them.
 
 Cheers ☕️

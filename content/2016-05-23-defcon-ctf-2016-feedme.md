@@ -7,8 +7,7 @@ category: ctf
 
 ### Info ###
 
-The vulnerable [file](http://s000.tinyupload.com/?file_id=04844403034783715754)
-was given with the instructions:
+The vulnerable file was given with the instructions:
 
     :::text
     Don't forget to feed me

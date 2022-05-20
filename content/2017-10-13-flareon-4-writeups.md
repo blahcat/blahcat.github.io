@@ -975,7 +975,7 @@ is meant to be
 used on
 a [Arduino Uno board](https://www.arduino.cc/en/Main/arduinoBoardUno/). This
 board embeds an Atmel AVR 8bit CPU, running at 16MHz. Easily
-enough, Google points us to the [datasheet of the processor.](http://www.atmel.com/Images/Atmel-42735-8-bit-AVR-Microcontroller-ATmega328-328P_Datasheet.pdf)
+enough, Google points us to the [datasheet of the processor.](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf)
 Being totally new to AVR, I stop the challenge at that point for long enough to
 read a good part of the datasheet, which proved to be extremely useful for the
 rest of this exercise.
@@ -1063,7 +1063,7 @@ named [`shell.php`](https://mega.nz/#!MUAWhDTQ!qzAe4c6O0ADp3YyfCNVF0gimNSs44kvpL
 This script is a mess so the cleaned version was
 pushed [here](https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-clean-php).
 
-This challenge is [not about cracking the MD5 hash given](http://hash-killer.com/view/141984), but reversing the way
+This challenge is not about cracking the MD5 hash given, but reversing the way
 the variable `$block` is manipulated with the XOR operation. We don't know the
 key `$param`, including its length. However, we do know that after [L4](https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-clean-php-L4) the
 `strlen($param)` will be in [32..64]. Additionally, we know after this line that

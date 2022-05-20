@@ -23,8 +23,7 @@ available, I chose to write one.
 
 ### Info ###
 
-The vulnerable file [`bender_safe`](/static/insomnihack_2017/bender_safe/bender_safe), is a
-32-bit MIPS (Big-Endian) binary.
+The vulnerable file `bender_safe` is a 32-bit MIPS (Big-Endian) binary.
 
 ```bash
 gef➤  !file ./bender_safe
