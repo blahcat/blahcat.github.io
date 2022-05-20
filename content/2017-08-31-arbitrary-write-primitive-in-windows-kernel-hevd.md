@@ -73,8 +73,7 @@ overwrite the current process' token by overwriting directly the
 to perform any further privileged operation on the system (naturally it is
 assumed here that we know the current process structure's address - through an
 infoleak or else). Back in 2012, [@cesarcer](https://twitter.com/@cesarcer){:target="_blank" class="fa fa-twitter"}  covered this very situation in his Black Hat
-presentation
-[Easy Local Windows Kernel Exploitation](https://media.blackhat.com/bh-us-12/Briefings/Cerrudo/BH_US_12_Cerrudo_Windows_Kernel_WP.pdf).
+presentation [Easy Local Windows Kernel Exploitation](https://web.archive.org/web/20160909195733/https://media.blackhat.com/bh-us-12/Briefings/Cerrudo/BH_US_12_Cerrudo_Windows_Kernel_WP.pdf).
 
 Although this second way would allow to work around SMEP, for the sake of
 this post we'll go with the first approach as it is the most commonly used.
@@ -127,7 +126,7 @@ the address of our shellcode mapped in a RWX location in userland, then
 use the undocumented `NtQueryIntervalProfile` to trigger it, we will make the
 kernel execute our shellcode! And game over :)
 
-For those unfamiliar with the [Hardware Abstraction Layer (or HAL)](wiki.osdev.org/Hardware_Abstraction_Layer),
+For those unfamiliar with the [Hardware Abstraction Layer (or HAL)](https://wiki.osdev.org/Hardware_Abstraction_Layer),
 it is a software layer aiming to provide a common unified interface to heterogeneous hardware (motherboard, CPUs, network cards, etc.). On Windows, it resides in [`hal.dll`](https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/windows-kernel-mode-hal-library) that is invoked by `ntoskrnl.exe`:
 
 ```bash
@@ -168,7 +167,7 @@ __Note__: Looking for references about HAL interrupt table corruption, I came ac
 # Building the exploit
 
 __Note__: Some convenience functions of this exploit are located in
-the [`KePwnLib.h`](https://github.com/hugsy/hevd/blob/master/KePwnLib.h) library I wrote. Feel free to use it!
+the [`KePwnLib.h`](https://github.com/hugsy/hevd/blob/feb6d67ca5f5f3c0718042b42e22adbeee6aee62/KePwnLib.h) library I wrote. Feel free to use it!
 
 The very first part of the exploit is very similar to what we did in the former post, with the new IOCTL code:
 
@@ -263,7 +262,7 @@ NtQueryIntervalProfile(dummy1, &dummy2);
 
 ## Assembling all the pieces
 
-The clean final exploit can be found [here](https://github.com/hugsy/hevd/blob/master/ArbitraryOverwrite/exploit.c).
+The clean final exploit can be found [here](https://github.com/hugsy/hevd/blob/c04e46ababbb78913ef228c31389370f17d8e48a/ArbitraryOverwrite/exploit.c).
 
 ![image_alt](/assets/images/win-kernel-debug/hevd-www-final-exploit.png)
 
@@ -278,8 +277,7 @@ protect sensitive locations, including the SSDT and HAL (among other). Since thi
 technique will modify the HAL table, PG will detect it and force a
 
 Although PG bypass is not the subject of this post, it should be noted that
-[several](http://uninformed.org/index.cgi?v=3&a=3&p=7) [public](http://uninformed.org/index.cgi?v=6&a=1&p=25) [papers](http://fyyre.ru/vault/bootloader_v2.txt) and
-[tools](https://github.com/hfiref0x/UPGDSED) cover ways to bypass it.
+[several](http://uninformed.org/index.cgi?v=3&a=3&p=7) [public](http://uninformed.org/index.cgi?v=6&a=1&p=25) [papers](https://web.archive.org/web/20180312140501/http://fyyre.ru/vault/bootloader_v2.txt) and [tools](https://github.com/hfiref0x/UPGDSED) cover ways to bypass it.
 
 
 # Conclusion
@@ -291,7 +289,7 @@ See you next time ✌
 
 ## Related links
 
-  1. [Abusing GDI for Ring0 exploit primitives](https://www.coresecurity.com/blog/abusing-gdi-for-ring0-exploit-primitives):
+  1. [Abusing GDI for Ring0 exploit primitives](https://www.coresecurity.com/core-labs/articles/abusing-gdi-for-ring0-exploit-primitives):
     Another interesting way to exploit WWW conditions by Diego Juarez through GDI
   1. [Calling conventions for different C++ compilers and operating systems](http://www.agner.org/optimize/calling_conventions.pdf)
   1. [An excellent reference of Windows internal structures by Geoff Chappell](https://www.geoffchappell.com/studies/windows/km)

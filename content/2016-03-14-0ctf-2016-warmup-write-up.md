@@ -5,7 +5,7 @@ author: hugsy
 tags: pwn,gef,ida,0ctf-2016,x86
 category: ctf
 
-I participated to [0ctf](https://ctf.0ops.net/) but only had time to play for
+I participated to [0ctf](https://ctftime.org/team/4419/) but only had time to play for
 the reversing challenge `trace` (write-up coming up soon) during the competition
 time.
 
@@ -17,7 +17,7 @@ And kudos to all teams who solved it !
 
 ### Info ###
 
-The vulnerable file is [here](http://s000.tinyupload.com/?file_id=46540416201928438333)
+
 ```bash
 gef➤  !file ./warmup
 ./warmup: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), statically linked, BuildID[sha1]=c1791030f336fcc9cda1da8dc3a3f8a70d930a11, stripped

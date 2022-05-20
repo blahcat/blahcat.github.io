@@ -7,7 +7,7 @@ category: ctf
 
 ### Info ###
 
-The vulnerable [file](http://s000.tinyupload.com/?file_id=00161391052849766745) was given with the following instructions:
+The vulnerable file was given with the following instructions:
 
     Guess what, it is a heap bug
 

@@ -272,10 +272,7 @@ const char sc[LEN] = ""
 Once copied into an executable location, this shellcode will grant the current
 process with all `System` privileges.
 
-The next post will actually use this newly created shellcode in a concrete
-vulnerability exploitation (from the
-[Extremely Vulnerable Driver](https://github.com/hacksysteam/HackSysExtremeVulnerableDriver)
-by [HackSys Team](http://hacksys.vfreaks.com)).
+The next post will actually use this newly created shellcode in a concrete vulnerability exploitation (from the [Extremely Vulnerable Driver](https://github.com/hacksysteam/HackSysExtremeVulnerableDriver) by HackSys Team.
 
 Until then, take care!
 
@@ -284,6 +281,6 @@ Until then, take care!
 
  1. [A Guide to Kernel Exploitation - Attacking The Core](https://www.amazon.com/Guide-Kernel-Exploitation-Attacking-Core/dp/1597494860)
  1. [Introduction To Windows Shellcode Development](https://securitycafe.ro/2015/10/30/introduction-to-windows-shellcode-development-part1/)
- 1. [x64 Kernel Privilege Escalation](http://mcdermottcybersecurity.com/articles/x64-kernel-privilege-escalation)
+ 1. [x64 Kernel Privilege Escalation](https://mcdcyber.wordpress.com/2011/03/07/x64-kernel-privilege-escalation/)
  1. [Well-Known Security IDentifiers](https://support.microsoft.com/en-ca/help/243330/well-known-security-identifiers-in-windows-operating-systems)
  1. [Understanding Windows Shellcode](http://hick.org/code/skape/papers/win32-shellcode.pdf)
