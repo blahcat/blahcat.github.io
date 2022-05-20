@@ -1,9 +1,9 @@
-name: Check URLs are valid
+name: Documents Validation
 
 on:
-  # check every day at midnight
+  # check every week on sunday at midnight
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * 0'
   # or on every pull request to main
   pull_request:
     branches:
@@ -20,3 +20,13 @@ jobs:
         args: --exclude-mail --no-progress 'content/**/*.md'
         # Fail action on broken links
         fail: true
+
+  spell-check:
+    name: Spellcheck
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: rojopolis/spellcheck-github-actions@0.24.0
+      name: Spellcheck
+      with:
+        config_path: '.github/spellcheck.yml'
