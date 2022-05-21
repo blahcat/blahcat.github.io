@@ -20,7 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
+          #token: ${{ secrets.GH_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v3
         with:
           python-version: '3.10'
