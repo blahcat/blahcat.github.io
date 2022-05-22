@@ -56,6 +56,7 @@ MENUITEMS = (
 
 PLUGINS = [
   'sitemap',
+  'neighbors',
 ]
 
 STATIC_PATHS = [
