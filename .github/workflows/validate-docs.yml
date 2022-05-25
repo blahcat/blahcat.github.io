@@ -2,31 +2,29 @@ name: Documents Validation
 
 on:
   # check every week on sunday at midnight
-  schedule:
-    - cron: '0 0 * * 0'
+  # schedule:
+  #   - cron: '0 0 * * 0'
   # or on every pull request to main
   pull_request:
     branches:
       - main
 
 jobs:
-  link-check:
-    - name: Link Checker
-      uses: lycheeverse/lychee-action@v1.4.1
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      with:
-        # Check all markdown in '/content'
-        args: --exclude-mail --no-progress 'content/**/*.md'
-        # Fail action on broken links
-        fail: true
-
-  spell-check:
-    name: Spellcheck
+  link_check:
+    name: Link Checker
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-    - uses: actions/checkout@master
-    - uses: rojopolis/spellcheck-github-actions@0.24.0
-      name: Spellcheck
-      with:
-        config_path: '.github/spellcheck.yml'
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Check links
+        uses: lycheeverse/lychee-action@v1.4.1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          # Check all markdown in '/content'
+          args: --exclude-mail --no-progress 'content/**/*.md'
+          # Fail action on broken links
+          fail: true
+

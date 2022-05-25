@@ -10,7 +10,7 @@ Unless specified otherwise, all content is released under the [CopyLeft license]
 
 Follow us on
 <a class="fa fa-twitter" href="https://twitter.com/ctf_blahcat" target="_blank">&nbsp;Twitter</a>
-or <a class="fa fa-github" href="https://github.com/blahcat" target="_blank">&nbsp;Github</a> for updates! If you __really__ have to, you can also shoot us an [email](mailto:ctf AT [nospam]blah DOT cat).
+or <a class="fa fa-github" href="https://github.com/blahcat" target="_blank">&nbsp;Github</a> for updates! If you __really__ have to, you can also shoot us an <a class="fa fa-envelop" href="mailto:ctf AT [nospam]blah DOT cat" target="_blank">&nbsp;email</a>.
 
 
 
@@ -23,9 +23,11 @@ or <a class="fa fa-github" href="https://github.com/blahcat" target="_blank">&nb
   - [rayanfam.com](https://rayanfam.com/){:target="_blank"}
   - [codemachine.com](https://www.codemachine.com/){:target="_blank"}
   - [revers.engineering](https://revers.engineering/){:target="_blank"}
-  - [zodiacon's blog](https://scorpiosoftware.net/){:target="_blank"}
-  - [ivanlef0u's blog](https://www.ivanlef0u.tuxfamily.org/){:target="_blank"}
-  - [0vercl0k's blog](https://0vercl0k.tuxfamily.org/bl0g/){:target="_blank"}
+  - <a class="fa fa-github" target="_blank" href="https://scorpiosoftware.net/">&nbsp;@zodiacon's blog</a>
+  - <a class="fa fa-github" target="_blank" href="https://www.ivanlef0u.tuxfamily.org/">&nbsp;@ivanlef0u's blog</a>
+  - <a class="fa fa-github" target="_blank" href="https://0vercl0k.tuxfamily.org/bl0g/">&nbsp;@0vercl0k's blog</a>
   - [WinBindex](https://m417z.com/winbindex/){:target="_blank"}
   - [tiraniddo.dev](https://www.tiraniddo.dev){:target="_blank"}
-  - [Connor McGarr](https://connormcgarr.github.io){:target="_blank"}
+  - <a class="fa fa-github" target="_blank" href="https://connormcgarr.github.io">@33y0re</a>
+  - <a class="fa fa-github" target="_blank" href="https://syfuhs.net/">@SteveSyfuhs' blog</a>
+  - <a class="fa fa-github" target="_blank" href="https://csandker.io/">@0xcsandker's blog</a>
