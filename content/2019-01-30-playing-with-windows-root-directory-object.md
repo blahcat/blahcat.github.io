@@ -48,9 +48,7 @@ With the [help of Alex Ionescu pointing out my shortcomings](https://github.com/
 Not only it's all clickety friendly when I'm feeling it's too complicated to type on a keyboard, but the absolute awesome thing is the total integration with LINQ, so you can actually search those objects programmatically (which is impossible with `WinObj` for instance). Say you want to enumerate the `nt!_OBJECT_TYPE` keys of all the `ObjectTypes` on your version of Windows, well...
 
 ```text
-lkd> dx -g -r1 @$cursession.Objects.Children.Where( obj => obj.Name == "ObjectTypes" )
-.First().Children
-.Select(o => new { Name = o.RawObjectHeader.Name, Key = (char*)&o.RawObjectHeader.Key})
+lkd> dx -g -r1 @$cursession.Objects.Children.Where( obj => obj.Name == "ObjectTypes" ).First().Children.Select(o => new { Name = o.RawObjectHeader.Name, Key = (char*)&o.RawObjectHeader.Key})
 ```
 
 which produces something like:
@@ -73,9 +71,8 @@ which produces something like:
 Or enumerate all processes owning an ALPC port object from the `\RPC Control` directory can be seen as easily as
 
 ```text
-lkd> dx -r0 @$AlpcPorts = @$cursession.Objects.Children.Where( obj => obj.Name == "RPC Control" )
-.First().Children.Where( rpc => rpc.Type == "ALPC Port")
-lkd> dx -g @$AlpcPorts.Select( alpc => new { AlpcName= alpc.Name, ProcessOwnerName= (char*) alpc.RawObjectHeader->OwnerProcess->ImageFileName })
+lkd> dx -r0 @$AlpcPorts = @$cursession.Objects.Children.Where( obj => obj.Name == "RPC Control" ).First().Children.Where( rpc => rpc.Type == "ALPC Port")
+lkd> dx -g @$AlpcPorts.Select( alpc => new { AlpcName= alpc.Name, ProcessOwnerName= (char*) alpc.Object.OwnerProcess->ImageFileName })
 ```
 
 and we get:
