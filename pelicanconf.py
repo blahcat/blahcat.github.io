@@ -50,6 +50,7 @@ MENUITEMS = (
     ('Browse By Tag', '/tags/'),
     ('Qemu VMs', '/pages/qemu-vm-repo'),
     ('Exploitation Tutorials', '/pages/exploitation-series'),
+    ('RSS Feed', FEED_ALL_ATOM),   
 )
 
 # Uncomment following line if you want document-relative URLs when developing
