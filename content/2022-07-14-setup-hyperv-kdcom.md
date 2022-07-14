@@ -1,5 +1,5 @@
-date: 2022-07-16 00:00:00
-modified: 2022-07-16 00:00:00
+date: 2022-07-14 00:00:00
+modified: 2022-07-14 00:00:00
 title: Enumerating processes from KD
 author: hugsy
 category: minis
