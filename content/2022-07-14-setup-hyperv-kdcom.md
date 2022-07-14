@@ -1,6 +1,6 @@
 date: 2022-07-14 00:00:00
 modified: 2022-07-14 00:00:00
-title: Enumerating processes from KD
+title: Setup KDCOM for 2 Hyper-V VMs
 author: hugsy
 category: minis
 tags: windows, hyperv, kdcom
