@@ -8,7 +8,10 @@ on:
   pull_request:
     branches:
       - main
-
+  push:
+    branches:
+      - main
+      
 jobs:
   link_check:
     name: Link Checker
