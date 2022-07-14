@@ -2,7 +2,7 @@ date: 2020-05-23 00:00:00
 modified: 2020-05-23 00:00:00
 title: Enumerating processes from KD
 author: hugsy
-category: cheatsheet
+category: minis
 tags: windows, kernel, process
 
 
