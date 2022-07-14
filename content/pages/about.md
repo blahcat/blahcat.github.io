@@ -5,13 +5,11 @@ This blog is all about technical stuff, no ads, no cookie or whatever to accept.
 Unless specified otherwise, all content is released under the [CopyLeft license](https://www.gnu.org/licenses/copyleft.en.html), and the all code (own tools, snippets, etc.) under the [MIT license](https://opensource.org/licenses/MIT).
 
 
-
 ## Stay in touch ##
 
-Follow us on
-<a class="fa fa-twitter" href="https://twitter.com/ctf_blahcat" target="_blank">&nbsp;Twitter</a>
-or <a class="fa fa-github" href="https://github.com/blahcat" target="_blank">&nbsp;Github</a> for updates! If you __really__ have to, you can also shoot us an <a class="fa fa-envelop" href="mailto:ctf AT [nospam]blah DOT cat" target="_blank">&nbsp;email</a>.
-
+Follow us on:
+ - <a class="fa fa-twitter" href="https://twitter.com/ctf_blahcat" target="_blank">&nbsp;Twitter</a>
+ - <a class="fa fa-github" href="https://github.com/blahcat" target="_blank">&nbsp;Github</a>
 
 
 ## Recommended blogs ##
