@@ -69,7 +69,7 @@ Here with `CryptSvc`. Also make the border red so we can find the window easily!
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<TargetConfig Name="Attach Service" LastUsed="2031-01-01T05:23:58.2908827Z" AccentColor="#00FF0000">
+<TargetConfig Name="Attach Service" LastUsed="2031-01-01T05:23:58.2908827Z" AccentColor="#FFFF0000">
     <EngineConfig />
     <EngineOptions />
     <TargetOptions>
