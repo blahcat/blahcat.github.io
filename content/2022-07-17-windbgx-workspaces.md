@@ -90,8 +90,22 @@ regsvr32 ExdiGdbSrv.dll
 ```
 
 You can check out `C:\Program Files\WindowsApps\Microsoft.WinDbg_1.2206.19001.0_x64__8wekyb3d8bbwe\amd64\exdiConfigData.xml` to see all the targets already created.
-![image](https://user-images.githubusercontent.com/590234/179411487-7ed49f28-ca82-4c69-85d8-d1055332b270.png)
+```xml
+<ExdiTargets CurrentTarget = "QEMU">
+[...]
+  <!-- QEMU SW simulator GDB server configuration -->
+  <ExdiTarget Name = "QEMU">
+    <ExdiGdbServerConfigData agentNamePacket = "" uuid = "72d4aeda-9723-4972-b89a-679ac79810ef" displayCommPackets = "yes" debuggerSessionByCore = "no" enableThrowExceptionOnMemoryErrors = "yes" qSupportedPacket="qSupported:xmlRegisters=aarch64,i386">
+      <ExdiGdbServerTargetData targetArchitecture = "ARM64" targetFamily = "ProcessorFamilyARM64" numberOfCores = "1" EnableSseContext = "no" heuristicScanSize = "0xffe" targetDescriptionFile = "target.xml" />
+      <GdbServerConnectionParameters MultiCoreGdbServerSessions = "no" MaximumGdbServerPacketLength = "1024" MaximumConnectAttempts = "3" SendPacketTimeout = "100" ReceivePacketTimeout = "3000">
+        <Value HostNameAndPort="LocalHost:1234" />
+      </GdbServerConnectionParameters>
+      <ExdiGdbServerMemoryCommands GdbSpecialMemoryCommand = "no" PhysicalMemory = "no" SupervisorMemory = "no" HypervisorMemory = "no" SpecialMemoryRegister = "no" SystemRegistersGdbMonitor = "no" SystemRegisterDecoding = "no">
+      </ExdiGdbServerMemoryCommands>
+[...]
+```
 
+And create the workspace:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <TargetConfig Name="WinDbg Is Awesome" LastUsed="2019-07-16T05:23:58.2908827Z" AccentColor="#FFCA5100">
