@@ -31,7 +31,7 @@ Saved workspaces can be found in `%LOCALAPPDATA%\DBG\Targets`
 
 ## Useful Workspaces
 
-Unfortunately the DTD is not documented [and probably will never be](), but all it takes is a quick look at the `DbgX.Interfaces.Internal.dll` .NET library so see the namespace `Dbgx.Interfaces.Target.Options` which holds [all the supported options](https://gist.github.com/hugsy/742066e1fe6e8b078d65f66f790c52b7#:~:text=%5B-,OptionName,-%3D%20%22AttachProcess).
+Unfortunately the DTD is not documented [and probably will never be](https://twitter.com/timmisiak/status/1547264830574174209), but all it takes is a quick look at the `DbgX.Interfaces.Internal.dll` .NET library to see the namespace `Dbgx.Interfaces.Target.Options` which holds [all the supported options](https://gist.github.com/hugsy/742066e1fe6e8b078d65f66f790c52b7#:~:text=%5B-,OptionName,-%3D%20%22AttachProcess).
 
 Some examples:
 
@@ -85,6 +85,7 @@ Here with `CryptSvc`. Also make the border red so we can find the window easily!
 ### Setup a ARM64 Qemu debugging profile
 
 [Using EXDI](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/configuring-the-exdi-debugger-transport), and the provided `ExdiGdbSrv.dll` (in `C:\Program Files\WindowsApps\Microsoft.WinDbg_1.2206.19001.0_x64__8wekyb3d8bbwe\amd64\ExdiGdbSrv.dll`)
+
 ```
 regsvr32 ExdiGdbSrv.dll
 ```
