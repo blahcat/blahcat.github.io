@@ -307,20 +307,23 @@ Thanks for reading...✌
 # Links
 
 What started picking my curiosity:
- - [1] [Ricerca Security on exploiting the same bug](https://ricercasecurity.blogspot.com/2020/04/ill-ask-your-body-smbghost-pre-auth-rce.html){:name="1"}
- - [2] [Chompie1337's CVE-2020-0796 exploit](https://github.com/chompie1337/SMBGhost_RCE_PoC/blob/master/exploit.py){:name="2"}
+
+  - [1] [Ricerca Security on exploiting the same bug](https://ricercasecurity.blogspot.com/2020/04/ill-ask-your-body-smbghost-pre-auth-rce.html){:name="1"}
+  - [2] [Chompie1337's CVE-2020-0796 exploit](https://github.com/chompie1337/SMBGhost_RCE_PoC/blob/master/exploit.py){:name="2"}
 
 
 The whole series of " Getting Physical: Extreme abuse of Intel based Paging Systems" by N. Economou & E. Nissim (CoreSecurity) is a must read/watch:
- - CoreSecurity Getting Physical: [The talk (es)](https://www.youtube.com/watch?v=QGf0-jHFulg&vl=en) // [The slides](http://docplayer.net/44469150-Windows-smep-bypass-u-s-nicolas-a-economou-enrique-e-nissim-p-a-g-e.html)
- - [Part 2 - Windows](https://www.coresecurity.com/core-labs/articles/getting-physical-extreme-abuse-of-intel-based-paging-systems-part-2-windows)
- - [Part 3 - Windows HAL's Heap](https://www.coresecurity.com/core-labs/articles/getting-physical-extreme-abuse-of-intel-based-paging-systems)
+
+  - CoreSecurity Getting Physical: [The talk (es)](https://www.youtube.com/watch?v=QGf0-jHFulg&vl=en) // [The slides](http://docplayer.net/44469150-Windows-smep-bypass-u-s-nicolas-a-economou-enrique-e-nissim-p-a-g-e.html)
+  - [Part 2 - Windows](https://www.coresecurity.com/core-labs/articles/getting-physical-extreme-abuse-of-intel-based-paging-systems-part-2-windows)
+  - [Part 3 - Windows HAL's Heap](https://www.coresecurity.com/core-labs/articles/getting-physical-extreme-abuse-of-intel-based-paging-systems)
 
 
 Other useful resources:
- - [3] ["What Makes It Page? The Windows 7 x64 Virtual Memory Manager" - M. Martignetti](https://www.amazon.com/What-Makes-Page-Windows-Virtual/dp/1479114294){:name="3"}
- - ["Gynvael's Hacking Livestream #30: Windows Kernel Debugging Part III" - A. "honorary_bot" Shishkin](https://www.youtube.com/watch?v=7zTtVYjjquA)
- - ["Windows 8 Kernel Memory Protections Bypass" - J. Fetiveau](https://labs.f-secure.com/archive/windows-8-kernel-memory-protections-bypass/)
+
+  - [3] ["What Makes It Page? The Windows 7 x64 Virtual Memory Manager" - M. Martignetti](https://www.amazon.com/What-Makes-Page-Windows-Virtual/dp/1479114294){:name="3"}
+  - ["Gynvael's Hacking Livestream #30: Windows Kernel Debugging Part III" - A. "honorary_bot" Shishkin](https://www.youtube.com/watch?v=7zTtVYjjquA)
+  - ["Windows 8 Kernel Memory Protections Bypass" - J. Fetiveau](https://labs.f-secure.com/archive/windows-8-kernel-memory-protections-bypass/)
 
 *[CPL]: Current Privilege Level
 *[DPL]: Descriptor Privilege Level
