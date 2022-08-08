@@ -9,7 +9,7 @@ Contrarily to what [even Microsoft says](https://docs.microsoft.com/en-us/virtua
 
 Get your copy/paste skills ready!
 
-## Install Hyper-V on Windows 11 Home
+## Install Hyper-V on Windows 10 Home
 
 ```powershell
 Get-ChildItem $env:SystemRoot\Servicing\Packages\*Hyper-V*.mum | ForEach-Object { dism -Online -NoRestart -add-package:"$_" }
@@ -22,5 +22,8 @@ Enable-WindowsOptionalFeature -All -Online -LimitAccess -FeatureName Microsoft-H
 Get-ChildItem  $env:SystemRoot\Servicing\Packages\*DisposableClientVM*.mum | ForEach-Object { dism -Online -NoRestart -add-package:"$_" }
 Enable-WindowsOptionalFeature  -All -Online -FeatureName Containers-DisposableClientVM
 ```
+
+_Note_: I haven't tested this procedure on Windows 11. If you tested it successfully, feel free to drop me a line in the discussion link below. 
+
 
 Another useful miniz! 👋
