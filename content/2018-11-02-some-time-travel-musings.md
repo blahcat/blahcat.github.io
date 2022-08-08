@@ -24,7 +24,7 @@ As the name implies, Time-Travel Debugging is a tool that will allow to travel t
 
 I was curious to see what could be done so I decided to record via WinDbg a simple Notepad session. TTD is as simple as it gets: start WinDbg (as Admin), and launch the target executable after checking the `Record process with Time Travel Debugging`
 
-![image_alt](/assets/images/windbg-ttd/startrecord.png)
+![image_alt](/assets/images/windbg-ttd/startrecord.PNG)
 
 Typed some stuff and closed notepad. WinDbg starts by reading the trace and indexing the database, and breaks at the loader entry point. The indexes (look like `XX:YY` where `X` and `Y` are hex-digits) are like coordinates that can be used to travel around so we can move to an absolute position like
 
