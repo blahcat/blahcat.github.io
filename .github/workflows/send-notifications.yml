@@ -1,11 +1,6 @@
 name: Send Notifications
 
 on:
-  # for notifications, disregard everything that's not in `main` branch
-  push:
-    branches:
-      - main
-
   # execute the workflow only if build and deploy was successful
   workflow_run:
     workflows:
