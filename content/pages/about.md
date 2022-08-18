@@ -16,16 +16,20 @@ Follow us on:
 
 ### Windows internals
 
+  - [Diary of a Reverse-Engineer](https://doar-e.github.io/){:target="_blank"}
   - [windows-internals.com](https://windows-internals.com/){:target="_blank"}
   - [vergiliusproject.com](https://vergiliusproject.com){:target="_blank"}
   - [rayanfam.com](https://rayanfam.com/){:target="_blank"}
   - [codemachine.com](https://www.codemachine.com/){:target="_blank"}
+  - [Geoff Chappell](https://www.geoffchappell.com/){:target="_blank"}
   - [revers.engineering](https://revers.engineering/){:target="_blank"}
+  - [WinBindex](https://m417z.com/winbindex/){:target="_blank"}
+  - [tiraniddo.dev](https://www.tiraniddo.dev){:target="_blank"}
+  - [Redplait](http://redplait.blogspot.com/){:target="_blank"}
+  - [mez0.cc](https://mez0.cc/){:target="_blank"}
   - <a class="fa fa-github" target="_blank" href="https://scorpiosoftware.net/">&nbsp;@zodiacon's blog</a>
   - <a class="fa fa-github" target="_blank" href="https://www.ivanlef0u.tuxfamily.org/">&nbsp;@ivanlef0u's blog</a>
   - <a class="fa fa-github" target="_blank" href="https://0vercl0k.tuxfamily.org/bl0g/">&nbsp;@0vercl0k's blog</a>
-  - [WinBindex](https://m417z.com/winbindex/){:target="_blank"}
-  - [tiraniddo.dev](https://www.tiraniddo.dev){:target="_blank"}
   - <a class="fa fa-github" target="_blank" href="https://connormcgarr.github.io">@33y0re</a>
   - <a class="fa fa-github" target="_blank" href="https://syfuhs.net/">@SteveSyfuhs' blog</a>
   - <a class="fa fa-github" target="_blank" href="https://csandker.io/">@0xcsandker's blog</a>
