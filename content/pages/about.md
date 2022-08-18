@@ -28,9 +28,14 @@ Follow us on:
   - [Redplait](http://redplait.blogspot.com/){:target="_blank"}
   - [mez0.cc](https://mez0.cc/){:target="_blank"}
   - [Secret Club](https://secret.club/tags#windows){:target="_blank"}
+  - [Needle in a Thread Stack](https://needleinathreadstack.wordpress.com/){:target="_blank"}
+  - [Hyper-V Internals](https://hvinternals.blogspot.com/){:target="_blank"}
+  - [Old New Things](https://devblogs.microsoft.com/oldnewthing/){:target="_blank"}
   - <a class="fa fa-github" target="_blank" href="https://scorpiosoftware.net/">&nbsp;@zodiacon's blog</a>
   - <a class="fa fa-github" target="_blank" href="https://www.ivanlef0u.tuxfamily.org/">&nbsp;@ivanlef0u's blog</a>
   - <a class="fa fa-github" target="_blank" href="https://0vercl0k.tuxfamily.org/bl0g/">&nbsp;@0vercl0k's blog</a>
   - <a class="fa fa-github" target="_blank" href="https://connormcgarr.github.io">@33y0re</a>
   - <a class="fa fa-github" target="_blank" href="https://syfuhs.net/">@SteveSyfuhs' blog</a>
   - <a class="fa fa-github" target="_blank" href="https://csandker.io/">@0xcsandker's blog</a>
+  - <a class="fa fa-github" target="_blank" href="https://j00ru.vexillium.org/">&nbsp;@j00ru's blog</a>
+  - 
