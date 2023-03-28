@@ -5,6 +5,8 @@ on:
   # schedule:
   #   - cron: '0 0 * * 0'
   # or on every pull request to main
+  repository_dispatch:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
@@ -29,6 +31,8 @@ jobs:
           restore-keys: cache-lychee-
       - name: Check links
         uses: lycheeverse/lychee-action@v1.6.1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           args: --cache --max-cache-age 1w --exclude-mail --threads 4 --timeout 30 --retry-wait-time 60 --user-agent 'Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0' --no-progress 'content/**/*.md'
           fail: true

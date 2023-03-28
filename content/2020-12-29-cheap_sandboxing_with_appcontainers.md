@@ -96,7 +96,7 @@ This was slightly trickier: to expose a specific capability or file/folder acces
 
 ### Insert the capability set to the startup info
 
-Not unlike [process reparenting](https://github.com/hugsy/pwn--/tree/dev/tools/win32/ProcessReparent/main.cpp), appcontainerization requires to define a set of attribute as part of the extended startup information structure:
+Not unlike [process reparenting](https://github.com/hugsy/pwn--/tree/dev/tools/win32/ProcessReparent), appcontainerization requires to define a set of attribute as part of the extended startup information structure:
 
 ```c++
     SIZE_T size;
