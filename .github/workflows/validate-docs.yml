@@ -20,14 +20,16 @@ jobs:
       contents: read
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Restore lychee cache
+        uses: actions/cache@v3
+        with:
+          path: .lycheecache
+          key: cache-lychee-${{ github.sha }}
+          restore-keys: cache-lychee-
       - name: Check links
         uses: lycheeverse/lychee-action@v1.6.1
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          # Check all markdown in '/content'
-          args: --exclude-mail --threads 1 --timeout 30 --retry-wait-time 10 --user-agent 'Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0' --no-progress 'content/**/*.md'
-          # Fail action on broken links
+          args: --cache --max-cache-age 1w --exclude-mail --threads 1 --timeout 30 --retry-wait-time 10 --user-agent 'Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0' --no-progress 'content/**/*.md'
           fail: true
 
