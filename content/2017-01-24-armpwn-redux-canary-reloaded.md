@@ -45,7 +45,7 @@ That was the theory, which made perfect sense, but I wanted a practice
 case.
 
 Earlier this year, I [had some fun with ARMPWN](/posts/2016/06/13/armpwn-challenge-write-up.html){:target="_blank"}, a vulnerable web server
-created by  <a class="fa fa-twitter" href="https://twitter.com/@5aelo" target="_blank"> @5aelo</a> to practice
+created by  <a class="fa fa-twitter" href="https://twitter.com/5aelo" target="_blank"> @5aelo</a> to practice
 exploitation on ARM, so I have decided to use it for a practical, yet very
 realistic exploit case.
 

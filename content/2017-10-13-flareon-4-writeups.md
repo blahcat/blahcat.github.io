@@ -1744,6 +1744,6 @@ challenge 12, it was **huge** in all the possible meanings, and it must
 certainly have required a serious patience to build!
 
 And final thanks to <i class="fa fa-twitter"> alex_k_polyakov</i>,
-<i class="fa fa-twitter"> n4x0r31</i> and <a class="fa fa-twitter" href="https://twitter.com/@aymansagy" target="_blank"> @aymansagy</a>.
+<i class="fa fa-twitter"> n4x0r31</i> and <a class="fa fa-twitter" href="https://twitter.com/aymansagy" target="_blank"> @aymansagy</a>.
 
 See you next year for Flare-On 5!

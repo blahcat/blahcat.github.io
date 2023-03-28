@@ -11,7 +11,7 @@ Or, on how to use the (Windows 10) new field `_ETHREAD.ThreadName` to stabilize 
 
 ## SetThreadDescription() as a way to allocate controlled kernel pools
 
-Keeping on with experimenting with Windows 10 I noticed a field part of the `nt!_ETHREAD` structure, called `ThreadName`. For a minute, the field name misled me to think threads were now [Named Objects](https://docs.microsoft.com/en-us/windows/desktop/sync/object-names) on Windows. What it is instead, is a convenient and native way to name a thread, any thread by attaching a `UNICODE_STRING` structure to it. Thanks to <a class="fa fa-twitter" href="https://twitter.com/@PetrBenes" target="_blank"> @PetrBenes</a>'s invaluable [`ntdiff`](https://ntdiff.github.io/) it became clear that this field was introduced with Windows 10, more specifically 1607.
+Keeping on with experimenting with Windows 10 I noticed a field part of the `nt!_ETHREAD` structure, called `ThreadName`. For a minute, the field name misled me to think threads were now [Named Objects](https://docs.microsoft.com/en-us/windows/desktop/sync/object-names) on Windows. What it is instead, is a convenient and native way to name a thread, any thread by attaching a `UNICODE_STRING` structure to it. Thanks to <a class="fa fa-twitter" href="https://twitter.com/PetrBenes" target="_blank"> @PetrBenes</a>'s invaluable [`ntdiff`](https://ntdiff.github.io/) it became clear that this field was introduced with Windows 10, more specifically 1607.
 
 ![ntdiff](/assets/images/small-pool/ntdiff.png)
 

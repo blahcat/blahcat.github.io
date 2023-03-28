@@ -6,7 +6,7 @@ category: minis
 tags: binary,visualization
 
 
-Here's a simple trick that I learned from the amazing  <a class="fa fa-twitter" href="https://twitter.com/@scanlime" target="_blank"> @scanlime</a> to quickly (and universally) visualize the distribution of byte of any binary file, using the [Portable Graymap Format (PGM)](https://en.wikipedia.org/wiki/Netpbm_format) format.
+Here's a simple trick that I learned from the amazing  <a class="fa fa-twitter" href="https://twitter.com/scanlime" target="_blank"> @scanlime</a> to quickly (and universally) visualize the distribution of byte of any binary file, using the [Portable Graymap Format (PGM)](https://en.wikipedia.org/wiki/Netpbm_format) format.
 
 On Windows:
 ```batch

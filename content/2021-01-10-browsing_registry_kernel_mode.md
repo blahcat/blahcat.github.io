@@ -320,7 +320,7 @@ As a learning exercise, I always try to build a script/tool when digging into a 
 
 ![image_alt](/assets/images/5787cef5-11cc-4a1f-97b7-2f6533812b2d.png){:width="500px"}
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> a better version was done by <a class="fa fa-twitter" href="https://twitter.com/@msuiche" target="_blank"> @msuiche</a> [here](#link_3)</div>
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> a better version was done by <a class="fa fa-twitter" href="https://twitter.com/msuiche" target="_blank"> @msuiche</a> [here](#link_3)</div>
 
 Example:
 
@@ -506,7 +506,7 @@ Links to resources I couldn't understand anything without.
  - <a name="link_1">[1]</a> [Windows Kernel Internals NT Registry Implementation](http://ivanlef0u.fr/repo/madchat/vxdevl/papers/winsys/wk_internals/registry.pdf)
  - <a name="link_2">[2]</a> [MSDN - Registry Hives](https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-hives)
  - <a name="link_3">[3]</a> [comaeio/SwishDbgExt - Github](https://github.com/comaeio/SwishDbgExt)
- - <a name="link_4">[4]</a> [Dumping Windows Credentials - <a class="fa fa-twitter" href="https://twitter.com/@lanjelot" target="_blank"> @lanjelot</a> ](https://pure.security/dumping-windows-credentials/)
+ - <a name="link_4">[4]</a> [Dumping Windows Credentials - <a class="fa fa-twitter" href="https://twitter.com/lanjelot" target="_blank"> @lanjelot</a> ](https://tesserent.com/insights/blog/dumping-windows-credentials)
  - <a name="link_5">[5]</a> [ReactOS - Github](https://github.com/reactos/reactos){:target="_blank"}
  - <a name="link_6">[6]</a> Windows Internals 6th - Part 1, Chapter 4: Management Mechanism - The Registry
  - <a name="link_7">[7]</a> [Enumerating Registry Hives](http://moyix.blogspot.com/2008/02/enumerating-registry-hives.html)

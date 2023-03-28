@@ -313,7 +313,7 @@ id
 uid=1000(vagrant) gid=1000(vagrant) groups=1000(vagrant),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),115(lpadmin),116(sambashare) vagrant@ubuntu-wily-15:/home/vagrant$
 ```
 
-At that time, my teammate from TheGoonies <a class="fa fa-twitter" href="https://twitter.com/@rick2600" target="_blank"> @rick2600</a> had also read the flag file, which was:
+At that time, my teammate from TheGoonies <a class="fa fa-twitter" href="https://twitter.com/rick2600" target="_blank"> @rick2600</a> had also read the flag file, which was:
 
 ```text
 The flag is: Oh noze you pwned my h33p.
