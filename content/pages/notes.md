@@ -1,4 +1,4 @@
-title: Misc Notes
+title: Notes
 
 Some links to my notes
 
