@@ -66,7 +66,7 @@ Ok cool, but so what?
 
 ## Leverage as exploit primitive
 
-Although there's no vulnerability there, one could use this technique to dump some data in the kernel in a vulnerability exploitation scenario such as an arbitrary write. One possible use case would be to store the addresses of a ROP sequence to disable SMEP. However, to achieve this the attacker must know the address where this pool in the kernel. Luckily we found the answer in the kernel "Large Pool" allocator. [Former analysis on the big pool allocator](http://www.alex-ionescu.com/?p=231) have shown some interesting properties, but what makes it perfect is the [`NtQuerySystemInformation()`](https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntquerysysteminformation) syscall with the undocumented [`SystemBigPoolInformation`](https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/bigpool_entry.htm)(0x42) as class information, which provides **exactly** what we were looking for: the enumeration of all large pools with their kernel addresses, their size, and their tag.
+Although there's no vulnerability there, one could use this technique to dump some data in the kernel in a vulnerability exploitation scenario such as an arbitrary write. One possible use case would be to store the addresses of a ROP sequence to disable SMEP. However, to achieve this the attacker must know the address where this pool in the kernel. Luckily we found the answer in the kernel "Large Pool" allocator. [Former analysis on the big pool allocator](https://www.crowdstrike.com/blog/sheep-year-kernel-heap-fengshui-spraying-big-kids-pool/) have shown some interesting properties, but what makes it perfect is the [`NtQuerySystemInformation()`](https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntquerysysteminformation) syscall with the undocumented [`SystemBigPoolInformation`](https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/bigpool_entry.htm)(0x42) as class information, which provides **exactly** what we were looking for: the enumeration of all large pools with their kernel addresses, their size, and their tag.
 
 This is enough to dump such information:
 
@@ -162,4 +162,4 @@ Until next time, cheers ☕️
 
  - [BlackHat DC 2011 - Mandt - Kernel Pool exploitation](https://web.archive.org/web/20150419185055/https://media.blackhat.com/bh-dc-11/Mandt/BlackHat_DC_2011_Mandt_kernelpool-wp.pdf)
  - [Exploiting a Windows 10 PagedPool off-by-one](https://j00ru.vexillium.org/2018/07/exploiting-a-windows-10-pagedpool-off-by-one/)
- - [Sheep Year Kernel Heap Fengshui: Spraying in the Big Kids’ Pool](http://www.alex-ionescu.com/?p=231)
+ - [Sheep Year Kernel Heap Fengshui: Spraying in the Big Kids’ Pool](https://www.crowdstrike.com/blog/sheep-year-kernel-heap-fengshui-spraying-big-kids-pool/)

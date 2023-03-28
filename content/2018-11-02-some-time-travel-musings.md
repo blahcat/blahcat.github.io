@@ -227,7 +227,7 @@ TTD brings a new approach to traditional debugging which is a huge plus. Not onl
 In the mean time, I'll leave you with some links to dig deeper:
 
 - [Debugger data model, Javascript & x64 exception handling](https://doar-e.github.io/blog/2017/12/01/debugger-data-model/){:target="_blank"}
-- [Channel9 - Introduction to Time Travel Debuging](https://www.youtube.com/watch?v=5U73Vxb4Jk8){:target="_blank"}
+- [Channel9 - Introduction to Time Travel Debugging](https://www.youtube.com/watch?v=qFhJLbh6zzc&){:target="_blank"}
 - [Channel9 - Advanced Time Travel Debugging](https://docs.microsoft.com/en-us/shows/defrag-tools/186-time-travel-debugging-advanced){:target="_blank"}
 - [WinDbg YouTube Playlist](https://www.youtube.com/playlist?list=PLjAuO31Rg973XOVdi5RXWlrC-XlPZelGn){:target="_blank"}
 
