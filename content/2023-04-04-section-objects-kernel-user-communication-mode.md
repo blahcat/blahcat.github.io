@@ -202,7 +202,7 @@ MinifilterDriver+0x7275:
 fffff806`1aa57275 cc              int     3
 ```
 
-![](https://pad.pwnbox.blah.cat:8443/uploads/d4b64773-6412-46dc-a9f4-f21e703e2659.png)
+![windbg-output-1](https://pad.pwnbox.blah.cat:8443/uploads/d4b64773-6412-46dc-a9f4-f21e703e2659.png)
 
 
 2. Then I can use any callback (process/image notification, minifilter callbacks etc.) to invoke `ZwMapViewOfSection`, reusing the section handle from the step earlier, and `NtCurrentProcess()` as process handle.
@@ -241,11 +241,11 @@ To prevent any inadverted permission drop of the view (and therefore BSoD-ing us
 
 From WinDbg we can confirm the VAD is mapped when the breakpoint is hit:
 
-![](https://pad.pwnbox.blah.cat:8443/uploads/03ba2044-6cd9-4efe-8570-524044a87d7f.png)
+![windbg-output-2](https://pad.pwnbox.blah.cat:8443/uploads/03ba2044-6cd9-4efe-8570-524044a87d7f.png)
 
 And as soon as the syscall returns, we're unmapped:
 
-![](https://pad.pwnbox.blah.cat:8443/uploads/748def89-0331-44bb-a112-9ded9992da45.png)
+![sysinformer-output-1](https://pad.pwnbox.blah.cat:8443/uploads/748def89-0331-44bb-a112-9ded9992da45.png)
 
 4. Close the section in the driver unload callback.
 
@@ -340,7 +340,7 @@ kd> dx -r1 @$pte2(0x000018D40BF0000).pte
 ```
 
 So this means we have a great way to determine whether a physical page was accessed, using `MmGetPhysicalAddress()`. To test this we invoke it after the mapping (where we expect a null value) and a second time after the call to `PsGetThreadContext`:
-![](https://pad.pwnbox.blah.cat:8443/uploads/ac738af0-04fe-4b85-a9d2-ea3911be93cb.png)
+![windbg-output-3](https://pad.pwnbox.blah.cat:8443/uploads/ac738af0-04fe-4b85-a9d2-ea3911be93cb.png)
 
 The 2nd value for `PhyBaseAddress` points to the physical address where the function output is stored.
 At that point, I thought it would be sufficient to stop because we have an effective way to honeypot potential corruptions attempts:
