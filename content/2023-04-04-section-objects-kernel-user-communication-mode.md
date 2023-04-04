@@ -5,7 +5,7 @@ tags: windows, hack, memory-manager
 date: 2023-04-04 00:00 +0000
 modified: 2023-04-04 00:00 +0000
 
-I've recently decided to read cover to cover some Windows Internals books, and currently reading the amazing book ["What Makes It Page"](), it gave me some ideas to play with [Section Objects](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/section-objects-and-views) as they covered in great details. One thought that occured to me was that even though a section is created from user or kernel land, its mapping can be in user-mode as much as in kernel (when called from the kernel). 
+I've recently decided to read cover to cover some Windows Internals books, and currently reading the amazing book ["What Makes It Page"](), it gave me some ideas to play with [Section Objects](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/section-objects-and-views) as they covered in great details. One thought that occured to me was that even though a section is created from user or kernel land, its mapping can be in user-mode as much as in kernel (when called from the kernel).
 
 
 ## Windows Section Objects
@@ -38,8 +38,8 @@ In itself the Section Object doesn't have a lot going on, unless it is mapped to
 //
 // Syscall entry point
 //
-NTSTATUS 
-NTAPI 
+NTSTATUS
+NTAPI
 NtMapViewOfSection(
         HANDLE SectionHandle,
         HANDLE ProcessHandle,
@@ -61,7 +61,7 @@ Reversing this function is relatively straight forward:
   if ( NT_SUCCESS(MiValidateZeroBits(&ZeroBits)) )
   {
     AccessMode = KeGetCurrentThread()->PreviousMode;
-    
+
     //
     // Internal function to the Memory Manager to map a view of a section
     //
@@ -95,17 +95,17 @@ NTSTATUS  MiMapViewOfSectionCommon(
         SECTION_PARAMETER *SectionParameter)
 {
     [...]
-    //  
+    //
     //  Get a reference to the asking process
-    //  
+    //
     Status = ObpReferenceObjectByHandleWithTag(ProcessHandle, (DesiredAccess + 8), ProcessType, AccessMode, 'MmVw', &SectionParameter->ProcessObject, nullptr, nullptr);
     if (Status >= 0)
     {
         PSECTION* SectionObject = nullptr;
         pSectionObject = &SectionObject;
-        //  
+        //
         //  Get a reference to the section
-        //  
+        //
         Status = ObReferenceObjectByHandle(SectionHandle, &MmMakeSectionAccess[((uint64_t)SectionParameter->ProtectMaskForAccess)], MmSectionObjectType, AccessMode, pSectionObject, nullptr);
         SectionParameter->SectionObject = SectionObject;
         if (Status < 0)
@@ -114,20 +114,20 @@ NTSTATUS  MiMapViewOfSectionCommon(
         }
     }
     [...]
-  
+
     if (AccessMode == KernelMode)
     {
-        //  
-        //  In KM, do whatever 
-        //  
+        //
+        //  In KM, do whatever
+        //
         ViewSize_1 = ViewSize;
     }
     else
     {
         PVOID* pBaseAddress_1 = BaseAddress;
-        // 
+        //
         //  With a request coming from UM, validate the BaseAddress is within UM bounds
-        //  
+        //
         if (BaseAddress >= 0x7fffffff0000)
         {
             pBaseAddress_1 = 0x7fffffff0000;
@@ -149,7 +149,7 @@ NTSTATUS  MiMapViewOfSectionCommon(
 ```
 
 
-What matters the most here would be the `BaseAddress` argument which will hold the UM address of the mapping. Meaning that Section Objects can be used to create communication channels between kernel <-> user mode (on top of obviously user <-> user). This is particularly nice especially because it allows to control finely the permission to the area: for instance a driver could create a section as read-writable, map its own view as RW, but expose to any process as RO. As a matter of fact, this is exactly how Windows 11 decided to protect the `(K)USER_SHARED_DATA` memory region, frequently used by kernel exploit since it's read/writable in ring-3 at a well-known address, making it a perfect way to bypass ALSR. The protection was added in 22H1 global variable which is initialized at boot-time and mapped as RW from the kernel through the `nt!MmWriteableUserSharedData`; however from user-mode only a read-only view is exposed to processes.  For complete details about that protection, I invite the reader to refer to Connor McGarr's in-depth [excellent blog post](https://connormcgarr.github.io/kuser-shared-data-changes-win-11/){:target=blank} on the subject.
+What matters the most here would be the `BaseAddress` argument which will hold the UM address of the mapping. Meaning that Section Objects can be used to create communication channels between kernel <-> user mode (on top of obviously user <-> user). This is particularly nice especially because it allows to control finely the permission to the area: for instance a driver could create a section as read-writable, map its own view as RW, but expose to any process as RO. As a matter of fact, this is exactly how Windows 11 decided to protect the `(K)USER_SHARED_DATA` memory region, frequently used by kernel exploit since it's read/writable in ring-0 at a well-known address, making it a perfect way to bypass ALSR. The protection was added in 22H1 global variable which is initialized at boot-time and mapped as RW from the kernel through the `nt!MmWriteableUserSharedData`; however from user-mode only a read-only view is exposed to processes.  For complete details about that protection, I invite the reader to refer to Connor McGarr's in-depth [excellent blog post](https://connormcgarr.github.io/kuser-shared-data-changes-win-11/){:target=blank} on the subject.
 
 
 ## Section Object as a Kernel/User Communication Vector
@@ -232,7 +232,7 @@ fffff806`1aa57275 cc              int     3
     ctx->ContextFlags = CONTEXT_FULL;
     Status = Globals.PsGetContextThread(PsGetCurrentThread(), ctx, UserMode);
     EXIT_IF_FAILED(L"PsGetContextThread");
-    
+
     DbgBreakPoint();
 ```
 [Link](https://github.com/hugsy/shared-kernel-user-section-driver/blob/main/MiniFilter/MinifilterDriver.cpp#L224-L228)
@@ -253,8 +253,8 @@ That's pretty much it: what we've got at the end is kernel driver controlled com
 
 ## Side-track
 
-The careful reader will have notice that the step introduce a tiny race condition window, where another thread can also access the memory region. That bothered me, so I also examined more advanced options relying on the shared section objects. By nature they involve 2 PTEs: 
- - the "real" PTE (hardware PTE), effectively used for VA -> PA translation; 
+The careful reader will have notice that the step introduce a tiny race condition window, where another thread can also access the memory region. That bothered me, so I also examined more advanced options relying on the shared section objects. By nature they involve 2 PTEs:
+ - the "real" PTE (hardware PTE), effectively used for VA -> PA translation;
  - along with a prototype PTE.
 
 When the view is created, the memory manager will create empty PTEs but expect a page fault. This is verified quickly by breaking right after the call to `ZwMapViewOfSection`
@@ -269,7 +269,7 @@ Break instruction exception - code 80000003 (first chance)
 MinifilterDriver+0x17a7:
 fffff806`1aa517a7 cc              int     3
 kd> !pte2 0x000018D40BF0000
-@$pte2(0x000018D40BF0000)                
+@$pte2(0x000018D40BF0000)
     va               : 0x18d40bf0000
     cr3              : 0x3e64d000
     pml4e_offset     : 0x3
@@ -288,7 +288,7 @@ kd> dx -r1 @$pte2(0x000018D40BF0000).pte
     value            : 0x0
     [...]
     PhysicalPageAddress : 0x0
-    Pte              : 0x0 [Type: _MMPTE *]  <<<< 
+    Pte              : 0x0 [Type: _MMPTE *]  <<<<
 ```
 
 However, after the call to `PsGetThreadContext` the entry is correctly populated:
@@ -357,7 +357,7 @@ Isn't Windows awesome?
 # End
 
 There are a lot of possible fun uses of sections, and since I want to try to document more of my "stuff". Some offensive cool use case would be for instance, would be to expose code "on-demand" to a specific thread/process, removing the mapped execution page(s) from the process VAD as soon as we're done.
-I'll try to post follow-up updates. 
+I'll try to post follow-up updates.
 
 For those interested in the code, you would find a minifilter driver ready to build & compile on the Github project: [<i class="fa fa-github"></i> hugsy/shared-kernel-user-section-driver](https://github.com/hugsy/shared-kernel-user-section-driver){:target=blank}
 
