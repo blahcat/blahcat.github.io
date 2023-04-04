@@ -1,21 +1,14 @@
 name: Documents Validation
 
 on:
-  # check every week on sunday at midnight
-  # schedule:
-  #   - cron: '0 0 * * 0'
-  # or on every pull request to main
+  # on demand or on every pull request/push
   repository_dispatch:
   workflow_dispatch:
   pull_request:
-    branches:
-      - main
   push:
-    branches:
-      - main
 
 jobs:
-  link_check:
+  spellcheck:
     name: Link Checker
     runs-on: ubuntu-latest
     permissions:
@@ -23,12 +16,14 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
       - name: Restore lychee cache
         uses: actions/cache@v3
         with:
           path: .lycheecache
           key: cache-lychee-${{ github.sha }}
           restore-keys: cache-lychee-
+
       - name: Check links
         uses: lycheeverse/lychee-action@v1.6.1
         env:
