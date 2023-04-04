@@ -10,7 +10,7 @@ I've recently decided to read cover to cover some Windows Internals books, and c
 
 ## Windows Section Objects
 
-For quick reminder, a Section Object on Windows is a specific type of kernel object (of structure [`nt!SECTION`](https://www.vergiliusproject.com/kernels/x64/Windows%2011/22H2%20(2022%20Update)/_SECTION)) that represents a block of memory that processes can share between themselves or between a process and the kernel. It can be mapped to the paging file (i.e. backed by memory) or to a file on disk, but either can be handled using the same set of API, and even though they are allocated by the Object Manager, it is one of the many jobs of the Memory Manager to handle their access (handle access, permission, mapping etc.). In usermode the high level API is [`kernel32!CreateFileMapping`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createfilemappingw), which after some hoops into `kernelbase`, boils down to [`ntdll!NtCreateSection`](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-ntcreatesection)
+For quick reminder, a Section Object on Windows is a specific type of kernel object (of structure [`nt!SECTION`](https://www.vergiliusproject.com/kernels/x64/Windows%2011/22H2%20(2022%20Update)/_SECTION)) that represents a block of memory that processes can share between themselves or between a process and the kernel. It can be mapped to the paging file (i.e. backed by memory) or to a file on disk, but either can be handled using the same set of API, and even though they are allocated by the Object Manager, it is one of the many jobs of the Memory Manager to handle their access (handle access, permission, mapping etc.). In usermode the high level API is [`kernel32!CreateFileMapping`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createfilemappinga), which after some hoops into `kernelbase`, boils down to [`ntdll!NtCreateSection`](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-ntcreatesection)
 
 ![createfilemappingw](https://pad.pwnbox.blah.cat:8443/uploads/fc2d3446-f23b-43c9-8590-da132404c8ef.png)
 
@@ -171,7 +171,7 @@ Where `ThreadContext` is the linear address to write the thread `CONTEXT` passed
 
 1. Create a section in the `System` process. Why in `System`? Simply because section handles must be tight to a process: therefore if the section is created in a "normal" process, the handle to it will be close when/if said process terminates, effectively closing the section. So we can use the `DriverEntry` to make sure the section handle is stored in the `System` kernel handle table. Save the handle in a global variable.
 
-```c++=124
+```c++
     // create section
     {
         OBJECT_ATTRIBUTES oa {};
