@@ -34,7 +34,7 @@ If successful, the syscall will return a section handle in `SectionHandle`, whic
 
 In itself the Section Object doesn't have a lot going on, unless it is mapped to memory. This is achieved through `kernel32!MapViewOfView(Ex)` which again, boils down to the syscall `ntdll!NtMapViewOfSection`, whose signature is as follow:
 
-```c=
+```c
 //
 // Syscall entry point
 //
@@ -54,7 +54,8 @@ NtMapViewOfSection(
 ```
 
 Reversing this function is relatively straight forward:
-```c=
+
+```c
 {
   [...]
   if ( NT_SUCCESS(MiValidateZeroBits(&ZeroBits)) )
@@ -79,7 +80,8 @@ Reversing this function is relatively straight forward:
 ```
 
 which makes us jump to:
-```c=
+
+```c
 NTSTATUS  MiMapViewOfSectionCommon(
         HANDLE ProcessHandle,
         HANDLE SectionHandle,
@@ -154,7 +156,7 @@ What matters the most here would be the `BaseAddress` argument which will hold t
 
 Purely coincidentally, a colleague of mine stumbled upon a problem where they wanted to be able to capture the user-mode context of a thread from a driver, through `PsGetThreadContext`. The tricky part here was that `PsGetThreadContext()` follows the following signature:
 
-```cpp
+```c
 NTSTATUS
 PSAPI
 PsGetThreadContext(
@@ -190,7 +192,7 @@ Where `ThreadContext` is the linear address to write the thread `CONTEXT` passed
 
 By breakpointing at the end of DriverEntry we confirm that the handle resides in the System process.
 
-```
+```text
 [*] Loading CHANGEME
 [+] PsGetContextThread = FFFFF8061670B5B0
 [+] Section at FFFFFFFF80002FB4
@@ -205,7 +207,7 @@ fffff806`1aa57275 cc              int     3
 
 2. Then I can use any callback (process/image notification, minifilter callbacks etc.) to invoke `ZwMapViewOfSection`, reusing the section handle from the step earlier, and `NtCurrentProcess()` as process handle.
 
-```c++=204
+```c++
     NTSTATUS Status = ::ZwMapViewOfSection(
         Globals.SectionHandle,
         NtCurrentProcess(),
@@ -225,7 +227,7 @@ fffff806`1aa57275 cc              int     3
 
 3. We're free to call `PsGetThreadContext()` with the returned `BaseAddress` value.
 
-```c++=224
+```c++
     PCONTEXT ctx      = reinterpret_cast<PCONTEXT>(BaseAddress);
     ctx->ContextFlags = CONTEXT_FULL;
     Status = Globals.PsGetContextThread(PsGetCurrentThread(), ctx, UserMode);
@@ -247,7 +249,6 @@ And as soon as the syscall returns, we're unmapped:
 
 4. Close the section in the driver unload callback.
 
-
 That's pretty much it: what we've got at the end is kernel driver controlled communication vector to any process in usermode: as the section handle is part of System kernel handle table, it's untouchable from ring-3 unless the driver dictactes otherwise by creating a view (with proper permissions) to it. This approach is great as it allows the driver to control everything, but if we want to give a user-mode process some say into it, it's also possible simply by turning the anonymous section we created for this PoC into a named one, then call sequentially `OpenFileMapping(SectionName)` then `MapViewOfFile()`. In addition, it could very well be ported to a process <-> process communication but here I wanted to play with the minifilter callbacks as an on-demand mechanism.
 
 ## Side-track
@@ -258,7 +259,7 @@ The careful reader will have notice that the step introduce a tiny race conditio
 
 When the view is created, the memory manager will create empty PTEs but expect a page fault. This is verified quickly by breaking right after the call to `ZwMapViewOfSection`
 
-```
+```text
 [*] Loading CHANGEME
 [+] PsGetContextThread = FFFFF8061670B5B0
 [+] Section at FFFFFFFF800035E4
@@ -292,7 +293,7 @@ kd> dx -r1 @$pte2(0x000018D40BF0000).pte
 
 However, after the call to `PsGetThreadContext` the entry is correctly populated:
 
-```
+```text
 kd> g
 [+] Rip=00007ffa42e8d724
 [+] Rbp=00000020eccff550
@@ -326,7 +327,7 @@ kd> dx -r1 @$pte2(0x000018D40BF0000)
 
 The PTE is valid:
 
-```
+```text
 kd> dx -r1 @$pte2(0x000018D40BF0000).pte
 @$pte2(0x000018D40BF0000).pte                 : PTE(PA=e23a0000, PFN=e23a0, Flags=[P RW U - - A D - -])
     address          : 0xd97b6f80
