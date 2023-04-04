@@ -364,8 +364,11 @@ For those interested in the code, you would find a minifilter driver ready to bu
 So, see you next time?
 
 
-Credits:
- - [What Makes It Page](https://www.amazon.com/What-Makes-Page-Windows-Virtual/dp/1479114294)
- - [Windows Internals 7th edition, Part 1](https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189)
- - [Vergilius Project](https://www.vergiliusproject.com/)
- - [MSDN - Managing Memory Sections](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/managing-memory-sections)
+Credits & References:
+
+  - [What Makes It Page](https://www.amazon.com/What-Makes-Page-Windows-Virtual/dp/1479114294)
+  - [Windows Internals 7th edition, Part 1](https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189)
+  - [Vergilius Project](https://www.vergiliusproject.com/)
+  - [MSDN - Managing Memory Sections](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/managing-memory-sections)
+
+
