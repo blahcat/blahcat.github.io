@@ -27,7 +27,7 @@ Set-VMComPort MyDebuggerVM 1 \\.\pipe\win7x64-kdcom
 Boot the debugger and make WinDbgX listen to that port
 
 ```powershell
-windbgx -k com:pipe,port=\\.\pipe\com1,resets=0,reconnect
+windbgx -k com:pipe,port=\\.\com1,resets=0,reconnect
 ```
 
 Enjoy 

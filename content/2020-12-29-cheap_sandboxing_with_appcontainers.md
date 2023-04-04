@@ -51,6 +51,7 @@ As for file/folder objects, they will be located in `%LOCALAPPDATA%\Packages\<Na
 
 ## Building an AppContainer Process
 
+<br>
 <div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> All the snippets below are C/C++ used in my [`pwn++`](https://github.com/hugsy/pwn--){:target="_blank"} library. Refer to the source code for the full implementation. Additionally, as I was already implementing my own version, I stumbled upon [@zodiacon](https://twitter.com/zodiacon){:target="_blank"}'s article[[1]](#ref_1) and implementation[[2]](#ref_2). You might prefer reading/using it if you want a serious implementation.</div>
 
 
@@ -58,17 +59,16 @@ As for file/folder objects, they will be located in `%LOCALAPPDATA%\Packages\<Na
 
 That's as simple as it gets: there's an API exactly for that [`CreateAppContainerProfile`](https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-createappcontainerprofile){:target="_blank"}
 ```c++
-    PSID AppContainerSid;
-    std::string ContainerName("MyContainer");
-
-    ::CreateAppContainerProfile(
-        ContainerName.c_str(),
-        ContainerName.c_str(),
-        ContainerName.c_str(),
-        nullptr,
-        0,
-        &AppContainerSid
-    );
+PSID AppContainerSid;
+std::string ContainerName("MyContainer");
+::CreateAppContainerProfile(
+    ContainerName.c_str(),
+    ContainerName.c_str(),
+    ContainerName.c_str(),
+    nullptr,
+    0,
+    &AppContainerSid
+);
 ```
 
 ### Add the desired capabilities
@@ -96,7 +96,7 @@ This was slightly trickier: to expose a specific capability or file/folder acces
 
 ### Insert the capability set to the startup info
 
-Not unlike [process reparenting](https://github.com/hugsy/pwn--/tree/dev/tools/win32/ProcessReparent/main.cpp), appcontainerization requires to define a set of attribute as part of the extended startup information structure:
+Not unlike [process reparenting](https://github.com/hugsy/pwn--/tree/dev/tools/win32/ProcessReparent), appcontainerization requires to define a set of attribute as part of the extended startup information structure:
 
 ```c++
     SIZE_T size;

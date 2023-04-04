@@ -4,8 +4,6 @@
 <a href="https://github.com/blahcat/blahcat.github.io/actions/workflows/create-release.yml"><img title="Publish Release" src="https://github.com/blahcat/blahcat.github.io/actions/workflows/create-release.yml/badge.svg"> </a>
 </p>
 
-Source code of https://blahcat.github.io
-
 <!--
 If you read this, it really means you have nothing better to do ...
 -->

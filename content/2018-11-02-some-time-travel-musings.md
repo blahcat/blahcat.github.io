@@ -6,7 +6,7 @@ cover: assets/images/windbg-ttd/header.png
 category: research
 tags: windows,ttd,js,windbg,malware
 
-If WinDbg was already setting the standard of what modern debuggers should be like, no doubt [WinDbg Preview](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview) brings it to a next level. The JavaScript API is not perfect yet but already very efficient, so we don't have to rely on PyKd for proper (and portable) WinDbg scripting (I won't even mention WDS). As a start, I could not recommend enough reading <a class="fa fa-twitter" href="https://twitter.com/@0vercl0k" target="_blank"> @0vercl0k</a> if you haven't already read it, which not only covers TTD but a lot more.
+If WinDbg was already setting the standard of what modern debuggers should be like, no doubt [WinDbg Preview](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview) brings it to a next level. The JavaScript API is not perfect yet but already very efficient, so we don't have to rely on PyKd for proper (and portable) WinDbg scripting (I won't even mention WDS). As a start, I could not recommend enough reading <a class="fa fa-twitter" href="https://twitter.com/0vercl0k" target="_blank"> @0vercl0k</a> if you haven't already read it, which not only covers TTD but a lot more.
 
 
 # Time-Travel Debugging
@@ -24,7 +24,7 @@ As the name implies, Time-Travel Debugging is a tool that will allow to travel t
 
 I was curious to see what could be done so I decided to record via WinDbg a simple Notepad session. TTD is as simple as it gets: start WinDbg (as Admin), and launch the target executable after checking the `Record process with Time Travel Debugging`
 
-![image_alt](/assets/images/windbg-ttd/startrecord.png)
+![image_alt](/assets/images/windbg-ttd/startrecord.PNG)
 
 Typed some stuff and closed notepad. WinDbg starts by reading the trace and indexing the database, and breaks at the loader entry point. The indexes (look like `XX:YY` where `X` and `Y` are hex-digits) are like coordinates that can be used to travel around so we can move to an absolute position like
 
@@ -112,7 +112,7 @@ Done! Then you can `.writemem` that code into a file that IDA can disassemble.
 >
 > _Update (11/11/2018)_ :
 >
-> And since all this goodness can be used from JavaScript (via the `host.namespace.Debugger` namespace), it's really not far to write scripts for automatically dump such payloads, track heap allocations, enumerate all files created etc. And it came to me a surprise (not really actually, <a class="fa fa-twitter" href="https://twitter.com/@0vercl0k" target="_blank"> @0vercl0k</a> just told me), that when using the `ttd.exe` binary as a standalone, one can pass the `-children` flag allowing TTD to also record children processes.
+> And since all this goodness can be used from JavaScript (via the `host.namespace.Debugger` namespace), it's really not far to write scripts for automatically dump such payloads, track heap allocations, enumerate all files created etc. And it came to me a surprise (not really actually, <a class="fa fa-twitter" href="https://twitter.com/0vercl0k" target="_blank"> @0vercl0k</a> just told me), that when using the `ttd.exe` binary as a standalone, one can pass the `-children` flag allowing TTD to also record children processes.
 
 
 <blockquote class="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">The Time-Travel Debugging tool from <a href="https://twitter.com/hashtag/WinDbg?src=hash&amp;ref_src=twsrc%5Etfw">#WinDbg</a> Preview can be used as a standalone binary (ttd.exe)<br><br>Copy the TTD\ directory and you can use TTD without <a href="https://twitter.com/hashtag/WinDbg?src=hash&amp;ref_src=twsrc%5Etfw">#WinDbg</a>, allowing you to script your <a href="https://twitter.com/hashtag/TTD?src=hash&amp;ref_src=twsrc%5Etfw">#TTD</a> recording useful for:<br>- <a href="https://twitter.com/hashtag/fuzzing?src=hash&amp;ref_src=twsrc%5Etfw">#fuzzing</a> crash replay<br>- <a href="https://twitter.com/hashtag/malware?src=hash&amp;ref_src=twsrc%5Etfw">#malware</a> analysis<br>- bug tracking <a href="https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html">pic.twitter.com/yYZrkNRmD1</a></p>&mdash; windbgtips (@windbgtips) <a href="https://twitter.com/windbgtips/status/1061684978612789248?ref_src=twsrc%5Etfw">November 11, 2018</a></blockquote>
@@ -227,7 +227,7 @@ TTD brings a new approach to traditional debugging which is a huge plus. Not onl
 In the mean time, I'll leave you with some links to dig deeper:
 
 - [Debugger data model, Javascript & x64 exception handling](https://doar-e.github.io/blog/2017/12/01/debugger-data-model/){:target="_blank"}
-- [Channel9 - Introduction to Time Travel Debuging](https://www.youtube.com/watch?v=5U73Vxb4Jk8){:target="_blank"}
+- [Channel9 - Introduction to Time Travel Debugging](https://www.youtube.com/watch?v=qFhJLbh6zzc&){:target="_blank"}
 - [Channel9 - Advanced Time Travel Debugging](https://docs.microsoft.com/en-us/shows/defrag-tools/186-time-travel-debugging-advanced){:target="_blank"}
 - [WinDbg YouTube Playlist](https://www.youtube.com/playlist?list=PLjAuO31Rg973XOVdi5RXWlrC-XlPZelGn){:target="_blank"}
 

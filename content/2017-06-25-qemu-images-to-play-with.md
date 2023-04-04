@@ -19,7 +19,7 @@ category: misc
 
 ## Become a ninja on non-x86 architectures !
 
-A few weeks back, I came across  [@Fox0x01](https://twitter.com/@Fox0x01){:target="_blank" class="fa fa-twitter"} [tutorial](https://azeria-labs.com/writing-arm-assembly-part-1/){:target="_blank"} to get started with learning debugging and exploitation techniques on ARM. If you haven't checked it out, make sure you add this on your to-read list.
+A few weeks back, I came across  [@Fox0x01](https://twitter.com/Fox0x01){:target="_blank" class="fa fa-twitter"} [tutorial](https://azeria-labs.com/writing-arm-assembly-part-1/){:target="_blank"} to get started with learning debugging and exploitation techniques on ARM. If you haven't checked it out, make sure you add this on your to-read list.
 
 I have been initially developping [`gef`](https://github.com/hugsy/gef.git) for the same reason, to learn more about non-x86 architectures. So in the same spirit of openness that Azeria has shown, I am releasing a few Qemu virtual machines to start immediately playing with ARM, MIPS, PowerPC and AARCH64 architectures!
 

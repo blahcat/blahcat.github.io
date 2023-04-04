@@ -72,7 +72,7 @@ overwrite the current process' token by overwriting directly the
 `_SEP_TOKEN_PRIVILEGES` and for example, provide it with the `SeDebugPrivilege` allowing it
 to perform any further privileged operation on the system (naturally it is
 assumed here that we know the current process structure's address - through an
-infoleak or else). Back in 2012, [@cesarcer](https://twitter.com/@cesarcer){:target="_blank" class="fa fa-twitter"}  covered this very situation in his Black Hat
+infoleak or else). Back in 2012, [@cesarcer](https://twitter.com/cesarcer){:target="_blank" class="fa fa-twitter"}  covered this very situation in his Black Hat
 presentation [Easy Local Windows Kernel Exploitation](https://web.archive.org/web/20160909195733/https://media.blackhat.com/bh-us-12/Briefings/Cerrudo/BH_US_12_Cerrudo_Windows_Kernel_WP.pdf).
 
 Although this second way would allow to work around SMEP, for the sake of
@@ -154,14 +154,14 @@ pointers table located at `0xFFD00000` (on x86 and x64). Actually the range
 even before the Windows memory manager) during the boot process, it'll require
 known static addresses to map and store information collected about the hardware
 in memory. Researchers such as
- [@d_olex](https://twitter.com/@d_olex){:target="_blank" class="fa fa-twitter"} have explored this path as early as 2011 to use it as an exploit vector as Win7
+ [@d_olex](https://twitter.com/d_olex){:target="_blank" class="fa fa-twitter"} have explored this path as early as 2011 to use it as an exploit vector as Win7
 SP1 used to have this section static and with Read/Write/Execute permission
 (although it exists on Windows 8 and up, it is "only" Read/Write)
 
 ![Windows 8.1 HAL section](/assets/images/win-kernel-debug/hevd-www-hal-interrupt.png)
 
 __Note__: Looking for references about HAL interrupt table corruption, I came across this recent and fantastic
-[blog post](https://labs.bluefrostsecurity.de/blog/2017/05/11/windows-10-hals-heap-extinction-of-the-halpinterruptcontroller-table-exploitation-technique/) by [@NicoEconomou](https://twitter.com/@NicoEconomou){:target="_blank" class="fa fa-twitter"} that covers exactly this approach. I might dedicate a future post applying this technique to HEVD as this table is also an excellent target for WWW scenario.
+[blog post](https://labs.bluefrostsecurity.de/blog/2017/05/11/windows-10-hals-heap-extinction-of-the-halpinterruptcontroller-table-exploitation-technique/) by [@NicoEconomou](https://twitter.com/NicoEconomou){:target="_blank" class="fa fa-twitter"} that covers exactly this approach. I might dedicate a future post applying this technique to HEVD as this table is also an excellent target for WWW scenario.
 
 
 # Building the exploit
@@ -282,7 +282,7 @@ Although PG bypass is not the subject of this post, it should be noted that
 
 # Conclusion
 
-In this chapter we've covered how to exploit Arbitrary Write conditions in the kernel to achieve code execution, by leveraging undocumented procedures and functions that leak valuable kernel information straight from userland. Many more leaks exist, and I definitely recommend watching [@aionescu](https://twitter.com/@aionescu){:target="_blank" class="fa fa-twitter"}'s REcon 2013 talk [I got 99 problems but a kernel pointer ain't one](https://www.youtube.com/watch?v=5HbmpPBKVFg).
+In this chapter we've covered how to exploit Arbitrary Write conditions in the kernel to achieve code execution, by leveraging undocumented procedures and functions that leak valuable kernel information straight from userland. Many more leaks exist, and I definitely recommend watching [@aionescu](https://twitter.com/aionescu){:target="_blank" class="fa fa-twitter"}'s REcon 2013 talk [I got 99 problems but a kernel pointer ain't one](https://www.youtube.com/watch?v=5HbmpPBKVFg).
 
 See you next time ✌
 
