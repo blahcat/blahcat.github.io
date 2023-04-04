@@ -1,0 +1,66 @@
+name: Publish Release
+
+on:
+  #
+  # Execute the workflow only if build and deploy was successful
+  # By dependency this workflow should only execute after a push to main
+  #
+  workflow_run:
+    workflows:
+      - "Build and Deploy"
+    types:
+      - completed
+
+jobs:
+  create_release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    if: contains( join(github.event.commits.*.message), 'New blog post')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+          cache: 'pip'
+      - shell: bash
+        run: |
+          python -m pip install -r scripts/requirements.txt
+          python scripts/get_release_info.py
+      - uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: post-${{ env.BLOG_POST_SLUG_TITLE }}
+          body: |
+            New blog post released: `${{ env.BLOG_POST_TITLE }}`
+            Link: ${{ env.BLOG_POST_URL }}
+
+  create_discussion:
+    name: Create Discussion
+    runs-on: ubuntu-latest
+    if: contains( join(github.event.commits.*.message), 'New blog post')
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+          cache: 'pip'
+      - shell: bash
+        run: |
+          python -m pip install -r scripts/requirements.txt
+          python scripts/get_release_info.py
+      - name: Create the new GitHub Discussion
+        uses: abirismyname/create-discussion@v1.x
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: ${{ env.BLOG_POST_TITLE }}
+          body: |
+            > ${{ env.BLOG_POST_SUMMARY }}
+
+            [Link](BLOG_POST_URL)
+          repository-id: ${{ secrets.DISCUSSION_REPOSITORY_ID }}
+          category-id: ${{ secrets.DISCUSSION_CATEGORY_ID }}
