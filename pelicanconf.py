@@ -1,6 +1,6 @@
 AUTHOR = 'hugsy'
 SITENAME = 'BlahCats'
-SITEURL = ''
+SITEURL = 'https://blahcat.github.io'
 SITESUBTITLE = 'Tales of a binary encoded life...'
 PATH = 'content'
 
