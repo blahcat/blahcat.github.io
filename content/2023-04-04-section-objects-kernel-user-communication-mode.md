@@ -254,8 +254,9 @@ That's pretty much it: what we've got at the end is kernel driver controlled com
 ## Side-track
 
 The careful reader will have notice that the step introduce a tiny race condition window, where another thread can also access the memory region. That bothered me, so I also examined more advanced options relying on the shared section objects. By nature they involve 2 PTEs:
- - the "real" PTE (hardware PTE), effectively used for VA -> PA translation;
- - along with a prototype PTE.
+
+  - the "real" PTE (hardware PTE), effectively used for VA -> PA translation;
+  - along with a prototype PTE.
 
 When the view is created, the memory manager will create empty PTEs but expect a page fault. This is verified quickly by breaking right after the call to `ZwMapViewOfSection`
 
@@ -344,10 +345,11 @@ So this means we have a great way to determine whether a physical page was acces
 
 The 2nd value for `PhyBaseAddress` points to the physical address where the function output is stored.
 At that point, I thought it would be sufficient to stop because we have an effective way to honeypot potential corruptions attempts:
-- Create a section with many pages (the more the better)
-- During the preparation to the invokation of `PsGetThreadContext`, choose randomly one page that will receive the `CONTEXT`
-- Map all the pages separately
-- Call `PsGetThreadContext`
+
+  - Create a section with many pages (the more the better)
+  - During the preparation to the invokation of `PsGetThreadContext`, choose randomly one page that will receive the `CONTEXT`
+  - Map all the pages separately
+  - Call `PsGetThreadContext`
 
 Once the call is over, we can use the method above to validate whether any other page than the one we know valid were accessed. If so, discard the result.
 
