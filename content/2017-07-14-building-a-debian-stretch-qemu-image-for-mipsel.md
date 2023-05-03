@@ -213,7 +213,7 @@ $ qemu-system-mips64el -M malta -cpu MIPS64R2-generic -m 1G \
 ```
 
 The adequate files were downloaded from
-[here](http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mips64el)
+[here](http://ftp.debian.org/debian/dists/), then choose your wanted version (here, `Debian9.13`) and go to `main/installer-mips64el` to download the installer files.
 
 
 ### A few known issues ###

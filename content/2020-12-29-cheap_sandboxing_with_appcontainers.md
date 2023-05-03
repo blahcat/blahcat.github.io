@@ -96,7 +96,7 @@ This was slightly trickier: to expose a specific capability or file/folder acces
 
 ### Insert the capability set to the startup info
 
-Not unlike [process reparenting](https://github.com/hugsy/pwn--/tree/dev/tools/win32/ProcessReparent), appcontainerization requires to define a set of attribute as part of the extended startup information structure:
+Not unlike [process reparenting](https://github.com/hugsy/pwn--/tree/main/Tools/Win32/ProcessReparent), appcontainerization requires to define a set of attribute as part of the extended startup information structure:
 
 ```c++
     SIZE_T size;
@@ -187,7 +187,7 @@ Shout out to Pavel Yosivovich for his article and tool on AppContainer. And cred
 
  - <a name="ref_1">[1]</a> [Fun with AppContainers](https://scorpiosoftware.net/2019/01/15/fun-with-appcontainers/){:target="_blank"}
  - <a name="ref_2">[2]</a> [zodiacon/RunAppContainer - Github](https://github.com/zodiacon/RunAppContainer){:target="_blank"}
- - <a name="ref_3">[3]</a> [hugsy/pwn++ - Github](https://github.com/hugsy/pwn--/tree/dev/tools/win32/AppContainMe){:target="_blank"}
+ - <a name="ref_3">[3]</a> [hugsy/pwn++ - Github](https://github.com/hugsy/pwn--/tree/main/Tools/Win32/AppContainMe){:target="_blank"}
 
 
 Peace ✌

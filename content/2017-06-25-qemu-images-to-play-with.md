@@ -50,7 +50,7 @@ Unless stated otherwise, `root` password is `root`, and an low privilege account
 
 Already existing fantastic projects such as [Vagrant](https://app.vagrantup.com/boxes/search){:target="_blank"} for Linux/*nix and [modern.ie](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/){:target="_blank"} for Windows help us getting quickly functional environments we can use in labs. But they are only providing Intel-based images.
 
-The closest thing to what I wanted when I started exploring exotic architectures was [aurel32 Qemu pages](https://people.debian.org/~aurel32/qemu/), which provides great Qemu images. Unfortunately, they are using extremely old kernels and/or Linux distributions, making it too hard for a quick plug-n-play experience.
+The closest thing to what I wanted when I started exploring exotic architectures was [aurel32 (now Debian Quick Image Baker) Qemu pages](https://people.debian.org/~gio/dqib/), which provides great Qemu images. Unfortunately, they are using extremely old kernels and/or Linux distributions, making it too hard for a quick plug-n-play experience.
 
 Interestingly when developing `gef`, I talked with many people interested in learning about non-x86 archs but felt like they _don't know where to start_. So my hope is that those images will be the start to a lot of fun.
 
