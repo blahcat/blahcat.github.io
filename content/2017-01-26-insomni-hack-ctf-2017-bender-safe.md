@@ -284,7 +284,7 @@ For some reasons, the different shellcodes I had from external resources did not
 work. So I decided to use [Keystone Engine](http://www.keystone-engine.org) to
 write one. Instead of writing totally from scratch, I used a template created
 earlier as part of my project
-[`cemu`](https://github.com/hugsy/cemu/blob/dev/cemu/examples/mipsbe_sys_exec_bin_sh.asm)
+[`cemu`](https://github.com/hugsy/cemu/blob/main/cemu/examples/mipsbe_sys_exec_bin_sh.asm)
  and adapted it:
 
 ```python
