@@ -51,7 +51,9 @@ for author in authors:
         author_twitters.append("@_hugsy_")
 # TODO automate this
 
-twitter_body = f"""New blog post: '{title}' by {' and '.join(author_twitters)} - {url}"""
+twitter_body = (
+    f"""New blog post: '{title}' by {' and '.join(author_twitters)} - {url}"""
+)
 twitter_body = twitter_body[:280]
 
 
