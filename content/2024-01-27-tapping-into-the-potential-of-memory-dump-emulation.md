@@ -314,9 +314,7 @@ using [lief](https://lief-project.github.io/doc/latest/tutorials/12_elf_coredump
 void generate_random_buffer(uint8_t* buf, size_t sz)
 {
   for(int i=0; i<sz; i++)
-  {
     buf[i] = rand() & 0xff;
-  }
 }
 
 int main()
@@ -326,9 +324,7 @@ int main()
   generate_random_buffer(buf, sizeof(buf));
   getchar(); // get a coredump
   for(int i=0; i<sizeof(buf); i++)
-  {
     printf("%02x ", buf[i]);
-  }
   puts("");
   return 0;
 }
@@ -448,7 +444,7 @@ Here are the links to those giants refered in the title:
 1. [https://github.com/bochs-emu/Bochs](https://github.com/bochs-emu/Bochs)
 1. [https://github.com/yrp604/bochscpu](https://github.com/yrp604/bochscpu)
 1. [https://github.com/0vercl0k/wtf](https://github.com/0vercl0k/wtf)
-1. [https://github.com/0vercl0k/kdmp_parser](https://github.com/0vercl0k/kdmp_parser)
-1. [https://github.com/0vercl0k/udmp_parser](https://github.com/0vercl0k/udmp_parser)
+1. [https://github.com/0vercl0k/kdmp_parser](https://github.com/0vercl0k/kdmp-parser)
+1. [https://github.com/0vercl0k/udmp_parser](https://github.com/0vercl0k/udmp-parser)
 1. [https://github.com/googleprojectzero/bochspwn](https://github.com/googleprojectzero/bochspwn)
 1. [https://github.com/googleprojectzero/bochspwn-reloaded](https://github.com/googleprojectzero/bochspwn-reloaded)
