@@ -3,6 +3,7 @@ author: hugsy
 category: research
 tags: windows, hack, memory-dump, wtf, bochscpu, bochs, emulation
 date: 2024-01-27 00:00 +0000
+modified: 2024-03-26 00:00 +0000
 
 This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a structured reminder for my later self.
 
