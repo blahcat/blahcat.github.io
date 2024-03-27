@@ -84,7 +84,7 @@ Next, the binary analysis.
 
 ## Reversing the binary ##
 
-We can use [`IDA`](https://www.hex-rays.com/products/ida/support/download.shtml) to start with the static analysis. After a quick examination,
+We can use `IDA` to start with the static analysis. After a quick examination,
 the overall structure reveals itself quite clearly.
 The behaviour for the main process can be described with this pseudo-code:
 

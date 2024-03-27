@@ -503,7 +503,7 @@ Peace out ✌
 Links to resources I couldn't understand anything without.
 
  - <a name="link_0">[0]</a> All I could understand was compiled into my JS script [`RegistryExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/RegistryExplorer.js)
- - <a name="link_1">[1]</a> [Windows Kernel Internals NT Registry Implementation](http://ivanlef0u.fr/repo/madchat/vxdevl/papers/winsys/wk_internals/registry.pdf)
+ - <a name="link_1">[1]</a> [Windows Kernel Internals NT Registry Implementation](https://web.archive.org/web/20220720121211/https://ivanlef0u.fr/repo/madchat/vxdevl/papers/winsys/wk_internals/registry.pdf)
  - <a name="link_2">[2]</a> [MSDN - Registry Hives](https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-hives)
  - <a name="link_3">[3]</a> [comaeio/SwishDbgExt - Github](https://github.com/comaeio/SwishDbgExt)
  - <a name="link_4">[4]</a> [Dumping Windows Credentials - <a class="fa fa-twitter" href="https://twitter.com/lanjelot" target="_blank"> @lanjelot</a> ](https://web.archive.org/web/20140127003901/https://www.securusglobal.com/community/2013/12/20/dumping-windows-credentials/)

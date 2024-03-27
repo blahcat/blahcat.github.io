@@ -26,7 +26,7 @@ Follow us on:
   - [WinBindex](https://m417z.com/winbindex/){:target="_blank"}
   - [tiraniddo.dev](https://www.tiraniddo.dev){:target="_blank"}
   - [Redplait](http://redplait.blogspot.com/){:target="_blank"}
-  - [mez0.cc](https://mez0.cc/){:target="_blank"}
+  - [mez0.cc](https://web.archive.org/web/20230304082023/https://mez0.cc/){:target="_blank"}
   - [Secret Club](https://secret.club/tags#windows){:target="_blank"}
   - [Needle in a Thread Stack](https://needleinathreadstack.wordpress.com/){:target="_blank"}
   - [Hyper-V Internals](https://hvinternals.blogspot.com/){:target="_blank"}
@@ -38,4 +38,4 @@ Follow us on:
   - <a class="fa fa-github" target="_blank" href="https://syfuhs.net/">@SteveSyfuhs' blog</a>
   - <a class="fa fa-github" target="_blank" href="https://csandker.io/">@0xcsandker's blog</a>
   - <a class="fa fa-github" target="_blank" href="https://j00ru.vexillium.org/">&nbsp;@j00ru's blog</a>
-  - 
+  -

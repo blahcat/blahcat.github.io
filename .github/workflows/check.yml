@@ -33,6 +33,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.LYCHEE_TOKEN}}
         with:
-          args: --exclude='^https://twitter.com/.*$' --exclude='^https://ctftime.org/.*$' --cache --max-cache-age 1w --exclude-all-private --exclude-mail --threads 4 --timeout 30 --retry-wait-time 60 --user-agent 'Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0' --no-progress 'content/**/*.md'
+          args: --exclude='^http://rawpixels.net/.*$' --exclude='^http://rawpixels.net/.*$' --exclude='^https://twitter.com/.*$' --exclude='^https://ctftime.org/.*$' --cache --max-cache-age 1w --exclude-all-private --exclude-mail --threads 4 --timeout 30 --retry-wait-time 60 --user-agent 'Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0' --no-progress 'content/**/*.md'
           fail: true
 
