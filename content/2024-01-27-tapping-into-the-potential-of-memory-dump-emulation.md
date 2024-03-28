@@ -433,10 +433,14 @@ Which we can double-check with a disassembler (highlighted in magenta)
 
 
 
-## Final caveat
+## Final remark
 
 This article was made an attempt to structure all my notes over the last few months playing with memory dumps, and by no mean any comparison with WTF: WTF goes way further and does it better, with different emulation techniques and therefore should be used for fuzzing at scale. On the other hand having quick ways to re-create a fully working emulation context (whether user or kernel mode) from a process/memory dump with ~50 lines of Python is not without certain advantages.
 
+Anyway, as always open for feedback on the discussion feed.
+
+Until then see next time, 
+Cheers 🍻
 
 ## References
 
