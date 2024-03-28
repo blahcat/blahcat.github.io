@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Building a Debian Stretch QEMU image for MIPSel</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="Building a Debian Stretch (9) QEMU image running MIPSel TL;DR Two new images, Debian Stretch on MIPSel and MIPS64el were added to my...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="howto">
+    <meta name="tags" content="qemu">
+    <meta name="tags" content="mipsel">
+    <meta name="tags" content="mips64el">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="Building a Debian Stretch QEMU image for MIPSel"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="Building a Debian Stretch (9) QEMU image running MIPSel TL;DR Two new images, Debian Stretch on MIPSel and MIPS64el were added to my..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2017-07-14 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2017-07-14 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="tutorial"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="howto"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="qemu"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="mipsel"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="mips64el"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/qemu-img.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="Building a Debian Stretch QEMU image for MIPSel">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/qemu-img.png">
+
+      <meta name="twitter:description" content="Building a Debian Stretch (9) QEMU image running MIPSel TL;DR Two new images, Debian Stretch on MIPSel and MIPS64el were added to my...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "Building a Debian Stretch QEMU image for MIPSel",
+  "headline": "Building a Debian Stretch QEMU image for MIPSel",
+  "datePublished": "2017-07-14 00:00:00-07:00",
+  "dateModified": "2017-07-14 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/qemu-img.png",
+  "url": "https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html",
+  "description": "Building a Debian Stretch (9) QEMU image running MIPSel TL;DR Two new images, Debian Stretch on MIPSel and MIPS64el were added to my..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Building a Debian Stretch QEMU image for MIPSel</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">14 Jul 2017</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/qemu-img.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h2>Building a Debian Stretch (9) QEMU image running MIPSel</h2>
+<blockquote>
+<p><strong>TL;DR</strong>
+Two new images, Debian Stretch on MIPSel and MIPS64el were added to
+<a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA">my QEMU image repo</a>
+The rest of this post explains how I built them.</p>
+</blockquote>
+<h3>Introduction</h3>
+<p>After releasing <a href="/posts/2017/06/25/qemu-images-to-play-with.html">the QEMU images</a> I've created to test <a href="https://github.com/hugsy/gef"><code>GEF</code></a>, I've received tons of demands from people asking for more images, but also for some DYI procedures.</p>
+<p>As  <a class="fa fa-twitter" href="https://twitter.com/Fox0x01" target="_blank">@Fox0x01</a> already covered fairly exhaustively [how to build an QEMU ARMv6 compatible VM][https://azeria-labs.com/emulate-raspberry-pi-with-qemu/){:target="_blank"}, through this blog post I intend to provide a step-by-step how-to on building a Debian Stretch Malta MIPS32el image.</p>
+<div class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+There is no miracle here, I've just spend a long time googling for solution every time I was facing a problem. This tuto is more for a being a personal reminder for the future times I need to build an image 😊
+</div>
+<h3>Pre-requisites</h3>
+<p>For the Debian MIPS net installer, the <code>initrd</code> <strong>is</strong> the installation
+device. No need to download any ISO or such, simply download:
+- the initrd (the distro installer):</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>wget<span class="w"> </span>http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mipsel/current/images/malta/netboot/initrd.gz
+</code></pre></div>
+
+<ul>
+<li>a kernel to boot on:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>wget<span class="w"> </span>http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mipsel/current/images/malta/netboot/vmlinux-4.9.0-13-4kc-malta
+</code></pre></div>
+
+<p>You also need a hard drive to install the OS on:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>qemu-img<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>qcow2<span class="w"> </span>disk.qcow2<span class="w"> </span>20G
+</code></pre></div>
+
+<p>Since we're using the Debian net installer, we will need an Internet connection. Also don't be surprised to see your CPU activity jump up and your fans get louder!</p>
+<h2>Installing Debian</h2>
+<p>Start the installation with:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>qemu-system-mipsel<span class="w"> </span>-M<span class="w"> </span>malta<span class="w"> </span>-m<span class="w"> </span>1G<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-hda<span class="w"> </span>./disk.qcow2<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-initrd<span class="w"> </span>./initrd.gz<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-kernel<span class="w"> </span>./vmlinux-4.9.0-4-4kc-malta<span class="w"> </span>-append<span class="w"> </span><span class="s2">&quot;nokaslr&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-nographic
+</code></pre></div>
+
+<p>The kernel boot option <code>nokaslr</code> is required or you'll get an error when the
+kernel will try to decompress <code>initrd</code>. The reason is:</p>
+<blockquote>
+<p>[...] that QEMU loads the initrd into the memory
+immediately after the kernel, but that bit of memory might get
+overwritten by KASLR when the kernel starts and relocates itself.
+You can workaround it by passing "-append nokaslr" to QEMU, [...]</p>
+</blockquote>
+<p><a href="https://www.mail-archive.com/debian-bugs-dist@lists.debian.org/msg1525239.html">Source</a></p>
+<p>Then your MIPSel (Malta-flavor) system boots, and you end up in the regular
+<code>ncurses</code> Debian installer.</p>
+<p><img alt="1.debian.installer.png&quot;%" src="https://i.imgur.com/IqDge4n.png"></p>
+<p>Let the installer do its magic.</p>
+<p><img alt="3.debian.partition.png" src="https://i.imgur.com/Lg6Db5x.png"></p>
+<p>Since it's a VM for test and lab stuff, the guided partitionning is more than
+enough (and select <code>All files in one partition</code>). Feel free to tweak that part.</p>
+<p><img alt="2.debian.installation.png" src="https://i.imgur.com/iv31UxH.png"></p>
+<p>I usually install only the minimum OS to get a running shell once I boot. For
+there I install everything from <code>apt-get</code>. With a proper <code>openssh-server</code>
+installed, I then create 2 scripts:</p>
+<ul>
+<li><code>start.sh</code> with all the good QEMU parameters, to launch the VM in
+    non-graphic mode, and set up the port forward on tcp/22</li>
+<li><code>ssh.sh</code> to connect to the VM.</li>
+</ul>
+<p>Debian will detect no boot loader, and show the following warning:</p>
+<p><img alt="7.debian.end_installer.png" src="https://i.imgur.com/fuxZCDU.png"></p>
+<p>So remember to append <code>root=/dev/sda1</code> to <code>-append</code> option before running your
+Qemu.</p>
+<p>Then the installation will finish successfully:
+<img alt="6.debian.complete.png" src="http://i.imgur.com/qFvh3cM.png"></p>
+<h3>Fixing the last quirks</h3>
+<p>If you try to boot directly the VM by simply removing the <code>-initrd</code> line, the
+kernel will panic like this:</p>
+<div class="highlight"><pre><span></span><code>end<span class="w"> </span>Kernel<span class="w"> </span>panic<span class="w"> </span>-<span class="w"> </span>not<span class="w"> </span>syncing:<span class="w"> </span>VFS:<span class="w"> </span>Unable<span class="w"> </span>to<span class="w"> </span>mount<span class="w"> </span>root<span class="w"> </span>fs<span class="w"> </span>on<span class="w"> </span>unknown-block<span class="o">(</span><span class="m">0</span>,0<span class="o">)</span>
+</code></pre></div>
+
+<p>We must extract the <code>initrd</code> image from the installation: to do so you must
+mounting the QEMU disk via the
+<a href="https://en.wikipedia.org/wiki/Network_block_device">Network Block Device</a>
+kernel module <code>nbd</code>:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>nbd-client
+$<span class="w"> </span>sudo<span class="w"> </span>modprobe<span class="w"> </span>nbd<span class="w"> </span><span class="nv">max_part</span><span class="o">=</span><span class="m">8</span>
+$<span class="w"> </span>sudo<span class="w"> </span>qemu-nbd<span class="w"> </span>--connect<span class="o">=</span>/dev/nbd0<span class="w"> </span>disk.qcow2
+$<span class="w"> </span>mkdir<span class="w"> </span>mnt
+$<span class="w"> </span>sudo<span class="w"> </span>mount<span class="w"> </span>/dev/nbd0p1<span class="w"> </span>mnt
+</code></pre></div>
+
+<p>Extract the initramfs file (<code>initrd.img</code>) from <code>MOUNT_PATH/boot/</code></p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>cp<span class="w"> </span>mnt/boot/initrd.img-4.9.0-4-4kc-malta<span class="w"> </span>.<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sync
+</code></pre></div>
+
+<p>And unmount the NBD device.</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>sudo<span class="w"> </span>umount<span class="w"> </span>/dev/nbd0p1
+$<span class="w"> </span>sudo<span class="w"> </span>nbd-client<span class="w"> </span>-d<span class="w"> </span>/dev/nbd0
+</code></pre></div>
+
+<p>You can now boot the VM with the following command:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>qemu-system-mipsel<span class="w"> </span>-M<span class="w"> </span>malta<span class="w"> </span>-m<span class="w"> </span>1G<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-hda<span class="w"> </span>./disk.qcow2<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-initrd<span class="w"> </span>./initrd.img-4.9.0-4-4kc-malta<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-kernel<span class="w"> </span>./vmlinux-4.9.0-4-4kc-malta<span class="w"> </span>-append<span class="w"> </span><span class="s2">&quot;nokaslr root=/dev/sda1&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-nographic
+</code></pre></div>
+
+<p><img alt="9.first.boot.png" src="http://i.imgur.com/6h0Wxed.png"></p>
+<p>On all the images I've created, Debian doesn't properly DHCP the Ethernet
+interface (get a wrong name for the interface), so it must be done manually at
+the first boot (use <code>ip -a</code> to show the interface name):</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># cat &gt; /etc/network/interfaces &lt;&lt; EOF</span>
+auto<span class="w"> </span>lo
+iface<span class="w"> </span>lo<span class="w"> </span>inet<span class="w"> </span>loopback
+iface<span class="w"> </span>enp0s18<span class="w"> </span>inet<span class="w"> </span>dhcp
+EOF
+<span class="c1"># shutdown -h now</span>
+</code></pre></div>
+
+<p>You can now use the <code>start.sh</code> script to init the VM, and <code>ssh.sh</code> to SSH to it
+as <code>user</code>.</p>
+<p>The <code>start.sh</code> usually looks like</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+
+<span class="nv">KERNEL</span><span class="o">=</span>./vmlinux-4.9.0-4-5kc-malta
+<span class="nv">INITRD</span><span class="o">=</span>./initrd.img-4.9.0-4-5kc-malta
+<span class="nv">HDD</span><span class="o">=</span>./disk.qcow2
+<span class="nv">SSH_PORT</span><span class="o">=</span><span class="m">22055</span>
+<span class="nv">EXTRA_PORT</span><span class="o">=</span><span class="m">33055</span>
+
+qemu-system-mips64el<span class="w"> </span>-M<span class="w"> </span>malta<span class="w"> </span>-m<span class="w"> </span><span class="m">512</span><span class="w"> </span>-cpu<span class="w"> </span>MIPS64R2-generic<span class="w"> </span><span class="se">\</span>
+<span class="w">                   </span>-kernel<span class="w"> </span><span class="si">${</span><span class="nv">KERNEL</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                   </span>-initrd<span class="w"> </span><span class="si">${</span><span class="nv">INITRD</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                   </span>-hda<span class="w"> </span><span class="si">${</span><span class="nv">HDD</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                   </span>-net<span class="w"> </span>nic,model<span class="o">=</span>e1000<span class="w"> </span><span class="se">\</span>
+<span class="w">                   </span>-net<span class="w"> </span>user,hostfwd<span class="o">=</span>tcp:127.0.0.1:<span class="si">${</span><span class="nv">SSH_PORT</span><span class="si">}</span>-:22,hostfwd<span class="o">=</span>tcp:127.0.0.1:<span class="si">${</span><span class="nv">EXTRA_PORT</span><span class="si">}</span>-:4444<span class="w"> </span><span class="se">\</span>
+<span class="w">                   </span>-display<span class="w"> </span>none<span class="w"> </span>-vga<span class="w"> </span>none<span class="w"> </span>-nographic<span class="w"> </span><span class="se">\</span>
+<span class="w">                   </span>-append<span class="w"> </span><span class="s1">&#39;nokaslr root=/dev/sda1 console=ttyS0&#39;</span>
+
+<span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+</code></pre></div>
+
+<p>And the <code>ssh.sh</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Existing users : &#39;root/root&#39; &amp; &#39;user/user&#39;&quot;</span>
+ssh<span class="w"> </span>-o<span class="w"> </span><span class="nv">UserKnownHostsFile</span><span class="o">=</span>/dev/null<span class="w"> </span>-o<span class="w"> </span><span class="nv">StrictHostKeyChecking</span><span class="o">=</span>no<span class="w"> </span>-p<span class="w"> </span><span class="m">22055</span><span class="w"> </span>user@127.0.0.1<span class="w"> </span>--<span class="w"> </span><span class="nv">$*</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+</code></pre></div>
+
+<p>For Windows, simply convert <code>script.sh</code> to Batch.</p>
+<h3>Download the new images</h3>
+<p>Since I've built in parallel a Malta MIPS32el and MIPS64el for this tutorial,
+both have been added to the <a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA" target="_blank">folder on Mega.nz</a></p>
+<p>The MIPS64el was created <strong>exactly</strong> the same way, except that QEMU required the
+proper CPU version to boot correctly:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>qemu-system-mips64el<span class="w"> </span>-M<span class="w"> </span>malta<span class="w"> </span>-cpu<span class="w"> </span>MIPS64R2-generic<span class="w"> </span>-m<span class="w"> </span>1G<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-hda<span class="w"> </span>./disk.qcow2<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-initrd<span class="w"> </span>./initrd.gz<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-kernel<span class="w"> </span>./vmlinux-4.9.0-4-5kc-malta<span class="w"> </span>-append<span class="w"> </span><span class="s2">&quot;nokaslr&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-nographic
+</code></pre></div>
+
+<p>The adequate files were downloaded from
+<a href="http://ftp.debian.org/debian/dists/">here</a>, then choose your wanted version (here, <code>Debian9.13</code>) and go to <code>main/installer-mips64el</code> to download the installer files.</p>
+<h3>A few known issues</h3>
+<ul>
+<li>
+<p>The kernel doesn't boot the <code>initrd</code>: from my experience on it, either your
+    initrd is incorrect, or try to append proper kernel boot options
+    (<code>-append</code>).</p>
+</li>
+<li>
+<p>The error <code>WARNING: I/O thread spun for 1000 iterations</code> appears often:
+    that's a QEMU warning from
+    <a href="https://github.com/qemu/qemu/blob/master/util/main-loop.c#L219"><code>os_host_main_loop_wait()</code></a> and
+    the code provides a good description of the issue:</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>/**<span class="w"> </span>If<span class="w"> </span>the<span class="w"> </span>I/O<span class="w"> </span>thread<span class="w"> </span>is<span class="w"> </span>very<span class="w"> </span>busy<span class="w"> </span>or<span class="w"> </span>we<span class="w"> </span>are<span class="w"> </span>incorrectly<span class="w"> </span>busy<span class="w"> </span>waiting<span class="w"> </span><span class="k">in</span>
+<span class="w">  </span>*<span class="w"> </span>the<span class="w"> </span>I/O<span class="w"> </span>thread,<span class="w"> </span>this<span class="w"> </span>can<span class="w"> </span>lead<span class="w"> </span>to<span class="w"> </span>starvation<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>BQL<span class="w"> </span>such<span class="w"> </span>that<span class="w"> </span>the
+<span class="w">  </span>*<span class="w"> </span>VCPU<span class="w"> </span>threads<span class="w"> </span>never<span class="w"> </span>run.<span class="w">  </span>To<span class="w"> </span>make<span class="w"> </span>sure<span class="w"> </span>we<span class="w"> </span>can<span class="w"> </span>detect<span class="w"> </span>the<span class="w"> </span>later<span class="w"> </span><span class="k">case</span>,
+<span class="w">  </span>*<span class="w"> </span>print<span class="w"> </span>a<span class="w"> </span>message<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>screen.<span class="w">  </span>If<span class="w"> </span>we<span class="w"> </span>run<span class="w"> </span>into<span class="w"> </span>this<span class="w"> </span>condition,<span class="w"> </span>create
+<span class="w">  </span>*<span class="w"> </span>a<span class="w"> </span>fake<span class="w"> </span>timeout<span class="w"> </span><span class="k">in</span><span class="w"> </span>order<span class="w"> </span>to<span class="w"> </span>give<span class="w"> </span>the<span class="w"> </span>VCPU<span class="w"> </span>threads<span class="w"> </span>a<span class="w"> </span>chance<span class="w"> </span>to<span class="w"> </span>run.
+<span class="w">  </span>*/
+</code></pre></div>
+
+<ul>
+<li>For simplicity, I highly recommand to only use the official repo (from
+    <code>deb.debian.org</code> or <code>mirrors.kernel.org</code>). It might be a bit slower than
+    your local mirror, but mirrors do not always mirror <strong>all</strong> the
+    architectures generated by Debian maintainers.</li>
+</ul>
+<h3>Conclusion</h3>
+<p>That's how you get started with making your own QEMU images. Debian, as the real
+hacker distro it is, is usually the one that works best for trying weird
+combination, and MIPS CPUs are very well supported. More posts will come on
+building other QEMU images for other ABI, which are not necesarily that easy to
+setup.</p>
+<p>I hope you now have all the information to make your own QEMU images.
+Thanks for reading!</p>
+<blockquote>
+<p><em>Note</em> (2017-11-15): links updated
+</p>
+</blockquote>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Building a Debian Stretch QEMU image for MIPSel&amp;url=https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/howto">howto</a><a href="https://blahcat.github.io/tag/qemu">qemu</a><a href="https://blahcat.github.io/tag/mipsel">mipsel</a><a href="https://blahcat.github.io/tag/mips64el">mips64el</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/tutorial">tutorial</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=Building a Debian Stretch QEMU image for MIPSel">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2017/08/01/gef-at-black-hat-arsenal-us-2017.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">GEF at Black Hat Arsenal US 2017</h2>
+                            <p class="post-nav-excerpt">GEF at Black Hat Arsenal US 2017 I had the privilege to be invited to present my tool...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2017/06/25/some-qemu-images-to-play-with.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Some Qemu images to play with</h2>
+                            <p class="post-nav-excerpt">TL;DR Ready-to-play Qemu images for under-rated architectures (ARM, MIPS, PowerPC,...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

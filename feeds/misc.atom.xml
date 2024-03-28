@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlahCats - misc</title><link href="https://blahcat.github.io/" rel="alternate"></link><link href="https://blahcat.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://blahcat.github.io/</id><updated>2017-06-25T00:00:00-07:00</updated><subtitle>Tales of a binary encoded life...</subtitle><entry><title>Some Qemu images to play with</title><link href="https://blahcat.github.io/posts/2017/06/25/some-qemu-images-to-play-with.html" rel="alternate"></link><published>2017-06-25T00:00:00-07:00</published><updated>2017-06-25T00:00:00-07:00</updated><author><name>hugsy</name></author><id>tag:blahcat.github.io,2017-06-25:/posts/2017/06/25/some-qemu-images-to-play-with.html</id><summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;
+Ready-to-play Qemu images for under-rated architectures (ARM, MIPS, PowerPC,
+SPARC, AARCH64) to play with, with all the tools builtin to understand memory
+corruption on non x86 environments
+&lt;a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA" target="_blank"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update &lt;em&gt;(2018/05/15)&lt;/em&gt;&lt;/strong&gt;
+The Mega.NZ repository was cloned to Google Drive, available
+&lt;a href="https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing" target="_blank"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Become a ninja on non-x86 …&lt;/h2&gt;</summary><content type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;
+Ready-to-play Qemu images for under-rated architectures (ARM, MIPS, PowerPC,
+SPARC, AARCH64) to play with, with all the tools builtin to understand memory
+corruption on non x86 environments
+&lt;a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA" target="_blank"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update &lt;em&gt;(2018/05/15)&lt;/em&gt;&lt;/strong&gt;
+The Mega.NZ repository was cloned to Google Drive, available
+&lt;a href="https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing" target="_blank"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Become a ninja on non-x86 architectures !&lt;/h2&gt;
+&lt;p&gt;A few weeks back, I came across  &lt;a class="fa fa-twitter" href="https://twitter.com/Fox0x01" target="_blank"&gt;@Fox0x01&lt;/a&gt; &lt;a href="https://azeria-labs.com/writing-arm-assembly-part-1/" target="_blank"&gt;tutorial&lt;/a&gt; to get started with learning debugging and exploitation techniques on ARM. If you haven't checked it out, make sure you add this on your to-read list.&lt;/p&gt;
+&lt;p&gt;I have been initially developping &lt;a href="https://github.com/hugsy/gef.git"&gt;&lt;code&gt;gef&lt;/code&gt;&lt;/a&gt; for the same reason, to learn more about non-x86 architectures. So in the same spirit of openness that Azeria has shown, I am releasing a few Qemu virtual machines to start immediately playing with ARM, MIPS, PowerPC and AARCH64 architectures!&lt;/p&gt;
+&lt;p&gt;All you need is &lt;a href="http://www.qemu.org"&gt;Qemu&lt;/a&gt;. Then download the link to your image, and unzip the archive.&lt;/p&gt;
+&lt;p&gt;If you are on Linux/OSX, run in a terminal (or double-click) on the &lt;code&gt;./start.sh&lt;/code&gt; script, when our Windows friend would simply need to double-click the &lt;code&gt;./start.bat&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Each VM will also TCP forward its SSH port for easy interaction. On Linux/OSX, just run &lt;code&gt;./ssh.sh&lt;/code&gt;. Windows users will need tools like &lt;a href="http://www.putty.org"&gt;&lt;code&gt;PuTTY&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Those images are battery-included, development tools, compilation and debugging tools too. Ever wondered what SPARC assembly looks like? Always feeling itchy to learn about memory corruption on PowerPC? Wait no more!&lt;/p&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;Without further ado:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA" target="_blank"&gt;Link to Mega.nz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://drive.google.com/drive/folders/107uMlL_DS8yD2TS_0yrHXBDnLOj44a8P?usp=sharing&amp;quot;" target="_blank"&gt;Link to Google Drive&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Unless stated otherwise, &lt;code&gt;root&lt;/code&gt; password is &lt;code&gt;root&lt;/code&gt;, and an low privilege account called &lt;code&gt;user&lt;/code&gt; is created.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: the current ARMv6 image is based on a Raspberry Pi image. Therefore, the username is &lt;code&gt;pi&lt;/code&gt; , password &lt;code&gt;raspberry&lt;/code&gt; and is sudoer NOPASSWD. I will update the image soon to fix this.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img alt="vbox-qemu" src="/assets/images/vbox.png"&gt;&lt;/p&gt;
+&lt;h2&gt;But why ?&lt;/h2&gt;
+&lt;p&gt;Already existing fantastic projects such as &lt;a href="https://app.vagrantup.com/boxes/search" target="_blank"&gt;Vagrant&lt;/a&gt; for Linux/*nix and &lt;a href="https://web.archive.org/web/20170306074002/https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/" target="_blank"&gt;modern.ie&lt;/a&gt; for Windows help us getting quickly functional environments we can use in labs. But they are only providing Intel-based images.&lt;/p&gt;
+&lt;p&gt;The closest thing to what I wanted when I started exploring exotic architectures was &lt;a href="https://people.debian.org/~gio/dqib/"&gt;aurel32 (now Debian Quick Image Baker) Qemu pages&lt;/a&gt;, which provides great Qemu images. Unfortunately, they are using extremely old kernels and/or Linux distributions, making it too hard for a quick plug-n-play experience.&lt;/p&gt;
+&lt;p&gt;Interestingly when developing &lt;code&gt;gef&lt;/code&gt;, I talked with many people interested in learning about non-x86 archs but felt like they &lt;em&gt;don't know where to start&lt;/em&gt;. So my hope is that those images will be the start to a lot of fun.&lt;/p&gt;
+&lt;p&gt;All the VMs come with 2 compiled ELF binaires: a very simple &lt;code&gt;hello-world&lt;/code&gt; to start easy with the new architecture, run it, start &lt;code&gt;gdb&lt;/code&gt;-ing around it to understand the architecture basics (memory layout, function call convention, GOT+PLT, stack canary, etc.) and a &lt;code&gt;simple-bof&lt;/code&gt;, which is a simple Stack Overflow ELF to start on the way of understanding memory corruption.&lt;/p&gt;
+&lt;h2&gt;But I just wanna play with assembly...&lt;/h2&gt;
+&lt;p&gt;So take a look at &lt;a href="https://github.com/hugsy/cemu" target="_blank"&gt;this&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Ok so what's next ?&lt;/h2&gt;
+&lt;p&gt;Well, those VMs were built from scratch using Qemu, which takes forever. I will add some more VMs on other arch soon (MIPS64, S390x, etc.), but if you like that, simply drop me a line on Twitter, to keep me boosted.&lt;/p&gt;
+&lt;p&gt;Hope you'll enjoy it!&lt;/p&gt;
+&lt;p&gt;&lt;img alt="buzz-qemu" src="https://i.imgflip.com/1ri3fi.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;Oh and if you happen to be wandering in Black Hat Las Vegas 2017, come say hi at &lt;a href="https://www.blackhat.com/us-17/arsenal/schedule/index.html#gdb-enhanced-features-gef-8048" target="_blank"&gt;the Black Hat Arsenal booth&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Cheers!&lt;/p&gt;</content><category term="misc"></category><category term="linux"></category><category term="pwn"></category><category term="debug"></category><category term="arm"></category><category term="mips"></category><category term="aarch64"></category><category term="powerpc"></category><category term="sparc"></category></entry></feed>

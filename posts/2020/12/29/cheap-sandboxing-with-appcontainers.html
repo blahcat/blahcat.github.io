@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Cheap sandboxing with AppContainers</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2020/12/29/cheap-sandboxing-with-appcontainers.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="Background This is a short blog post that I decided to finish recently after looking for a way to sandbox Win32 apps, but lazy as I am,...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="windows">
+    <meta name="tags" content="sandbox">
+    <meta name="tags" content="appcontainer">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="Cheap sandboxing with AppContainers"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="Background This is a short blog post that I decided to finish recently after looking for a way to sandbox Win32 apps, but lazy as I am,..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2020/12/29/cheap-sandboxing-with-appcontainers.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2020-12-29 00:00:00-08:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2020-12-29 00:00:00-08:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="research"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="windows"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="sandbox"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="appcontainer"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="Cheap sandboxing with AppContainers">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2020/12/29/cheap-sandboxing-with-appcontainers.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="Background This is a short blog post that I decided to finish recently after looking for a way to sandbox Win32 apps, but lazy as I am,...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "Cheap sandboxing with AppContainers",
+  "headline": "Cheap sandboxing with AppContainers",
+  "datePublished": "2020-12-29 00:00:00-08:00",
+  "dateModified": "2020-12-29 00:00:00-08:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2020/12/29/cheap-sandboxing-with-appcontainers.html",
+  "description": "Background This is a short blog post that I decided to finish recently after looking for a way to sandbox Win32 apps, but lazy as I am,..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Cheap sandboxing with AppContainers</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">29 Dec 2020</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h2>Background</h2>
+<p>This is a short blog post that I decided to finish recently after looking for a way to sandbox Win32 apps, but lazy as I am, I wanted something that
+ 1. was free/open-source &amp; robustly tested
+ 2. easily hackable to my need (custom permissions on file/folder/registry, on network access, on device access etc.)
+ 3. little to no modification to my system
+So off-the-shelf sandboxing products were disregarded immediately because they almost always fail on point #2 and <strong>always</strong> fail on point #1 as they'll tend to increase attack surface (which is kindda the opposite of the objective here). So quickly Google turned me to <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation" target="_blank">Windows AppContainers</a> which the MSDN details the <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/implementing-an-appcontainer" target="_blank">implementation</a> well-enough.</p>
+<p>AppContainers are not new and by the look of it, they are here to stay. They were introduced in Windows 8 as an in-kernel isolation mechanism (a-la seccomp for Linux) and are the default model for UWP applications which a simple look at the new Calculator in Process Hacker shows immediately:</p>
+<p><img alt="image_alt" src="/assets/images/4f110a8b-5af4-4f03-8c8d-6fe8e297fffe.png"></p>
+<p>As the MSDN mentions, AppContainers operates on 6 levels of isolation, each programmatically customizable:</p>
+<ul>
+<li>The <strong><a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#file-isolation" target="_blank">File isolation</a></strong>
+    operates by creating for the AppContained process its own sandbox and named object subtree. This allows the kernel to finely control access to the FS by the contained process.</li>
+<li>The <strong><a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#network-isolation" target="_blank">Network isolation</a></strong>
+    will prevent any communication from/to the process over the network unless explicitly given permissions (and they have relatively explicit names, for instance <code>WinCapabilityInternetClientSid</code> to allow Internet access as a client - see <a href="https://docs.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-well_known_sid_type">[WELL_KNOWN_SID_TYPE enumeration]</a>)</li>
+<li>The <strong><a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#process-isolation" target="_blank">Process isolation</a></strong>
+    makes the process unable to get a handle to any process outside the sandbox</li>
+<li>And <strong><a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#window-isolation" target="_blank">Window isolation</a></strong> which
+    makes the process unable to target the Window of other processes.</li>
+<li>There's also <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#device-isolation" target="_blank"><strong>Device isolation</strong></a> and <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#credential-isolation" target="_blank"><strong>Credential isolation</strong></a> but I haven't played too much around those yet... Maybe a next post...</li>
+</ul>
+<p>A useful feature added is the DllCharacteristics flag <a href="https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#dll-characteristics"><code>IMAGE_DLLCHARACTERISTICS_APPCONTAINER</code> - 0x1000</a> that will prevent a specific DLL image from being locaded outside an AppContained environment.</p>
+<h2>AppContainer, where are you?</h2>
+<p>AppContainers being session specific, they are linked to the Session Id: more precisely objects of the container will reside in the <code>\Sessions\&lt;SessionId&gt;\AppContainerNamedObjects\&lt;AppContainerSid&gt;</code></p>
+<div class="highlight"><pre><span></span><code><span class="n">lkd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="p">@</span><span class="n">$cursession</span><span class="p">.</span><span class="n">Objects</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;Sessions&quot;</span><span class="p">).</span><span class="n">First</span><span class="p">().</span><span class="n">Children</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">Children</span>
+<span class="p">@</span><span class="n">$cursession</span><span class="p">.</span><span class="n">Objects</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;Sessions&quot;</span><span class="p">).</span><span class="n">First</span><span class="p">().</span><span class="n">Children</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">Children</span><span class="w">                 </span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">object</span><span class="w"> </span><span class="n">Generator</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="mh">0x0</span><span class="p">]</span><span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="err">\</span><span class="n">Sessions</span><span class="err">\</span><span class="mi">2</span><span class="err">\</span><span class="n">AppContainerNamedObjects</span>
+<span class="w">    </span><span class="p">[</span><span class="mh">0x1</span><span class="p">]</span><span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="err">\</span><span class="n">Sessions</span><span class="err">\</span><span class="mi">2</span><span class="err">\</span><span class="n">Windows</span>
+<span class="w">    </span><span class="p">[</span><span class="mh">0x2</span><span class="p">]</span><span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="err">\</span><span class="n">Sessions</span><span class="err">\</span><span class="mi">2</span><span class="err">\</span><span class="n">DosDevices</span>
+<span class="w">    </span><span class="p">[</span><span class="mh">0x3</span><span class="p">]</span><span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="err">\</span><span class="n">Sessions</span><span class="err">\</span><span class="mi">2</span><span class="err">\</span><span class="n">BaseNamedObjects</span>
+</code></pre></div>
+
+<p>As for file/folder objects, they will be located in <code>%LOCALAPPDATA%\Packages\&lt;NameOfTheContainer&gt;</code>, easily deletable. With each container within the same session being isolated from each other, no real damage can be done outside the sandbox<em> as everything will be un-done when deleting it (</em> permissions given depending). So AppContainers was perfect for my case, I just needed a small tool to create AppContainers on-demand - as I couldn't find any pre-existing provided by MS.</p>
+<h2>Building an AppContainer Process</h2>
+<p><br></p>
+<div class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> All the snippets below are C/C++ used in my <a href="https://github.com/hugsy/pwn--" target="_blank"><code>pwn++</code></a> library. Refer to the source code for the full implementation. Additionally, as I was already implementing my own version, I stumbled upon <a href="https://twitter.com/zodiacon" target="_blank">@zodiacon</a>'s article<a href="#ref_1">[1]</a> and implementation<a href="#ref_2">[2]</a>. You might prefer reading/using it if you want a serious implementation.</div>
+<h3>Create an AppContainer profile</h3>
+<p>That's as simple as it gets: there's an API exactly for that <a href="https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-createappcontainerprofile" target="_blank"><code>CreateAppContainerProfile</code></a></p>
+<div class="highlight"><pre><span></span><code><span class="n">PSID</span><span class="w"> </span><span class="n">AppContainerSid</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ContainerName</span><span class="p">(</span><span class="s">&quot;MyContainer&quot;</span><span class="p">);</span>
+<span class="o">::</span><span class="n">CreateAppContainerProfile</span><span class="p">(</span>
+<span class="w">    </span><span class="n">ContainerName</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span>
+<span class="w">    </span><span class="n">ContainerName</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span>
+<span class="w">    </span><span class="n">ContainerName</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span>
+<span class="w">    </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&amp;</span><span class="n">AppContainerSid</span>
+<span class="p">);</span>
+</code></pre></div>
+
+<h3>Add the desired capabilities</h3>
+<p>This was slightly trickier: to expose a specific capability or file/folder access to the container we must rely on <a href="https://docs.microsoft.com/en-us/windows/win32/secauthz/modifying-the-acls-of-an-object-in-c--" target="_blank">Windows object ACL mechanism</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="c1">// Saved the old ACL - you don&#39;t want to skip this step 😉</span>
+<span class="w">    </span><span class="o">::</span><span class="n">GetNamedSecurityInfo</span><span class="p">(</span><span class="n">ObjectName</span><span class="p">,</span><span class="w"> </span><span class="n">ObjectType</span><span class="p">,</span><span class="w"> </span><span class="n">DACL_SECURITY_INFORMATION</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pOldAcl</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pSD</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Add the new access mode &amp; mask entry</span>
+<span class="w">    </span><span class="n">Access</span><span class="p">.</span><span class="n">grfAccessMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AccessMode</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Access</span><span class="p">.</span><span class="n">grfAccessPermissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AccessMask</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Access</span><span class="p">.</span><span class="n">grfInheritance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OBJECT_INHERIT_ACE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">CONTAINER_INHERIT_ACE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Access</span><span class="p">.</span><span class="n">Trustee</span><span class="p">.</span><span class="n">MultipleTrusteeOperation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NO_MULTIPLE_TRUSTEE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Access</span><span class="p">.</span><span class="n">Trustee</span><span class="p">.</span><span class="n">pMultipleTrustee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Access</span><span class="p">.</span><span class="n">Trustee</span><span class="p">.</span><span class="n">ptstrName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">PWSTR</span><span class="p">)</span><span class="n">AppContainerSid</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Access</span><span class="p">.</span><span class="n">Trustee</span><span class="p">.</span><span class="n">TrusteeForm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUSTEE_IS_SID</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Access</span><span class="p">.</span><span class="n">Trustee</span><span class="p">.</span><span class="n">TrusteeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUSTEE_IS_GROUP</span><span class="p">;</span>
+<span class="w">    </span><span class="o">::</span><span class="n">SetEntriesInAcl</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Access</span><span class="p">,</span><span class="w"> </span><span class="n">pOldAcl</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pNewAcl</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Apply the new ACLs</span>
+<span class="w">    </span><span class="o">::</span><span class="n">SetNamedSecurityInfo</span><span class="p">(</span><span class="n">ObjectName</span><span class="p">,</span><span class="w"> </span><span class="n">ObjectType</span><span class="p">,</span><span class="w"> </span><span class="n">DACL_SECURITY_INFORMATION</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">pNewAcl</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+</code></pre></div>
+
+<h3>Insert the capability set to the startup info</h3>
+<p>Not unlike <a href="https://github.com/hugsy/pwn--/tree/main/Tools/Win32/ProcessReparent">process reparenting</a>, appcontainerization requires to define a set of attribute as part of the extended startup information structure:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="n">SIZE_T</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="w">    </span><span class="n">m_StartupInfo</span><span class="p">.</span><span class="n">StartupInfo</span><span class="p">.</span><span class="n">cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">STARTUPINFOEX</span><span class="p">);</span>
+<span class="w">    </span><span class="o">::</span><span class="n">InitializeProcThreadAttributeList</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+<span class="w">    </span><span class="n">StartupInfo</span><span class="p">.</span><span class="n">lpAttributeList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LPPROC_THREAD_ATTRIBUTE_LIST</span><span class="p">)</span><span class="o">::</span><span class="k">new</span><span class="w"> </span><span class="n">byte</span><span class="p">[</span><span class="n">size</span><span class="p">];</span>
+<span class="w">    </span><span class="o">::</span><span class="n">InitializeProcThreadAttributeList</span><span class="p">(</span><span class="n">StartupInfo</span><span class="p">.</span><span class="n">lpAttributeList</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+<span class="w">    </span><span class="o">::</span><span class="n">UpdateProcThreadAttribute</span><span class="p">(</span><span class="n">StartupInfo</span><span class="p">.</span><span class="n">lpAttributeList</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">SecurityCapabilities</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">SecurityCapabilities</span><span class="p">),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+</code></pre></div>
+
+<h3>Start the process</h3>
+<p>All that's left now, is simply to invoke <a href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa" target="_blank"><code>CreateProcess</code></a> and we get the AppContained process.</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="o">::</span><span class="n">CreateProcessW</span><span class="p">(</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">        </span><span class="p">(</span><span class="n">LPWSTR</span><span class="p">)</span><span class="n">lpwCmdLine</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">        </span><span class="nb">false</span><span class="p">,</span>
+<span class="w">        </span><span class="n">EXTENDED_STARTUPINFO_PRESENT</span><span class="p">,</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">        </span><span class="p">(</span><span class="n">LPSTARTUPINFO</span><span class="p">)</span><span class="o">&amp;</span><span class="n">StartupInfo</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">ProcessInfo</span>
+<span class="w">    </span><span class="p">);</span>
+</code></pre></div>
+
+<p>Surprisingly not hard to implement in C/C++ (and by extension also in C#), I'm surprised to see this rather efficient sandbox mechanism not being more broader to encapsulate legacy Win32 apps which functionally require only a small set of permissions available.</p>
+<h2>Result</h2>
+<p>The ~~complete~~ functional command line tool AppContainMe<a href="#ref_3">[3]</a> that uses the AppContainer implementation allows to launch contained process:</p>
+<div class="highlight"><pre><span></span><code><span class="c">PS</span><span class="nv">&gt;</span><span class="c"> d:\code\pwn</span><span class="nb">++</span><span class="c">\x64\release\appcontainme</span><span class="nt">.</span><span class="c">exe</span>
+<span class="k">[</span><span class="nb">-</span><span class="k">]</span><span class="c">  syntax</span>
+<span class="c">        appcontainme</span><span class="nt">.</span><span class="c">exe &#39;process_to_run</span><span class="nt">.</span><span class="c">exe arg1 arg2&#39; </span><span class="k">[</span><span class="c">d:\allowed\path1 d:\allowed\path2</span><span class="k">]</span><span class="c"> </span><span class="k">[</span><span class="c">c:Capability1 c:Capability2</span><span class="k">]</span><span class="c"> </span><span class="k">[</span><span class="c">r:regkey1 r:regkey2</span><span class="k">]</span>
+</code></pre></div>
+
+<p>It's not complete but does the trick for me: without any option, the process will be spawn without any access to the FS (except the subtree allocated to the container in LocalAppData), no network access, no capability etc. So for example, we can start a totally harmless <code>powershell</code> session and obverse the process runs without any privilege (<code>powershell</code> cannot even get to our home directory).</p>
+<div class="highlight"><pre><span></span><code><span class="n">PS</span><span class="p">&gt;</span> <span class="n">AppContainMe</span> <span class="n">powershell</span>
+</code></pre></div>
+
+<p><img alt="image_alt" src="/assets/images/29d17988-bf1f-4a1c-8b63-b01e97e6b53f.png"></p>
+<p>It won't also have any network access:</p>
+<div class="highlight"><pre><span></span><code><span class="n">PS</span><span class="w"> </span><span class="n">C</span><span class="p">:</span>\<span class="n">WINDOWS</span>\<span class="n">System32</span>\<span class="n">WindowsPowerShell</span>\<span class="n">v1</span><span class="o">.</span><span class="mi">0</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Invoke</span><span class="o">-</span><span class="n">Expression</span><span class="w"> </span><span class="p">((</span><span class="n">New</span><span class="o">-</span><span class="nb nb-Type">Object</span><span class="w"> </span><span class="n">System</span><span class="o">.</span><span class="n">Net</span><span class="o">.</span><span class="n">WebClient</span><span class="p">)</span><span class="o">.</span><span class="n">DownloadString</span><span class="p">(</span><span class="s1">&#39;http://google.com&#39;</span><span class="p">))</span>
+
+<span class="n">Exception</span><span class="w"> </span><span class="n">calling</span><span class="w"> </span><span class="s2">&quot;DownloadString&quot;</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="w"> </span><span class="n">argument</span><span class="p">(</span><span class="n">s</span><span class="p">):</span><span class="w"> </span><span class="s2">&quot;The remote name could not be resolved:</span>
+<span class="s1">&#39;google.com&#39;</span><span class="s2">&quot;</span>
+<span class="n">At</span><span class="w"> </span><span class="n">line</span><span class="p">:</span><span class="mi">1</span><span class="w"> </span><span class="nb">char</span><span class="p">:</span><span class="mi">1</span>
+<span class="o">+</span><span class="w"> </span><span class="n">Invoke</span><span class="o">-</span><span class="n">Expression</span><span class="w"> </span><span class="p">((</span><span class="n">New</span><span class="o">-</span><span class="nb nb-Type">Object</span><span class="w"> </span><span class="n">System</span><span class="o">.</span><span class="n">Net</span><span class="o">.</span><span class="n">WebClient</span><span class="p">)</span><span class="o">.</span><span class="n">DownloadString</span><span class="p">(</span><span class="s1">&#39; ...</span>
+<span class="o">+</span><span class="w"> </span><span class="o">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="o">+</span><span class="w"> </span><span class="n">CategoryInfo</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="n">NotSpecified</span><span class="p">:</span><span class="w"> </span><span class="p">(:)</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="n">MethodInvocationException</span>
+<span class="o">+</span><span class="w"> </span><span class="n">FullyQualifiedErrorId</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">WebException</span>
+</code></pre></div>
+
+<p>Or process listing:</p>
+<div class="highlight"><pre><span></span><code>PS C:\WINDOWS\System32\WindowsPowerShell\v1.0&gt; ps
+
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+      0       0       60          8                 0   0 Idle
+    705      32    79932      92600       0.73   7676   2 powershell
+</code></pre></div>
+
+<p>So that confirms all the "isolation" points that are stated in the MSDN. It also works perfectly well for Win32 GUI apps, for PDF Readers
+<img alt="PDF Reader" src="/assets/images/1e3a7b9c-7ef6-481d-a803-d0a969b3eab4.png"></p>
+<p>Also, for having lightweight web browsing sessions (like with <a href="http://www.qtweb.net/"><code>qtweb.exe</code></a>)
+<img alt="Web browser" src="/assets/images/283fd853-c2c7-4846-9b7c-242bfe1b02a1.png"></p>
+<p>That's pretty much it for this small post about AppContainers. If you want to play out-of-the-box with <code>AppContainMe</code>, a release archive with all the files is <a href="https://github.com/hugsy/pwn--/releases">here</a>.</p>
+<h2>Credits &amp; Links</h2>
+<p>Shout out to Pavel Yosivovich for his article and tool on AppContainer. And credits to COVID lockdown for giving me time to get back to finishing writing articles. More to come 😉...</p>
+<ul>
+<li><a name="ref_1">[1]</a> <a href="https://scorpiosoftware.net/2019/01/15/fun-with-appcontainers/" target="_blank">Fun with AppContainers</a></li>
+<li><a name="ref_2">[2]</a> <a href="https://github.com/zodiacon/RunAppContainer" target="_blank">zodiacon/RunAppContainer - Github</a></li>
+<li><a name="ref_3">[3]</a> <a href="https://github.com/hugsy/pwn--/tree/main/Tools/Win32/AppContainMe" target="_blank">hugsy/pwn++ - Github</a></li>
+</ul>
+<p>Peace ✌</p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Cheap sandboxing with AppContainers&amp;url=https://blahcat.github.io/posts/2020/12/29/cheap-sandboxing-with-appcontainers.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2020/12/29/cheap-sandboxing-with-appcontainers.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2020/12/29/cheap-sandboxing-with-appcontainers.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/windows">windows</a><a href="https://blahcat.github.io/tag/sandbox">sandbox</a><a href="https://blahcat.github.io/tag/appcontainer">appcontainer</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/research">research</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=Cheap sandboxing with AppContainers">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2021/01/10/browsing-the-registry-in-kernel-mode.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">Browsing the registry in kernel-mode</h2>
+                            <p class="post-nav-excerpt">One of Windows kernel subsystem I recently dug into is the Configuration Manager (CM),...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2020/06/15/some-toying-with-the-self-reference-pml4-entry.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Some toying with the Self-Reference PML4 Entry</h2>
+                            <p class="post-nav-excerpt">Sometimes you read about a completely awesome exploitation technique, so you want to...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

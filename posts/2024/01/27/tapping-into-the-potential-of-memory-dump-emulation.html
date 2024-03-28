@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Tapping into the potential of Memory Dump Emulation</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2024/01/27/tapping-into-the-potential-of-memory-dump-emulation.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="windows">
+    <meta name="tags" content="hack">
+    <meta name="tags" content="memory-dump">
+    <meta name="tags" content="wtf">
+    <meta name="tags" content="bochscpu">
+    <meta name="tags" content="bochs">
+    <meta name="tags" content="emulation">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="Tapping into the potential of Memory Dump Emulation"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2024/01/27/tapping-into-the-potential-of-memory-dump-emulation.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2024-01-27 00:00:00+00:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2024-03-26 00:00:00+00:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="research"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="windows"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="hack"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="memory-dump"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="wtf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="bochscpu"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="bochs"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="emulation"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="Tapping into the potential of Memory Dump Emulation">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2024/01/27/tapping-into-the-potential-of-memory-dump-emulation.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "Tapping into the potential of Memory Dump Emulation",
+  "headline": "Tapping into the potential of Memory Dump Emulation",
+  "datePublished": "2024-01-27 00:00:00+00:00",
+  "dateModified": "2024-03-26 00:00:00+00:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2024/01/27/tapping-into-the-potential-of-memory-dump-emulation.html",
+  "description": "This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Tapping into the potential of Memory Dump Emulation</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">27 Jan 2024</time>
+              - last update on <time style="font-weight: bold">26 Mar 2024</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a structured reminder for my later self.</p>
+<h2>Introduction</h2>
+<p><a href="https://github.com/0vercl0k/wtf"><code>What-The-Fuzz</code></a> is one of my favorite tools, and beyond the tool itself I really enjoy the story behind the creation of the tool itself and all of the surrounding libraries <a href="https://github.com/0vercl0k">0vercl0k</a> had to build, including <code>kdmp-parser</code>, <code>symbolizer</code>, leveraged <a href="https://github.com/yrp604">yrp</a>'s underestimated bochs-based emulation library <code>bochscpu</code>. 0vercl0k explained all of this better than I possible could, so if you haven't read it yet, please stop reading this post now and read the blog post dedicated to WTF: <a href="https://doar-e.github.io/blog/2021/07/15/building-a-new-snapshot-fuzzer-fuzzing-ida/">Building a new snapshot fuzzer &amp; fuzzing IDA</a>.</p>
+<p>I used to use memory dump mostly as a final way to access the crashing condition and execution context of a program before its crash. Dumps are very much used for debugging, fuzzing crash analysis, and sometimes for DFIR (like with the famous - RIP? - <a href="https://github.com/volatilityfoundation/volatility">Volatility</a> does). But to my knowledge, WTF was the first tool to use them for snapshot-based fuzzing (* if not, please shoot me a remark in the <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=is%3Aopen+Tapping+into+the+potential+of+Memory+Dump+Emulation">Discussion</a>).</p>
+<p>Following the well-known Feynman principle that <a href="https://simple.wikiquote.org/wiki/Richard_Feynman#cite_note-2">"what you cannot create, you do not understand"</a>, I wanted to see where digging into this topic will lead me. And boy wasn't I disappointed... But first and before all, I wanted whatever my work to be Python because:</p>
+<ul>
+<li>it is the de-facto language for quick prototyping, comes with an awesome REPL and has a great ecosystem via PyPI</li>
+<li>has a great capbility to interact with lower level machine code</li>
+<li>I know and like the language</li>
+</ul>
+<p>So immediately, I was stopped: originally <code>bochscpu</code> was written in Rust, <code>kdmp-parser</code> and <code>udmp-parser</code> in C++ and only <code>kdmp-parser</code> had an embryo of Python bindings (many API/structures missing, no PyPI). Perfect, so I set myself to completely dive into those libs by</p>
+<ul>
+<li>creating Python bindings for <code>udmp-parser</code> and <code>bochscpu</code></li>
+<li>improving the Python bindings <code>kdmp-parser</code> <a href="https://github.com/0vercl0k/kdmp-parser/tree/3bec915e6f5304c187765be7ce3cfde713d7c29b">originally had</a>, developed by <a href="https://github.com/masthoon">@masthoon</a></li>
+</ul>
+<p>At the time of this article, anyone can <code>pip install</code> any of those packages and start playing directly within the Python interpreter 3.8+ on either Windows, Linux and MacOS (since 0.1.7+) So just in order to reproduce any of the stuff mentioned below, all one would need do is:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>udmp-parser<span class="w"> </span>kdmp-parser<span class="w"> </span>bochscpu-python
+</code></pre></div>
+
+<p>to be fully set to follow along with the experiments below. Having the pre-requisites we can start digging (because yes, all that initial work was only to get start the intended research) by:</p>
+<ul>
+<li>using <code>udmp-parser</code>  to parse user-mode process dumps</li>
+<li>or using <code>kdmp-parser</code>, to parse kernel memory dumps</li>
+<li>and use those information to reconstitute a workable environment (memory layout, cpu context, etc.) for <code>bochscpu</code> to run whatever code we choose to.</li>
+</ul>
+<p>The best parts (IMO) about all of this was that this whole setup works no matter the process and allow us to get an absolute control over the execution.</p>
+<p>We will explore each case individually, but first let's examine a bit more the libraries at hand.</p>
+<h2>Quick lib peek</h2>
+<p>This part is important as none of what follows would have been possible without those libraries, it is only fair to promote them first.</p>
+<h3><code>Bochs[1]</code>/<code>BochsCPU[2]</code></h3>
+<p>It is well-known that the <a href="https://github.com/bochs-emu/Bochs">Bochs emulator</a> has incredibly powerful instrumentation capabilities and is regarded as being very faithful to the x86 ABI implementation itself (including the most recent extensions). <a href="https://github.com/yrp604/BochsCPU"><code>BochsCPU</code></a> by <a href="https://twitter.com/yrp604">yrp</a>, on the other hand, is a Rust library that wraps the Bochs CPU code and exposes via Rust API (and C++ via FFI) all the instrumentation points (context switches, interrupts, exceptions, etc) that Bochs does. This makes it a useful tool for tasks such as developing <a href="https://github.com/hugsy/bochscpu-python/blob/main/examples/real_mode_print_hello_world.py">code any X86 mode</a>, dealing with very old, mission-critical software, and assisting in reversing/vulnerability research tasks.</p>
+<p>And that's an amazing environment since Bochs is extremely faithful to what the x86 cpu actually executes, it will be merciless should you fail to prepare the CPU state adequately (missing flags when setting long mode, forgot to reset a trap flag, etc.). Even though that could seem tidious, especially if compared to <code>unicorn/qemu</code> for instance, that abstracts everything beforehand to the dev. But I believe such behavior by forcing to read carefully the Intel manuals to have the expected behavior, it only makes you know X86 CPU better.</p>
+<h3><code>udmp-parser[3]</code>/<code>kdmp-parser[4]</code></h3>
+<p><code>udmp-parser</code> and <code>kdmp-parser</code> are both cross-platform C++ parser library written by <a href="https://twitter.com/0vercl0k">0vercl0k</a> for Windows memory dumps, respectively for user-mode (using <code>.dump /m</code> in WinDbg) and kernel-mode (<code>.dump /f|/ka</code> in WinDbg) dumps. And cherry on top, both come with Python3 bindings, allowing for quick prototyping.</p>
+<h2>Windows Kernel-mode emulation</h2>
+<p>Armed with those libraries, running the emulator from a Windows kernel dump is now "relatively" simple (as opposed to user-mode, we'll detail why in the next part) because the dump is nothing more but a snapshot of the OS state at a given time.</p>
+<h3>First, always take a solid dump</h3>
+<p>First from a KdNet session, you can easily create a dump at an interesting point. When looking for interesting attack surface, I like to use my own <a href="https://github.com/hugsy/CFB">IRP monitor tool</a> #ShamelessSelfPromo; but for our example really anything would do, like the following:</p>
+<div class="highlight"><pre><span></span><code>kd&gt; bp /w &quot;@$curprocess.Name == \&quot;explorer.exe\&quot;&quot; nt!NtDeviceIoControlFile
+[...]
+Breakpoint 0 hit
+nt!NtDeviceIoControlFile:
+fffff807`4f7a4670 4883ec68        sub     rsp,68h
+</code></pre></div>
+
+<p>One way to get the dump would be using <code>.dump</code> command as such</p>
+<div class="highlight"><pre><span></span><code>kd&gt; .dump /ka c:\temp\ActiveKDump.dmp
+</code></pre></div>
+
+<p>But a better way would be to use the <a href="https://github.com/yrp604/bdump">yrp's <code>bdump.js</code></a> script</p>
+<div class="highlight"><pre><span></span><code>kd&gt; .scriptload &quot;C:\bdump\bdump.js&quot;
+[...]
+
+kd&gt; !bdump_active_kernel &quot;C:\\Temp\\ActiveKDump.dmp&quot;
+[...]
+[bdump] saving mem, get a coffee or have a smoke, this will probably take around 10-15 minutes...
+[...]
+[bdump] Dump successfully written
+[bdump] done!
+</code></pre></div>
+
+<h3>Build the BochsCPU session</h3>
+<p>Parsing the dump with <code>kdmp_parser.KernelDumpParser</code> is as simple as it gets so let's leave it to that. For BochsCPU to run it's critical to have a PF handler callback, which can be done as a simple on-demande basis: full memory dumps can be several gigabytes in size, so it seems unreasonable to map it all on host, especially since when we probably are going to need a fraction of that. This ended up being relatively elegant and simple:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dmp</span> <span class="o">=</span> <span class="n">kdmp_parser</span><span class="o">.</span><span class="n">KernelDumpParser</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/path/to/dumpfile.dmp&quot;</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">missing_page_cb</span><span class="p">(</span><span class="n">pa</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+  <span class="n">gpa</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">align_address_to_page</span><span class="p">(</span><span class="n">pa</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">gpa</span> <span class="ow">in</span> <span class="n">dmp</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>          <span class="c1"># do we already have the page in the dump?</span>
+    <span class="c1"># then create &amp; copy the page content, resume execution</span>
+    <span class="n">hva</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">allocate_host_page</span><span class="p">()</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">dmp</span><span class="o">.</span><span class="n">read_physical_page</span><span class="p">(</span><span class="n">gpa</span><span class="p">)</span>
+    <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">page_insert</span><span class="p">(</span><span class="n">gpa</span><span class="p">,</span> <span class="n">hva</span><span class="p">)</span>
+    <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">phy_write</span><span class="p">(</span><span class="n">gpa</span><span class="p">,</span> <span class="n">page</span><span class="p">)</span>
+
+<span class="n">sess</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">missing_page_handler</span> <span class="o">=</span> <span class="n">missing_page_cb</span>
+</code></pre></div>
+
+<p>This gives us a first chance to address missing pages, whereas the PageFault exception triggered by the CPU (i.e <code>PageFault</code> -&gt; <code>BX_PF_EXCEPTION</code> (14) ) will give us a second chance to analyze the page fault, as the <code>error code</code> will be populated, we can check the reason of the fault using the <a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf">Intel 3A - 4.7 section</a> of the Intel manuals.</p>
+<p>Next, a <code>bochscpu.State</code> must be given to the CPU indicating the context from which to start including the (extended) CR, GPR, flag registers and segment registers. Note that several helpers can be found in <code>bochscpu.cpu</code> to slightly speed up that process.</p>
+<div class="highlight"><pre><span></span><code><span class="n">regs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/path/to/regs.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">State</span><span class="p">()</span>
+<span class="n">bochscpu</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">set_long_mode</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="n">state</span><span class="o">.</span><span class="n">cr3</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">regs</span><span class="p">[</span><span class="s2">&quot;cr3&quot;</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">state</span><span class="o">.</span><span class="n">cr0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">regs</span><span class="p">[</span><span class="s2">&quot;cr0&quot;</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">state</span><span class="o">.</span><span class="n">cr4</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">regs</span><span class="p">[</span><span class="s2">&quot;cr4&quot;</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="n">state</span><span class="o">.</span><span class="n">rax</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">regs</span><span class="p">[</span><span class="s2">&quot;rax&quot;</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">state</span><span class="o">.</span><span class="n">rbx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">regs</span><span class="p">[</span><span class="s2">&quot;rbx&quot;</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">state</span><span class="o">.</span><span class="n">rcx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">regs</span><span class="p">[</span><span class="s2">&quot;rcx&quot;</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">state</span><span class="o">.</span><span class="n">rdx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">regs</span><span class="p">[</span><span class="s2">&quot;rdx&quot;</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+<span class="p">[</span><span class="o">...</span> <span class="n">snip</span> <span class="k">for</span> <span class="n">brievety</span><span class="p">]</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span>
+</code></pre></div>
+
+<p>Last (but technically optionally), define the Bochs callbacks on the plaetora of hookable events:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">before_execution_cb</span><span class="p">(</span><span class="n">sess</span><span class="p">:</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">Session</span><span class="p">,</span> <span class="n">cpu_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">state</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Executing RIP=</span><span class="si">{</span><span class="n">state</span><span class="o">.</span><span class="n">rip</span><span class="si">:</span><span class="s2">#016x</span><span class="si">}</span><span class="s2"> on </span><span class="si">{</span><span class="n">cpu_id</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">hook</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">Hook</span><span class="p">()</span>
+<span class="n">hook</span><span class="o">.</span><span class="n">before_execution</span> <span class="o">=</span> <span class="n">before_execution_cb</span>
+<span class="n">hooks</span> <span class="o">=</span> <span class="p">[</span><span class="n">hook</span><span class="p">,]</span>
+</code></pre></div>
+
+<p>And finally kick things off with a simple call</p>
+<div class="highlight"><pre><span></span><code><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hooks</span><span class="p">)</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python<span class="w"> </span>kdump_runner.py
+<span class="go">Executing RIP=0xfffff80720a9d4c0 on cpu_id=0</span>
+<span class="go">Executing RIP=0xfffff80720a9d4c4 on cpu_id=0</span>
+<span class="go">Executing RIP=0xfffff80720a9d4cb on cpu_id=0</span>
+<span class="go">Executing RIP=0xfffff80720a9d4d0 on cpu_id=0</span>
+<span class="go">Executing RIP=0xfffff80720a9d4d4 on cpu_id=0</span>
+<span class="go">Executing RIP=0xfffff80720a9d4dc on cpu_id=0</span>
+<span class="go">Executing RIP=0xfffff80720a9d4e1 on cpu_id=0</span>
+<span class="go">Executing RIP=0xfffff80720a9d4e8 on cpu_id=0</span>
+<span class="go">Executing RIP=0xfffff80720a9d4ec on cpu_id=0</span>
+<span class="go">[...]</span>
+</code></pre></div>
+
+<p>For a complete and more detailed example, the reader can refer to the example in the bochscpu-pytho repository: <a href="https://github.com/hugsy/bochscpu-python/blob/main/examples/long_mode_emulate_windows_kdump.py">examples/long_mode_emulate_windows_kdump.py</a></p>
+<h2>Windows User-mode emulation</h2>
+<p>There are way more than one way of snapshotting a process on Windows (like WinDbg, Task Manager, <code>procdump</code>, <code>processhacker</code>, etc.) so I will skip and assume you have a snapshot ready.</p>
+<p>Emulating usermode code on BochsCPU turned out to be slightly more tricky than kernel mode: the kernel dump includes an almost complete OS snapshot include all the kernel sections required by the MMU to function properly and all what was needed was to map those pages to Bochs whenever they were needed.</p>
+<p>A user-mode dump on Windows does not include any of those information but only that related to the usermode process itself - which, despite being already a lot of information, is insufficient to simply re-use what was done for kernel mode emulation. And we must remember that BochsCPU is only, well, the CPU: meaning it can execute anything but it needs to have everything set it up, such as the processor mode (real, protected, long), the map pages, etc. But then, if the process runs in protected/long mode, memory accesses via the MMU must also be correctly laid off so ensure the VirtualAddress → PhysicalAddress translation works. We therefore, are required to build own page table for the process. Since this process is <a href="https://wiki.osdev.org/Page_Tables">documented</a> <a href="https://software.intel.com/en-us/articles/intel-sdm">everywhere</a> <a href="https://www.memorymanagement.org/">on the Internet</a>, I will assume the reader to be familiar and skip this part by mentioning that <code>bochscpu-python</code> provides an easy way to expedite the process of setting things up:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dmp</span> <span class="o">=</span> <span class="n">udmp_parser</span><span class="o">.</span><span class="n">UserDumpParser</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">dmp</span><span class="o">.</span><span class="n">Parse</span><span class="p">(</span><span class="n">dmp_path</span><span class="p">)</span>
+<span class="n">pt</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">PageMapLevel4Table</span><span class="p">()</span>
+<span class="n">pa</span> <span class="o">=</span> <span class="n">PA_START_ADDRESS</span>
+
+<span class="c1"># Collect the memory regions from the Windows dump</span>
+<span class="c1"># For each region, insert a new PT entry</span>
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">dmp</span><span class="o">.</span><span class="n">Memory</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">region</span><span class="o">.</span><span class="n">State</span> <span class="o">==</span> <span class="n">MEM_FREE</span> <span class="ow">or</span> <span class="n">region</span><span class="o">.</span><span class="n">Protect</span> <span class="o">==</span> <span class="n">PAGE_NOACCESS</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">BaseAddress</span><span class="p">,</span> <span class="n">region</span><span class="o">.</span><span class="n">BaseAddress</span> <span class="o">+</span> <span class="n">region</span><span class="o">.</span><span class="n">RegionSize</span>
+    <span class="k">for</span> <span class="n">va</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">PAGE_SIZE</span><span class="p">):</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="n">convert_region_protection</span><span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">Protect</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">flags</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">pt</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">pa</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
+        <span class="n">hva</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">allocate_host_page</span><span class="p">()</span>
+        <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">page_insert</span><span class="p">(</span><span class="n">pa</span><span class="p">,</span> <span class="n">hva</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\b</span><span class="s2">Mapped </span><span class="si">{</span><span class="n">va</span><span class="si">=:</span><span class="s2">#x</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">pa</span><span class="si">=:</span><span class="s2">#x</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="n">flags</span><span class="si">=}</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">pa</span> <span class="o">+=</span> <span class="n">PAGE_SIZE</span>
+
+<span class="c1"># Commit all the changes, resulting in a valid PT setup for the VM</span>
+<span class="k">for</span> <span class="n">hva</span><span class="p">,</span> <span class="n">gpa</span> <span class="ow">in</span> <span class="n">pt</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">PML4_ADDRESS</span><span class="p">):</span>
+    <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">page_insert</span><span class="p">(</span><span class="n">gpa</span><span class="p">,</span> <span class="n">hva</span><span class="p">)</span>
+</code></pre></div>
+
+<p>A couple of other things are required: the first one is that just like for what was done for kernel dumps, we must import all registers (GPR, flags).
+Another thing (but related) relies in the thread selection: when the VM execution will resume, the CPU cannot work without relying on the segment registers, which are provided from its state by the values set in the CS, DS, SS segment registers. Thankfully those values can be retrieved straight from the dump:</p>
+<div class="highlight"><pre><span></span><code><span class="n">threads</span> <span class="o">=</span> <span class="n">dmp</span><span class="o">.</span><span class="n">Threads</span><span class="p">()</span>
+<span class="n">tids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">threads</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">tid</span> <span class="o">=</span> <span class="n">tids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># whatever teh first thread is, but TID can be hardcoded too</span>
+<span class="n">switch_to_thread</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">threads</span><span class="p">[</span><span class="n">tid</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">switch_to_thread</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">State</span><span class="p">,</span> <span class="n">thread</span><span class="p">:</span> <span class="n">udmp_parser</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+  <span class="c1"># build CS</span>
+  <span class="n">_cs</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">Segment</span><span class="p">()</span>
+  <span class="n">_cs</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">_cs</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="mh">0xFFFF_FFFF</span>
+  <span class="n">_cs</span><span class="o">.</span><span class="n">selector</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">Context</span><span class="o">.</span><span class="n">SegCs</span>
+  <span class="n">_cs_attr</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">SegmentFlags</span><span class="p">()</span>
+  <span class="n">_cs_attr</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="kc">True</span>
+  <span class="n">_cs_attr</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="kc">True</span>
+  <span class="n">_cs_attr</span><span class="o">.</span><span class="n">E</span> <span class="o">=</span> <span class="kc">True</span>
+  <span class="n">_cs_attr</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="kc">True</span>
+  <span class="n">_cs_attr</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="kc">True</span>
+  <span class="n">_cs_attr</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="kc">True</span>
+  <span class="n">_cs</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_cs_attr</span><span class="p">)</span>
+  <span class="n">state</span><span class="o">.</span><span class="n">cs</span> <span class="o">=</span> <span class="n">_cs</span>
+
+  <span class="c1"># do the same for the others (obvisouly adjusting values/flags)</span>
+</code></pre></div>
+
+<p>Similarly not the CPU but Windows also requires the FS (for protected and long modes) and the GS registers (in long mode).</p>
+<h3>PGTFO</h3>
+<p>TL;DR You can predict through emulation the values of Windows PRNG (see <a href="https://github.com/hugsy/bochscpu-python/blob/main/examples/long_mode_emulate_windows_udump.py">examples/long_mode_emulate_windows_udump.py</a>)</p>
+<p>Coincidentally as part of some research I was doing for work on ransomware, I examined the possibility of retrieving session keys used by ransomware (the full article is available <a href="https://www.elastic.co/security-labs/ransomware-in-the-honeypot-how-we-capture-keys">here</a> if interested). As thoroughly detailed in the article, investigating <code>WANNACRY</code> revealed that it uses Windows PRNG to create the AES128 keys for each file. Which triggered the idea behind that post, which was that by using canary files to detect ransomware encryption early one, and generating a dump of the process at that point, can we retrieve all the subsequent symmetric keys (and essentially making ourselves a free decryptor).</p>
+<p>Since snapshotting the process gives us the current state of the PRNG for that process, we can now use emulation to discover the following values. A basic PoC for it would be as follow:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;windows.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;wincrypt.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#pragma comment(lib, &quot;advapi32.lib&quot;)</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">HCRYPTPROV</span><span class="w"> </span><span class="n">hCryptProv</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CryptAcquireContext</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hCryptProv</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">PROV_RSA_FULL</span><span class="p">,</span><span class="w"> </span><span class="n">CRYPT_VERIFYCONTEXT</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;PID=%lu, hProv=%p</span><span class="se">\n</span><span class="s">Dump and press enter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">GetCurrentProcessId</span><span class="p">(),</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">hCryptProv</span><span class="p">);</span>
+<span class="w">    </span><span class="n">getchar</span><span class="p">();</span><span class="w"> </span><span class="c1">// We break here and snapshot the process</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">BYTE</span><span class="w"> </span><span class="n">randomBytes</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">        </span><span class="n">CryptGenRandom</span><span class="p">(</span><span class="n">hCryptProv</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">randomBytes</span><span class="p">),</span><span class="w"> </span><span class="n">randomBytes</span><span class="p">)</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Random bytes: &quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">randomBytes</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">          </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%02X &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">randomBytes</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">CryptReleaseContext</span><span class="p">(</span><span class="n">hCryptProv</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><img alt="Get the dump" src="/assets/images/d9e336f7-602d-4efb-8234-0630e0d54f72.png"></p>
+<p>Continuing our emulator from above, we can now invoke directly any function (here we're interested in <code>cryptbase!SystemFunction036</code>) in the dump:</p>
+<div class="highlight"><pre><span></span><code><span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Resolving &#39;cryptbase!SystemFunction036&#39;&quot;</span><span class="p">)</span>
+<span class="n">fn_start</span> <span class="o">=</span> <span class="n">resolve_function</span><span class="p">(</span><span class="n">fn_sym</span><span class="p">)</span>
+<span class="n">fn_end</span> <span class="o">=</span> <span class="n">fn_start</span> <span class="o">+</span> <span class="mh">0x1C</span> <span class="c1"># hardcode the end address of the function for now</span>
+
+<span class="n">state</span><span class="o">.</span><span class="n">rcx</span> <span class="o">=</span> <span class="n">temp_buffer_va</span>
+<span class="n">state</span><span class="o">.</span><span class="n">rdx</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">state</span><span class="o">.</span><span class="n">rip</span> <span class="o">=</span> <span class="n">fn_start</span>
+
+<span class="n">hook</span> <span class="o">=</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">Hook</span><span class="p">()</span>
+<span class="n">hook</span><span class="o">.</span><span class="n">before_execution</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">rip</span> <span class="o">==</span> <span class="n">fn_end</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">hook</span><span class="p">,])</span>
+</code></pre></div>
+
+<p>And we can successfully dump all future values:</p>
+<p><img alt="emulate" src="/assets/images/a0641b11-efdc-4d06-84af-51d404cf0ed5.png" width="50%"></p>
+<p>Same values, mission accomplished.</p>
+<h2>Hey, but what about Linux?</h2>
+<p>Well as the saying goes...</p>
+<p><img alt="same-but-different" src="https://media.giphy.com/media/xTiTnL7OS5ZWUUWMU0/giphy.gif" width="25%"></p>
+<p>using <a href="https://lief-project.github.io/doc/latest/tutorials/12_elf_coredump.html">lief</a> we can parse and populate the memory layout</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * For demo purpose, compiled with `-static`</span>
+<span class="cm"> */</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">generate_random_buffer</span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sz</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mh">0x10</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">  </span><span class="n">generate_random_buffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+<span class="w">  </span><span class="n">getchar</span><span class="p">();</span><span class="w"> </span><span class="c1">// get a coredump</span>
+<span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%02x &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">  </span><span class="n">puts</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Compile
+<img alt="Alt text" src="/assets/images/a31f6e3a-5c8a-40a6-8c6d-29e6b023d07a.png"></p>
+<p>And run
+<img alt="Alt text" src="/assets/images/8594fc66-e5da-477d-850c-1ea320c42ccf.png"></p>
+<p>and unsurprisingly, same result</p>
+<p>Similarly the source of this script too was added to the <code>examples/</code> folder of <code>bochscpu-python</code> available <a href="https://github.com/hugsy/bochscpu-python/blob/main/examples/long_mode_emulate_linux_udump.py">here</a> so feel free to try it at home 🙂</p>
+<h2>BochsPwn (Re-)Reloaded?</h2>
+<p><a href="https://github.com/googleprojectzero/bochspwn">BochsPwn</a> (and <a href="https://github.com/googleprojectzero/bochspwn-reloaded">BochsPwn-Reloaded</a>) is a project developed by <a href="https://twitter.com/j00ru">j00ru</a> which leveraged Bochs instrumentation capability to detect (among other things) TOCTOU race conditions in the Windows kernel.
+The brilliance behind that tool can (partially) become relevant again for kernel memory dumps, by simply tracking executions and memory accesses. This can be achieved crudly by extending the kernel dump runner we had earlier, and adding a callback for linear memory accesses in <code>bochscpu</code> as such:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">TrackedMemoryAccess</span><span class="p">:</span>
+    <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">pc</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">address</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">access</span><span class="p">:</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">AccessType</span>
+
+<span class="k">def</span> <span class="nf">lin_access_cb</span><span class="p">(</span>
+    <span class="n">sess</span><span class="p">:</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">Session</span><span class="p">,</span>
+    <span class="n">cpu_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">lin</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">phy</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="nb">len</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">memtype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">rw</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">global</span> <span class="n">tracked_accesses</span>
+
+    <span class="n">state</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">state</span>
+    <span class="k">if</span> <span class="n">lin</span> <span class="o">&gt;=</span> <span class="n">MAX_USERMODE_ADDRESS</span><span class="p">:</span>
+        <span class="c1"># Ignore accessed linear address as long as it stays in KM</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">rw</span><span class="p">:</span>
+        <span class="c1"># Ignore write access (for now)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Track the current access</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">TrackedMemoryAccess</span><span class="p">(</span><span class="n">sess</span><span class="p">[</span><span class="n">AUX_INSN_COUNT</span><span class="p">],</span> <span class="n">sess</span><span class="p">[</span><span class="n">AUX_LAST_RIP</span><span class="p">],</span> <span class="n">lin</span><span class="p">,</span> <span class="n">bochscpu</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">AccessType</span><span class="p">(</span><span class="n">memtype</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cur</span><span class="o">.</span><span class="n">pc</span><span class="si">=:</span><span class="s2">#x</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">cur</span><span class="o">.</span><span class="n">address</span><span class="si">=:</span><span class="s2">#x</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">phy</span><span class="si">=:</span><span class="s2">#x</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">len</span><span class="si">=}</span><span class="s2"> </span><span class="si">{</span><span class="n">cur</span><span class="o">.</span><span class="n">access</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Look for previous accesses</span>
+    <span class="k">for</span> <span class="n">old</span> <span class="ow">in</span> <span class="n">tracked_accesses</span><span class="p">:</span>
+      <span class="c1"># Any access to the same VA means a match</span>
+      <span class="k">if</span> <span class="n">old</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">cur</span><span class="o">.</span><span class="n">address</span> <span class="ow">and</span> <span class="n">old</span><span class="o">.</span><span class="n">access</span> <span class="o">==</span> <span class="n">cur</span><span class="o">.</span><span class="n">access</span><span class="p">:</span>
+          <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Possible usermode </span><span class="si">{</span><span class="n">cur</span><span class="o">.</span><span class="n">access</span><span class="si">}</span><span class="s2"> double fetch on VA=</span><span class="si">{</span><span class="n">cur</span><span class="o">.</span><span class="n">address</span><span class="si">:</span><span class="s2">#x</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;1st access at </span><span class="si">{</span><span class="n">old</span><span class="o">.</span><span class="n">pc</span><span class="si">:</span><span class="s2">#x</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">old</span><span class="o">.</span><span class="n">insn</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;2nd access at </span><span class="si">{</span><span class="n">cur</span><span class="o">.</span><span class="n">pc</span><span class="si">:</span><span class="s2">#x</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">cur</span><span class="o">.</span><span class="n">insn</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;exec distance: </span><span class="si">{</span><span class="n">cur</span><span class="o">.</span><span class="n">timestamp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">old</span><span class="o">.</span><span class="n">timestamp</span><span class="si">}</span><span class="s2"> insn(s)&quot;</span>
+          <span class="p">)</span>
+          <span class="k">raise</span> <span class="n">SuspiciousCrashException</span>
+
+    <span class="n">tracked_accesses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+
+<span class="p">[</span><span class="o">..</span><span class="n">snip</span><span class="o">..</span><span class="p">]</span>
+<span class="n">hook</span><span class="o">.</span><span class="n">lin_access_cb</span> <span class="o">=</span> <span class="n">lin_access_cb</span>
+
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">hook</span><span class="p">,])</span>
+</code></pre></div>
+
+<p>Testing with <a href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver/">HEVD</a> <a href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver/blob/master/Driver/HEVD/Windows/DoubleFetch.c">Double-Fetch</a> example, immediately reveals it:</p>
+<div class="highlight"><pre><span></span><code><span class="go">❯ python .\hevd_double_fetch.py X:\hevd_double_fetch_dump\mem.dmp X:\hevd_double_fetch_dump\regs.json</span>
+<span class="go">INFO:Parsed KernelDumpParser(X:\hevd_double_fetch_dump\mem.dmp, CompleteMemoryDump)</span>
+<span class="go">ERROR:Possible usermode bochscpu._bochscpu.memory.AccessType.Read double fetch on VA=0x5f0008:</span>
+<span class="go">1st access at 0xfffff8071fde68d6 -&gt; mov r9, [rdi+8h]</span>
+<span class="go">2nd access at 0xfffff8071fde6905 -&gt; mov r8, [rdi+8h]</span>
+<span class="go">exec distance: 85 insn(s)</span>
+<span class="go">ERROR:Exception  raised</span>
+<span class="go">&gt; z:\bochscpu-fun\hevd_double_fetch.py(180)lin_access_cb()</span>
+<span class="go">-&gt; raise SuspiciousCrashException</span>
+
+<span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">bochscpu.utils.dump_registers(sess.cpu.state)</span>
+<span class="go">rax=0000000000000000 rbx=0000000000000000 rdx=0000000000000001</span>
+<span class="go">rsi=0000000000000003 rdi=00000000005f0000 rbp=ffff988c2cebae90</span>
+<span class="go">rsp=fffffd8650f8e880 rip=fffff8071fde6909  r8=0000000000000008</span>
+<span class="go"> r9=000000000000004d r10=fffff8071fde5078 r11=fffffd8650f8e878</span>
+<span class="go">r12=0000000000000001 r13=ffff988c2d80ee00 r14=000000000000004d</span>
+<span class="go">r15=0000000000000800</span>
+<span class="go">efl=00040206 [ id vip vif AC vm rf nt of df IF tf sf zf af PF cf  ]</span>
+<span class="go">cs=0010  ss=0018  ds=002b  es=002b  fs=0053  gs=002b</span>
+
+<span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">print(utils.hexdump(bochscpu.memory.virt_read(sess.cpu.state.cr3, sess.cpu.state.rdi, 0x10)))</span>
+<span class="go">0x0000000000000000   AA AA AA AA AA AA AA AA 10 00 00 00 00 00 00 00     ................</span>
+</code></pre></div>
+
+<p>Which we can double-check with a disassembler (highlighted in magenta)</p>
+<p><img alt="Alt text" src="/assets/images/0bd46b07-e495-419d-ae11-8373868735fe.png"></p>
+<h2>Final remark</h2>
+<p>This article was made an attempt to structure all my notes over the last few months playing with memory dumps, and by no mean any comparison with WTF: WTF goes way further and does it better, with different emulation techniques and therefore should be used for fuzzing at scale. On the other hand having quick ways to re-create a fully working emulation context (whether user or kernel mode) from a process/memory dump with ~50 lines of Python is not without certain advantages.</p>
+<p>Anyway, as always open for feedback on the discussion feed.</p>
+<p>Until then see next time, 
+Cheers 🍻</p>
+<h2>References</h2>
+<p>Here are the links to those giants refered in the title:</p>
+<ol>
+<li><a href="https://github.com/bochs-emu/Bochs">https://github.com/bochs-emu/Bochs</a></li>
+<li><a href="https://github.com/yrp604/bochscpu">https://github.com/yrp604/bochscpu</a></li>
+<li><a href="https://github.com/0vercl0k/wtf">https://github.com/0vercl0k/wtf</a></li>
+<li><a href="https://github.com/0vercl0k/kdmp-parser">https://github.com/0vercl0k/kdmp-parser</a></li>
+<li><a href="https://github.com/0vercl0k/udmp-parser">https://github.com/0vercl0k/udmp-parser</a></li>
+<li><a href="https://github.com/googleprojectzero/bochspwn">https://github.com/googleprojectzero/bochspwn</a></li>
+<li><a href="https://github.com/googleprojectzero/bochspwn-reloaded">https://github.com/googleprojectzero/bochspwn-reloaded</a></li>
+</ol>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Tapping into the potential of Memory Dump Emulation&amp;url=https://blahcat.github.io/posts/2024/01/27/tapping-into-the-potential-of-memory-dump-emulation.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2024/01/27/tapping-into-the-potential-of-memory-dump-emulation.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2024/01/27/tapping-into-the-potential-of-memory-dump-emulation.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/windows">windows</a><a href="https://blahcat.github.io/tag/hack">hack</a><a href="https://blahcat.github.io/tag/memory-dump">memory-dump</a><a href="https://blahcat.github.io/tag/wtf">wtf</a><a href="https://blahcat.github.io/tag/bochscpu">bochscpu</a><a href="https://blahcat.github.io/tag/bochs">bochs</a><a href="https://blahcat.github.io/tag/emulation">emulation</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/research">research</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=Tapping into the potential of Memory Dump Emulation">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2023/04/04/section-objects-as-kerneluser-communication-mode.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Section Objects as Kernel/User communication mode</h2>
+                            <p class="post-nav-excerpt">I've recently decided to read cover to cover some Windows Internals books, and...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

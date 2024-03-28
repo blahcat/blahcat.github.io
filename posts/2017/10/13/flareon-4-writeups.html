@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>FlareOn 4 WriteUps</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2017/10/13/flareon-4-writeups.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="This year, I happened to finally have a chance to be in a good position to play Flare-On CTF, a yearly CTF published by FireEye. This...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="reverse">
+    <meta name="tags" content="flareon">
+    <meta name="tags" content="windows">
+    <meta name="tags" content="pe">
+    <meta name="tags" content="linux">
+    <meta name="tags" content="elf">
+    <meta name="tags" content="arduino">
+    <meta name="tags" content="avr">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="FlareOn 4 WriteUps"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="This year, I happened to finally have a chance to be in a good position to play Flare-On CTF, a yearly CTF published by FireEye. This..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2017/10/13/flareon-4-writeups.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2017-10-13 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2017-10-13 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="ctf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="reverse"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="flareon"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="windows"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pe"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="linux"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="elf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="arduino"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="avr"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/flareon-2017-header.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="FlareOn 4 WriteUps">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2017/10/13/flareon-4-writeups.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/flareon-2017-header.png">
+
+      <meta name="twitter:description" content="This year, I happened to finally have a chance to be in a good position to play Flare-On CTF, a yearly CTF published by FireEye. This...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "FlareOn 4 WriteUps",
+  "headline": "FlareOn 4 WriteUps",
+  "datePublished": "2017-10-13 00:00:00-07:00",
+  "dateModified": "2017-10-13 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/flareon-2017-header.png",
+  "url": "https://blahcat.github.io/posts/2017/10/13/flareon-4-writeups.html",
+  "description": "This year, I happened to finally have a chance to be in a good position to play Flare-On CTF, a yearly CTF published by FireEye. This..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">FlareOn 4 WriteUps</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">13 Oct 2017</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/flareon-2017-header.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>This year, I happened to finally have a chance to be in a good position to play
+<a href="https://flare-on.com">Flare-On CTF</a>, a yearly CTF published by <a href="https://web.archive.org/web/20170831191227/https://www.fireeye.com/blog/threat-research/2017/08/fourth-annual-flare-on-challenge.html">FireEye</a>. This
+year's edition offered 12 reverse-engineering challenges to solve in 6 weeks.</p>
+<p>This post is mostly a dump of the notes taken during all the challenges. Link to
+challenges and scripts are also given.</p>
+<h1>Menu</h1>
+<p>For quick jump:</p>
+<p>| <a href="#challenge-1">Level1</a>   | <a href="#challenge-2">Level2</a>  | <a href="#challenge-3">Level3</a>  | <a href="#challenge-4">Level4</a>  |
+| <a href="#challenge-5">Level5</a>   | <a href="#challenge-6">Level6</a>  | <a href="#challenge-7">Level7</a>  | <a href="#challenge-8">Level8</a>  |
+| <a href="#challenge-9">Level9</a>   | <a href="#challenge-10">Level10</a>  | <a href="#challenge-11">Level11</a>  | <a href="#challenge-12">Level12</a>  |</p>
+<p>All the challenges are in the ZIP file that you
+can <a href="https://mega.nz/#F!lVQzXZZQ!bZkK8Q2XkLb0O-RE-hCl1g">download here</a>.</p>
+<h1>The Arsenal</h1>
+<p>My complete arsenal was (in no particular order):</p>
+<ul>
+<li><a href="https://github.com/hugsy/modern.ie-vagrant">Modern-IE Windows VM</a></li>
+<li><a href="https://www.hex-rays.com">IDA Pro</a><ul>
+<li><a href="https://github.com/nihilus/IDA_Signsrch">IDA SignSrch</a></li>
+</ul>
+</li>
+<li><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger">WinDBG</a></li>
+<li><a href="http://www.ntcore.com/exsuite.php">CFF Explorer</a></li>
+<li><a href="https://mh-nexus.de/en/hxd">HxD</a></li>
+<li><a href="https://www.aldeid.com/wiki/PEiD">PEiD</a></li>
+<li><a href="http://www.rohitab.com/apimonitor">AIP Monitor</a></li>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals">SysInternals Suite</a></li>
+<li><a href="https://binary.ninja">Binary Ninja</a><ul>
+<li><a href="https://github.com/fluxchief/binaryninja_avr">Binja-AVR</a></li>
+<li><a href="https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c">Binja-covfefe</a></li>
+</ul>
+</li>
+<li>GDB + <a href="https://github.com/hugsy/gef">GEF</a></li>
+<li><a href="https://github.com/buserror/simavr">SimAVR</a></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jdb.html">JDB</a></li>
+<li><a href="https://github.com/skylot/jadx">JADX</a></li>
+<li><a href="https://www.genymotion.com">GenyMotion</a></li>
+<li>Python modules:<ul>
+<li><a href="https://pypi.python.org/pypi/IntelHex">Python-IntelHex</a></li>
+<li><a href="https://pypi.python.org/pypi/pycrypto">PyCrypto</a></li>
+<li><a href="https://pypi.python.org/pypi/python-camellia/0.1.1">Python-Camellia</a></li>
+<li><a href="https://pypi.python.org/pypi/python-lzo/1.11">Python-LZO</a></li>
+<li><a href="https://github.com/secretsquirrel/the-backdoor-factory/blob/master/aPLib/contrib/python/aplib.py">Python-ApLib</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/0xd4d/dnSpy">DnSpy</a></li>
+<li><a href="https://github.com/crypto2011/IDR">Interactive Delphi Reconstructor</a></li>
+<li><a href="https://wireshark.org">Wireshark</a></li>
+<li><a href="https://github.com/joxeankoret/diaphora">Diaphora</a></li>
+<li><a href="http://www.semicomplete.com/projects/xdotool">xdotool</a></li>
+</ul>
+<p>And a lot of C and Python snippets...</p>
+<h1>Challenge 1</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code>Welcome to the Fourth Flare-On Challenge! The key format, as always, will be a
+valid email address in the @flare-on.com domain.
+</code></pre></div>
+
+<h2>Solution</h2>
+<p>By checking the <a href="https://mega.nz/#!1EQhhLrT!uWOWRRGc-8Lx2D0iLxkSk3qMSK-xcWBV8Pnj8CYTaRg">HTML source
+code</a>,
+we see:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/17161f3635f37c0b278c18262e4a29eb4f21675316ff9a086557e390ca3be67e.png"></p>
+<p>Classic ROT-13, can be decoded by:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;PyvragFvqrYbtvafNerRnfl@syner-ba.pbz&quot;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;rot13&quot;</span><span class="p">)</span>
+<span class="n">ClientSideLoginsAreEasy</span><span class="nd">@flare</span><span class="o">-</span><span class="n">on</span><span class="o">.</span><span class="n">com</span>
+</code></pre></div>
+
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 2</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code>You solved that last one really quickly! Have you ever tried to reverse engineer
+a compiled x86 binary? Let&#39;s see if you are still as quick.
+</code></pre></div>
+
+<h2>Solution</h2>
+<p><a href="https://mega.nz/#!gBIF0aYQ!82SWKCVa3hw2sI3f_2AsaHaoVwj2zux5ORXXfNMi2F4"><code>IgniteMe.exe</code></a>
+is a small PE that reads
+what a buffer from stdin and chain-xor it in reverse (with an IV set to <code>4</code> by
+function at 0x00401000) and then compared to an <code>encoded_key</code> located at
+0x0403000:</p>
+<div class="highlight"><pre><span></span><code>00403000  0d 26 49 45 2a 17 78 44-2b 6c 5d 5e 45 12 2f 17  .&amp;IE*.xD+l]^E./.
+00403010  2b 44 6f 6e 56 09 5f 45-47 73 26 0a 0d 13 17 48  +DonV._EGs&amp;....H
+00403020  42 01 40 4d 0c 02 69 00                          B.@M..i.
+</code></pre></div>
+
+<p>It's a classic simple XOR encoding challenge, the script <a href="https://gist.github.com/f84ad968d233699bfe47b81d7b7e73dc">IgniteMe.py</a> was
+used to decode it :</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>py<span class="w"> </span>IgniteMe.py
+<span class="o">[</span>...<span class="o">]</span>
+result<span class="w"> </span>R_y0u_H0t_3n0ugH_t0_1gn1t3@flare-on.com
+</code></pre></div>
+
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 3</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code>Now that we see you have some skill in reverse engineering computer software,
+the FLARE team has decided that you should be tested to determine the extent of
+your abilities. You will most likely not finish, but take pride in the few
+points you may manage to earn yourself along the way.
+</code></pre></div>
+
+<h2>Solution</h2>
+<p><a href="https://mega.nz/#!4cpGWS5S!QCTrpXnC8q4WYnMHaxbqFA4mPDOVC4q2toAYGKSfe68"><code>greek_to_me</code></a> is a PE file that will
+start by binding and listen tcp/2222, and receive 4 bytes from the socket. This
+value read will be used to decode the instructions at 0x40107c to 0x4010ee:</p>
+<p><img alt="image_alt1" src="/assets/images/flareon-2017/489d77b797f222ef52533b5da295fd7e733c9156ec43cbd44aa1f8163ece1f81.png"></p>
+<p>Being lazy, I've reconstructed
+<a href="https://gist.github.com/7c7ee0e9cd9399a5ec975a72cfe58486">this C script</a> from
+IDA decompiler which allowed me to perform simply a brutefore locally:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>make<span class="w"> </span>greek_to_me
+$<span class="w"> </span>./greek_to_me
+Starting<span class="w"> </span>new<span class="w"> </span>process<span class="w"> </span><span class="m">31673</span><span class="w"> </span>with<span class="w"> </span>range<span class="o">(</span><span class="m">0</span>,<span class="w"> </span>0x20000000<span class="o">)</span>
+<span class="o">[</span>...<span class="o">]</span>
+Found<span class="w"> </span>valid<span class="w"> </span>key:<span class="w"> </span><span class="m">536871074</span>
+Found<span class="w"> </span>valid<span class="w"> </span>key:<span class="w"> </span><span class="m">1610612898</span>
+Found<span class="w"> </span>valid<span class="w"> </span>key:<span class="w"> </span><span class="m">1073741986</span>
+</code></pre></div>
+
+<p>With those keys, we can re-run the binary by sending those value (properly
+encoded) to the socket on tcp/2222:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">struct</span>
+<span class="n">valid_keys</span> <span class="o">=</span> <span class="p">[</span><span class="mi">162</span><span class="p">,</span> <span class="mi">536871074</span><span class="p">,</span> <span class="mi">1610612898</span><span class="p">,</span> <span class="mi">1073741986</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">p32</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">2222</span><span class="p">))</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">p32</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+<span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mh">0x100</span><span class="p">)</span>
+</code></pre></div>
+
+<p>which will show as a response:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">Congratulations</span><span class="o">!</span><span class="w"> </span><span class="nv">But</span><span class="w"> </span><span class="k">wait</span>,<span class="w"> </span><span class="nv">where</span><span class="err">&#39;s my flag?</span>
+</code></pre></div>
+
+<p>But by setting WinDBG to break at 0x040107c and by passing the correct decoding
+key when prompted, a whole new code shows up:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/05d0733685c70aa9802ace1c97c240ace73a3c18c941219d975775cae32d10a5.png"></p>
+<p>Revealing the key to this level.</p>
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 4</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code>You&#39;re using a VM to run these right?
+</code></pre></div>
+
+<h2>Solution</h2>
+<p>This challenge was very fun at the beginning, but the last part really sucked:
+<a href="https://mega.nz/#!IZA3nbLK!qdpuFX29rpXHBfEdXRWMq5R-gHw-5QHiN9cAMhx2vsk"><code>notepad.exe</code></a> is a small PE that by all
+appearance spawns Windows classic <code>notepad</code>. I was fooled for a bit at first by
+the instruction to this challenge, I expected a malware or something hostile,
+but it is nothing of the sort. Disassembling the <code>start</code> in IDA shows a bunch of
+interesting strings:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/c2be22c2350ecf3a792cfa07a72ee0c6a55e129e60642577e70994e53c3e2efd.png"></p>
+<div class="highlight"><pre><span></span><code><span class="c">%USERPROFILE%\flareon2016challenge</span>
+<span class="n">ImageHlp</span><span class="p">.</span><span class="n">dll</span>
+<span class="n">CheckSumMappedFile</span>
+<span class="s">User32.dll</span>
+<span class="n">MessageBoxA</span>
+</code></pre></div>
+
+<p>So I created the folder <code>flareon2016challenge</code> and spawned <code>procmon</code>:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/9e3fc6079d951d311ad3bacdee5d98d5d191b63663d7803e93ec1f260cbde521.png"></p>
+<p>clearly showing that <code>notepad</code> is looking for something in this
+directory. Breaking
+on
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364418(v=vs.85).aspx"><code>Kernel32!FindFirstFile</code></a>
+we discover that the loop at 0x10140B0 performs
+a
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365200(v=vs.85).aspx">classic file lookup in directory</a>,
+and calling the function at 0x1014E20 when a file is found. That's where stuff
+gets interesting.</p>
+<p>![image_alt]/assets/images/flareon-2017/d9d6b730545915c4d7a94f05ff7b42ab7b5ba9fa5a9bc119147d6a35dd357c18.png)</p>
+<p><code>notepad</code> maps the file in memory, checks if it started with <code>MZ</code>, gets the
+value at offset 0x3c, then jump to
+the offset and checks if the mmaped memory at this offset is equal to <code>PE</code>. It
+looks like it is searching for one or more valid PE executables in the
+<code>flareon2016challenge</code> folder. It does a few extra checks (is it Intel machine
+in PE header, etc.) and if everything passes, calls 0x010146C0.</p>
+<p>This function will take the timestamps from
+the
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms680313(v=vs.85).aspx">PE header</a>
+of the current program (<code>notepad.exe</code>) and the PE file mapped to memory. If
+those 2 values are the ones expected, then 2 functions are called successively:</p>
+<ol>
+<li>Function @ 0x1014350 which will format the timestamp of the mapped file and
+ <code>MessageBox</code>-it <img alt="image_alt" src="/assets/images/flareon-2017/3321b96da80e52cd9e26eda05122bb1bd58a18216d6aeb1b4205162d2ed6dbf6.png"></li>
+<li>Function @ 0x1014BAC which will open a file <code>key.bin</code> in
+    <code>flareon2016challenge</code> folder and write 8 bytes from some offset
+    in the mapped file into it.</li>
+</ol>
+<p>Or in horrible pseudo-code:</p>
+<div class="highlight"><pre><span></span><code><span class="n">encoded_buffer</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0x37</span><span class="p">,</span> <span class="mh">0xe7</span><span class="p">,</span> <span class="mh">0xd8</span><span class="p">,</span> <span class="mh">0xbe</span><span class="p">,</span> <span class="n">etc</span><span class="o">..</span><span class="p">]</span>  <span class="c1"># populated at 010148F3</span>
+
+<span class="k">if</span> <span class="n">notepad</span><span class="o">.</span><span class="n">pe</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="s1">&#39;2008-04-13 11:35:51&#39;</span> <span class="ow">and</span> <span class="n">mmap</span><span class="o">.</span><span class="n">pe</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="s1">&#39;2016-09-08 11:49:06&#39;</span><span class="p">:</span>
+   <span class="n">MessageBox</span><span class="p">(</span><span class="s1">&#39;2016-09-08 11:49:06&#39;</span><span class="p">)</span>
+   <span class="n">Write_8_Bytes_From</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">mmap</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="err">`</span><span class="n">key</span><span class="o">.</span><span class="n">bin</span><span class="err">`</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="n">notepad</span><span class="o">.</span><span class="n">pe</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="s1">&#39;2016-09-08 11:49:06&#39;</span> <span class="ow">and</span> <span class="n">mmap</span><span class="o">.</span><span class="n">pe</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="s1">&#39;2016-09-09 05:54:16&#39;</span><span class="p">:</span>
+   <span class="n">MessageBox</span><span class="p">(</span><span class="s1">&#39;2016-09-09 05:54:16&#39;</span><span class="p">)</span>
+   <span class="n">Write_8_Bytes_From</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">mmap</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="err">`</span><span class="n">key</span><span class="o">.</span><span class="n">bin</span><span class="err">`</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="n">notepad</span><span class="o">.</span><span class="n">pe</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="s1">&#39;2016-09-09 05:54:16&#39;</span> <span class="ow">and</span> <span class="n">mmap</span><span class="o">.</span><span class="n">pe</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="s1">&#39;2008-11-10 01:40:34&#39;</span><span class="p">:</span>
+   <span class="n">MessageBox</span><span class="p">(</span><span class="s1">&#39;2008-11-10 01:40:34&#39;</span><span class="p">)</span>
+   <span class="n">Write_8_Bytes_From</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">mmap</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="err">`</span><span class="n">key</span><span class="o">.</span><span class="n">bin</span><span class="err">`</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="n">notepad</span><span class="o">.</span><span class="n">pe</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="s1">&#39;2008-11-10 01:40:34&#39;</span> <span class="ow">and</span> <span class="n">mmap</span><span class="o">.</span><span class="n">pe</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="s1">&#39;2016-07-31 17:00:00&#39;</span><span class="p">:</span>
+   <span class="n">MessageBox</span><span class="p">(</span><span class="s1">&#39;2016-07-31 17:00:00&#39;</span><span class="p">)</span>
+   <span class="n">Write_8_Bytes_From</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">mmap</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="err">`</span><span class="n">key</span><span class="o">.</span><span class="n">bin</span><span class="err">`</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="n">notepad</span><span class="o">.</span><span class="n">pe</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="s1">&#39;2016-07-31 17:00:00&#39;</span><span class="p">:</span>
+   <span class="n">key</span> <span class="o">=</span> <span class="n">ReadFileContent</span><span class="p">(</span><span class="s1">&#39;key.bin&#39;</span><span class="p">)</span>
+   <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x20</span>
+   <span class="n">decoded_key</span> <span class="o">=</span> <span class="n">DecodeWithKey</span><span class="p">(</span> <span class="n">encoded_buffer</span><span class="p">,</span> <span class="n">key</span> <span class="p">)</span>
+   <span class="n">MessageBox</span><span class="p">(</span><span class="n">decoded_key</span><span class="p">)</span>
+</code></pre></div>
+
+<p>So now we know how the decoding key is built, but we don't know which PE to
+use. This guessing game made me lose too much time. The hint was to use 2016 PE
+files from last year's FlareOn challenge.</p>
+<p>In the many folders of
+the <a href="http://flare-on.com/files/Flare-On3_Challenges.zip">FlareOn3 archive</a>
+(pass: flare), we could find several PE files whose timestamps match perfectly
+with the ones we are looking for. All we need now is drop those files in the
+<code>flareon2016challenge</code> directory, and tweak <code>notepad.exe</code> to update its
+timestamp. After 4 executions we get the <code>key.bin</code> file properly filled:</p>
+<div class="highlight"><pre><span></span><code><span class="err">➜</span><span class="w">  </span><span class="n">xd</span><span class="w"> </span><span class="o">~/</span><span class="n">ctf</span><span class="o">/</span><span class="n">flareon_2017</span><span class="o">/</span><span class="mi">4</span><span class="o">/</span><span class="k">key</span><span class="p">.</span><span class="n">bin</span>
+<span class="mi">00000000</span><span class="w">  </span><span class="mi">55</span><span class="w"> </span><span class="mi">8</span><span class="n">b</span><span class="w"> </span><span class="n">ec</span><span class="w"> </span><span class="mi">8</span><span class="n">b</span><span class="w"> </span><span class="mi">4</span><span class="n">d</span><span class="w"> </span><span class="mi">0</span><span class="n">c</span><span class="w"> </span><span class="mi">56</span><span class="w"> </span><span class="mi">57</span><span class="w">  </span><span class="mi">8</span><span class="n">b</span><span class="w"> </span><span class="mi">55</span><span class="w"> </span><span class="mi">08</span><span class="w"> </span><span class="mi">52</span><span class="w"> </span><span class="n">ff</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">20</span><span class="w">  </span><span class="o">|</span><span class="n">U</span><span class="p">...</span><span class="n">M</span><span class="p">.</span><span class="n">VW</span><span class="p">.</span><span class="n">U</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="mf">.0</span><span class="w"> </span><span class="o">|</span>
+<span class="mi">00000010</span><span class="w">  </span><span class="n">c0</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="n">ff</span><span class="w"> </span><span class="n">d6</span><span class="w"> </span><span class="mi">83</span><span class="w"> </span><span class="n">c4</span><span class="w"> </span><span class="mi">08</span><span class="w">  </span><span class="mi">00</span><span class="w"> </span><span class="mi">83</span><span class="w"> </span><span class="n">c4</span><span class="w"> </span><span class="mi">08</span><span class="w"> </span><span class="mi">5</span><span class="n">d</span><span class="w"> </span><span class="n">c3</span><span class="w"> </span><span class="n">cc</span><span class="w"> </span><span class="n">cc</span><span class="w">  </span><span class="o">|</span><span class="p">.</span><span class="nv">@P</span><span class="p">.........</span><span class="err">]</span><span class="p">...</span><span class="o">|</span>
+<span class="mi">00000020</span>
+</code></pre></div>
+
+<p>And after updating <code>notepad</code> to the last PE timestamp, we get:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/fe5e80d5dd81c1350413732f30ed5ba2b2e4ae1cf92b00504fa6a0bba1b9a820.png"></p>
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 5</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code><span class="nv">You</span><span class="s1">&#39;re doing great. Let&#39;</span><span class="nv">s</span><span class="w"> </span><span class="nv">take</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="k">break</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">all</span><span class="w"> </span><span class="nv">these</span><span class="w"> </span><span class="nv">hard</span><span class="w"> </span><span class="nv">challenges</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="nv">play</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">little</span><span class="w"> </span><span class="nv">game</span>.
+</code></pre></div>
+
+<h2>Solution</h2>
+<p><a href="https://mega.nz/#!pdgDDITS!CCXq80gh7M2YxOosfdd_jKXG2N9uUSG_1_5NLY_rbFg"><code>pewpewboat.exe</code></a> is not a PE file but an
+x64 ELF that starts a nice ASCII implementation
+of <a href="https://en.wikipedia.org/wiki/Battleship_(game)">the Battleship game</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">root</span><span class="err">@</span><span class="n">kali2</span><span class="p">:</span><span class="o">/</span><span class="n">ctf</span><span class="o">/</span><span class="n">flareon_2017</span><span class="o">/</span><span class="mi">5</span><span class="w"> </span><span class="c1"># ./pewpewboat.exe</span>
+<span class="n">Loading</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="n">pew</span><span class="w"> </span><span class="n">pew</span><span class="w"> </span><span class="n">map</span><span class="o">...</span>
+<span class="w">   </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">8</span>
+<span class="w">  </span><span class="n">_________________</span>
+<span class="n">A</span><span class="w"> </span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span>
+<span class="n">B</span><span class="w"> </span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span>
+<span class="n">C</span><span class="w"> </span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span>
+<span class="n">D</span><span class="w"> </span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span>
+<span class="n">E</span><span class="w"> </span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span>
+<span class="n">F</span><span class="w"> </span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span>
+<span class="n">G</span><span class="w"> </span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span>
+<span class="n">H</span><span class="w"> </span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span><span class="n">_</span><span class="o">|</span>
+
+<span class="n">Rank</span><span class="p">:</span><span class="w"> </span><span class="n">Seaman</span><span class="w"> </span><span class="n">Recruit</span>
+
+<span class="n">Welcome</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">pewpewboat</span><span class="o">!</span><span class="w"> </span><span class="n">We</span><span class="w"> </span><span class="n">just</span><span class="w"> </span><span class="n">loaded</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">pew</span><span class="w"> </span><span class="n">pew</span><span class="w"> </span><span class="n">map</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">shootin</span><span class="s1">&#39;!</span>
+
+<span class="n">Enter</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">coordinate</span><span class="p">:</span>
+</code></pre></div>
+
+<p>The binary starts by initializing the PRNG with the current timestamp, then
+allocated a 0x240 in the heap, and starts populating it randomly. It then enters
+a loop of game, where the player (us) have 0x64 attempts to win the game.</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/c1042765b377b68599461aa2c7fbabeb502f831a49db09cb5bb6223a22c99bce.png"></p>
+<p>Inside the loop, the function <code>play()</code> (at 0x4038d6) is called and will print the game grid
+and display whether your shot was hit or miss. The coordinates themselves are
+read from the function <code>enter_coor()</code> (at 0x40377d).</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/aea95f918e61631fae4e6fe1d003951d1fc30d7fcf0e8ac787b14983e264c876.png"></p>
+<p>So if we want to win, we need to</p>
+<ol>
+<li>disable the randomness of the game board</li>
+<li>determine which values are being compared when we set coordonates</li>
+</ol>
+<p>To disable the randomness, I simply used <code>LD_PRELOAD</code> variable against a
+homemade shared library that will override calls to <code>rand()</code> and <code>rand()</code> to a
+deterministic output:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Compile with : $ gcc -shared -fPIC disable_time.c -o disable_time.so</span>
+
+<span class="c1">// Load in GDB with: gef➤  set environment LD_PRELOAD=disable_time.so</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+
+<span class="kt">time_t</span><span class="w"> </span><span class="nf">time</span><span class="p">(</span><span class="kt">time_t</span><span class="w"> </span><span class="o">*</span><span class="n">t</span><span class="p">){</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">rand</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>With randomness out of the way, our board game with the position of all the
+ships will be the same at every runtime.</p>
+<p>The function <code>draw_grid()</code> called with a pointer to the game board as
+parameter. By reading it, the function knows how to print a cell (empty, full)
+and therefore knows the configuration of the board.</p>
+<div class="highlight"><pre><span></span><code>gef➤  bp *0x403c3a
+gef➤  dps $rdi l1
+0x0000000000614010│+0x00: 0x0008087808087800     ← $rax, $rdi
+</code></pre></div>
+
+<p>This is a bitmask representing the position of the board: to make easier I wrote
+a Python function to convert this value into a list of position on the board:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span>  <span class="k">def</span> <span class="nf">convert_to_solution</span><span class="p">(</span><span class="n">rdi</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="n">rdi</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">8</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">),</span> <span class="mi">8</span><span class="p">)][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)):</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">i</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%c%c</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">convert_to_solution</span><span class="p">(</span><span class="mh">0x0008087808087800</span><span class="p">)</span>
+
+         <span class="n">B4</span> <span class="n">B5</span> <span class="n">B6</span> <span class="n">B7</span>
+         <span class="n">C4</span>
+         <span class="n">D4</span>
+         <span class="n">E4</span> <span class="n">E5</span> <span class="n">E6</span> <span class="n">E7</span>
+         <span class="n">F4</span>
+         <span class="n">G4</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div>
+
+<p>We get 2 things: one, we have all the positions for the ennemi boats; two, the
+disposition of the boats on the board forms an ASCII letter (here 'F').</p>
+<p>By advancing through all the levels, we can collect more letters:</p>
+<ol>
+<li>0x0008087808087800 →  "f"</li>
+<li>0x008888f888888800 →  "h"</li>
+<li>0x7e8181f10101817e →  "g"</li>
+<li>0xf090909090000000 →  "u"</li>
+<li>0x0000f8102040f800 →  "z"</li>
+<li>0x0000000905070907 →  "r"</li>
+<li>0x7010701070000000 →  "e"</li>
+<li>0x0006090808083e00 →  "j"</li>
+<li>0x1028444444000000 →  "v"</li>
+<li>0x0c1212120c000000 →  "o"</li>
+</ol>
+<p>Reaching the final level and entering the valid positions of boats gets a
+message:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">Final</span><span class="w"> </span><span class="nv">answer</span>:
+<span class="nv">Aye</span><span class="o">!</span><span class="w"> </span><span class="nv">You</span><span class="w"> </span><span class="nv">found</span><span class="w"> </span><span class="nv">some</span><span class="w"> </span><span class="nv">letters</span><span class="w"> </span><span class="nv">did</span><span class="w"> </span><span class="nv">ya</span>?<span class="w"> </span><span class="nv">To</span><span class="w"> </span><span class="nv">find</span><span class="w"> </span><span class="nv">what</span><span class="w"> </span><span class="nv">you</span><span class="s1">&#39;re looking for, you&#39;</span><span class="nv">ll</span><span class="w"> </span><span class="nv">want</span><span class="w"> </span><span class="nv">to</span>
+<span class="nv">re</span><span class="o">-</span><span class="nv">order</span><span class="w"> </span><span class="nv">them</span>:
+<span class="mi">9</span>,<span class="w"> </span><span class="mi">1</span>,<span class="w"> </span><span class="mi">2</span>,<span class="w"> </span><span class="mi">7</span>,<span class="w"> </span><span class="mi">3</span>,<span class="w"> </span><span class="mi">5</span>,<span class="w"> </span><span class="mi">6</span>,<span class="w"> </span><span class="mi">5</span>,<span class="w"> </span><span class="mi">8</span>,<span class="w"> </span><span class="mi">0</span>,<span class="w"> </span><span class="mi">2</span>,<span class="w"> </span><span class="mi">3</span>,<span class="w"> </span><span class="mi">5</span>,<span class="w"> </span><span class="mi">6</span>,<span class="w"> </span><span class="mi">1</span>,<span class="w"> </span><span class="mi">4</span>.
+
+<span class="k">Next</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">let</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="nv">ROT</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">sea</span><span class="o">!</span><span class="w"> </span><span class="nv">THE</span><span class="w"> </span><span class="nv">FINAL</span><span class="w"> </span><span class="nv">SECRET</span><span class="w"> </span><span class="nv">CAN</span><span class="w"> </span><span class="nv">BE</span><span class="w"> </span><span class="nv">FOUND</span><span class="w"> </span><span class="nv">WITH</span><span class="w"> </span><span class="nv">ONLY</span><span class="w"> </span><span class="nv">THE</span><span class="w"> </span><span class="nv">UPPER</span><span class="w"> </span><span class="nv">CASE</span>.
+
+<span class="nv">Thanks</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">playing</span><span class="o">!</span>
+</code></pre></div>
+
+<p>By simply applying this formula, we find the result to be <code>ohgjurervfgurehz</code>
+which when in uppercase ROT13-ed gives <code>BUTWHEREISTHERUM</code>. Give this password as
+input, and after a bit of computation time obtain the key to finish the level:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/532e605c764a754f32dbb0d2581913dbf0283d76e21f12cbf92841cfae67f8c4.png"></p>
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 6</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code><span class="nv">I</span><span class="w"> </span><span class="nv">hope</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">enjoyed</span><span class="w"> </span><span class="nv">your</span><span class="w"> </span><span class="nv">game</span>.<span class="w"> </span><span class="nv">I</span><span class="w"> </span><span class="nv">know</span><span class="w"> </span><span class="nv">I</span><span class="w"> </span><span class="nv">did</span>.<span class="w"> </span><span class="nv">We</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="nv">now</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">topic</span><span class="w"> </span><span class="nv">of</span>
+<span class="nv">cyberspace</span><span class="w"> </span><span class="nv">electronic</span><span class="w"> </span><span class="nv">computer</span><span class="w"> </span><span class="nv">hacking</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="nv">digital</span><span class="w"> </span><span class="nv">software</span><span class="w"> </span><span class="nv">reverse</span>
+<span class="nv">engineering</span>.
+</code></pre></div>
+
+<h2>Solution</h2>
+<p><a href="https://mega.nz/#!Nd5g3ToA!ArZp4KMqteCSQQwywP2LE-xdYly-UoQEBoig4CfCuIY"><code>payload.dll</code></a> is a PE32+ DLL x86-64. The
+DLL doesn't sweat much info out of the box, so I decide to use both dynamic and
+static analysis. Although the static part is perfectly handled by IDA, I wanted
+the dynamic analysis to be custom so I had to make a small loader for this
+library.</p>
+<p>Since the notation
+is <a href="http://www.agner.org/optimize/calling_conventions.pdf">stdecl</a>, the
+arguments are passed to registers in the following order: rcx, rdx, r8, r9</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;windows.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#define DLL_LOCATION TEXT(&quot;F:\\flareon_2017\\6\\payload.dll&quot;)</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="kr">__stdcall</span><span class="w"> </span><span class="o">*</span><span class="n">FuncType</span><span class="p">)(</span><span class="kt">uint64_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="p">);</span>
+
+<span class="cm">/* Call the location at `addr` with [a1 .. a4] as arguments. */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">CallWithArgs</span><span class="p">(</span><span class="kt">uintptr_t</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">a2</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">a3</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">a4</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">PrintDebug</span><span class="p">(</span><span class="s">&quot;[+] calling %1!p!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">va_list</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">);</span>
+<span class="w">    </span><span class="n">DebugBreak</span><span class="p">();</span>
+<span class="w">    </span><span class="p">((</span><span class="n">FuncType</span><span class="p">)(</span><span class="n">addr</span><span class="p">))(</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">,</span><span class="n">a3</span><span class="p">,</span><span class="n">a4</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* Print debug message directly in WinDBG. */</span>
+<span class="n">VOID</span><span class="w"> </span><span class="nf">PrintDebug</span><span class="p">(</span><span class="n">LPTSTR</span><span class="w"> </span><span class="n">pMsgFmt</span><span class="p">,</span><span class="w"> </span><span class="kt">va_list</span><span class="o">*</span><span class="w"> </span><span class="n">pArgs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">CHAR</span><span class="w"> </span><span class="n">pMsg</span><span class="p">[</span><span class="mi">128</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,};</span>
+<span class="w">    </span><span class="n">FormatMessage</span><span class="p">(</span><span class="n">FORMAT_MESSAGE_FROM_STRING</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">FORMAT_MESSAGE_ARGUMENT_ARRAY</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">pMsgFmt</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">pMsg</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">pMsg</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="kt">va_list</span><span class="o">*</span><span class="p">)</span><span class="n">pArgs</span><span class="p">);</span>
+<span class="w">    </span><span class="n">OutputDebugString</span><span class="p">(</span><span class="n">pMsg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* main() */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">WINAPI</span><span class="w"> </span><span class="nf">WinMain</span><span class="p">(</span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hPrevInstance</span><span class="p">,</span><span class="w"> </span><span class="n">LPSTR</span><span class="w"> </span><span class="n">lpCmdLine</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">HMODULE</span><span class="w"> </span><span class="n">handle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadLibraryEx</span><span class="p">(</span><span class="n">DLL_LOCATION</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">PrintDebug</span><span class="p">(</span><span class="s">&quot;[+] DLL allocated at %1!p!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">va_list</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">handle</span><span class="p">);</span>
+<span class="w">        </span><span class="n">DebugBreak</span><span class="p">();</span>
+<span class="w">        </span><span class="cm">/* do more stuff here */</span>
+<span class="w">        </span><span class="n">FreeLibrary</span><span class="p">(</span><span class="n">handle</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>With this simple library loader, I have an accurate way of invoking any location
+withing the DLL and display runtime information directly inside WinDBG.</p>
+<p>IDA quickly pointed me to the function at offset 0x5A50 - which I've called
+<code>Func3()</code>. The loop at 0x180005B05 is a simple <code>strcmp()</code> like loop comparing
+<code>arg1</code> (that we control) to a value from the DLL.</p>
+<p>When WinDBG break at this location, we can get the value of the value our
+argument is compared to:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">0</span><span class="o">:</span><span class="mo">000</span><span class="o">&gt;</span><span class="w"> </span><span class="n">bp</span><span class="w"> </span><span class="n">payload</span><span class="o">+</span><span class="mh">0x5b05</span>
+<span class="mi">0</span><span class="o">:</span><span class="mo">000</span><span class="o">&gt;</span><span class="w"> </span><span class="n">g</span>
+<span class="n">Breakpoint</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">hit</span>
+<span class="n">payload</span><span class="o">+</span><span class="mh">0x5b05</span><span class="o">:</span>
+<span class="mf">000007f</span><span class="n">e</span><span class="err">`</span><span class="n">f38e5b05</span><span class="w"> </span><span class="mf">0f</span><span class="n">b610</span><span class="w">          </span><span class="n">movzx</span><span class="w">   </span><span class="n">edx</span><span class="p">,</span><span class="n">byte</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="p">[</span><span class="n">rax</span><span class="p">]</span><span class="w"> </span><span class="n">ds</span><span class="o">:</span><span class="mf">000007f</span><span class="n">e</span><span class="err">`</span><span class="n">f38e4240</span><span class="o">=</span><span class="mf">6f</span>
+<span class="mi">0</span><span class="o">:</span><span class="mo">000</span><span class="o">&gt;</span><span class="w"> </span><span class="n">da</span><span class="w"> </span><span class="n">rax</span>
+<span class="mf">000007f</span><span class="n">e</span><span class="err">`</span><span class="n">f38e4240</span><span class="w">  </span><span class="s">&quot;orphanedirreproducibleconfidence&quot;</span>
+<span class="mf">000007f</span><span class="n">e</span><span class="err">`</span><span class="n">f38e4260</span><span class="w">  </span><span class="s">&quot;s&quot;</span>
+</code></pre></div>
+
+<p>Using the loader, we can now invoke this function easily:</p>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="c1">// inside WinMain</span>
+
+<span class="w">        </span><span class="kt">uintptr_t</span><span class="w"> </span><span class="n">Func3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">handle</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x5A50</span><span class="w"> </span><span class="p">;</span>
+<span class="w">        </span><span class="n">PCHAR</span><span class="w"> </span><span class="n">a3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;orphanedirreproducibleconfidences&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CallWithArgs</span><span class="p">(</span><span class="n">Func3</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">a3</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Which when compiled and executed triggers to display the following MessageBox:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/eaca6198b81df65f296bc6d280437944ee7745fae6c9168d2500b12d0a5c1345.png"></p>
+<p>We get one letter of the key! Good start, but how could we get more? And why do
+we get the 26th character? To know that we must understand the function
+0x180005D30:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/a686c1bd8e99734457a6cec1549cfdb8218e5ebaa9e62e412110bb9a9062508e.png"></p>
+<p>This function gets a pointer to
+the
+<a href="http://resources.infosecinstitute.com/the-export-directory/">Export Directory table</a> then
+calls the function 0x180004710:</p>
+<div class="highlight"><pre><span></span><code><span class="nl">.text:</span><span class="err">000000018000471</span><span class="nf">E</span><span class="w"> </span><span class="no">mov</span><span class="w">     </span><span class="p">[</span><span class="no">rsp</span><span class="err">+</span><span class="mi">48</span><span class="no">h</span><span class="err">+</span><span class="no">var_18</span><span class="p">],</span><span class="w"> </span><span class="no">rax</span>
+<span class="nl">.text:</span><span class="err">0000000180004723</span><span class="w"> </span><span class="nf">lea</span><span class="w">     </span><span class="no">rcx</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">rsp</span><span class="err">+</span><span class="mi">48</span><span class="no">h</span><span class="err">+</span><span class="no">SystemTime</span><span class="p">]</span><span class="w"> </span><span class="c1">; lpSystemTime</span>
+<span class="nl">.text:</span><span class="err">0000000180004728</span><span class="w"> </span><span class="nf">call</span><span class="w">    </span><span class="no">cs</span><span class="p">:</span><span class="no">GetSystemTime</span>
+<span class="nl">.text:</span><span class="err">000000018000472</span><span class="nf">E</span><span class="w"> </span><span class="no">movzx</span><span class="w">   </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">rsp</span><span class="err">+</span><span class="mi">48</span><span class="no">h</span><span class="err">+</span><span class="no">SystemTime.wMonth</span><span class="p">]</span>
+<span class="nl">.text:</span><span class="err">0000000180004733</span><span class="w"> </span><span class="nf">movzx</span><span class="w">   </span><span class="no">ecx</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">rsp</span><span class="err">+</span><span class="mi">48</span><span class="no">h</span><span class="err">+</span><span class="no">SystemTime.wYear</span><span class="p">]</span>
+<span class="nl">.text:</span><span class="err">0000000180004738</span><span class="w"> </span><span class="nf">add</span><span class="w">     </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="no">ecx</span>
+<span class="nl">.text:</span><span class="err">000000018000473</span><span class="nf">A</span><span class="w"> </span><span class="no">cdq</span>
+<span class="nl">.text:</span><span class="err">000000018000473</span><span class="nf">B</span><span class="w"> </span><span class="no">mov</span><span class="w">     </span><span class="no">ecx</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="no">Ah</span>
+<span class="nl">.text:</span><span class="err">0000000180004740</span><span class="w"> </span><span class="nf">idiv</span><span class="w">    </span><span class="no">ecx</span>
+<span class="nl">.text:</span><span class="err">0000000180004742</span><span class="w"> </span><span class="nf">mov</span><span class="w">     </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="no">edx</span>
+</code></pre></div>
+
+<p>Or better in pseudo-code</p>
+<div class="highlight"><pre><span></span><code><span class="n">GetSystemTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">SystemTime</span><span class="p">);</span>
+<span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">SystemTime</span><span class="p">.</span><span class="n">wYear</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SystemTime</span><span class="p">.</span><span class="n">wMonth</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mh">0x1a</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Since FlareOn goes from September 2017 to October 2017, the possible return
+values are 24 if executed in September, or 25 if in October. We know why we
+got <code>key[25]</code> now, but we don't know where the passphrase comes from. This is
+done in the function 0x180005C40 that will do the decoding of a part of <code>.rdata</code>
+at index given by the return of function 0x180004710.</p>
+<p>So to get the keys, we must decode all sections in <code>.rdata</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;=</span><span class="mi">24</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">DecodeRdataFunc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x5D30</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">uintptr_t</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">handle</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">DecodeRdataFunc</span><span class="p">;</span>
+<span class="w">  </span><span class="n">CallWithArgs</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">p2</span><span class="p">,</span><span class="w"> </span><span class="n">p3</span><span class="p">,</span><span class="w"> </span><span class="n">p4</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The following passphrases are collected:</p>
+<div class="highlight"><pre><span></span><code><span class="n">PCHAR</span><span class="w"> </span><span class="n">pPasswords</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;filingmeteorsgeminately&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;leggykickedflutters&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;incalculabilitycombustionsolvency&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;crappingrewardsanctity&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;evolvablepollutantgavial&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;ammoniatesignifiesshampoo&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;majesticallyunmarredcoagulate&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;roommatedecapitateavoider&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;fiendishlylicentiouslycolouristic&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;sororityfoxyboatbill&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;dissimilitudeaggregativewracks&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;allophoneobservesbashfulness&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;incuriousfatherlinessmisanthropically&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;screensassonantprofessionalisms&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;religionistmightplaythings&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;airglowexactlyviscount&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;thonggeotropicermines&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;gladdingcocottekilotons&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;diagrammaticallyhotfootsid&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;corkerlettermenheraldically&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;ulnacontemptuouscaps&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;impureinternationalisedlaureates&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;anarchisticbuttonedexhibitionistic&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;tantalitemimicryslatted&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;basophileslapsscrapping&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;orphanedirreproducibleconfidences&quot;</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>And then force calling the <code>Func3()</code> function with the specific password:</p>
+<div class="highlight"><pre><span></span><code><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mz</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Func3</span><span class="p">;</span>
+<span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">pPasswords</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="n">CallWithArgs</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="n">p2</span><span class="p">,</span><span class="w"> </span><span class="n">p3</span><span class="p">,</span><span class="w"> </span><span class="n">p4</span><span class="p">);</span>
+</code></pre></div>
+
+<p>That will print out successively the key parts via successive <code>MessageBox</code> calls.</p>
+<div class="highlight"><pre><span></span><code><span class="mf">0</span><span class="n">x77</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x75</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x75</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x75</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x74</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x2d</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x65</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x78</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x70</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x30</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x72</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x74</span><span class="p">,</span>
+<span class="mf">0</span><span class="n">x73</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x40</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x66</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x6c</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x61</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x72</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x65</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x2d</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x6f</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x6e</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x2e</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="n">x63</span><span class="p">,</span>
+</code></pre></div>
+
+<p>which translated gives <code>wuuut-exp0rts@flare-on.com</code></p>
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 7</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code>I want to play another game with you, but I also want you to be challenged
+because you weren&#39;t supposed to make it this far.
+</code></pre></div>
+
+<h2>Solution</h2>
+<p><a href="https://mega.nz/#!BQIlHJ6Z!_-qOpHyiXaZqq2CV_o42du5blCGmkzrlJKrXs6WG2oU"><code>zsud.exe</code></a> is a PE32 binary. Running
+<code>strings</code> and <code>binwalk</code> against it immediately shows 2 things:</p>
+<ol>
+<li>this binary is C# compiled</li>
+<li>it embeds a DLL</li>
+</ol>
+<div class="highlight"><pre><span></span><code>$<span class="w">  </span>binwalk<span class="w"> </span>zsud.exe
+
+DECIMAL<span class="w">       </span>HEXADECIMAL<span class="w">     </span>DESCRIPTION
+<span class="m">0</span><span class="w">             </span>0x0<span class="w">             </span>Microsoft<span class="w"> </span>executable,<span class="w"> </span>portable<span class="w"> </span><span class="o">(</span>PE<span class="o">)</span>
+<span class="o">[</span>...<span class="o">]</span>
+<span class="m">356528</span><span class="w">        </span>0x570B0<span class="w">         </span>Microsoft<span class="w"> </span>executable,<span class="w"> </span>portable<span class="w"> </span><span class="o">(</span>PE<span class="o">)</span>
+<span class="m">362328</span><span class="w">        </span>0x58758<span class="w">         </span>Base64<span class="w"> </span>standard<span class="w"> </span>index<span class="w"> </span>table
+</code></pre></div>
+
+<p>This DLL, <code>flareon.dll</code>, can be easily extracted with a simple <code>dd</code> command, and
+shows some strings like "<code>soooooo_sorry_zis_is_not_ze_flag</code>", but not really
+interesting (yet). Debugging the binary with <code>dnSpy</code> gives a whole new view as to what
+it's doing: the function <code>Smth()</code> receives a Base64 encoded string, which once decoded is
+AES decrypted with the key "<code>soooooo_sorry_zis_is_not_ze_flag</code>". The result is a
+Powershell script that is being invoked, and that is another maze game, entirely
+written in Powershell. The script can be downloaded <a href="https://gist.github.com/750558c5ed49c291e50dc460821e8e09">here</a>.</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/090d3fe35ac25fcec9052f0e216f72c75da6d96a367abe4451d04ff0af7ad5cd.png"></p>
+<p>The game is an escape room, so it would make sense that the flag will be given
+to us if we escape! And since it's a maze, we need to find the proper
+directions, which comes into 2 parts.</p>
+<h3>First part of the directions</h3>
+<p>Getting the first part of the directions is relatively simple. <code>zsud.exe</code> starts
+a webservice
+on
+<a href="https://gist.github.com/hugsy/750558c5ed49c291e50dc460821e8e09#file-decoded-ps1-L814">127.0.0.1/9999</a>
+so it is possible to bruteforce the first directions by generating HTTP requests
+and analysing the output:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">directions</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://&quot;</span><span class="o">+</span><span class="s2">&quot;192.168.221.4:9998/some/thing.asp?k=</span><span class="si">{k:s}</span><span class="s2">&amp;e=</span><span class="si">{e:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">directions</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="n">status_code</span><span class="o">==</span><span class="mi">200</span> <span class="ow">or</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="n">h</span><span class="o">.</span><span class="n">text</span><span class="p">:</span> <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+<span class="n">key_directions</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span><span class="s2">&quot;d&quot;</span> <span class="p">}</span>
+<span class="n">directions</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">key_desc</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">prefix</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">key_directions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">directions</span> <span class="o">+</span> <span class="n">key_directions</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;%3D&#39;</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">send</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">desc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">:</span>
+            <span class="n">directions</span> <span class="o">=</span> <span class="n">temp</span>
+            <span class="n">p</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">prefix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[!] dir=&#39;</span><span class="si">%s</span><span class="s2">&#39; prefix=&#39;</span><span class="si">%s</span><span class="s2">&#39; next=&#39;</span><span class="si">%s</span><span class="s2">...&#39;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directions</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prefix</span><span class="p">),</span> <span class="n">s</span><span class="p">[:</span><span class="mi">16</span><span class="p">]))</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">s</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">valid</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+</code></pre></div>
+
+<p>And we start getting the beginning of the path:
+<img alt="image_alt" src="/assets/images/flareon-2017/304507dabd5f847b7beafec89b19e225540db7649cedfc0e2ebe4703df14a06b.png"></p>
+<div class="highlight"><pre><span></span><code><span class="n">directions</span> <span class="o">=</span><span class="s1">&#39;wnneesssnewne&#39;</span>
+<span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;You can start to make out some words but you need to follow the&#39;</span>
+</code></pre></div>
+
+<h3>Second part of the directions</h3>
+<p>By following the directions found above, we end up in the "infinite maze of
+cubicles"
+(<a href="https://gist.github.com/hugsy/750558c5ed49c291e50dc460821e8e09#file-decoded-ps1-L148">confirmed by the PowerShell script</a>). The
+cubicles are linked through random connections to one another. To find the way,
+we must be able to predict the
+generation. At
+<a href="https://gist.github.com/hugsy/750558c5ed49c291e50dc460821e8e09#file-decoded-ps1-L431-L432">line 431</a> we
+see that if we transfer the key (located in the desk drawer), the script will
+trigger a call to <code>srand(42)</code>. The implementation of <code>msvcrt::rand()</code> is an
+known algorithm that goes along the lines of</p>
+<div class="highlight"><pre><span></span><code><span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="k">def</span> <span class="nf">rand</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">seed</span>
+    <span class="n">new_seed</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x343fd</span> <span class="o">*</span> <span class="n">seed</span> <span class="o">+</span> <span class="mh">0x269ec3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">randval</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_seed</span> <span class="o">&gt;&gt;</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x7fff</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">new_seed</span>
+    <span class="k">return</span> <span class="n">randval</span>
+</code></pre></div>
+
+<p>Which now makes the path predictable, and we get the final directions:</p>
+<div class="highlight"><pre><span></span><code><span class="n">directions</span> <span class="o">+=</span> <span class="s1">&#39;ewwwdundundunsuneunsewdunsewsewsewsewdun&#39;</span>
+</code></pre></div>
+
+<h3>Final wrap-up</h3>
+<p>If we now follow the entire directions found above <code>wnneesssnewne</code> +
+<code>ewwwdundundunsuneunsewdunsewsewsewsewdun</code>, we get the final message
+<code>RIGHT_PATH!@66696e646b6576696e6d616e6469610d0a</code>, so the complete answer to the
+maze is</p>
+<div class="highlight"><pre><span></span><code><span class="n">directions</span> <span class="o">=</span><span class="s1">&#39;wnneesssnewneewwwdundundunsuneunsewdunsewsewsewsewdun&#39;</span>
+<span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;You can start to make out some words but you need to follow the RIGHT_PATH!@66696e646b6576696e6d616e6469610d0a&#39;</span>
+</code></pre></div>
+
+<p>But still no flag. The hex-encoded block right nexto <code>RIGHT_PATH</code> says to:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;66696e646b6576696e6d616e6469610d0a&quot;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span>
+<span class="s1">&#39;findkevinmandia</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+</code></pre></div>
+
+<p>By going back to the Powershell script using Powershell ISE, we notice that the
+only place Kevin is mentioned is in the function <code>Invoke-Say()</code>. We then seek the function
+<code>Invoke-Say()</code> and force the <code>if</code> branch to be taken by setting the <code>$helmet</code>
+variable to not None, and the <code>$key</code> to the path we found:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">$key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;You can start to make out some words but you need to follow the RIGHT_PATH!@66696e646b6576696e6d616e6469610d0a&quot;</span>
+<span class="nv">$helmet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Then execute only this portion of code to see:</p>
+<p><img alt="image_alt2" src="/assets/images/flareon-2017/dededfb9d354408d37fab58d50b62856c51ef5a3326ab05a42470df936f6dbf1.png"></p>
+<p>Which unhexlified gives the flag:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;6d756464316e675f62795f7930757235336c706840666c6172652d6f6e2e636f6d&quot;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span>
+<span class="n">mudd1ng_by_y0ur53lph</span><span class="nd">@flare</span><span class="o">-</span><span class="n">on</span><span class="o">.</span><span class="n">com</span>
+</code></pre></div>
+
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 8</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code>You seem to spend a lot of time looking at your phone. Maybe you would finish a mobile challenge faster.
+I want to play another game with you, but I also want you to be challenged
+because you weren&#39;t supposed to make it this far.
+</code></pre></div>
+
+<h2>Solution</h2>
+<p>This really fun challenge offers an Android APK
+file, <a href="https://mega.nz/#!xFoXkTRa!L3h7J_copL4NuA3pEW0bR5Acrz7LeLXVFTV2sb_Ha08"><code>flair.apk</code></a>. The static analysis was
+exclusively done with JADX and I used the awesome GenyMotion + JDB for the dynamic analysis.</p>
+<p>This app presents itself as a traditional Android app, <code>com.flare_on.flair</code>:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/638b63ff20d2447bdcf9ca2f7dbf3e9a8800178722580185a0c9c7f86652f707.png"></p>
+<p>You can get the final flag by solving the 4 mini challenges:</p>
+<div class="highlight"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">Micheal</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">Brian</span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">Milton</span>
+<span class="mf">4.</span><span class="w"> </span><span class="kr">Print</span><span class="n">er</span>
+</code></pre></div>
+
+<h3>1. Michael</h3>
+<p>Using <code>JADX</code>, we can reach easily the method <code>simply solve com.flare_on.flair.Michael.checkPassword()</code>:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/ad3a22fa907e8c8185c87b256bfc4fa542c68eb5dfcc508d4ea8620adab9d859.png"></p>
+<p>Which trivially gives us the first answer: <code>MYPRSHE__FTW</code></p>
+<h3>2. Brian</h3>
+<p>Using <code>jdb</code>, it is possible to break at any location inside a running Android
+app. JADX shows that when the validation button is clicked on, the method
+<code>com.flare_on.flair.Brian.teraljdknh()</code> is called and checked for success. This
+function is a simple <code>memcmp()</code>-like function, so we can break on it and dump
+its arguments:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>jdb<span class="w"> </span>-attach<span class="w"> </span>localhost:8700
+&gt;<span class="w"> </span>methods<span class="w"> </span>com.flare_on.flair.Brian
+<span class="o">[</span>...<span class="o">]</span>
+com.flare_on.flair.Brian<span class="w"> </span>dfysadf<span class="o">(</span>java.lang.String,<span class="w"> </span>int,<span class="w"> </span>java.lang.String,java.lang.String<span class="o">)</span>
+com.flare_on.flair.Brian<span class="w"> </span>teraljdknh<span class="o">(</span>java.lang.String,<span class="w"> </span>java.lang.String<span class="o">)</span>
+<span class="o">[</span>...<span class="o">]</span>
+&gt;<span class="w"> </span>stop<span class="w"> </span><span class="k">in</span><span class="w"> </span>com.flare_on.flair.Brian.teraljdknh
+<span class="o">(</span>when<span class="w"> </span><span class="k">break</span><span class="w"> </span>hits<span class="o">)</span>
+&gt;<span class="w"> </span>locals
+Method<span class="w"> </span>arguments:
+<span class="nv">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;AAAA&quot;</span>
+Local<span class="w"> </span>variables:
+<span class="nv">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hashtag_covfefe_Fajitas!&quot;</span>
+</code></pre></div>
+
+<p>We get the answer: <code>hashtag_covfefe_Fajitas!</code></p>
+<h3>3. Milton</h3>
+<p>In the <code>Milton</code> class, we can see that the input field is not enabled unless the
+rating is equal to 4 (i.e. give 4 stars).</p>
+<p>The <code>onClick</code> event will call the method <code>breop(&lt;given_password&gt;)</code>. That method
+will compare our input with the result of the call to the function
+<code>nbsadf()</code>. <code>nbsadf()</code> does nothing but call <code>Stapler.poserw()</code>.
+So let's break on that with jdb:</p>
+<div class="highlight"><pre><span></span><code><span class="k">&gt; </span><span class="ge">stop in com.flare_on.flair.Stapler.poserw</span>
+(wait for it)
+<span class="k">&gt; </span><span class="ge">main[1] dump intr</span>
+ intr = {
+ 65, 32, 114, 105, 99, 104, 32, 109, 97, 110, 32, 105, 115, 32, 110, 111, 116,
+ 104, 105, 110, 103, 32, 98, 117, 116, 32, 97, 32, 112, 111, 111, 114, 32, 109,
+ 97, 110, 32, 119, 105, 116, 104, 32, 109, 111, 110, 101, 121, 46
+ }
+<span class="k">&gt; </span><span class="ge">stop in java.util.Arrays.equals(byte[], byte[])</span>
+</code></pre></div>
+
+<p>The variable <code>intr</code> holds our answer: <code>A rich man is nothing but a poor man with
+money.</code> Once decoded, we see that <code>Stapler.poserw()</code> is nothing more than a SHA1
+checksuming function.</p>
+<p>So the answer is</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="s1">&#39;A rich man is nothing but a poor man with money.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="mi">10</span><span class="n">aea594831e0b42b956c578ef9a6d44ee39938d</span>
+</code></pre></div>
+
+<h3>4. Printer</h3>
+<p>The check in the <code>Printer</code> class takes the same principles than the ones covered
+in <code>Milton</code>. After deobfuscation, we can see that the check is also performed
+against <code>Stapler.poserw()</code>.</p>
+<p>So use jdb to break and dump the values</p>
+<div class="highlight"><pre><span></span><code><span class="k">&gt; </span><span class="ge">stop in java.util.Arrays.equals(byte[], byte[])</span>
+<span class="k">&gt; </span><span class="ge">stop in com.flare_on.flair.Stapler.poserw</span>
+</code></pre></div>
+
+<p>And we get:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="s2">&quot;Give a man a fire and he&#39;ll be warm for a day. Set a man on fire and he&#39;ll be warm for the rest of his life.&quot;</span><span class="p">)</span>
+<span class="mi">5</span><span class="n">f1be3c9b081c40ddfc4a0238156008ee71e24a4</span>
+</code></pre></div>
+
+<p>And finally:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/7ecf50b91265cdd05f48d3910c20c9d48899a3e19645fbe263f8c34a696d00cc.png"></p>
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 9</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code><span class="nv">One</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">our</span><span class="w"> </span><span class="nv">computer</span><span class="w"> </span><span class="nv">scientists</span><span class="w"> </span><span class="nv">recently</span><span class="w"> </span><span class="nv">got</span><span class="w"> </span><span class="nv">an</span><span class="w"> </span><span class="nv">Arduino</span><span class="w"> </span><span class="nv">board</span>.<span class="w"> </span><span class="nv">He</span><span class="w"> </span><span class="nv">disappeared</span><span class="w"> </span><span class="k">for</span>
+<span class="nv">two</span><span class="w"> </span><span class="nv">days</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">he</span><span class="w"> </span><span class="nv">went</span><span class="w"> </span><span class="nv">crazy</span>.<span class="w"> </span><span class="nv">In</span><span class="w"> </span><span class="nv">his</span><span class="w"> </span><span class="nv">notebook</span><span class="w"> </span><span class="nv">he</span><span class="w"> </span><span class="nv">scrawled</span><span class="w"> </span><span class="nv">some</span><span class="w"> </span><span class="nv">insane</span>
+<span class="nv">jibberish</span><span class="w"> </span><span class="nv">that</span><span class="w"> </span><span class="nv">looks</span><span class="w"> </span><span class="nv">like</span><span class="w"> </span><span class="nv">HEX</span>.<span class="w"> </span><span class="nv">We</span><span class="w"> </span><span class="nv">transcribed</span><span class="w"> </span><span class="nv">it</span>,<span class="w"> </span><span class="nv">can</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">solve</span><span class="w"> </span><span class="nv">it</span>?
+</code></pre></div>
+
+<h2>Solution</h2>
+<p>The challenge is in a text file
+named <a href="https://mega.nz/#!NFQwXKYQ!OhtgRSr6U4yRBMnflhIwGgMZJXYaEeMnJG-1m0bWFJ4"><code>remorse.ino.hex</code></a>. This format
+(Intel HEX)
+is frequently used for sharing encoded firmwares, and so the <code>python-intelhex</code>
+module provides a useful script to convert it back to binary
+(<code>hex2bin.py</code>). From the string inside the firmware, we learn that this firmware
+is meant to be
+used on
+a <a href="http://store.arduino.cc/products/arduino-uno-rev3/">Arduino Uno board</a>. This
+board embeds an Atmel AVR 8bit CPU, running at 16MHz. Easily
+enough, Google points us to the <a href="https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf">datasheet of the processor.</a>
+Being totally new to AVR, I stop the challenge at that point for long enough to
+read a good part of the datasheet, which proved to be extremely useful for the
+rest of this exercise.</p>
+<p>With a much better understanding of AVR, I setup a SimAVR environment and also
+compiled <code>simduino</code>, which allows me to connect a GDB to it, and debug the runtime:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>obj-x86_64-linux-gnu/simduino.elf<span class="w"> </span>-d<span class="w"> </span>-v<span class="w"> </span>-v<span class="w"> </span>../../../remorse.ino.hex
+</code></pre></div>
+
+<p>Simduino will open a /dev/pts that can be used for UART (so we can use tools
+like <code>picocom</code> or <code>minicom</code> to debug it).</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/cd4cd292a48fa1fc086b50e5617459edec3e9d40513de244bf57428f0c372348.png"></p>
+<p>The firmware seems to be expecting a new PIN configuration: luckily I came
+accross this information in the datasheet ("35. Register Summary").</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/33d2e78e17819a705d01a9c9c0412090361e7ad02beb4692106996ac8e832f7b.png"></p>
+<p>After trying
+to manipulate the PINB and PINC (resp. at offset 0x23 and 0x26) without success,
+I saw that a change of value in PIND (offset 0x29) immediately provoked a
+response from the firmware:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>avr-gdb<span class="w">  </span>-q<span class="w"> </span>-ex<span class="w"> </span><span class="s1">&#39;target remote localhost:1234&#39;</span>
+<span class="o">[</span>...<span class="o">]</span>
+<span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">{</span>char<span class="o">}</span><span class="nv">0x29</span><span class="o">=</span><span class="m">0</span>
+</code></pre></div>
+
+<p>In <code>picocom</code>:</p>
+<div class="highlight"><pre><span></span><code>Flare-On 2017 Adruino UNO Digital Pin state:0
+</code></pre></div>
+
+<p>Since the possible values are limited to 1 byte (8bit), and being lazy I wrote a
+GDB script to bruteforce all the values</p>
+<div class="highlight"><pre><span></span><code>set $_i = 0
+define inc_pind
+        set $_i = $_i + 1
+        set {char}0x29=$_i
+        continue
+end
+</code></pre></div>
+
+<p>And then I use <code>xdotool</code> to programmatically send the right xkeysyms commands to
+the GDB terminal:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nv">i</span><span class="o">=</span><span class="m">0</span><span class="p">;</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$i</span><span class="w"> </span>-lt<span class="w"> </span><span class="m">256</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="p">;</span><span class="w"> </span>xdotool<span class="w"> </span>key<span class="w"> </span>ctrl+c<span class="w"> </span>Up<span class="w"> </span>Return<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nv">i</span><span class="o">=</span><span class="k">$((</span><span class="nv">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="k">))</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</code></pre></div>
+
+<p>Went for a coffee, and when back saw the pleasant screen:</p>
+<p><img alt="image_alt3" src="/assets/images/flareon-2017/72de36af7ebcf629992d8b5f9f3a54e20cb01d6335fd961984d34b0840ea4b7e.png"></p>
+<p>This challenge was a good reminder that reading the documentation first kept me
+from spending probably hours of not understanding how the CPU was getting
+input/output data from the PIN or what the ABI was doing. So more than ever, RTFM!</p>
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 10</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code><span class="nv">We</span><span class="w"> </span><span class="nv">have</span><span class="w"> </span><span class="nv">tested</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">thoroughly</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="nv">x86</span><span class="w"> </span><span class="nv">reversing</span><span class="w"> </span><span class="nv">but</span><span class="w"> </span><span class="nv">we</span><span class="w"> </span><span class="nv">forgot</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">cover</span><span class="w"> </span><span class="nv">some</span><span class="w"> </span><span class="nv">of</span>
+<span class="nv">the</span><span class="w"> </span><span class="nv">basics</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">other</span><span class="w"> </span><span class="nv">systems</span>.<span class="w"> </span><span class="nv">You</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="nv">encounter</span><span class="w"> </span><span class="nv">many</span><span class="w"> </span><span class="nv">strange</span><span class="w"> </span><span class="nv">scripting</span><span class="w"> </span><span class="nv">languages</span>
+<span class="nv">on</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">Information</span><span class="w"> </span><span class="nv">Superhighway</span>.<span class="w"> </span><span class="nv">I</span><span class="w"> </span><span class="nv">know</span><span class="w"> </span><span class="nv">that</span><span class="w"> </span><span class="nv">Interweb</span><span class="w"> </span><span class="nv">challenges</span><span class="w"> </span><span class="nv">are</span><span class="w"> </span><span class="nv">easy</span>,<span class="w"> </span><span class="nv">but</span>
+<span class="nv">we</span><span class="w"> </span><span class="nv">just</span><span class="w"> </span><span class="nv">need</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">complete</span><span class="w"> </span><span class="nv">this</span><span class="w"> </span><span class="nv">real</span><span class="w"> </span><span class="nv">quick</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">our</span><span class="w"> </span><span class="nv">records</span>.
+</code></pre></div>
+
+<h2>Solution</h2>
+<p>Another guessing game type of challenge. The challenge comes as a PHP script
+named <a href="https://mega.nz/#!MUAWhDTQ!qzAe4c6O0ADp3YyfCNVF0gimNSs44kvpLWwqcoldoKs"><code>shell.php</code></a>. It was solvable in 3 different steps:</p>
+<h3>Step 1: get the key length</h3>
+<p>This script is a mess so the cleaned version was
+pushed <a href="https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-clean-php">here</a>.</p>
+<p>This challenge is not about cracking the MD5 hash given, but reversing the way
+the variable <code>$block</code> is manipulated with the XOR operation. We don't know the
+key <code>$param</code>, including its length. However, we do know that after <a href="https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-clean-php-L4">L4</a> the
+<code>strlen($param)</code> will be in [32..64]. Additionally, we know after this line that
+every byte of <code>$param</code> is in the hexadecimal namespace ("0123456789abcdef"). And
+finally, because of the call
+to <a href="http://php.net/manual/en/function.create-function.php"><code>create_function</code></a>
+line 15, we know that the block once de-XOR-ed will have all bytes in
+<code>string.printable</code>.</p>
+<p>Now the guessing game starts: we must guess at the same time the length and
+the key. So the idea is in pseudo-code</p>
+<div class="highlight"><pre><span></span><code><span class="nv">assuming</span><span class="w"> </span><span class="nv">len</span><span class="ss">(</span><span class="nv">key</span><span class="ss">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span>
+<span class="nv">assuming</span><span class="w"> </span><span class="nv">charset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0123456789abcdef&quot;</span>
+<span class="nv">let</span><span class="w"> </span><span class="nv">candidate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">(</span><span class="nv">key</span>[<span class="mi">0</span>],<span class="w"> </span><span class="nv">len</span><span class="ss">(</span><span class="mi">32</span><span class="ss">))</span>
+<span class="nv">test</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">key</span>[<span class="mi">0</span>]<span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="nv">block</span>[<span class="mi">0</span>]<span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">string</span>.<span class="nv">printable</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span>\
+<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="ss">(</span><span class="nv">key</span>[<span class="mi">0</span>]<span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="nv">block</span>[<span class="mi">0</span>]<span class="ss">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="nv">block</span>[<span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">len</span><span class="ss">(</span><span class="nv">key</span><span class="ss">)</span>]<span class="nv">in</span><span class="w"> </span><span class="nv">string</span>.<span class="nv">printable</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span>\
+<span class="w">     </span><span class="nv">etc</span>.
+<span class="k">if</span><span class="w"> </span><span class="nv">any</span><span class="w"> </span><span class="nv">fails</span>:<span class="w"> </span><span class="nv">reject</span><span class="w"> </span><span class="nv">candidate</span>
+</code></pre></div>
+
+<p>This gives us a good iteration pattern, allowing us to narrow down all possible
+values <strong>and</strong> find the possible length for the key, as done in <a href="https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-bf1-py"><code>bf1.py</code></a></p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>bf1.py
+<span class="nv">pos</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;2&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="nv">pos</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="nv">char</span><span class="o">=</span><span class="s1">&#39;3&#39;</span><span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">64</span>
+<span class="o">[</span>...<span class="o">]</span>
+</code></pre></div>
+
+<p>Unanimously, we find that if the length of <code>$param</code> is 64 bytes, we have at
+least one candidate that ensures that we can de-xor <code>$block</code> and get ASCII back
+for each byte of the key.</p>
+<p>So if <code>$param = md5($param) . substr(MD5(strrev($param)), 0, strlen($param));</code>
+and <code>strlen($param) == 64</code>, it means that our key <code>o_o</code> is 32 byte long, which
+way too huge to bruteforce. Consequently we must unxor the block by another way,
+without knowing the key.</p>
+<h3>Step 2: unxor all the blocks!</h3>
+<p>The Step1 allowed us to get the key length along with a list of potential
+candidates for each position ([0, 63]).
+This 2nd step directly extends the earlier one by trying to bruteforce chunk by
+chunk.</p>
+<p>This will be the main idea:</p>
+<div class="highlight"><pre><span></span><code>possible_candidates = {0: &quot;abc&quot;, 1: &quot;012&quot;, 2: &quot;f&quot;, etc...}
+possible_block = []
+block_size = 4  # pure assumption
+for candidate in generate_all_candidates( possible_candidates[0:block_size] ):
+  if candidate ^ block[key_length*0:key_length*0 + 4] in string.printable and \
+     candidate ^ block[key_length*1:key_length*1 + 4] in string.printable and \
+     candidate ^ block[key_length*2:key_length*2 + 4] in string.printable and \
+     etc.. :
+     possible_block.append(candidate)
+</code></pre></div>
+
+<p>I used Python's <code>itertools.product</code> to generate all the candidate blocks, and
+little by little recovered the value for <code>$param</code>:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>bf2.py
+<span class="nv">possible_key</span><span class="o">=</span>de6952b84a49b934acb436418ad9d93d237df05769afc796d063000000000000
+<span class="o">(</span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;$c=\&#39;</span><span class="se">\&#39;</span><span class="p">;</span><span class="se">\r\n</span><span class="nv">$key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">;</span><span class="se">\r\n</span>if<span class="w"> </span><span class="o">(</span>isset<span class="o">(</span><span class="nv">$_POST</span><span class="o">[</span><span class="se">\&#39;</span>o_o<span class="se">\&#39;</span><span class="o">]))</span><span class="se">\r\n</span><span class="w">  </span><span class="nv">$ka</span><span class="s1">&#39;)</span>
+<span class="s1">(64, &#39;</span>oXo<span class="se">\&#39;</span><span class="o">]</span><span class="p">;</span><span class="se">\r\n</span>if<span class="w"> </span><span class="o">(</span>isset<span class="o">(</span><span class="nv">$_POST</span><span class="o">[</span><span class="se">\&#39;</span>hint<span class="se">\&#39;</span><span class="o">]))</span><span class="se">\r\n</span><span class="w">  </span><span class="nv">$d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;www.p01*&#39;)</span>
+<span class="s2">(128, &quot;</span>stet<span class="o">(</span><span class="nv">$_POST</span><span class="o">[</span><span class="s1">&#39;t&#39;</span><span class="o">]))</span><span class="w"> </span><span class="o">{</span><span class="se">\r\n</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">(</span><span class="nv">$_POST</span><span class="o">[</span><span class="s1">&#39;t&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;c&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span><span class="se">\r\n</span><span class="s2">$&quot;)</span>
+<span class="s2">(192, &quot;</span>63_decode<span class="o">(</span><span class="s1">&#39;SDcGHg1feVUIEhsbDxFhIBIYFQY+VwMWTyAcOhEYE&quot;)</span>
+<span class="s1">(256, &#39;</span>DJXTWxrSH4ZS1IiAgA3GxYUQVMvBFdVTysRMQAaQUxZYTlsTg0MA<span class="s1">&#39;)</span>
+<span class="s1">(320, &#39;</span>whbXgcxHQRBAxMcWwodHV5EfxQfAAYrMlsCQlJBAAAAAAAAAAAAE<span class="err">&#39;</span><span class="o">)</span>
+<span class="o">[</span>...<span class="o">]</span>
+</code></pre></div>
+
+<p>After a few iteration, it appears that the encoded block contains not just pure
+PHP but also HTML, which allowed me to perfect the <a href="https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-bf2-py-L6">condition for finding a valid candidate</a></p>
+<p>After many iterations, we get the value for <code>$param</code>:</p>
+<div class="highlight"><pre><span></span><code>$param = &quot;db6952b84a49b934acb436418ad9d93d237df05769afc796d067bccb379f2cac&quot;;
+</code></pre></div>
+
+<h3>Step 3</h3>
+<p>Entering the correct value for <code>$param</code> found in step 2 allow us to discover the
+<a href="https://gist.github.com/hugsy/8fa710e906033f377e68c24dce44070e#file-decoded_script-php">decoded script</a> passed
+to <code>create_function()</code>.</p>
+<p>And back to square 1, we have 3 new base64-encoded blocks to decode. Depending
+on the value given in the <code>$_POST['t']</code> (can be 'c', 's' or 'w'), will split the
+key every 3 character, starting from index 0, 1, or 2 (respectively).</p>
+<p>I took a huge assumption here, which was that <code>$key</code> would be the flag to end the
+challenge. Therefore, even though we don't know its length (yet), we know that
+it ends with <code>@flare-on.com</code>.</p>
+<p>So for this step, I used the same technique than step2 but split the key every 3
+characters and see if the block of byte was successfully decoded.</p>
+<div class="highlight"><pre><span></span><code><span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;fla&quot;</span><span class="o">+</span><span class="s2">&quot;re-&quot;</span><span class="o">+</span><span class="s2">&quot;on.&quot;</span><span class="o">+</span><span class="s2">&quot;com&quot;</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="n">j</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span> <span class="n">b64d</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="s2">&quot;A&quot;</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="n">k</span><span class="p">)[</span><span class="n">i</span><span class="p">::</span><span class="n">i</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">is_all_printable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="nb">print</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Just like step1 this approach gives us 2 possible length for the flag prefix
+(i.e. before <code>@flare-on.com</code>): 8 or 9 bytes.</p>
+<p>So there again, semi-manual bruteforce:</p>
+<div class="highlight"><pre><span></span><code>i = 9
+k0 = key[0::3]
+for t in string.printable:
+    p = &quot;A&quot;*(i-1) + t + k0
+    x = xor(b64d(c), p)
+    b = all_printable_blocks(x, i-1, len(p), len(p)-(i-1))
+    if b != []:
+        print p, b
+</code></pre></div>
+
+<p>We quickly notice that the output has some HTML in it, so we can discard
+candidates with invalid HTML patterns. For example:</p>
+<div class="highlight"><pre><span></span><code>➜<span class="w">  </span>python<span class="w">  </span>bf.py
+AAAAAAAA0froc<span class="w"> </span>[&#39;8titl&#39;,<span class="w"> </span>&#39;ged<span class="w"> </span>C&#39;,<span class="w"> </span>&#39;`<span class="err">&lt;</span>/ti&#39;,<span class="w"> </span>&#39;)-<span class="w"> </span>Ma&#39;,<span class="w"> </span>&quot;41&#39;<span class="w"> </span>H&quot;,<span class="w"> </span>&#39;\t\n<span class="nt">&lt;bo</span><span class="err">&#39;,</span><span class="w"> </span><span class="err">&#39;</span><span class="na">pext=</span><span class="s">&#39;, &#39;</span><span class="na">klor=</span><span class="s">&#39;, &#39;</span><span class="na">kd0=</span><span class="s">&quot;&#39;, &#39;0froc&#39;, &#39;$titl&#39;, &#39;phieu&#39;, &#39;anri&quot;</span><span class="err">&#39;,</span><span class="w"> </span><span class="err">&#39;gript&#39;,</span><span class="w"> </span><span class="err">&#39;perva&#39;,</span><span class="w"> </span><span class="err">&#39;/=7,i&#39;,</span><span class="w"> </span><span class="err">&quot;X\\n&#39;;&quot;,</span><span class="w"> </span><span class="err">&#39;/=P[i&#39;,</span><span class="w"> </span><span class="err">&#39;n-j+n&#39;,</span><span class="w"> </span><span class="err">&#39;6])</span><span class="na">j=</span><span class="s">&#39;, &#39;</span><span class="err">jerHT&#39;,</span><span class="w"> </span><span class="err">&#39;ge(4)&#39;,</span><span class="w"> </span><span class="err">&#39;+scri&#39;,</span><span class="w"> </span><span class="err">&#39;kdy</span><span class="nt">&gt;</span>\r&#39;]
+AAAAAAAA2froc<span class="w"> </span>[&#39;:titl&#39;,<span class="w"> </span>&#39;eed<span class="w"> </span>C&#39;,<span class="w"> </span>&#39;b<span class="err">&lt;</span>/ti&#39;,<span class="w"> </span>&#39;+-<span class="w"> </span>Ma&#39;,<span class="w"> </span>&quot;61&#39;<span class="w"> </span>H&quot;,<span class="w"> </span>&#39;\x0b\n<span class="nt">&lt;bo</span><span class="err">&#39;,</span><span class="w"> </span><span class="err">&#39;</span><span class="na">rext=</span><span class="s">&#39;, &#39;</span><span class="na">ilor=</span><span class="s">&#39;, &#39;</span><span class="na">id0=</span><span class="s">&quot;&#39;, &#39;2froc&#39;, &#39;&amp;titl&#39;, &#39;rhieu&#39;, &#39;cnri&quot;</span><span class="err">&#39;,</span><span class="w"> </span><span class="err">&#39;eript&#39;,</span><span class="w"> </span><span class="err">&#39;rerva&#39;,</span><span class="w"> </span><span class="err">&#39;</span><span class="na">-=</span><span class="s">7,i&#39;,</span><span class="w"> </span><span class="err">&quot;Z\\n&#39;;&quot;,</span><span class="w"> </span><span class="err">&#39;</span><span class="na">-=</span><span class="s">P[i&#39;,</span><span class="w"> </span><span class="err">&#39;l-j+n&#39;,</span><span class="w"> </span><span class="err">&#39;4])</span><span class="na">j=</span><span class="s">&#39;, &#39;</span><span class="err">herHT&#39;,</span><span class="w"> </span><span class="err">&#39;ee(4)&#39;,</span><span class="w"> </span><span class="err">&#39;)scri&#39;,</span><span class="w"> </span><span class="err">&#39;idy</span><span class="nt">&gt;</span>\r&#39;]
+AAAAAAAA3froc<span class="w"> </span>[&#39;;titl&#39;,<span class="w"> </span>&#39;ded<span class="w"> </span>C&#39;,<span class="w"> </span>&#39;c<span class="err">&lt;</span>/ti&#39;,<span class="w"> </span>&#39;*-<span class="w"> </span>Ma&#39;,<span class="w"> </span>&quot;71&#39;<span class="w"> </span>H&quot;,<span class="w"> </span>&#39;\n\n<span class="nt">&lt;bo</span><span class="err">&#39;,</span><span class="w"> </span><span class="err">&#39;</span><span class="na">sext=</span><span class="s">&#39;, &#39;</span><span class="na">hlor=</span><span class="s">&#39;, &#39;</span><span class="na">hd0=</span><span class="s">&quot;&#39;, &#39;3froc&#39;, &quot;</span><span class="err">&#39;titl&quot;,</span><span class="w"> </span><span class="err">&#39;shieu&#39;,</span><span class="w"> </span><span class="err">&#39;bnri&quot;&#39;,</span><span class="w"> </span><span class="err">&#39;dript&#39;,</span><span class="w"> </span><span class="err">&#39;serva&#39;,</span><span class="w"> </span><span class="err">&#39;,=7,i&#39;,</span><span class="w"> </span><span class="err">&quot;[\\n&#39;;&quot;,</span><span class="w"> </span><span class="err">&#39;,=P[i&#39;,</span><span class="w"> </span><span class="err">&#39;m-j+n&#39;,</span><span class="w"> </span><span class="err">&#39;5])</span><span class="na">j=</span><span class="s">&#39;, &#39;</span><span class="err">ierHT&#39;,</span><span class="w"> </span><span class="err">&#39;de(4)&#39;,</span><span class="w"> </span><span class="err">&#39;(scri&#39;,</span><span class="w"> </span><span class="err">&#39;hdy</span><span class="nt">&gt;</span>\r&#39;]
+AAAAAAAA4froc<span class="w"> </span>[&#39;<span class="nt">&lt;titl</span><span class="err">&#39;,</span><span class="w"> </span><span class="err">&#39;ced</span><span class="w"> </span><span class="err">C&#39;,</span><span class="w"> </span><span class="err">&#39;d&lt;/ti&#39;,</span><span class="w"> </span><span class="err">&#39;--</span><span class="w"> </span><span class="err">Ma&#39;,</span><span class="w"> </span><span class="err">&quot;01&#39;</span><span class="w"> </span><span class="err">H&quot;,</span><span class="w"> </span><span class="err">&#39;\r\n&lt;bo&#39;,</span><span class="w"> </span><span class="err">&#39;</span><span class="na">text=</span><span class="s">&#39;, &#39;</span><span class="na">olor=</span><span class="s">&#39;, &#39;</span><span class="na">od0=</span><span class="s">&quot;&#39;, &#39;4froc&#39;, &#39; titl&#39;, &#39;thieu&#39;, &#39;enri&quot;</span><span class="err">&#39;,</span><span class="w"> </span><span class="err">&#39;cript&#39;,</span><span class="w"> </span><span class="err">&#39;terva&#39;,</span><span class="w"> </span><span class="err">&#39;+=7,i&#39;,</span><span class="w"> </span><span class="err">&quot;\\\\n&#39;;&quot;,</span><span class="w"> </span><span class="err">&#39;+=P[i&#39;,</span><span class="w"> </span><span class="err">&#39;j-j+n&#39;,</span><span class="w"> </span><span class="err">&#39;2])</span><span class="na">j=</span><span class="s">&#39;, &#39;</span><span class="err">nerHT&#39;,</span><span class="w"> </span><span class="err">&#39;ce(4)&#39;,</span><span class="w"> </span><span class="err">&#39;/scri&#39;,</span><span class="w"> </span><span class="err">&#39;ody</span><span class="nt">&gt;</span>\r&#39;]
+AAAAAAAA5froc<span class="w"> </span>[&#39;=titl&#39;,<span class="w"> </span>&#39;bed<span class="w"> </span>C&#39;,<span class="w"> </span>&#39;e<span class="err">&lt;</span>/ti&#39;,<span class="w"> </span>&#39;,-<span class="w"> </span>Ma&#39;,<span class="w"> </span>&quot;11&#39;<span class="w"> </span>H&quot;,<span class="w"> </span>&#39;\x0c\n<span class="nt">&lt;bo</span><span class="err">&#39;,</span><span class="w"> </span><span class="err">&#39;</span><span class="na">uext=</span><span class="s">&#39;, &#39;</span><span class="na">nlor=</span><span class="s">&#39;, &#39;</span><span class="na">nd0=</span><span class="s">&quot;&#39;, &#39;5froc&#39;, &#39;!titl&#39;, &#39;uhieu&#39;, &#39;dnri&quot;</span><span class="err">&#39;,</span><span class="w"> </span><span class="err">&#39;bript&#39;,</span><span class="w"> </span><span class="err">&#39;uerva&#39;,</span><span class="w"> </span><span class="err">&#39;*=7,i&#39;,</span><span class="w"> </span><span class="err">&quot;]\\n&#39;;&quot;,</span><span class="w"> </span><span class="err">&#39;*=P[i&#39;,</span><span class="w"> </span><span class="err">&#39;k-j+n&#39;,</span><span class="w"> </span><span class="err">&#39;3])</span><span class="na">j=</span><span class="s">&#39;, &#39;</span><span class="err">oerHT&#39;,</span><span class="w"> </span><span class="err">&#39;be(4)&#39;,</span><span class="w"> </span><span class="err">&#39;.scri&#39;,</span><span class="w"> </span><span class="err">&#39;ndy</span><span class="nt">&gt;</span>\r&#39;]
+[...]
+</code></pre></div>
+
+<p>Only code with key=AAAAAAAA4froc makes most sense so it <em>must</em> be it. So we'll
+assume this is how the key ends, and bruteforce the byte before, and so on, and
+so forth. Reiterating this for all bytes, we get the first subkey to be
+<code>k0='t_rsaat_4froc'</code>.</p>
+<p>And reiterating the exact same thing for the 2nd and 3rd base64-encoded block
+and we get all the subkeys:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="n">k0</span><span class="o">=</span><span class="s1">&#39;t_rsaat_4froc&#39;</span>
+<span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="n">k1</span><span class="o">=</span><span class="s1">&#39;hx__ayowkleno&#39;</span>
+<span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="n">k2</span><span class="o">=</span><span class="s1">&#39;3Oiwa_o3@a-.m&#39;</span>
+<span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="o">[</span><span class="n">&#39;&#39;.join(x) for x in zip(k0, k1, k2)</span><span class="o">]</span><span class="p">)</span>
+<span class="s1">&#39;th3_xOr_is_waaaay_too_w34k@flare-on.com&#39;</span>
+</code></pre></div>
+
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 11</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code><span class="k">Only</span><span class="w"> </span><span class="n">two</span><span class="w"> </span><span class="n">challenges</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">go</span><span class="p">.</span><span class="w"> </span><span class="n">We</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="ow">some</span><span class="w"> </span><span class="n">bad</span><span class="w"> </span><span class="n">hombres</span><span class="w"> </span><span class="n">here</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">you</span><span class="err">&#39;</span><span class="n">re</span><span class="w"> </span><span class="n">going</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">get</span>
+<span class="n">the</span><span class="w"> </span><span class="n">keys</span><span class="w"> </span><span class="k">out</span><span class="p">.</span>
+</code></pre></div>
+
+<h2>Solution</h2>
+<p>This challenge was out of space! And so fun! It comes as a PE32 file
+named <a href="https://mega.nz/#!EdIHXLxD!ctm5aE88lVss0EafshM0APMebGDSjhEcXajC6F8GVYc"><code>covfefe.exe</code></a>.</p>
+<p>The most notable string (<a href="http://bitly.com/98K8eH">http://bitly.com/98K8eH</a>)
+from the PE points us nostalgically to
+Rick Astley timeless masterpiece, "Never Gonna Give You Up".</p>
+<p>Many other strings appear, but are weirdly aligned to one DWORD per character:
+<img alt="image_alt" src="/assets/images/flareon-2017/a0e353204c9ddbd73d9a71c3c6ec53ba7c068d4ab487d43726ebfbe66aef3e8b.png"></p>
+<p>Actually <code>covfefe.exe</code> is very simple, and only asks for finding a correct
+password. The PE itself only:</p>
+<ol>
+<li>randomly chooses an integer in [0, 9[ and store in 0x0403008+0x110*4</li>
+<li>starts the VM itself at 0x0403008, and jumps to it</li>
+</ol>
+<p>The VM is an array of <code>int32_t</code> so
+<code>logique_addr_in_pe = 0x0403008 + relative_addr_in_vm*4</code></p>
+<p>The execution of the virtual machine starts at <code>pc_start = vm + 0x463</code>. And each
+instruction is executed in the same way:</p>
+<div class="highlight"><pre><span></span><code><span class="n">execute_instruction</span><span class="p">(</span><span class="n">operand1</span><span class="p">,</span><span class="w"> </span><span class="n">operand2</span><span class="p">,</span><span class="w"> </span><span class="n">operand3</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">  </span><span class="o">[</span><span class="n">operand2</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">operand2</span><span class="o">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">[</span><span class="n">operand1</span><span class="o">]</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="n">operand2</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">operand3</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="err">:</span>
+<span class="w">     </span><span class="n">pc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">op3</span><span class="w">  </span><span class="o">//</span><span class="w"> </span><span class="n">jump_to</span>
+<span class="err">}</span>
+</code></pre></div>
+
+<p>Since the code is super easy, I decided to recreate the C source code from
+it. So first, I used WinDBG to dump the VM location:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">0</span><span class="o">:</span><span class="mi">000</span><span class="o">&gt;</span><span class="w"> </span><span class="o">.</span><span class="na">writemem</span><span class="w"> </span><span class="n">F</span><span class="o">:\</span><span class="n">flareon_2017</span><span class="o">\</span><span class="mi">11</span><span class="o">\</span><span class="n">dumpmem</span><span class="o">-</span><span class="mi">00403000</span><span class="o">-</span><span class="n">L5000</span><span class="o">.</span><span class="na">dmp</span>
+</code></pre></div>
+
+<p>And used this to create
+a
+<a href="https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c#file-cov-c">C script</a> that
+would run the VM as well. The reason for that is that now I can set breakpoint
+and analyse the VM more precisely. I also used Binary Ninja to
+write
+<a href="https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c#file-binja-covfefe-py">a new custom architecture</a>. The
+reason for that
+being that it greatly helped tracking down operations at the bytecode level
+of the VM.</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/202dd92a07c692ff036fd5b27d7ff1c85f1af93cd33007abf2fb31bd44498270.png"></p>
+<p>We know that we must provide a good password to validate the task. So there must
+be a comparison that fails as soon as a wrong character is entered. Those
+new tools were of great help to identify the culprit: the comparison instruction
+is done in the block at 0xde6.</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/a25240fe0264b71f12bf0371e663fe5357dd0b9f6366056b34814a5bd2670e2b.png"></p>
+<p>Now that we know that, all I need was to use the C script to "set a breakpoint"
+at 0xde9 and see what value was expected.
+<img alt="image_alt" src="/assets/images/flareon-2017/dc8897ca8ce6dc0a124da94b1e7e7ddf7fc442b137930a003c31875b547c3ec9.png"></p>
+<p>Knowing this, creating the bruteforce script
+(<a href="https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c#file-cov-py">cov.py</a>)
+was the next immediate step:</p>
+<p><img alt="image_alt5" src="/assets/images/flareon-2017/5afbab3abc4ad96ab713f58c496eaee64e2efb5ae92760a084c6f5cf55a90caa.png"></p>
+<p>And finally recover the key to this level = <code>subleq_and_reductio_ad_absurdum</code>.</p>
+<p><a href="#menu">Back to Menu</a></p>
+<h1>Challenge 12</h1>
+<h2>Instruction</h2>
+<div class="highlight"><pre><span></span><code><span class="nv">Sorry</span>,<span class="w"> </span><span class="nv">we</span><span class="w"> </span><span class="nv">don</span><span class="err">&#39;t have a challenge for you. We were hacked and we think we lost</span>
+<span class="err">it. Its name was &quot;lab10&quot; . The attacker left one binary behind and our</span>
+<span class="err">sophisticated security devices captured network traffic (pcap) that may be</span>
+<span class="err">related. If you can recover the challenge from this and solve it then you win</span>
+<span class="nv">the</span><span class="w"> </span><span class="nv">Flare</span><span class="o">-</span><span class="nv">On</span><span class="w"> </span><span class="nv">Challenge</span>.<span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">can</span><span class="err">&#39;t then you do not win it.</span>
+</code></pre></div>
+
+<h2>Solution</h2>
+<p>This level alone could have been an entire CTF. It came as 2 files:</p>
+<ol>
+<li>an 85KB PE32 file, <a href="https://mega.nz/#!ARJTwKTI!E2LSMjIHfh4bQDMDyfaxP8hKtYnWJ2IyEbqiRLyH7uQ"><code>coolprogram.exe</code></a></li>
+<li>a 5.5MB PCAP trace,
+     <a href="https://mega.nz/#!oZZygDab!c1pCq8ieSkTtTqkyaLk4he421AehJW18U-L_v_pa5MI"><code>20170801_1300_filtered.pcap</code></a></li>
+</ol>
+<h3>Extracting secondstage.exe</h3>
+<p><code>coolprogram.exe</code> is a Borland compiled PE file that is nothing more than a
+stager to download and execute the real payload. Using API Monitor, we can trace
+that it attempts to connect to FQDN <code>maybe.suspicious.to</code>, checking also that
+the domain name doesn't point to the localhost</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/c1de5ea5895e4bb38d54167604de4dff8c75dd14d757d40b1d1992419d085232.png"></p>
+<p>The behavior seems consistant with the first TCP stream of the PCAP. However,
+the data received seems encoded/encrypted:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">GET</span> <span class="nn">/secondstage</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">*/*</span>
+<span class="na">Accept-Language</span><span class="o">:</span> <span class="l">en-us</span>
+<span class="na">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">maybe.suspicious.to</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-cache</span>
+
+HTTP/1.0 200 OK
+Server: SimpleHTTP/0.6 Python/2.7.12
+Date: Tue, 01 Aug 2017 17:04:02 GMT
+Content-type: application/octet-stream
+Content-Length: 119812
+Last-Modified: Tue, 01 Aug 2017 14:46:13 GMT
+
+7.=|...WEz.....:&amp;.uBLA.5.su..m..&gt;j.-....4..|.....Mu%R{.......U..(Fl.;./.....QM.G...O
+[...]
+</code></pre></div>
+
+<p>IDR and IDA helped identify the "real main" function to be at 0x04103DC, which
+performs sequentially the following operations:</p>
+<ol>
+<li>unxor the URL from memory: the URL is located at 0x04102B4 and xor-ed with
+     0x73</li>
+<li>perform the HTTP GET request to get the <code>secondstage</code></li>
+<li>decode the buffer, recovering a valid PE file, <code>secondstage.exe</code></li>
+<li>invoke <code>secondstage.exe</code> by <a href="https://www.trustwave.com/Resources/SpiderLabs-Blog/Analyzing-Malware-Hollow-Processes/">hollowing</a> the default HTTP browser</li>
+</ol>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/7d5697ef3325169816f81bd29388f6575c6dd51d23d9fcf11c26dc778f29b354.png"></p>
+<p>Instead of decoding manually the encoded response from the C2 server, we can be
+lazy by recovering <code>secondstage.exe</code> breaking at 0x4104C1:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">0</span><span class="o">:</span><span class="mi">000</span><span class="o">&gt;</span><span class="w"> </span><span class="n">bp</span><span class="w">  </span><span class="mh">0x4104</span><span class="n">C1</span><span class="o">;</span><span class="w"> </span><span class="n">g</span>
+<span class="n">Breakpoint</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">hit</span>
+<span class="o">[...]</span>
+<span class="mi">0</span><span class="o">:</span><span class="mi">000</span><span class="o">&gt;</span><span class="w"> </span><span class="o">!</span><span class="n">dh</span><span class="w"> </span><span class="n">edx</span>
+
+<span class="n">File</span><span class="w"> </span><span class="n">Type</span><span class="o">:</span><span class="w"> </span><span class="n">EXECUTABLE</span><span class="w"> </span><span class="n">IMAGE</span>
+<span class="n">FILE</span><span class="w"> </span><span class="n">HEADER</span><span class="w"> </span><span class="n">VALUES</span>
+<span class="w">     </span><span class="mi">14</span><span class="n">C</span><span class="w"> </span><span class="n">machine</span><span class="w"> </span><span class="o">(</span><span class="n">i386</span><span class="o">)</span>
+<span class="w">       </span><span class="mi">5</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">sections</span>
+<span class="mi">592</span><span class="n">F22F3</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="n">date</span><span class="w"> </span><span class="n">stamp</span><span class="w"> </span><span class="n">Wed</span><span class="w"> </span><span class="n">May</span><span class="w"> </span><span class="mi">31</span><span class="w"> </span><span class="mi">13</span><span class="o">:</span><span class="mi">09</span><span class="o">:</span><span class="mi">23</span><span class="w"> </span><span class="mi">2017</span>
+
+<span class="w">       </span><span class="mi">0</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">symbol</span><span class="w"> </span><span class="n">table</span>
+<span class="w">       </span><span class="mi">0</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">symbols</span>
+<span class="w">      </span><span class="n">E0</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="n">header</span>
+<span class="w">     </span><span class="mi">102</span><span class="w"> </span><span class="n">characteristics</span>
+<span class="w">            </span><span class="n">Executable</span>
+<span class="w">            </span><span class="mi">32</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="n">machine</span>
+
+<span class="o">[...]</span>
+<span class="mi">0</span><span class="o">:</span><span class="mi">000</span><span class="o">&gt;</span><span class="w"> </span><span class="o">.</span><span class="na">writemem</span><span class="w"> </span><span class="n">F</span><span class="o">:\</span><span class="n">flareon_2017</span><span class="o">\</span><span class="mi">12</span><span class="o">\</span><span class="n">secondstage</span><span class="o">.</span><span class="na">exe</span><span class="w"> </span><span class="n">edx</span><span class="w"> </span><span class="n">l1d400</span>
+<span class="n">Writing</span><span class="w"> </span><span class="mi">1</span><span class="n">d400</span><span class="w"> </span><span class="n">bytes</span><span class="o">...........................................................</span>
+</code></pre></div>
+
+<h3>Initial analysis secondstage</h3>
+<p>Thanks to CFF Explorer, one can easily edit <code>secondstage.exe</code> PE header to
+deactivate the randomization of the code by
+unsetting
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx"><code>IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE</code></a>
+and rebuild the header.</p>
+<p><code>secondstage</code> analysis starts at 0x405220 by initializing a bunch a stuff,
+including loading all dynamically loaded functions into an array of points,
+ensuring a bit of obfuscation during static analysis, since all function calls
+will be performed by indirect calls. Then if the executable is run on
+client-side, initiates the connection to the C2 server:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/ae6aff7a8232b182109f61df0cd50bf78f7ce4a5f162c8c16a5591b5f0f7aecc.png"></p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/a06c9b431092bbd3e382f3d703dbe4828d0702f0140ee009aac3b341c145c32e.png"></p>
+<p>Every time a packet is received the function 0x0402C50 is called for parsing the
+new message, and sending the answer back. The C2 is still behind the FQDN
+<code>maybe.suspicious.to</code> which in the PCAP file is associated to the IP address
+52.0.104.200.</p>
+<h3>Reversing the communication protocol</h3>
+<p>A big part of this challenge consisted in understanding the protocol, because
+once entirely assimilated, every piece of code would fall into place.</p>
+<p>An initial glimpse into the second TCP stream of the PCAP reveils already many
+valuable information regarding the protocol:</p>
+<ol>
+<li>it is a non-standard (i.e. custom) binary protocol</li>
+<li>it is (for most part) non encrypted</li>
+<li>some parts of the header can be instantly recognized (magic='2017', the
+     size of the header, size of the data, etc.)</li>
+<li>it transmits some PE code (presence of strings like "text", "rdata",
+     "reloc", "kernel32.dll", names of methods, etc.)</li>
+</ol>
+<p>The function 0x403210 reveals a whole deal regarding the protocol: when a new
+packet is received, the function ensures that its length is at least 0x24 bytes,
+and that the first 4 bytes are equal to "2017". This will be the aspect of the
+first 0x24 bytes of header:</p>
+<div class="highlight"><pre><span></span><code><span class="mf">0000</span><span class="w"> </span><span class="s">&quot;2017&quot;</span>
+<span class="mf">0004</span><span class="w"> </span><span class="kd">Data</span><span class="n">CheckSum</span>
+<span class="mf">0008</span><span class="w"> </span><span class="n">HeaderSize</span>
+<span class="mf">000</span><span class="n">c</span><span class="w"> </span><span class="kd">Data</span><span class="n">Size</span>
+<span class="mf">0010</span><span class="w"> </span><span class="kd">Data</span><span class="n">Size2</span><span class="w">  </span><span class="o">//</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="nb">exp</span><span class="n">lained</span><span class="w"> </span><span class="n">later</span><span class="w"> </span><span class="kr">on</span>
+<span class="mf">0014</span><span class="w"> </span><span class="n">Magic_of_Module</span>
+</code></pre></div>
+
+<p>What the hell are those modules? What is their magic number?</p>
+<p>To understand that, I wrote a "replayer" that would spoof the C2 IP address, and
+replay all the packets to the instance of <code>secondstage</code>. After a few packets,
+the <code>!address</code> showed that some new memory areas were allocated in the address
+space, all with <code>PAGE_EXECUTE_READWRITE</code> permission, all starting with
+<code>LM...</code>. Searching for the constant 0x4d4c ('LM' in little endian), IDA spotted
+the instruction <code>004053CE cmp     edx, 4D4Ch</code>, which happens to be followed by a
+call to <code>Kernel32!VirtualAlloc()</code> with <code>PAGE_EXECUTE_READWRITE</code> (0x40) set for
+permission, then a <code>LoadLibraryA</code>. This must be it, so we can now use WinDBG to dump all those modules:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">0</span><span class="o">:</span><span class="mi">000</span><span class="o">&gt;</span><span class="w"> </span><span class="n">bp</span><span class="w"> </span><span class="mi">004053</span><span class="n">ce</span><span class="w"> </span><span class="o">;</span><span class="w"> </span><span class="n">g</span>
+<span class="mi">0</span><span class="o">:</span><span class="mi">000</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dd</span><span class="w"> </span><span class="n">ecx</span><span class="o">+</span><span class="n">poi</span><span class="o">(</span><span class="n">ecx</span><span class="o">+</span><span class="mi">3</span><span class="n">c</span><span class="o">)+</span><span class="mi">50</span><span class="w"> </span><span class="n">l1</span>
+<span class="mi">0018</span><span class="n">d2b8</span><span class="w">  </span><span class="mi">00017000</span>
+<span class="mi">0</span><span class="o">:</span><span class="mi">000</span><span class="o">&gt;</span><span class="w"> </span><span class="o">.</span><span class="na">writemem</span><span class="w"> </span><span class="n">E</span><span class="o">:\</span><span class="n">secondstage</span><span class="o">-</span><span class="n">lm</span><span class="o">-&lt;</span><span class="n">id</span><span class="o">&gt;.</span><span class="n">dll</span><span class="w"> </span><span class="n">ecx</span><span class="w"> </span><span class="n">lpoi</span><span class="o">(</span><span class="n">ecx</span><span class="o">+</span><span class="n">poi</span><span class="o">(</span><span class="n">ecx</span><span class="o">+</span><span class="mi">3</span><span class="n">c</span><span class="o">)+</span><span class="mi">50</span><span class="o">)</span>
+<span class="n">Writing</span><span class="w"> </span><span class="mi">17000</span><span class="w"> </span><span class="n">bytes</span><span class="o">..............................................</span>
+</code></pre></div>
+
+<p>8 modules were found. Each of them can be convert back to a valid PE format by
+replacing "LM\x00\x00" with "MZ\x00\x00", and "NOP\x00" with
+"PE\x00\x00". Finally the entrypoint must be xored with the value 0xABCDABCD.</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/bbcda00a98ff78d846bfa7a6e2b0e846cdcd50a8cc7cd8b4b4a8b79f4a1b49db.png"></p>
+<h3>Reversing the "Loadable Modules"</h3>
+<p>All those modifications give us 8 DLL that are sent by the C2 and loaded in
+<code>secondstage</code>, with the following names in them</p>
+<ol>
+<li>r.dll</li>
+<li>t.dll</li>
+<li>6.dll</li>
+<li>x.dll</li>
+<li>z.dll</li>
+<li>f.dll</li>
+<li>s.dll</li>
+<li>m.dll</li>
+</ol>
+<p>Using Diaphora to bin-diff those DLL showed that they are 99% similar, except
+for a handful of functions. So naturally I focused reversing only those
+functions.</p>
+<p>In all DLLs (and even <code>secondstage</code>), one function could always be found doing
+something like:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">memcpy</span><span class="p">(</span><span class="n">pkt</span><span class="o">-&gt;</span><span class="n">Magic_of_Module</span><span class="p">,</span><span class="w"> </span><span class="n">magic_array_of_0x10_bytes</span><span class="p">,</span><span class="w"> </span><span class="mh">0x10</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+<span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="w"> </span><span class="n">pkg</span><span class="o">-&gt;</span><span class="n">DataSize2</span><span class="w"> </span><span class="p">);</span>
+<span class="w">  </span><span class="cm">/* process(pkt) */</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Which appears to be the function called when a packet is received, and that the
+"magic" field matched to the DLL. Symetrically, another function could be found,
+but this one to build a response packet from this module.  Reversing all those
+modules could be summarized in the table below:</p>
+<p>| Name | Magic  | Description  | Category |
+| secondstage.exe | 51298F741667D7ED2941950106F50545  | Handles basic packets handling, loads modules, sends MessageBox messages, stop process, etc.  | * |
+| r.dll | C30B1A2DCB489CA8A724376469CF6782 | <a href="https://en.wikipedia.org/wiki/RC4">RC4</a> implementation  | CRPT |
+| t.dll | 38BE0F624CE274FC61F75C90CB3F5915 | Byte shuffling | CRPT |
+| 6.dll | BA0504FCC08F9121D16FD3FED1710E60 | Base64 (with custom alphabet) implementation  | COMP|
+| x.dll | B2E5490D2654059BBBAB7F2A67FE5FF4 | Modified <a href="https://en.wikipedia.org/wiki/XTEA">XTEA</a>  | CRPT |
+| z.dll | 5FD8EA0E9D0A92CBE425109690CE7DA2 | <a href="https://zlib.net">zlib</a> | COMP |
+| f.dll | F47C51070FA8698064B65B3B6E7D30C6 | <em>didn't see the need for reversing</em> | ? |
+| s.dll | F46D09704B40275FB33790A362762E56 | Send/Receive commands  | CMD |
+| m.dll | A3AECCA1CB4FAA7A9A594D138A1BFBD5 | Desktop Screenshot | CMD |</p>
+<p>3 types of plugin actions can be found (as detailed by 0x04025DF):</p>
+<ul>
+<li><code>CMD</code>: send and receive command to the client (get OS information, execute
+   command in terminal, etc.)</li>
+<li><code>CRPT</code>: cryptographic operation</li>
+<li><code>COMP</code>: compression operation</li>
+</ul>
+<p>And here is where the header field <code>DataSize2</code> (at header+0x10) comes in handy:
+actions triggered by crypto or compression modules can produce an output whose
+length is different from the original <code>header.DataSize</code>. So the field
+<code>DataSize2</code> indicates the size of the output <strong>after</strong> the cryptographic or
+compression operation has been done. Although some crypto operations were used, the key (and IV when needed) could
+always be found in the message header.</p>
+<p>Chaining modules together allows to create some pretty complex
+output (for example <code>Base64( zlib_deflate( XTEA(data) ) )</code> ), that would be
+absolutely impossible to reverse correctly, solely with the static analysis of
+the PCAP file. So if we want to reconstruct the data, we must write a parser at some point to
+parse the data of the PCAP (the final version of the parser can be <a href="https://gist.github.com/hugsy/9b141827b66843ebbabc183731649f53#file-level12-py">found here</a>).</p>
+<h3>Reconstructing the screen capture</h3>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/18a58c8dbdd8b039dc0b8492474e2ae4c0180ecc2e88a26f2d5708059aee9d4b.png"></p>
+<p><code>m.dll</code> captures the desktop as a bitmap and send the raw data back to the C2
+(uses the same function as
+the
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd183402(v=vs.85).aspx">MSDN example</a>). But
+because it is a pure bitmap, there is no information of the dimensions of the
+image. In addition, the image is split in several packets, some of them are sent
+in plaintext, like this</p>
+<div class="highlight"><pre><span></span><code><span class="mf">00010</span><span class="n">A26</span><span class="w">  </span><span class="mf">32</span><span class="w"> </span><span class="mf">30</span><span class="w"> </span><span class="mf">31</span><span class="w"> </span><span class="mf">37</span><span class="w"> </span><span class="mf">49</span><span class="w"> </span><span class="n">d8</span><span class="w"> </span><span class="mf">69</span><span class="w"> </span><span class="mf">59</span><span class="w">  </span><span class="mf">24</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">4</span><span class="n">c</span><span class="w"> </span><span class="mf">40</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w">   </span><span class="mf">2017</span><span class="n">I</span><span class="mf">.</span><span class="n">iY</span><span class="w"> </span><span class="err">$</span><span class="mf">...</span><span class="n">L</span><span class="err">@</span><span class="mf">..</span>
+<span class="mf">00010</span><span class="n">A36</span><span class="w">  </span><span class="mf">4</span><span class="n">c</span><span class="w"> </span><span class="mf">40</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">51</span><span class="w"> </span><span class="mf">29</span><span class="w"> </span><span class="mf">8</span><span class="n">f</span><span class="w"> </span><span class="mf">74</span><span class="w">  </span><span class="mf">16</span><span class="w"> </span><span class="mf">67</span><span class="w"> </span><span class="n">d7</span><span class="w"> </span><span class="n">ed</span><span class="w"> </span><span class="mf">29</span><span class="w"> </span><span class="mf">41</span><span class="w"> </span><span class="mf">95</span><span class="w"> </span><span class="mf">01</span><span class="w">   </span><span class="n">L</span><span class="err">@</span><span class="mf">..</span><span class="n">Q</span><span class="p">)</span><span class="mf">.</span><span class="n">t</span><span class="w"> </span><span class="mf">.</span><span class="n">g</span><span class="mf">..</span><span class="p">)</span><span class="n">A</span><span class="mf">..</span>
+<span class="mf">00010</span><span class="n">A46</span><span class="w">  </span><span class="mf">06</span><span class="w"> </span><span class="n">f5</span><span class="w"> </span><span class="mf">05</span><span class="w"> </span><span class="mf">45</span><span class="w"> </span><span class="mf">1</span><span class="n">c</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w">  </span><span class="mf">30</span><span class="w"> </span><span class="mf">40</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">30</span><span class="w"> </span><span class="mf">40</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w">   </span><span class="mf">...</span><span class="n">E</span><span class="mf">....</span><span class="w"> </span><span class="mf">0</span><span class="err">@</span><span class="mf">..0</span><span class="err">@</span><span class="mf">..</span>
+<span class="mf">00010</span><span class="n">A56</span><span class="w">  </span><span class="n">f3</span><span class="w"> </span><span class="mf">71</span><span class="w"> </span><span class="mf">26</span><span class="w"> </span><span class="n">ad</span><span class="w"> </span><span class="mf">88</span><span class="w"> </span><span class="n">a5</span><span class="w"> </span><span class="mf">61</span><span class="w"> </span><span class="mf">7</span><span class="n">e</span><span class="w">  </span><span class="n">af</span><span class="w"> </span><span class="mf">06</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">0</span><span class="n">d</span><span class="w"> </span><span class="mf">42</span><span class="w"> </span><span class="mf">4</span><span class="n">c</span><span class="w"> </span><span class="mf">5</span><span class="n">a</span><span class="w"> </span><span class="mf">21</span><span class="w">   </span><span class="mf">.</span><span class="n">q</span><span class="err">&amp;</span><span class="mf">...</span><span class="n">a</span><span class="err">~</span><span class="w"> </span><span class="mf">....</span><span class="n">BLZ</span><span class="err">!</span>
+<span class="mf">00010</span><span class="n">A66</span><span class="w">  </span><span class="mf">17</span><span class="w"> </span><span class="mf">04</span><span class="w"> </span><span class="mf">17</span><span class="w"> </span><span class="mf">20</span><span class="w"> </span><span class="mf">03</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w">  </span><span class="mf">51</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w">   </span><span class="mf">...</span><span class="w"> </span><span class="mf">....</span><span class="w"> </span><span class="n">Q</span><span class="mf">.......</span>
+<span class="mf">00010</span><span class="n">A76</span><span class="w">  </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="n">a3</span><span class="w"> </span><span class="n">ae</span><span class="w"> </span><span class="n">cc</span><span class="w"> </span><span class="n">a1</span><span class="w">  </span><span class="n">cb</span><span class="w"> </span><span class="mf">4</span><span class="n">f</span><span class="w"> </span><span class="n">aa</span><span class="w"> </span><span class="mf">7</span><span class="n">a</span><span class="w"> </span><span class="mf">9</span><span class="n">a</span><span class="w"> </span><span class="mf">59</span><span class="w"> </span><span class="mf">4</span><span class="n">d</span><span class="w"> </span><span class="mf">13</span><span class="w">   </span><span class="mf">........</span><span class="w"> </span><span class="mf">.</span><span class="n">O</span><span class="mf">.</span><span class="n">z</span><span class="mf">.</span><span class="n">YM</span><span class="mf">.</span>
+<span class="mf">00010</span><span class="n">A86</span><span class="w">  </span><span class="mf">8</span><span class="n">a</span><span class="w"> </span><span class="mf">1</span><span class="n">b</span><span class="w"> </span><span class="n">fb</span><span class="w"> </span><span class="n">d5</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">01</span><span class="w"> </span><span class="mf">00</span><span class="w">  </span><span class="mf">38</span><span class="w"> </span><span class="n">d1</span><span class="w"> </span><span class="mf">0</span><span class="n">f</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">40</span><span class="w"> </span><span class="mf">00</span><span class="w"> </span><span class="mf">00</span><span class="w">   </span><span class="mf">........</span><span class="w"> </span><span class="mf">8....</span><span class="err">@</span><span class="mf">..</span>
+<span class="mf">00010</span><span class="n">A96</span><span class="w">  </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w">  </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w">   </span><span class="mf">........</span><span class="w"> </span><span class="mf">........</span>
+<span class="mf">00010</span><span class="n">AA6</span><span class="w">  </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w">  </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w">   </span><span class="mf">........</span><span class="w"> </span><span class="mf">........</span>
+<span class="mf">00010</span><span class="n">AB6</span><span class="w">  </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w">  </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w"> </span><span class="n">f7</span><span class="w">   </span><span class="mf">........</span><span class="w"> </span><span class="mf">........</span>
+<span class="err">[</span><span class="mf">...</span><span class="err">]</span>
+</code></pre></div>
+
+<p>Whereas others are compressed and/or encrypted by the different algorithms
+mentioned above. However, they are all sent sequentially. Once all the fragments
+extracted by the parser, they were merged into a raw file. Thanks to a good tip
+by <i class="fa fa-twitter"> alex_k_polyakov</i>, I used the
+website <a href="http://rawpixels.net">RawPixels.net</a>, and when setting a resolution of
+1420x720, the following capture showed up:</p>
+<p><img alt="image_alt6" src="/assets/images/flareon-2017/018ab4320dc95fa3b751227369cd27f7ee759579323d695c2453bcf9966179e0.png"></p>
+<p>After all those efforts, finally a good lead on the challenge to find.</p>
+<h3>More Loadable Modules !!</h3>
+<p>Continuing the replay of packets showed something very interesting:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/01c609d44427749a2caa64d7cb8ae54f41788be7313e2c94fd9cd8f65476cc9c.png"></p>
+<p><code>secondstage.exe</code> was sending commands to a child process <code>cmd.exe</code>, attempting
+to reach a host whose NetBIOS name is <code>larryjohnson-pc</code>, and if found, would run
+drop 2 files in <code>C:\staging</code>, <code>pse.exe</code> and <code>srv2.exe</code>. Finally it would execute
+the command:</p>
+<div class="highlight"><pre><span></span><code>pse.exe \\larryjohnson-pc -i -c -f -d -u larry.johnson -p n3v3rgunnag1veUup -accepteula srv2.exe
+</code></pre></div>
+
+<p><code>pse.exe</code> is nothing more
+than
+<a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec"><code>SysInternals PsExec</code></a>,
+so the command would push and execute <code>srv2.exe</code> as the user <code>larry.johnson</code>. If
+all went well, <code>secondstage.exe</code> then attempts to load a new Loadable Module,
+<code>p.dll</code>, whose magic is 77D6CE92347337AEB14510807EE9D7BE. This DLL will be used
+to proxy the packets from/to the C2 directly to <code>srv2.exe</code> via <code>secondstage.exe</code>. In
+addition, the C2 then sends a few new Loadable Modules to the running <code>srv2.exe</code>
+process:</p>
+<p>| Name | Magic  | Description  | Category |
+| b.dll | 2965E4A19B6E9D9473F5F54DFEF93533 | Blowfish implementation (CBC Mode) | CRPT |
+| e.dll | 8746E7B7B0C1B9CF3F11ECAE78A3A4BC | Block XOR | CRPT |
+| d.dll | 46C5525904F473ACE7BB8CB58B29968A | DES implementation (CBC Mode) | CRPT |
+| c.dll | 9B1F6EC7D9B42BF7758A094A2186986B | Camellia implementation (ECB Mode) | CRPT |
+| a.dll | 503B6412C75A7C7558D1C92683225449 | ApLib compression | COMP |
+| l.dll | 0A7874D2478A7713705E13DD9B31A6B1 | LZO compression | COMP |</p>
+<p><a href="#menu">Back to Menu</a></p>
+<h3>Smart parsing of the PCAP</h3>
+<p>It is altogether 15 Loadable Modules that are needed to be implemented for
+decompression or decryption. In some cases, the implementation of the algorithm
+was not standard (for example RC4), so I had to rewrite from scratch according
+to the reversed DLL solely. Particularly the ApLib module was a pain to use properly.</p>
+<p>But it was critical that our implementation strictly stick  to the one from the
+module. So a lot (a LOOOOOT) of testing was required all the time, as even a one
+byte mistake could make the content of a packet unreadable for the upper layer,
+leading to not be able to decrypt files later on...</p>
+<p>But after some long hours perfecting the decrypting script, <a href="https://gist.github.com/hugsy/9b141827b66843ebbabc183731649f53#file-level12-py">the result</a> pays off
+directly, and all traffic is now in plaintext, revealing some crispy information:</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/0d1da3b02573a0f2c451b9cf801355666639e4454e26ea138b1836bdd969b36e.png"></p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/54e0782509ce641e04edd2b4bb2fef3d80f31c6640451952464ff9d50b5cb851.png"></p>
+<p>2 new files can be found from the extract:</p>
+<ol>
+<li><code>cf.exe</code> a C# compiled file</li>
+<li>a 561972 byte file beginning with the pattern <code>cryp</code></li>
+</ol>
+<p><code>cf.exe</code> doesn't show much mystery: it takes 2 parameters, a path to file, and a
+base64 encoded key. And it will AES encrypt the file with the given key.</p>
+<p><img alt="image_alt" src="/assets/images/flareon-2017/0fbe4ce9c0d1295088fa6938b36081272c976a99ca80fef5f27ec3c89ea0cafb.png"></p>
+<p>As seen in the capture above, we were capable of decrypting the packet that
+holds the command used for encrypting the file.</p>
+<div class="highlight"><pre><span></span><code>c:\staging\cf.exe lab10.zip tCqlc2+fFiLcuq1ee1eAPOMjxcdijh8z0jrakMA/jxg=
+</code></pre></div>
+
+<p>So we can build a decryptor in few lines of Python</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">base64</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">hashlib</span><span class="o">,</span> <span class="nn">struct</span>
+<span class="kn">from</span> <span class="nn">Crypto</span> <span class="kn">import</span> <span class="n">Random</span>
+<span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+
+<span class="n">BLOCK_SIZE</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="k">def</span> <span class="nf">p32</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;I&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">u32</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;I&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">encrypted</span><span class="p">,</span> <span class="n">passphrase</span><span class="p">,</span> <span class="n">iv</span><span class="p">):</span>
+    <span class="n">aes</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">passphrase</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">aes</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">encrypted</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[+] data_size = 0x</span><span class="si">%x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s2">&quot;tCqlc2+fFiLcuq1ee1eAPOMjxcdijh8z0jrakMA/jxg=&quot;</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;cryp&quot;</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">4</span>
+    <span class="n">iv</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mh">0x10</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[+] iv: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">iv</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">))</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mh">0x10</span>
+    <span class="n">sha</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mh">0x20</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[+] sha: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sha</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">))</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mh">0x20</span>
+    <span class="n">enc</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span>
+    <span class="n">dec</span> <span class="o">=</span> <span class="n">decrypt</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span>
+    <span class="n">sz</span> <span class="o">=</span> <span class="n">u32</span><span class="p">(</span><span class="n">dec</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">dec</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">4</span><span class="o">+</span><span class="n">sz</span><span class="p">]</span>
+    <span class="n">filesize</span> <span class="o">=</span> <span class="n">u32</span><span class="p">(</span><span class="n">dec</span><span class="p">[</span><span class="mi">4</span><span class="o">+</span><span class="n">sz</span><span class="p">:</span><span class="mi">4</span><span class="o">+</span><span class="n">sz</span><span class="o">+</span><span class="mi">4</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[+] filepath &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[+] filesize 0x</span><span class="si">%x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filesize</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">4</span><span class="o">+</span><span class="n">sz</span><span class="o">+</span><span class="mi">8</span>
+    <span class="n">decrypted_file_content</span> <span class="o">=</span> <span class="n">dec</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">filesize</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[+] len(decrypted) 0x</span><span class="si">%x</span><span class="s2">, writing &#39;lab10.zip&#39;...&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">decrypted_file_content</span><span class="p">))</span>
+    <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;lab10.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">decrypted_file_content</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>uf.py<span class="w"> </span>crypfile
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span><span class="nv">data_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>0x89334
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>iv:<span class="w"> </span>fec85f816b82806996fc991b5731d2e1
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>sha:<span class="w"> </span>797c33964e0ed15a727d4175c2bff5a637da6587229cce9bd12d6a13cf8596db
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>filepath<span class="w"> </span><span class="s1">&#39;c:\work\flareon2017\package\lab10.zip&#39;</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>filesize<span class="w"> </span>0x892c6
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>len<span class="o">(</span>decrypted<span class="o">)</span><span class="w"> </span>0x892c6,<span class="w"> </span>,<span class="w"> </span>writing<span class="w"> </span><span class="s1">&#39;lab10.zip&#39;</span>...
+</code></pre></div>
+
+<p>We've got the real challenge!
+And to conclude, unzip <code>lab10.zip</code> with the password from the screenshot:
+<code>infectedinfectedinfectedinfectedinfected919</code>. This will drop a file in
+<code>GoChallenge/build/challenge10</code>, which is a Go challenge in ELF. But when we
+execute it, we see a well deserve reward:</p>
+<div class="highlight"><pre><span></span><code>root@kali2:/ctf/flareon_2017/12<span class="w"> </span><span class="c1"># ./GoChallenge/build/challenge10</span>
+hello<span class="w"> </span>world
+The<span class="w"> </span>answer<span class="w"> </span>is:<span class="w"> </span><span class="s1">&#39;n3v3r_gunna_l3t_you_down_1987_4_ever@flare-on.com&#39;</span>
+</code></pre></div>
+
+<h1>Conclusion</h1>
+<p>Thank you to FireEye for those fun challenges... and congratulations to all the
+winners (especially those who managed to finish in under a week, massive
+props)!! I hope those writeups don't make those challenges look trivial, they
+weren't (only ~130 over more
+than <a href="https://twitter.com/mikesiko/status/904388540267610112">a thousand participants</a>
+completed the 12 challenges). IMHO, some challenges (like the end of challenge 4
+or 10) involved too much guessing, which can be very (VERY) frustrating.</p>
+<p>But all in all, it was a fun experience... And thank you for whomever prepared
+challenge 12, it was <strong>huge</strong> in all the possible meanings, and it must
+certainly have required a serious patience to build!</p>
+<p>And final thanks to <i class="fa fa-twitter"> alex_k_polyakov</i>,
+<i class="fa fa-twitter"> n4x0r31</i> and <a class="fa fa-twitter" href="https://twitter.com/aymansagy" target="_blank"> @aymansagy</a>.</p>
+<p>See you next year for Flare-On 5!</p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=FlareOn 4 WriteUps&amp;url=https://blahcat.github.io/posts/2017/10/13/flareon-4-writeups.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2017/10/13/flareon-4-writeups.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2017/10/13/flareon-4-writeups.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/reverse">reverse</a><a href="https://blahcat.github.io/tag/flareon">flareon</a><a href="https://blahcat.github.io/tag/windows">windows</a><a href="https://blahcat.github.io/tag/pe">pe</a><a href="https://blahcat.github.io/tag/linux">linux</a><a href="https://blahcat.github.io/tag/elf">elf</a><a href="https://blahcat.github.io/tag/arduino">arduino</a><a href="https://blahcat.github.io/tag/avr">avr</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/ctf">ctf</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=FlareOn 4 WriteUps">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">Building a Debian Stretch QEMU image for AARCH64</h2>
+                            <p class="post-nav-excerpt">Introduction After releasing my QEMU images and then publishing a post on how to build...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Arbitrary Write primitive in Windows kernel (HEVD)</h2>
+                            <p class="post-nav-excerpt">Back again to modern Windows kernel exploitation! After understanding how to build...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>
