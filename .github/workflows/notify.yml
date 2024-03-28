@@ -11,14 +11,17 @@ on:
     types:
       - completed
 
+env:
+  BLOG_POST_TWITTER_NOTIFICATION_BODY:
+
 jobs:
   twitter_notify:
     name: Send notification on Twitter
     runs-on: ubuntu-latest
     if: contains( join(github.event.commits.*.message), 'New blog post')
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
           architecture: 'x64'
@@ -27,12 +30,12 @@ jobs:
         run: |
           python -m pip install -r scripts/requirements.txt
           python scripts/get_release_info.py
-      - uses: ethomson/send-tweet-action@v1
+      - uses: nearform-actions/github-action-notify-twitter@v1.2.0
         with:
-          consumer-key: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
-          consumer-secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET }}
-          access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
-          access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
-          status: ${{ env.BLOG_POST_TWITTER_NOTIFICATION_BODY}}
+          twitter-app-key: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
+          twitter-app-secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET }}
+          twitter-access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          twitter-access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+          message: ${{ env.BLOG_POST_TWITTER_NOTIFICATION_BODY}}
 
   # TODO: discord notify

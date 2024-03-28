@@ -7,7 +7,7 @@ category: talk
 
 ### Ruxmon August 2016: Making GDB great again ###
 
-I did a small presentation last Friday at [Ruxmon Melbourne](http://ruxmon.com/melbourne) about GDB, its Python API and how it can be used to make awesome new stuff.
+I did a small presentation last Friday at [Ruxmon Melbourne](https://web.archive.org/web/20231209215029/http://ruxmon.com/melbourne/) about GDB, its Python API and how it can be used to make awesome new stuff.
 
 I also gave demos of my tool [`gef`](https://github.com/hugsy/gef.git), an architecture-agnostic exploitation helper for GDB to show the awesomeness of [Python API](https://sourceware.org/gdb/onlinedocs/gdb/Python-API.html) for GDB.
 

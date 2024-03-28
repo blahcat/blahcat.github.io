@@ -22,7 +22,7 @@ isn't an option. So my setup is:
   - Debian testing x64 as host
   - [VirtualBox](https://www.virtualbox.org) as hypervisor
   - A
-  [Windows 7 x64 VM](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/) acting
+  [Windows 7 x64 VM](https://web.archive.org/web/20170306074002/https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/) acting
   as debugger.
   - And 2 debuggees:
     1. Windows 7 x86 VM (using UART as debugging medium)
