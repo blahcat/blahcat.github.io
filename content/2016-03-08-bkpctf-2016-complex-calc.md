@@ -59,7 +59,7 @@ deallocated:
       pointers of the list are updated using the `unlink` macro.
    1. If the size is higher than `MMAP_THRESHOLD`, then the chunk was not
       allocated via the `brk`/`sbrk` syscall, but mapped in memory via the
-      syscall `mmap`. If this heap chunk is mmaped, then its size will be a
+      syscall `mmap`. If this heap chunk is `mmap`-ed, then its size will be a
       multiple of 2 (i.e. size & 2 = 2).
 
 This actually shows quite well in the flow graph:
@@ -103,7 +103,7 @@ the following mapping:
 ```bash
 .bss:00000000006C4A88 add_result      dd ?                    ; <-- previous chunk size
 .bss:00000000006C4A8C                 align 10h
-.bss:00000000006C4A90 div_operator_1  dd ?                    ; <-- chunk size (need to | 2 for flag IS_MMAPED)
+.bss:00000000006C4A90 div_operator_1  dd ?                    ; <-- chunk size (need to | 2 for flag IS_`mmap`-ed)
 .bss:00000000006C4A94 div_operator_2  dd ?                    ; <--
 .bss:00000000006C4A98 div_result      dd ?                    ; <-- free will point @this chunk
 .bss:00000000006C4A9C                 align 10h

@@ -50,7 +50,7 @@ My exploit was in 4 parts:
         int fd = open("/sbin/ping", O_RDONLY);
         caddr_t addr = mmap(NULL, LEN, PROT_READ, MAP_SHARED, fd, 0);
 
-2. `fork` to passe to be the mmaped address to a process I can attach to using `ptrace()`
+2. `fork` to passe to be the `mmap`-ed address to a process I can attach to using `ptrace()`
 
 3. in the parent process, I attach to the child process and then prepare a basic payload to substitute the original code with
 
@@ -100,7 +100,7 @@ Done! Simply execute the target binary to get a root shell.
 ```
 
 By nature, this exploit is very stable and I was able to report that I had `root` access to my customer :)
-I was undeniably lucky to find exactly the privesc I need just exactly when I needed it (kudos to Konstantin Belousov & Alan Cox for the finding), but it also taught me that there can be a huge difference of postponing applying patches, even if for one day...
+I was undeniably lucky to find exactly the privilege escalation I need just exactly when I needed it (kudos to Konstantin Belousov & Alan Cox for the finding), but it also taught me that there can be a huge difference of postponing applying patches, even if for one day...
 
 Cheers mates!
 

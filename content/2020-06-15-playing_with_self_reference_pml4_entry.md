@@ -70,7 +70,7 @@ There's more to say about the Segmentation, but for our purpose (reminder: _how 
 
 ### Paging
 
-Preparing this post, I came across [this blogpost](https://connormcgarr.github.io/paging/){:target="_blank"} that [@33y0re](https://twitter.com/33y0re){:target="_blank"} wrote recently, and where he did a really good job summarizing how paging works on x86-64 long-mode, and how to explore it on Windows. Therefore I will send you reader to his article, and assume from then on you know of PML4, PDPT, PD, PT and what a canonical linear address is.
+Preparing this post, I came across [this blog post](https://connormcgarr.github.io/paging/){:target="_blank"} that [@33y0re](https://twitter.com/33y0re){:target="_blank"} wrote recently, and where he did a really good job summarizing how paging works on x86-64 long-mode, and how to explore it on Windows. Therefore I will send you reader to his article, and assume from then on you know of PML4, PDPT, PD, PT and what a canonical linear address is.
 
 The best summary can be given by this diagram (again from AMD's manual)
 
@@ -267,7 +267,7 @@ Across several reboots in my VM labs, only 2 matches are shown consistently
 
 
 |      Platform       | PML4 Base |
-|:---:|:---:|
+| :-----------------: | :-------: |
 |    Native (UEFI)    | 0x1ba000  |
 | Hyper-V Gen1 (BIOS) | 0x1aa000  |
 | Hyper-V Gen2 (UEFI) | 0x6d4000  |

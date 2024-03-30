@@ -28,7 +28,7 @@ isn't an option. So my setup is:
     1. Windows 7 x86 VM (using UART as debugging medium)
     2. Windows 8.1 x64 VM (using Network as debugging medium)
 
-As a comodity, I've created a
+As a commodity, I've created a
 [`Vagrantfile`](https://github.com/hugsy/modern.ie-vagrant) to simplify the VM
 creation process using [`Vagrant`](https://vagrantup.com). You can create a new
 Windows VM like this
@@ -107,11 +107,11 @@ C:\> bcdedit /debug {UUID-RETURNED-BY-FORMER-COMMAND} on
 ![image_alt](/assets/images/win-kernel-debug/win7-bcdedit-enable-debug.png)
 
 Now instruct Windows serial communication as debugging medium, and use the
-"fastest" baudrate (i.e 115200 symbols/sec). Since we'll only use serial
+"fastest" baud rate (i.e 115200 symbols/sec). Since we'll only use serial
 debugging for this VM, we can use the `bcdedit /dbgsettings` global switch.
 
 ```
-C:\> bcdedit /dbgsettings serial debugport:1 baudrate:115200
+C:\> bcdedit /dbgsettings serial debugport:1 baud rate:115200
 ```
 
 *Note*: if we wanted to set debug settings specific to one entry of the boot

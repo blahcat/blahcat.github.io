@@ -39,7 +39,7 @@ PROCESS ffffe000baa6c040
    Image: System
 ```
 
-This leaks the address of the `_EPROCESS` structure in the kernel, of the proces
+This leaks the address of the `_EPROCESS` structure in the kernel, of the process
 named `System`. Using `dt` will provide a lot more info (here, massively
 truncated to what interests us):
 

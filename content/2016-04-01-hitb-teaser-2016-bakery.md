@@ -100,7 +100,7 @@ inside the `mmap` buffer, which will then be jumped into and executed.
 ### Exploitation ###
 
 Getting the initial random integer can be done by reading from the socket until
-reahcing the string `0v3n w4rm3d up to` and divide this value by 0x1337.
+receiving the string `0v3n w4rm3d up to` and divide this value by 0x1337.
 ```python
     # get the init rand()
     parts = s.read_until("\n").split()
@@ -110,7 +110,7 @@ reahcing the string `0v3n w4rm3d up to` and divide this value by 0x1337.
     ok("Got rand=%d" % rand)
 ```
 
-To reliably control the content of the mmaped buffer, we need to "compensate"
+To reliably control the content of the `mmap`-ed buffer, we need to "compensate"
 the accumulation that the function is doing. Since we know the initial random
 integer, my approach was to use one of the valid ingredients (in this case
 `FLOUR`) which is required to pass the `strstr()` check, sum up the ascii values

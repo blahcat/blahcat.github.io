@@ -2,7 +2,7 @@ date: 2017-08-01 00:00:00
 modified: 2017-08-01 00:00:00
 title: GEF at Black Hat Arsenal US 2017
 author: hugsy
-tags: gef,blackhat,bharsenal
+tags: gef,blackhat,arsenal
 cover: assets/images/gef-bh-usa-bg.png
 category: talk
 

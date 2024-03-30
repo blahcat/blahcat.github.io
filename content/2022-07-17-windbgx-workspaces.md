@@ -35,7 +35,7 @@ Unfortunately the DTD is not documented [and probably will never be](https://twi
 
 Some examples:
 
-### Launch `notepad` process and auto-execute commands 
+### Launch `notepad` process and auto-execute commands
 
 Also put a dummy breakpoint at 0x4242424242424242. Also forge a fake history, useful for avoiding copy/paste of commands between session!
 
@@ -54,7 +54,7 @@ Also put a dummy breakpoint at 0x4242424242424242. Also forge a fake history, us
     <Option name="ExecuteCommand">
       <Property name="Command" value="bu 4242424242424242" />
     </Option>
-    <Option name="RestoreCommandHistory">
+    <Option name="RestorecommendHistory">
       <Property name="History">
         <Property value="dx @$curprocess.Environment.EnvironmentBlock.ProcessParameters" />
       </Property>

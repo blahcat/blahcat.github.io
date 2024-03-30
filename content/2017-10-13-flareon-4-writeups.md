@@ -236,8 +236,8 @@ gets interesting.
 
 `notepad` maps the file in memory, checks if it started with `MZ`, gets the
 value at offset 0x3c, then jump to
-the offset and checks if the mmaped memory at this offset is equal to `PE`. It
-looks like it is searching for one or more valid PE executables in the
+the offset and checks if the `mmap`-ed memory at this offset is equal to `PE`. It
+looks like it is searching for one or more valid PE executable files in the
 `flareon2016challenge` folder. It does a few extra checks (is it Intel machine
 in PE header, etc.) and if everything passes, calls 0x010146C0.
 
@@ -360,7 +360,7 @@ read from the function `enter_coor()` (at 0x40377d).
 So if we want to win, we need to
 
   1. disable the randomness of the game board
-  1. determine which values are being compared when we set coordonates
+  1. determine which values are being compared when we set coordinates
 
 To disable the randomness, I simply used `LD_PRELOAD` variable against a
 homemade shared library that will override calls to `rand()` and `rand()` to a
@@ -420,7 +420,7 @@ a Python function to convert this value into a list of position on the board:
 >>>
 ```
 
-We get 2 things: one, we have all the positions for the ennemi boats; two, the
+We get 2 things: one, we have all the positions for the enemy boats; two, the
 disposition of the boats on the board forms an ASCII letter (here 'F').
 
 By advancing through all the levels, we can collect more letters:
@@ -706,7 +706,7 @@ Getting the first part of the directions is relatively simple. `zsud.exe` starts
 a webservice
 on
 [127.0.0.1/9999](https://gist.github.com/hugsy/750558c5ed49c291e50dc460821e8e09#file-decoded-ps1-L814)
-so it is possible to bruteforce the first directions by generating HTTP requests
+so it is possible to brute-force the first directions by generating HTTP requests
 and analysing the output:
 
 ```python
@@ -791,7 +791,7 @@ directions ='wnneesssnewneewwwdundundunsuneunsewdunsewsewsewsewdun'
 prefix = 'You can start to make out some words but you need to follow the RIGHT_PATH!@66696e646b6576696e6d616e6469610d0a'
 ```
 
-But still no flag. The hex-encoded block right nexto `RIGHT_PATH` says to:
+But still no flag. The hex-encoded block right next to `RIGHT_PATH` says to:
 
 ```python
 >>> "66696e646b6576696e6d616e6469610d0a".decode('hex')
@@ -910,7 +910,7 @@ So let's break on that with jdb:
 
 The variable `intr` holds our answer: `A rich man is nothing but a poor man with
 money.` Once decoded, we see that `Stapler.poserw()` is nothing more than a SHA1
-checksuming function.
+checksum function.
 
 So the answer is
 
@@ -968,7 +968,7 @@ jibberish that looks like HEX. We transcribed it, can you solve it?
 The challenge is in a text file
 named [`remorse.ino.hex`](https://mega.nz/#!NFQwXKYQ!OhtgRSr6U4yRBMnflhIwGgMZJXYaEeMnJG-1m0bWFJ4). This format
 (Intel HEX)
-is frequently used for sharing encoded firmwares, and so the `python-intelhex`
+is frequently used for sharing encoded firmware, and so the `python-intelhex`
 module provides a useful script to convert it back to binary
 (`hex2bin.py`). From the string inside the firmware, we learn that this firmware
 is meant to be
@@ -993,7 +993,7 @@ like `picocom` or `minicom` to debug it).
 ![image_alt](/assets/images/flareon-2017/cd4cd292a48fa1fc086b50e5617459edec3e9d40513de244bf57428f0c372348.png)
 
 The firmware seems to be expecting a new PIN configuration: luckily I came
-accross this information in the datasheet ("35. Register Summary").
+across this information in the datasheet ("35. Register Summary").
 
 ![image_alt](/assets/images/flareon-2017/33d2e78e17819a705d01a9c9c0412090361e7ad02beb4692106996ac8e832f7b.png)
 
@@ -1014,7 +1014,7 @@ Flare-On 2017 Adruino UNO Digital Pin state:0
 ```
 
 Since the possible values are limited to 1 byte (8bit), and being lazy I wrote a
-GDB script to bruteforce all the values
+GDB script to brute-force all the values
 ```
 set $_i = 0
 define inc_pind
@@ -1112,7 +1112,7 @@ for each byte of the key.
 
 So if `$param = md5($param) . substr(MD5(strrev($param)), 0, strlen($param));`
 and `strlen($param) == 64`, it means that our key `o_o` is 32 byte long, which
-way too huge to bruteforce. Consequently we must unxor the block by another way,
+way too huge to brute-force. Consequently we must unxor the block by another way,
 without knowing the key.
 
 
@@ -1120,7 +1120,7 @@ without knowing the key.
 
 The Step1 allowed us to get the key length along with a list of potential
 candidates for each position ([0, 63]).
-This 2nd step directly extends the earlier one by trying to bruteforce chunk by
+This 2nd step directly extends the earlier one by trying to brute-force chunk by
 chunk.
 
 This will be the main idea:
@@ -1191,7 +1191,7 @@ for j in range(3):
 Just like step1 this approach gives us 2 possible length for the flag prefix
 (i.e. before `@flare-on.com`): 8 or 9 bytes.
 
-So there again, semi-manual bruteforce:
+So there again, semi-manual brute-force:
 
 ```
 i = 9
@@ -1218,7 +1218,7 @@ AAAAAAAA5froc ['=titl', 'bed C', 'e</ti', ',- Ma', "11' H", '\x0c\n<bo', 'uext='
 ```
 
 Only code with key=AAAAAAAA4froc makes most sense so it *must* be it. So we'll
-assume this is how the key ends, and bruteforce the byte before, and so on, and
+assume this is how the key ends, and brute-force the byte before, and so on, and
 so forth. Reiterating this for all bytes, we get the first subkey to be
 `k0='t_rsaat_4froc'`.
 
@@ -1311,7 +1311,7 @@ Now that we know that, all I need was to use the C script to "set a breakpoint"
 at 0xde9 and see what value was expected.
 ![image_alt](/assets/images/flareon-2017/dc8897ca8ce6dc0a124da94b1e7e7ddf7fc442b137930a003c31875b547c3ec9.png)
 
-Knowing this, creating the bruteforce script
+Knowing this, creating the brute-force script
 ([cov.py](https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c#file-cov-py))
 was the next immediate step:
 
@@ -1353,7 +1353,7 @@ the domain name doesn't point to the localhost
 
 ![image_alt](/assets/images/flareon-2017/c1de5ea5895e4bb38d54167604de4dff8c75dd14d757d40b1d1992419d085232.png)
 
-The behavior seems consistant with the first TCP stream of the PCAP. However,
+The behavior seems consistent with the first TCP stream of the PCAP. However,
 the data received seems encoded/encrypted:
 
 ```
@@ -1487,7 +1487,7 @@ Writing 17000 bytes..............................................
 
 8 modules were found. Each of them can be convert back to a valid PE format by
 replacing "LM\x00\x00" with "MZ\x00\x00", and "NOP\x00" with
-"PE\x00\x00". Finally the entrypoint must be xored with the value 0xABCDABCD.
+"PE\x00\x00". Finally the entry point must be xored with the value 0xABCDABCD.
 
 ![image_alt](/assets/images/flareon-2017/bbcda00a98ff78d846bfa7a6e2b0e846cdcd50a8cc7cd8b4b4a8b79f4a1b49db.png)
 
@@ -1567,7 +1567,7 @@ the
 [MSDN example](https://msdn.microsoft.com/en-us/library/windows/desktop/dd183402(v=vs.85).aspx)). But
 because it is a pure bitmap, there is no information of the dimensions of the
 image. In addition, the image is split in several packets, some of them are sent
-in plaintext, like this
+in plain text, like this
 
 ```
 00010A26  32 30 31 37 49 d8 69 59  24 00 00 00 4c 40 00 00   2017I.iY $...L@..
@@ -1638,12 +1638,12 @@ was not standard (for example RC4), so I had to rewrite from scratch according
 to the reversed DLL solely. Particularly the ApLib module was a pain to use properly.
 
 But it was critical that our implementation strictly stick  to the one from the
-module. So a lot (a LOOOOOT) of testing was required all the time, as even a one
+module. So a lot (really a lot) of testing was required all the time, as even a one
 byte mistake could make the content of a packet unreadable for the upper layer,
 leading to not be able to decrypt files later on...
 
 But after some long hours perfecting the decrypting script, [the result](https://gist.github.com/hugsy/9b141827b66843ebbabc183731649f53#file-level12-py) pays off
-directly, and all traffic is now in plaintext, revealing some crispy information:
+directly, and all traffic is now in plain text, revealing some crispy information:
 
 ![image_alt](/assets/images/flareon-2017/0d1da3b02573a0f2c451b9cf801355666639e4454e26ea138b1836bdd969b36e.png)
 

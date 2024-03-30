@@ -3,7 +3,7 @@ modified: 2017-01-26 00:00:00
 title: Insomni'hack CTF 2017: bender_safer
 author: hugsy
 category: ctf
-tags: pwn,linux,insomnihack,mips,stack-overflow,rop,shellcode,keystone
+tags: pwn,linux,insomni-hack,mips,stack-overflow,rop,shellcode,keystone
 
 [Insomni'hack CTF 2017](https://web.archive.org/web/20170102081524/https://teaser.insomnihack.ch/) offered a series of 3
 challenges (i.e. 3 different flags) on the same binary, called `bender_safe`:
@@ -336,7 +336,7 @@ will leave this to the reader's curiosity  ☺
 
 I will just conclude this post by thanking
 the [Insomni'hack](https://insomnihack.ch) team for putting up together such fun
-and original challenges. And also, huge congratz to the few teams who scored this
+and original challenges. And also, huge congratulations 🥂 to the few teams who scored this
 challenge during the CTF.
 
 Hope you enjoyed this article, and see you next time for more challenges...

@@ -108,7 +108,7 @@ And looking up a specific Value can be summarized as such:
 ![img](https://i.imgur.com/VpAuNWf.png){:width="750px"}
 [Source](#link_1)
 
-As we see from the symbols, Value and SubKey lists are not designated by direct pointers in memory, but instead by indexes. Those indexes point to Cells, which contains either the data itself or the next key node to parse to reach the data. We've kept mentionning `Cells` without covering it, it now becomes important to do so, know how Cells are, how they work and how they can be accessed.
+As we see from the symbols, Value and SubKey lists are not designated by direct pointers in memory, but instead by indexes. Those indexes point to Cells, which contains either the data itself or the next key node to parse to reach the data. We've kept mentioning `Cells` without covering it, it now becomes important to do so, know how Cells are, how they work and how they can be accessed.
 
 
 ### Cells
@@ -346,7 +346,7 @@ Example:
     Name             : HARDWARE
 ```
 
-Or the clicky-friendly version 😀
+Or the click-friendly version 😀
 
 ![registryexplorer](/assets/images/0a76e279-63a2-4643-8f1f-bd3c877323d8.png){:width="750px"}
 
@@ -492,7 +492,7 @@ And done, we've got the data! We can now totally navigate the Registry from a KD
 
 ## Outro
 
-Understanding those bits of the CM took more work than I imagined, but as it was nicely engineered, it was fun to go through. The CM is way more complex than that, but this is the basics: we didn't cover more advanced stuff like the use of the `.LOG` file, the memory management of the CM and other funkyness, but I hope this article was interesting and useful to you and thanks for making it this far.
+Understanding those bits of the CM took more work than I imagined, but as it was nicely engineered, it was fun to go through. The CM is way more complex than that, but this is the basics: we didn't cover more advanced stuff like the use of the `.LOG` file, the memory management of the CM and other funkiness, but I hope this article was interesting and useful to you and thanks for making it this far.
 
 Peace out ✌
 

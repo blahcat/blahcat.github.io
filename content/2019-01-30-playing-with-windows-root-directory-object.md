@@ -33,7 +33,7 @@ NTSTATUS NtQueryDirectoryObject(
 [source](https://github.com/hfiref0x/WinObjEx64/blob/6f6d4480d724e3430b49ff15da1b01c12793c499/Source/WinObjEx64/ntos/ntos.h#L8583-L8598){:target="_blank"}
 
 
-Those tools are excellent, I use them big time but I was curious if it was possible to extend the data model to expose object tree in a similar fashion. Because the problem in KM (as we can see in Ivan's post) is that the structures hold a lot of pointers, `LIST_ENTRY`s and other goodies that must be dereferenced manually which turns out to be a tidious task. Also that approach prevents from easily querying the directory object.
+Those tools are excellent, I use them big time but I was curious if it was possible to extend the data model to expose object tree in a similar fashion. Because the problem in KM (as we can see in Ivan's post) is that the structures hold a lot of pointers, `LIST_ENTRY`s and other goodies that must be dereferenced manually which turns out to be a tedious task. Also that approach prevents from easily querying the directory object.
 
 But hold your breath, here comes the Debugger Data Model...
 
@@ -45,7 +45,7 @@ With the [help of Alex Ionescu pointing out my shortcomings](https://github.com/
 ![image_alt](/assets/images/{D1BF677A-5CFD-4C16-8ABA-1492397D7E17}.jpg)
 
 
-Not only it's all clickety friendly when I'm feeling it's too complicated to type on a keyboard, but the absolute awesome thing is the total integration with LINQ, so you can actually search those objects programmatically (which is impossible with `WinObj` for instance). Say you want to enumerate the `nt!_OBJECT_TYPE` keys of all the `ObjectTypes` on your version of Windows, well...
+Not only it's all click-friendly when I'm feeling it's too complicated to type on a keyboard, but the absolute awesome thing is the total integration with LINQ, so you can actually search those objects programmatically (which is impossible with `WinObj` for instance). Say you want to enumerate the `nt!_OBJECT_TYPE` keys of all the `ObjectTypes` on your version of Windows, well...
 
 ```text
 lkd> dx -g -r1 @$cursession.Objects.Children.Where( obj => obj.Name == "ObjectTypes" ).First().Children.Select(o => new { Name = o.RawObjectHeader.Name, Key = (char*)&o.RawObjectHeader.Key})

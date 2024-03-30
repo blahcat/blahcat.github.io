@@ -228,7 +228,7 @@ Now we've got the `ImageBase` component.
 
 This step is actually much easier. All we need to do is to :
 
-  1. load the kernel image `ntoskrnl.exe` and store its base adress
+  1. load the kernel image `ntoskrnl.exe` and store its base address
   1. retrieve the address of `HalDispatchTable`
   1. subtract the two pointers found above
 

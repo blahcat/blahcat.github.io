@@ -16,7 +16,7 @@ I used to use memory dump mostly as a final way to access the crashing condition
 Following the well-known Feynman principle that ["what you cannot create, you do not understand"](https://simple.wikiquote.org/wiki/Richard_Feynman#cite_note-2), I wanted to see where digging into this topic will lead me. And boy wasn't I disappointed... But first and before all, I wanted whatever my work to be Python because:
 
   - it is the de-facto language for quick prototyping, comes with an awesome REPL and has a great ecosystem via PyPI
-  - has a great capbility to interact with lower level machine code
+  - has a great capability to interact with lower level machine code
   - I know and like the language
 
 So immediately, I was stopped: originally `bochscpu` was written in Rust, `kdmp-parser` and `udmp-parser` in C++ and only `kdmp-parser` had an embryo of Python bindings (many API/structures missing, no PyPI). Perfect, so I set myself to completely dive into those libs by
@@ -48,7 +48,7 @@ This part is important as none of what follows would have been possible without 
 
 It is well-known that the [Bochs emulator](https://github.com/bochs-emu/Bochs) has incredibly powerful instrumentation capabilities and is regarded as being very faithful to the x86 ABI implementation itself (including the most recent extensions). [`BochsCPU`](https://github.com/yrp604/BochsCPU) by [yrp](https://twitter.com/yrp604), on the other hand, is a Rust library that wraps the Bochs CPU code and exposes via Rust API (and C++ via FFI) all the instrumentation points (context switches, interrupts, exceptions, etc) that Bochs does. This makes it a useful tool for tasks such as developing [code any X86 mode](https://github.com/hugsy/bochscpu-python/blob/main/examples/real_mode_print_hello_world.py), dealing with very old, mission-critical software, and assisting in reversing/vulnerability research tasks.
 
-And that's an amazing environment since Bochs is extremely faithful to what the x86 cpu actually executes, it will be merciless should you fail to prepare the CPU state adequately (missing flags when setting long mode, forgot to reset a trap flag, etc.). Even though that could seem tidious, especially if compared to `unicorn/qemu` for instance, that abstracts everything beforehand to the dev. But I believe such behavior by forcing to read carefully the Intel manuals to have the expected behavior, it only makes you know X86 CPU better.
+And that's an amazing environment since Bochs is extremely faithful to what the x86 cpu actually executes, it will be merciless should you fail to prepare the CPU state adequately (missing flags when setting long mode, forgot to reset a trap flag, etc.). Even though that could seem tedious, especially if compared to `unicorn/qemu` for instance, that abstracts everything beforehand to the dev. But I believe such behavior by forcing to read carefully the Intel manuals to have the expected behavior, it only makes you know X86 CPU better.
 
 ### `udmp-parser[3]`/`kdmp-parser[4]`
 
@@ -131,7 +131,7 @@ state.rdx = int(regs["rdx"], 16)
 sess.cpu.state = state
 ```
 
-Last (but technically optionally), define the Bochs callbacks on the plaetora of hookable events:
+Last (but technically optionally), define the Bochs callbacks on the plethora of hookable events:
 
 ```python
 def before_execution_cb(sess: bochscpu.Session, cpu_id: int, _: int):
@@ -345,7 +345,7 @@ Similarly the source of this script too was added to the `examples/` folder of `
 ## BochsPwn (Re-)Reloaded?
 
 [BochsPwn](https://github.com/googleprojectzero/bochspwn) (and [BochsPwn-Reloaded](https://github.com/googleprojectzero/bochspwn-reloaded)) is a project developed by [j00ru](https://twitter.com/j00ru) which leveraged Bochs instrumentation capability to detect (among other things) TOCTOU race conditions in the Windows kernel.
-The brilliance behind that tool can (partially) become relevant again for kernel memory dumps, by simply tracking executions and memory accesses. This can be achieved crudly by extending the kernel dump runner we had earlier, and adding a callback for linear memory accesses in `bochscpu` as such:
+The brilliance behind that tool can (partially) become relevant again for kernel memory dumps, by simply tracking executions and memory accesses. This can be achieved crudely by extending the kernel dump runner we had earlier, and adding a callback for linear memory accesses in `bochscpu` as such:
 
 ```python
 @dataclass
@@ -438,12 +438,12 @@ This article was made an attempt to structure all my notes over the last few mon
 
 Anyway, as always open for feedback on the discussion feed.
 
-Until then see next time, 
+Until then see next time,
 Cheers 🍻
 
 ## References
 
-Here are the links to those giants refered in the title:
+Here are the links to those giants referred in the title:
 
 1. [https://github.com/bochs-emu/Bochs](https://github.com/bochs-emu/Bochs)
 1. [https://github.com/yrp604/bochscpu](https://github.com/yrp604/bochscpu)

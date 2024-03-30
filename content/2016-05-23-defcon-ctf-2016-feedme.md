@@ -98,7 +98,7 @@ Before continuing, I would recommend reading the paper & slides related to the
 
 Since the child process is being forked, we know that the parent and child are
 identical in every way, including the memory mapping and the canary token. So
-the idea for this exploitation is to bruteforce one-by-one all the bytes from the
+the idea for this exploitation is to brute-force one-by-one all the bytes from the
 canary variable in stack, with the following binary logic: overwrite one byte of
 the canary with a value, `X`. If we have a crash, it will mean that the canary is
 corrupted, and therefore `X` is not valid. If it does not crash, then `X` is
@@ -158,7 +158,7 @@ def leak_canary(s):
 ```
 
 
-We know control the execution flow without triggerring the `canary_fail()`
+We know control the execution flow without triggering the `canary_fail()`
 function. All we need to do is build the shellcode using regular ROP. Since the
 binary is statically compiled, we have more gadgets than we need.
 
