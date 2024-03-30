@@ -92,7 +92,7 @@ kd> !bdump_active_kernel "C:\\Temp\\ActiveKDump.dmp"
 
 ### Build the BochsCPU session
 
-Parsing the dump with `kdmp_parser.KernelDumpParser` is as simple as it gets so let's leave it to that. For BochsCPU to run it's critical to have a PF handler callback, which can be done as a simple on-demande basis: full memory dumps can be several gigabytes in size, so it seems unreasonable to map it all on host, especially since when we probably are going to need a fraction of that. This ended up being relatively elegant and simple:
+Parsing the dump with `kdmp_parser.KernelDumpParser` is as simple as it gets so let's leave it to that. For BochsCPU to run it's critical to have a PF handler callback, which can be done as a simple on-demand basis: full memory dumps can be several gigabytes in size, so it seems unreasonable to map it all on host, especially since when we probably are going to need a fraction of that. This ended up being relatively elegant and simple:
 
 ```python
 dmp = kdmp_parser.KernelDumpParser(pathlib.Path("/path/to/dumpfile.dmp"))
@@ -164,7 +164,7 @@ Executing RIP=0xfffff80720a9d4ec on cpu_id=0
 [...]
 ```
 
-For a complete and more detailed example, the reader can refer to the example in the bochscpu-pytho repository: [examples/long_mode_emulate_windows_kdump.py](https://github.com/hugsy/bochscpu-python/blob/main/examples/long_mode_emulate_windows_kdump.py)
+For a complete and more detailed example, the reader can refer to the example in the `bochscpu-python` repository: [examples/long_mode_emulate_windows_kdump.py](https://github.com/hugsy/bochscpu-python/blob/main/examples/long_mode_emulate_windows_kdump.py)
 
 ## Windows User-mode emulation
 
