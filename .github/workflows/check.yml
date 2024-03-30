@@ -41,3 +41,7 @@ jobs:
         with:
           task_name: Markdown
           config_path: .github/spellcheck.yml
+          output_file: /tmp/spellcheck-output.txt
+
+      - run: |
+          cat /tmp/spellcheck-output.txt | tee ${GITHUB_OUTPUT}
