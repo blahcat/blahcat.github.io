@@ -43,5 +43,6 @@ jobs:
           config_path: .github/spellcheck.yml
           output_file: /tmp/spellcheck-output.txt
 
-      - run: |
-          cat /tmp/spellcheck-output.txt | tee ${GITHUB_OUTPUT}
+      - if: always()
+        run: |
+          test -f /tmp/spellcheck-output.txt && (cat /tmp/spellcheck-output.txt | tee ${GITHUB_OUTPUT} )
