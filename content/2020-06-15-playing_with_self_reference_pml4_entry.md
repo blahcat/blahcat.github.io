@@ -299,7 +299,7 @@ for index in range(system_pml4_root, system_pml4_root+size_of_page, size_of_entr
     print("self-reference entry is at index: %d" % index)
 ```
 
-I hope not to make it sound simple, it is not and took me quite some time to figure out, so massive props to [@hugeh0ge](https://twitter.com/hugeh0ge){:target="_blank"} and [@_N4NU_](https://twitter.com/_N4NU_){:target="_blank"} for the technique, and [@chompie1337](https://web.archive.org/web/20220619035731/twitter.com/chompie1337){:target="_blank"} for the implementation. This technique provides a somewhat reliable way to defeat KASLR, SMEP & SMAP with no other vulnerability, but by mere knowledge of Intel processors and Windows memory management inner workings, for the vulnerability CVE-2020-0796, which, due to Microsoft's effort, made it tough.
+I hope not to make it sound simple, it is not and took me quite some time to figure out, so massive props to [`@hugeh0ge`](https://twitter.com/hugeh0ge){:target="_blank"} and [@_N4NU_](https://twitter.com/_N4NU_){:target="_blank"} for the technique, and [@chompie1337](https://web.archive.org/web/20220619035731/twitter.com/chompie1337){:target="_blank"} for the implementation. This technique provides a somewhat reliable way to defeat KASLR, SMEP & SMAP with no other vulnerability, but by mere knowledge of Intel processors and Windows memory management inner workings, for the vulnerability CVE-2020-0796, which, due to Microsoft's effort, made it tough.
 
 Thanks for reading...✌
 

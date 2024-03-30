@@ -149,7 +149,7 @@ value read will be used to decode the instructions at 0x40107c to 0x4010ee:
 
 Being lazy, I've reconstructed
 [this C script](https://gist.github.com/7c7ee0e9cd9399a5ec975a72cfe58486) from
-IDA decompiler which allowed me to perform simply a brutefore locally:
+IDA decompiler which allowed me to perform simply a brute-force locally:
 
 ```bash
 $ make greek_to_me

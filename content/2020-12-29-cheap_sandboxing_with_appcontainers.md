@@ -29,7 +29,7 @@ As the MSDN mentions, AppContainers operates on 6 levels of isolation, each prog
     makes the process unable to target the Window of other processes.
  - There's also [**Device isolation**](https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#device-isolation){:target="_blank"} and [**Credential isolation**](https://docs.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation#credential-isolation){:target="_blank"} but I haven't played too much around those yet... Maybe a next post...
 
-A useful feature added is the DllCharacteristics flag [`IMAGE_DLLCHARACTERISTICS_APPCONTAINER` - 0x1000](https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#dll-characteristics) that will prevent a specific DLL image from being locaded outside an AppContained environment.
+A useful feature added is the DllCharacteristics flag [`IMAGE_DLLCHARACTERISTICS_APPCONTAINER` - 0x1000](https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#dll-characteristics) that will prevent a specific DLL image from being located outside an AppContained environment.
 
 
 ## AppContainer, where are you?
