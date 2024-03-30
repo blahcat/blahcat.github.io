@@ -112,7 +112,7 @@ send 5 bytes of junk data so that the syscall can return with the right value in
 `read` arguments, then jump into it and finally jump back to our next gadget ☹ .
 
 After quite some time, I realized that `warmup` starts by initializing an alarm
-for 10 seconds (which when SIGALARM is received, will kill the
+for 10 seconds (which when `SIGALRM` is received, will kill the
 program).
 ```bash
 .text:0804810D                 mov     eax, 27

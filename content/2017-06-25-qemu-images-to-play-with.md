@@ -21,7 +21,7 @@ category: misc
 
 A few weeks back, I came across  [@Fox0x01](https://twitter.com/Fox0x01){:target="_blank" class="fa fa-twitter"} [tutorial](https://azeria-labs.com/writing-arm-assembly-part-1/){:target="_blank"} to get started with learning debugging and exploitation techniques on ARM. If you haven't checked it out, make sure you add this on your to-read list.
 
-I have been initially developping [`gef`](https://github.com/hugsy/gef.git) for the same reason, to learn more about non-x86 architectures. So in the same spirit of openness that Azeria has shown, I am releasing a few Qemu virtual machines to start immediately playing with ARM, MIPS, PowerPC and AARCH64 architectures!
+I have been initially developing [`gef`](https://github.com/hugsy/gef.git) for the same reason, to learn more about non-x86 architectures. So in the same spirit of openness that Azeria has shown, I am releasing a few Qemu virtual machines to start immediately playing with ARM, MIPS, PowerPC and AARCH64 architectures!
 
 All you need is [Qemu](http://www.qemu.org). Then download the link to your image, and unzip the archive.
 
@@ -52,9 +52,9 @@ Already existing fantastic projects such as [Vagrant](https://app.vagrantup.com/
 
 The closest thing to what I wanted when I started exploring exotic architectures was [aurel32 (now Debian Quick Image Baker) Qemu pages](https://people.debian.org/~gio/dqib/), which provides great Qemu images. Unfortunately, they are using extremely old kernels and/or Linux distributions, making it too hard for a quick plug-n-play experience.
 
-Interestingly when developing `gef`, I talked with many people interested in learning about non-x86 archs but felt like they _don't know where to start_. So my hope is that those images will be the start to a lot of fun.
+Interestingly when developing `gef`, I talked with many people interested in learning about non-x86 architectures but felt like they _don't know where to start_. So my hope is that those images will be the start to a lot of fun.
 
-All the VMs come with 2 compiled ELF binaires: a very simple `hello-world` to start easy with the new architecture, run it, start `gdb`-ing around it to understand the architecture basics (memory layout, function call convention, GOT+PLT, stack canary, etc.) and a `simple-bof`, which is a simple Stack Overflow ELF to start on the way of understanding memory corruption.
+All the VMs come with 2 compiled ELF binaries: a very simple `hello-world` to start easy with the new architecture, run it, start `gdb`-ing around it to understand the architecture basics (memory layout, function call convention, GOT+PLT, stack canary, etc.) and a `simple-bof`, which is a simple Stack Overflow ELF to start on the way of understanding memory corruption.
 
 
 ## But I just wanna play with assembly...

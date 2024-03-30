@@ -5,7 +5,7 @@ tags: windows, hack, memory-manager
 date: 2023-04-04 00:00 +0000
 modified: 2023-04-04 00:00 +0000
 
-I've recently decided to read cover to cover some Windows Internals books, and currently reading the amazing book ["What Makes It Page"](), it gave me some ideas to play with [Section Objects](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/section-objects-and-views) as they covered in great details. One thought that occured to me was that even though a section is created from user or kernel land, its mapping can be in user-mode as much as in kernel (when called from the kernel).
+I've recently decided to read cover to cover some Windows Internals books, and currently reading the amazing book ["What Makes It Page"](), it gave me some ideas to play with [Section Objects](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/section-objects-and-views) as they covered in great details. One thought that occurred to me was that even though a section is created from user or kernel land, its mapping can be in user-mode as much as in kernel (when called from the kernel).
 
 
 ## Windows Section Objects
@@ -249,7 +249,7 @@ And as soon as the syscall returns, we're unmapped:
 
 4. Close the section in the driver unload callback.
 
-That's pretty much it: what we've got at the end is kernel driver controlled communication vector to any process in usermode: as the section handle is part of System kernel handle table, it's untouchable from ring-3 unless the driver dictactes otherwise by creating a view (with proper permissions) to it. This approach is great as it allows the driver to control everything, but if we want to give a user-mode process some say into it, it's also possible simply by turning the anonymous section we created for this PoC into a named one, then call sequentially `OpenFileMapping(SectionName)` then `MapViewOfFile()`. In addition, it could very well be ported to a process <-> process communication but here I wanted to play with the minifilter callbacks as an on-demand mechanism.
+That's pretty much it: what we've got at the end is kernel driver controlled communication vector to any process in usermode: as the section handle is part of System kernel handle table, it's untouchable from ring-3 unless the driver dictates otherwise by creating a view (with proper permissions) to it. This approach is great as it allows the driver to control everything, but if we want to give a user-mode process some say into it, it's also possible simply by turning the anonymous section we created for this PoC into a named one, then call sequentially `OpenFileMapping(SectionName)` then `MapViewOfFile()`. In addition, it could very well be ported to a process <-> process communication but here I wanted to play with the minifilter callbacks as an on-demand mechanism.
 
 ## Side-track
 
@@ -347,7 +347,7 @@ The 2nd value for `PhyBaseAddress` points to the physical address where the func
 At that point, I thought it would be sufficient to stop because we have an effective way to honeypot potential corruptions attempts:
 
   - Create a section with many pages (the more the better)
-  - During the preparation to the invokation of `PsGetThreadContext`, choose randomly one page that will receive the `CONTEXT`
+  - During the preparation to the invocation of `PsGetThreadContext`, choose randomly one page that will receive the `CONTEXT`
   - Map all the pages separately
   - Call `PsGetThreadContext`
 

@@ -53,7 +53,7 @@ the hash.
 
 Since I was feeling lazy and didn't want to reverse the whole thing, I decided to
 use my tool [`gef`](https://github.com/hugsy/gef.git) and
-its [Unicorn-Engine](http://unicorn-engine.org) command to bruteforce the
+its [Unicorn-Engine](http://unicorn-engine.org) command to brute-force the
 initial random integer. We can do so because we know that the flag has to start
 with `TWCTF{`.
 
@@ -70,7 +70,7 @@ gef➤  unicorn-emulate -f 0x80485b1 -t 0x80486e0 -e /tmp/revbox.py
 [+] Unicorn script generated as '/tmp/revbox.py'
 ```
 
-You can then easily update the script to make it bruteforce the correct value
+You can then easily update the script to make it brute-force the correct value
 for `eax` (i.e. the random integer), and let `unicorn` transform the buffer
 (located in the stack at 0xffffd26c - which we know thanks to GDB).
 

@@ -75,7 +75,7 @@ $ FULLECHO='' LFLAGS+="-L/usr/lib/llvm-6.0/lib/clang/6.0.0/lib/linux/ -lasan -pi
   LIBS+="-lasan -pie" make -e clean all
 ```
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> in some cases, the use of ASAN fails to create the config file required</div>
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> in some cases, the use of ASAN fails to create the configuration file required</div>
 for the compilation. So edit `$EXIM/src/scripts/Configure-config.h` shell script
 to avoid the premature ending:
 
@@ -214,7 +214,7 @@ And in less than a 1 second, we get the heap overflow found by <a class="fa fa-t
 
 ## Final words ##
 
-Although this technique is not as click-and-play like AFL since it requires a bit more work, it offers non-negligeable pros:
+Although this technique is not as click-and-play like AFL since it requires a bit more work, it offers non-negligible pros:
 
   - excellent reliability, makes easy for fuzzing network services → focus on
     parsing functions (no network stack to handle etc.). perfect for can focus on
@@ -228,7 +228,7 @@ Although this technique is not as click-and-play like AFL since it requires a bi
 But nothing ever being perfect, there are obviously also cons:
 
   - need to code almost every fuzzer (so only for C/C++ coding people)
-  - specific edge cases you might need to consider (beware of memleaks!!)
+  - specific edge cases you might need to consider (beware of memory leaks!!)
   - we must determine the function prototype. This is easy when the source code
     is open (FOSS projects), but black-box binaries may require some prior
     reversing. Tools like [Binary Ninja](https://binary.ninja) Commercial

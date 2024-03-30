@@ -217,7 +217,7 @@ Partial RelRO:                                    Yes
 Full RelRO:                                       Yes
 ```
 
-And on top of all those, ASLR is on. Given the target is 32 bits, bruteforce is a
+And on top of all those, ASLR is on. Given the target is 32 bits, brute-force is a
 realistic approach, although inelegant. One (or more) memory leak(s) can defeat
 PIC & ASLR, let's look for those first.
 
@@ -249,7 +249,7 @@ So we have `execve_addr = libc_base + 0x9bf80` and also `binsh_str = libc_base
 
 ### Leaking the canary ###
 
-Last thing we need to build a full exploit is a way to leak/bruteforce the
+Last thing we need to build a full exploit is a way to leak/brute-force the
 canary.
 
 In the pseudo-code earlier, we found that the `main` process was calling a
@@ -269,7 +269,7 @@ while (1){
 
 This gives us a perfect way to leak the canary:
 
- * try to bruteforce byte 0 of the canary, and then send another valid
+ * try to brute-force byte 0 of the canary, and then send another valid
      (dummy) HTTP request.
  * if the byte tested is incorrect (i.e. different from the canary), the
      process will die, closing the socket, that we can detect on our end by an
@@ -294,10 +294,10 @@ Canary is 0x6074e600
 Almost there! We have bypassed ASLR, PIC, NX and SSP. In x86, we would be just
 done. ARM however uses one register (saved on stack) to save the return address
 (called the Link Register) along with all the non-volatile registers that must
-be preserved accross functions calls.
+be preserved across functions calls.
 
 IDA shows that the `parse_request()` function finishes its execution by
-restoring the context of the calling fubnction:
+restoring the context of the calling function:
 ```
 .text:000016D0 loc_16D0
 .text:000016D0 ADD     SP, SP, #0xC
@@ -313,7 +313,7 @@ gadgets to pop the `/bin/sh` address directly into $r0. `gef` module `ropgadget`
 will work perfectly for this. Finding suitable gadgets is a little harder on ARM
 than x86 as you find hardly instructions to pop directly into your argument
 registers (for example `pop{r0}`, or `pop{r1}`) So you'll need to chain them
-adequatly, bearing in mind which registers will be affected the gadgets (for
+adequately, bearing in mind which registers will be affected the gadgets (for
 example `blx` will also affect the Link Register which may be indesirable).
 Building the ROP sequence for this binary is not hard, so I built a helper
 function:
