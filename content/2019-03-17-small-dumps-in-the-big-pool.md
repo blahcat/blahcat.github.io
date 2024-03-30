@@ -35,7 +35,7 @@ The following code is enough to populate the `_ETHREAD.ThreadName` of a designed
 
 <script src="https://gist.github.com/hugsy/8df0843e8556f557308cd014fec0fda3.js"></script>
 
-The accute observer may notice that only `THREAD_SET_LIMITED_INFORMATION` class information is used. Therefore setting thread name with `ThreadNameInformation` is an operation that is not considered privileged and should work very reliably, just like `THREAD_QUERY_LIMITED_INFORMATION` to retrieve the thread name.
+The acute observer may notice that only `THREAD_SET_LIMITED_INFORMATION` class information is used. Therefore setting thread name with `ThreadNameInformation` is an operation that is not considered privileged and should work very reliably, just like `THREAD_QUERY_LIMITED_INFORMATION` to retrieve the thread name.
 
 ![image_alt](/assets/images/small-pool/setthreadname-1.png)
 
