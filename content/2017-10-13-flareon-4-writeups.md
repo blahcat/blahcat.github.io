@@ -1312,7 +1312,7 @@ at 0xde9 and see what value was expected.
 ![image_alt](/assets/images/flareon-2017/dc8897ca8ce6dc0a124da94b1e7e7ddf7fc442b137930a003c31875b547c3ec9.png)
 
 Knowing this, creating the brute-force script
-([cov.py](https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c#file-cov-py))
+([`cov.py`](https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c#file-cov-py))
 was the next immediate step:
 
 ![image_alt5](/assets/images/flareon-2017/5afbab3abc4ad96ab713f58c496eaee64e2efb5ae92760a084c6f5cf55a90caa.png)

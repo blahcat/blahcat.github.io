@@ -48,8 +48,8 @@ while text:
         and not x.startswith("!!!Spelling check failed!!!")
     ]
 
-    # print(f"{article_path=}, {start_idx=}, {end_idx=}, {words=}")
-    result[article_path] = sorted(words)
+    if len(words):
+        result[article_path] = sorted(words)
 
 #
 # output as markdown table
