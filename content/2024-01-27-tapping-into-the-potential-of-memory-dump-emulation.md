@@ -175,7 +175,6 @@ Emulating usermode code on BochsCPU turned out to be slightly more tricky than k
 A user-mode dump on Windows does not include any of those information but only that related to the usermode process itself - which, despite being already a lot of information, is insufficient to simply re-use what was done for kernel mode emulation. And we must remember that BochsCPU is only, well, the CPU: meaning it can execute anything but it needs to have everything set it up, such as the processor mode (real, protected, long), the map pages, etc. But then, if the process runs in protected/long mode, memory accesses via the MMU must also be correctly laid off so ensure the VirtualAddress → PhysicalAddress translation works. We therefore, are required to build own page table for the process. Since this process is [documented](https://wiki.osdev.org/Page_Tables) [everywhere](https://software.intel.com/en-us/articles/intel-sdm) [on the Internet](https://www.memorymanagement.org/), I will assume the reader to be familiar and skip this part by mentioning that `bochscpu-python` provides an easy way to expedite the process of setting things up:
 
 ```python
-
 dmp = udmp_parser.UserDumpParser()
 assert dmp.Parse(dmp_path)
 pt = bochscpu.memory.PageMapLevel4Table()
@@ -232,12 +231,13 @@ def switch_to_thread(state: bochscpu.State, thread: udmp_parser.Thread):
 
 Similarly not the CPU but Windows also requires the FS (for protected and long modes) and the GS registers (in long mode).
 
+Ok, now we have built everything need for the emulation to run successfully in a Windows environment. Let's focus on what could we want to execute next...
 
 ### PGTFO
 
 TL;DR You can predict through emulation the values of Windows PRNG (see [examples/long_mode_emulate_windows_udump.py](https://github.com/hugsy/bochscpu-python/blob/main/examples/long_mode_emulate_windows_udump.py))
 
-Coincidentally as part of some research I was doing for work on ransomware, I examined the possibility of retrieving session keys used by ransomware (the full article is available [here](https://www.elastic.co/security-labs/ransomware-in-the-honeypot-how-we-capture-keys) if interested). As thoroughly detailed in the article, investigating `WANNACRY` revealed that it uses Windows PRNG to create the AES128 keys for each file. Which triggered the idea behind that post, which was that by using canary files to detect ransomware encryption early one, and generating a dump of the process at that point, can we retrieve all the subsequent symmetric keys (and essentially making ourselves a free decryptor).
+Coincidentally as part of some research I was doing for work on ransomware, I examined the possibility of retrieving session keys used by ransomware, by snapshotting culprit ransomware processes, and generating a using memory dumps using canary files (the full article is available [here](https://www.elastic.co/security-labs/ransomware-in-the-honeypot-how-we-capture-keys) if interested). As thoroughly detailed in the article, investigating `WANNACRY` revealed that it uses Windows PRNG to create the AES128 keys for each file. Which triggered the idea behind that post, which was that by using canary files to detect ransomware encryption early one, and generating a dump of the process at that point, can we retrieve all the subsequent symmetric keys (and essentially making ourselves a free decryptor).
 
 Since snapshotting the process gives us the current state of the PRNG for that process, we can now use emulation to discover the following values. A basic PoC for it would be as follow:
 
@@ -268,7 +268,6 @@ int main()
     return 0;
 }
 ```
-
 
 ![Get the dump](/assets/images/d9e336f7-602d-4efb-8234-0630e0d54f72.png)
 
