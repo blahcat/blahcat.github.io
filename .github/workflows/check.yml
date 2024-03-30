@@ -50,10 +50,10 @@ jobs:
         with:
           task_name: Markdown
           config_path: .github/spellcheck.yml
-          output_file: /tmp/spellcheck-output.txt
+          output_file: spellcheck-output.txt
           
-      - if: always()
+      - if: '!cancelled()'
         run: |
-          if [ -f /tmp/spellcheck-output.txt ]; then
-              cat /tmp/spellcheck-output.txt > ${GITHUB_STEP_SUMMARY}
+          if [ -f spellcheck-output.txt ]; then
+              cat spellcheck-output.txt > ${GITHUB_STEP_SUMMARY}
           fi
