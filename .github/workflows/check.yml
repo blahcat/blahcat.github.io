@@ -1,4 +1,4 @@
-name: Documents Validation
+name: Document Validation
 
 on:
   # on demand or on every pull request/push
@@ -12,7 +12,7 @@ on:
       - main
 
 jobs:
-  spellcheck:
+  linkcheck:
     name: Link Checker
     runs-on: ubuntu-latest
     permissions:
@@ -36,3 +36,24 @@ jobs:
           args: --exclude='^http://rawpixels.net/.*$' --exclude='^http://rawpixels.net/.*$' --exclude='^https://twitter.com/.*$' --exclude='^https://ctftime.org/.*$' --cache --max-cache-age 1w --exclude-all-private --exclude-mail --threads 4 --timeout 30 --retry-wait-time 60 --user-agent 'Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0' --no-progress 'content/**/*.md'
           fail: true
 
+  spellcheck:
+    name: Spell Checker
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Spellcheck
+        uses: rojopolis/spellcheck-github-actions@0.36.0
+        with:
+          task_name: Markdown
+          config_path: .github/spellcheck.yml
+          output_file: spellcheck-output.txt
+
+      - if: '!cancelled()'
+        run: |
+          if [ -f spellcheck-output.txt ]; then
+              python scripts/ci_spellcheck_format.py spellcheck-output.txt >> ${GITHUB_STEP_SUMMARY}
+          fi
