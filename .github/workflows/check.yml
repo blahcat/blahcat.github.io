@@ -54,4 +54,4 @@ jobs:
           
       - if: always()
         run: |
-          test -f /tmp/spellcheck-output.txt && (cat /tmp/spellcheck-output.txt | tee ${GITHUB_OUTPUT} )
+          test -f /tmp/spellcheck-output.txt && (cat /tmp/spellcheck-output.txt | tee ${GITHUB_STEP_SUMMARY} )
