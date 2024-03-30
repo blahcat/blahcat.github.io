@@ -55,5 +55,5 @@ jobs:
       - if: '!cancelled()'
         run: |
           if [ -f spellcheck-output.txt ]; then
-              cat spellcheck-output.txt > ${GITHUB_STEP_SUMMARY}
+              (echo  '```text' ; cat spellcheck-output.txt ; echo '```' ) >> ${GITHUB_STEP_SUMMARY}
           fi
