@@ -68,6 +68,7 @@ which looks [familiar](https://docs.microsoft.com/en-us/windows/win32/sysinfo/pr
 An essential pre-requisite to understand how values are accessed in the kernel, is to understand 2 critical structures: `Cells` and `Key Nodes` (for now).
 
 From the [PDF "Windows Kernel Internals NT Registry Implementation"](#link_1), a `Cell` (p.12) is:
+
   -  The unit of storage allocation within the hive [...]
   -  Used to store raw data, and build up logical data
       * Keys, values, security descriptors, indexes etc all are made up of cells
@@ -378,7 +379,7 @@ GetCellDataAddress(Hive=ffffab04d1191000, Index=32): type=0 table=0 block=0 offs
 
 It seemed that the cells for accessing the SAM were at some points hitting user-mode area, in a process different than `System`, so the address access walking the wrong page table, and hence the exception from WinDbg. Which got immediately confirmed:
 
-```
+```text
 0: kd> dt _hmap_entry ffffab04d1191000
 nt!_HMAP_ENTRY
    +0x000 BlockOffset      : 0
@@ -388,7 +389,7 @@ nt!_HMAP_ENTRY
 
 Then how does the kernel know where to fetch this information? Well it turned out that the hive handle can hold reference to a process in its `ViewMap.ProcessTuple` attribute, of type `_CMSI_PROCESS_TUPLE` which holds both a handle to the `_EPROCESS` and a pointer to the `_EPROCESS`. We can use that information to determine the backing process:
 
-```
+```text
 0: kd> dt _hhive ffffab04d1191000 ViewMap.ProcessTuple
 nt!_HHIVE
    +0x0d8 ViewMap              :
@@ -404,7 +405,7 @@ nt!_HHIVE
 
 It points to the `Registry` process, which makes sense. To confirm, we can switch to the context of the process, and try to re-access the UM address `0x280f6fa1850`:
 
-```
+```text
 0: kd> dx -s @$cursession.Processes.Where( x => x.Name == "Registry").First().SwitchTo()
 0: kd> db 0x280f6fa1850
 00000280`f6fa1850  a8 ff ff ff 6e 6b 20 00-4a 92 fb 8e 6b 38 d5 01  ....nk .J...k8..
@@ -420,7 +421,7 @@ The signature `kn` (0x6b6e) at `0x280f6fa1850+sizeof(ULONG)` confirms we're hitt
 
 Now I could access some keys & values but not everything:
 
-```
+```text
 0: kd> dx @$SamHive = @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First()
 
 0: kd> dx @$SamHive.RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys
@@ -433,7 +434,7 @@ Now I could access some keys & values but not everything:
 
 The 2nd issue faced was that when trying to access some keys in UM for the `HKLM\SAM` hive, WinDbg would inconsistently return some access violation error. This reason was somewhat easier to figure out the cause, less easy for a programmatic remediation.
 
-```
+```text
 0: kd> dx @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First().RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys[2].Subkeys
 @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First().RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys[2].Subkeys                 : [object Generator]
 GetCellDataAddress(Hive=ffffab04d1191000, Index=8096) = 280f6fa2fa0
@@ -442,7 +443,7 @@ GetCellDataAddress(Hive=ffffab04d1191000, Index=8096) = 280f6fa2fa0
 
 The cause behind it was not the calculation method of the Cell address but due to the fact that the page was paged out. The clue for me was the fact the missing is usually surrounded by other mapped pages.
 
-```
+```text
 0: kd> db 280f6fa2fa0
 00000280`f6fa2fa0  ?? ?? ?? ?? ?? ?? ?? ??-?? ?? ?? ?? ?? ?? ?? ??  ????????????????
 00000280`f6fa2fb0  ?? ?? ?? ?? ?? ?? ?? ??-?? ?? ?? ?? ?? ?? ?? ??  ????????????????
@@ -456,7 +457,7 @@ The cause behind it was not the calculation method of the Cell address but due t
 
 I didn't find a way to solve this programmatically (i.e. force WinDbg to page-in), although just a reboot is enough to make sure the desired pages are still in memory. Then we can finally access the keys and values:
 
-```
+```text
 0: kd> dx @$UserEncryptedPasswords = @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First().RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys[2].Subkeys
 @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First().RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys[2].Subkeys                 : [object Generator]
     [0x0]            : 000001F4
@@ -469,7 +470,7 @@ I didn't find a way to solve this programmatically (i.e. force WinDbg to page-in
 
 So then to dump the keys for the `Administrator` (UID=500=0x1f4)
 
-```
+```text
 0: kd> dx @$UserEncryptedPasswords[0].Values
 @$UserEncryptedPasswords[0].Values                                  : [object Generator]
     [0x0]            : F
