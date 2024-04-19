@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Setting up a Windows VM lab for kernel debugging</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="This is the first on a series of posts on Windows kernel debugging and exploitation. In this part, we'll cover in details how to get...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="windows">
+    <meta name="tags" content="kernel">
+    <meta name="tags" content="debug">
+    <meta name="tags" content="virtualbox">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="Setting up a Windows VM lab for kernel debugging"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="This is the first on a series of posts on Windows kernel debugging and exploitation. In this part, we'll cover in details how to get..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2017-08-07 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2017-08-07 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="tutorial"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="windows"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="kernel"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="debug"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="virtualbox"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/win-kernel-debug/win8-setup-kernel-mode.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="Setting up a Windows VM lab for kernel debugging">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/win-kernel-debug/win8-setup-kernel-mode.png">
+
+      <meta name="twitter:description" content="This is the first on a series of posts on Windows kernel debugging and exploitation. In this part, we'll cover in details how to get...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "Setting up a Windows VM lab for kernel debugging",
+  "headline": "Setting up a Windows VM lab for kernel debugging",
+  "datePublished": "2017-08-07 00:00:00-07:00",
+  "dateModified": "2017-08-07 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/win-kernel-debug/win8-setup-kernel-mode.png",
+  "url": "https://blahcat.github.io/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html",
+  "description": "This is the first on a series of posts on Windows kernel debugging and exploitation. In this part, we'll cover in details how to get..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Setting up a Windows VM lab for kernel debugging</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">07 Aug 2017</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/win-kernel-debug/win8-setup-kernel-mode.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>This is the first on a series of posts on Windows kernel debugging and
+exploitation.</p>
+<p>In this part, we'll cover in details how to get everything setup using Linux as
+host, VirtualBox as hypervisor and Windows virtual images from <a href="http://modern.ie">Modern.IE</a>.</p>
+<p><strong><em>Note</em></strong>: there is nothing ground-breaking here, those posts are mostly notes and
+reminders for the future. <a href="https://hshrzd.wordpress.com/2017/05/28/starting-with-windows-kernel-exploitation-part-1-setting-up-the-lab/">Other people</a> did a fantastic job covering the same
+topic, so you might probably be more interested into reading those 😁</p>
+<p>I like working on a Linux host, so using <a href="https://virtualkd.sysprogs.org">VirtualKD</a>
+isn't an option. So my setup is:</p>
+<ul>
+<li>Debian testing x64 as host</li>
+<li><a href="https://www.virtualbox.org">VirtualBox</a> as hypervisor</li>
+<li>A
+  <a href="https://web.archive.org/web/20170306074002/https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/">Windows 7 x64 VM</a> acting
+  as debugger.</li>
+<li>And 2 debuggees:<ol>
+<li>Windows 7 x86 VM (using UART as debugging medium)</li>
+<li>Windows 8.1 x64 VM (using Network as debugging medium)</li>
+</ol>
+</li>
+</ul>
+<p>As a commodity, I've created a
+<a href="https://github.com/hugsy/modern.ie-vagrant"><code>Vagrantfile</code></a> to simplify the VM
+creation process using <a href="https://vagrantup.com"><code>Vagrant</code></a>. You can create a new
+Windows VM like this</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/hugsy/modern.ie-vagrant<span class="w"> </span>Windows7
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>Windows7
+$<span class="w"> </span><span class="nv">FIRSTBOOT</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>vagrant<span class="w"> </span>up<span class="w"> </span>--provision
+</code></pre></div>
+
+<p>and go grab a coffee ☕</p>
+<h2>Preparing the Debugger VM</h2>
+<p>Once the VM is created and Windows properly installed, edit the VM settings in
+VirtualBox to do the following:</p>
+<ul>
+<li>In the "Serial Ports" tab, enable one port. You can use any "Port Number"
+    you want, just remember it, as you'll need to specify it to WinDBG the
+    Win7 debuggee is ready. Select <code>Host Pipe</code> as "Port Mode" and enter a local
+    path in the "Path/Address" field (for example <code>/tmp/win7-kd-pipe</code>). This
+    pipe will be the relay VirtualBox will use to communicate between the
+    debugger and debuggee through UART. Last, make sure the "Connect to existing
+    pipe/socket" is <strong>unchecked</strong>.</li>
+</ul>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/dbg-uart-settings.png"></p>
+<ul>
+<li>in the "Network" tab, on top of the the default NAT-ed network created by
+    VirtualBox, add and enable another adapter as Host-Only. Then link it to an
+    existing interface on the host (for example <code>vboxnet0</code>).</li>
+</ul>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/dbg-network-settings.png"></p>
+<p>Now the debugger is ready, you need to install WinDBG as the kernel debugger. A
+quick way, is to use <a href="https://chocolatey.org/"><code>Chocolatey</code></a> in an administrator prompt to install it
+as such:</p>
+<div class="highlight"><pre><span></span><code><span class="nl">C</span><span class="p">:</span><span class="err">\</span><span class="o">&gt;</span><span class="w"> </span><span class="s">@&quot;%SystemRoot%\System32\WindowsPowerShell</span><span class="se">\v</span><span class="s">1.0\powershell.exe&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">NoProfile</span><span class="w"> </span><span class="o">-</span><span class="n">InputFormat</span><span class="w"> </span><span class="n">None</span><span class="w"> </span><span class="o">-</span><span class="n">ExecutionPolicy</span><span class="w"> </span><span class="n">Bypass</span><span class="w"> </span><span class="o">-</span><span class="n">Command</span><span class="w"> </span><span class="s">&quot;iex ((New-Object System.Net.WebClient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">SET</span><span class="w"> </span><span class="s">&quot;PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey</span><span class="se">\b</span><span class="s">in&quot;</span>
+<span class="o">&lt;</span><span class="n">chocolatey</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">being</span><span class="w"> </span><span class="n">installed</span><span class="p">...</span><span class="o">&gt;</span>
+<span class="nl">C</span><span class="p">:</span><span class="err">\</span><span class="o">&gt;</span><span class="w"> </span><span class="n">choco</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">--</span><span class="n">force</span><span class="w"> </span><span class="n">windbg</span>
+</code></pre></div>
+
+<p>Although this won't install the very latest WinDBG, this approach is convenient
+to going through downloading and installing the SDK from MS
+website. Additionally, you can script it to install more tools useful for
+later (<code>python</code>, <code>ConEmu</code>, <code>HxD</code> etc.)</p>
+<h2>Setup UART debugging on the Windows 7 target</h2>
+<p><strong>Note</strong>: All is described
+<a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/boot-parameters-to-enable-debugging">here</a>.</p>
+<p>All OS can be kernel-debugged via Serial Port (or UART). Although this method is
+universal, it is also the slowest.</p>
+<p>To enable it, start the Windows 7 debuggee VM, open a <code>cmd.exe</code> as
+Administrator, and add another entry to the boot loader
+using <code>bcdedit</code> utility:</p>
+<div class="highlight"><pre><span></span><code>C:\&gt; bcdedit /copy {current} /d &quot;Windows 7 with kernel debug via COM&quot;
+</code></pre></div>
+
+<p>Then enable debug mode on new entry UUID:</p>
+<div class="highlight"><pre><span></span><code>C:\&gt; bcdedit /debug {UUID-RETURNED-BY-FORMER-COMMAND} on
+</code></pre></div>
+
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/win7-bcdedit-enable-debug.png"></p>
+<p>Now instruct Windows serial communication as debugging medium, and use the
+"fastest" baud rate (i.e 115200 symbols/sec). Since we'll only use serial
+debugging for this VM, we can use the <code>bcdedit /dbgsettings</code> global switch.</p>
+<div class="highlight"><pre><span></span><code>C:\&gt; bcdedit /dbgsettings serial debugport:1 baud rate:115200
+</code></pre></div>
+
+<p><em>Note</em>: if we wanted to set debug settings specific to one entry of the boot
+loader, we would've used <code>bcdedit /set</code> instead. For instance:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">C</span><span class="p">:</span><span class="err">\</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">bcdedit</span><span class="w"> </span><span class="o">/</span><span class="nx">set</span><span class="w"> </span><span class="p">{</span><span class="nx">UUID</span><span class="o">-</span><span class="nx">RETURNED</span><span class="o">-</span><span class="nx">BY</span><span class="o">-</span><span class="nx">FORMER</span><span class="o">-</span><span class="nx">COMMAND</span><span class="p">}</span><span class="w"> </span><span class="nx">debugtype</span><span class="w"> </span><span class="nx">serial</span>
+</code></pre></div>
+
+<p>Now, shutdown the VM and go to its settings on VirtualBox (<strong>Machine</strong> -&gt;
+<strong>Settings</strong>) and in the "Serial Ports" tab, enable one port and bind it to
+<code>COM1</code> (since we used the <code>debugport:1</code> above with <code>bcdedit</code>), and select <code>Host
+Pipe</code> as Port Mode. Last provide a path to file in the <code>Path/Address</code> field, for
+example <code>/tmp/win7-kd-pipe</code>.</p>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/win7-vbox-settings.png"></p>
+<p>The tickbox <code>Connect to existing pipe/socket</code> means that the debuggee will
+always have to be started <strong>after</strong> the debugger VM, or VirtualBox will throw an
+error.</p>
+<h3>Running the debugging session</h3>
+<h4>On the debugger</h4>
+<p>Start the debugger VM first and prepare WinDBG for kernel-mode debugging
+(Ctrl-K) by selecting COM as debug vector:</p>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/win7-windbg-option.png"></p>
+<p>WinDBG will then wait for communications on COM1.</p>
+<div class="highlight"><pre><span></span><code><span class="n">Microsoft</span><span class="w"> </span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="w"> </span><span class="n">Windows</span><span class="w"> </span><span class="n">Debugger</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="mf">6.3</span><span class="o">.</span><span class="mf">9600.17298</span><span class="w"> </span><span class="n">X86</span>
+<span class="n">Copyright</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="n">Microsoft</span><span class="w"> </span><span class="n">Corporation</span><span class="o">.</span><span class="w"> </span><span class="n">All</span><span class="w"> </span><span class="n">rights</span><span class="w"> </span><span class="n">reserved</span><span class="o">.</span>
+
+<span class="n">Opened</span><span class="w"> </span>\\<span class="o">.</span>\<span class="n">com1</span>
+<span class="n">Waiting</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">reconnect</span><span class="o">...</span>
+
+<span class="o">*************</span><span class="w"> </span><span class="n">Symbol</span><span class="w"> </span><span class="n">Path</span><span class="w"> </span><span class="n">validation</span><span class="w"> </span><span class="n">summary</span><span class="w"> </span><span class="o">**************</span>
+<span class="n">Response</span><span class="w">                         </span><span class="n">Time</span><span class="w"> </span><span class="p">(</span><span class="n">ms</span><span class="p">)</span><span class="w">     </span><span class="n">Location</span>
+<span class="n">Deferred</span><span class="w">                                       </span><span class="n">srv</span><span class="o">*</span><span class="n">c</span><span class="p">:</span>\<span class="n">syms</span><span class="o">*</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">msdl</span><span class="o">.</span><span class="n">microsoft</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">symbols</span>
+</code></pre></div>
+
+<h4>On the debuggee</h4>
+<p>Start the debuggee, and when the boot loader menu shows up, select the entry
+named <code>Windows 7 with kernel debug via COM</code>.</p>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/win7-boot-manager.png"></p>
+<p>As you see Windows already indicates that this entry will be in debug mode. And
+when you press Enter, the debugger VM will be attached to the debuggee.</p>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/win7-debug-session.png"></p>
+<p>You're now debugging the Windows 7 x86 VM kernel!! But as you'll see, Serial
+Port debugging will drastically slow down all operations on the debuggee. This
+is why projects like VirtualKD came to life, but personnally, if the target VM
+is a Windows 8+, my favorite kernel debugging method is Network based, as
+detailed below.</p>
+<h2>Setup Network kernel debugging for the Windows 8+ target</h2>
+<p><strong>Note</strong>: All is described
+<a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/setting-up-a-network-debugging-connection">here</a>.</p>
+<p>IMHO, this method is the best and fastest method to debug Windows kernel, but it
+has 2 constraints:</p>
+<ol>
+<li>you must use a compatible network adapter (not so much a problem for
+    VirtualBox or VMware)</li>
+<li>the debuggee <strong>must</strong> be running Windows 8 or later.</li>
+</ol>
+<p>When preparing the VM, make sure to add an extra Network Card as Host-Only, and
+linked to the same interface as the one specified on the host
+(i.e. <code>vboxnet0</code>). <strong>Important note</strong>: in the "Advanced" section, select one of
+the Intel Pro card (preferably PRO/1000 MT Desktop). The reason for that is that
+<a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/supported-ethernet-nics-for-network-kernel-debugging-in-windows-8-1">Windows network kernel debugging does not work with all network controllers</a>.</p>
+<p>Boot the VM, and then open the "Device Manager" (Control Panel -&gt;
+System -&gt; Advanced system settings -&gt; on the Hardware tab). Expand "Network
+adapters" and select the 2nd device's properties menu. On the new window, the
+"Location" field will be required to assignate this interface for debugging:</p>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/win8-network-controller-properties.png"></p>
+<p>This indicates us the bus parameters we will need to provide <code>bcdedit</code> later on,
+with the format <code>&lt;BusNumber&gt;:&lt;DeviceNumber&gt;:&lt;FunctionNumber&gt;</code> (in this case
+<code>0.8.0</code>).</p>
+<p>Now open an administrator prompt and use <code>bcdedit</code> utility to create a
+new entry to the boot manager like we did on Windows 7, and enable the debug
+mode for it. But unlike Windows 7, now we have to setup the network properties:</p>
+<div class="highlight"><pre><span></span><code>C:\&gt; bcdedit /dbgsettings net hostip:ip.of.debugger.vm port:50000 key:Kernel.Debugging.Is.Fun
+C:\&gt; bcdedit /set {dbgsettings} busparams &lt;BusNumber&gt;.&lt;DeviceNumber&gt;.&lt;FunctionNumber&gt;
+</code></pre></div>
+
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/win8-setup-kernel-mode.png"></p>
+<h3>Running the debugging session</h3>
+<h4>On the debugger</h4>
+<p>Start the debugger VM first and prepare WinDBG for kernel-mode debugging
+(Ctrl-K) by selecting NET as debug vector, and set the Port and Key adequately.
+WinDBG will then be waiting for new connection:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">Microsoft</span><span class="w"> </span><span class="ss">(</span><span class="nv">R</span><span class="ss">)</span><span class="w"> </span><span class="nv">Windows</span><span class="w"> </span><span class="nv">Debugger</span><span class="w"> </span><span class="nv">Version</span><span class="w"> </span><span class="mi">6</span>.<span class="mi">3</span>.<span class="mi">9600</span>.<span class="mi">17336</span><span class="w"> </span><span class="nv">AMD64</span>
+<span class="nv">Copyright</span><span class="w"> </span><span class="ss">(</span><span class="nv">c</span><span class="ss">)</span><span class="w"> </span><span class="nv">Microsoft</span><span class="w"> </span><span class="nv">Corporation</span>.<span class="w"> </span><span class="nv">All</span><span class="w"> </span><span class="nv">rights</span><span class="w"> </span><span class="nv">reserved</span>.
+
+<span class="nv">Using</span><span class="w"> </span><span class="nv">NET</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">debugging</span>
+<span class="nv">Opened</span><span class="w"> </span><span class="nv">WinSock</span><span class="w"> </span><span class="mi">2</span>.<span class="mi">0</span>
+<span class="nv">Waiting</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">reconnect</span>...
+</code></pre></div>
+
+<h4>On the debuggee</h4>
+<p>Start the VM. When the boot loader menu shows up, select the one with the
+network kernel mode enabled</p>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/win8-boot-loader.png"></p>
+<p>The debugger will show some activity immediately. Note that execution of the
+debuggee will not stop, so you may hit Ctrl-Break at any time to force an
+interruption:</p>
+<p><img alt="image_alt" src="/assets/images/win-kernel-debug/win8-success.png"></p>
+<p>In this post, we've presented 2 techniques for kernel debugging, depending on
+the Windows version targeted. Some other techniques exist (FireWire, USB
+debugging) but they are slightly harder to put in place.</p>
+<p>The next post will cover more of Windows kernel exploitation 101 by going
+through some vulnerabilities on
+the
+<a href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver">HEVD driver</a>.</p>
+<p>Cheers ✌</p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Setting up a Windows VM lab for kernel debugging&amp;url=https://blahcat.github.io/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/windows">windows</a><a href="https://blahcat.github.io/tag/kernel">kernel</a><a href="https://blahcat.github.io/tag/debug">debug</a><a href="https://blahcat.github.io/tag/virtualbox">virtualbox</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/tutorial">tutorial</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=Setting up a Windows VM lab for kernel debugging">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">A Primer to Windows x64 shellcoding</h2>
+                            <p class="post-nav-excerpt">Continuing on the path to Windows kernel exploitation... Thanks to the previous post,...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2017/08/01/gef-at-black-hat-arsenal-us-2017.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">GEF at Black Hat Arsenal US 2017</h2>
+                            <p class="post-nav-excerpt">GEF at Black Hat Arsenal US 2017 I had the privilege to be invited to present my tool...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

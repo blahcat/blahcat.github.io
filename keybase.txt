@@ -1,0 +1,54 @@
+==================================================================
+https://keybase.io/hugsy
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://blahcat.github.io
+  * I am hugsy (https://keybase.io/hugsy) on keybase.
+  * I have a public key ASAk2OzRftLhep2ooIFPk2HLJdc3r_HQy6DPwtanNCyjHAo
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "0101cd6336470292f1448dc4519b2d482a1be70d14cf6bc7784de52e708181c80d760a",
+            "host": "keybase.io",
+            "kid": "012024d8ecd17ed2e17a9da8a0814f9361cb25d737aff1d0cba0cfc2d6a7342ca31c0a",
+            "uid": "b085a88857589f3b8c7738f077f8ac19",
+            "username": "hugsy"
+        },
+        "service": {
+            "hostname": "blahcat.github.io",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "client": {
+        "name": "keybase.io go client",
+        "version": "1.0.18"
+    },
+    "ctime": 1477880277,
+    "expire_in": 504576000,
+    "merkle_root": {
+        "ctime": 1477880181,
+        "hash": "96714a41c5a304dda59f2b1993941418fcb0dc63e957e9316b3d2709315e55825a642571b5672d94e9157874a370accd7ce71ffb357ccc3590cdb290465f9c16",
+        "seqno": 694082
+    },
+    "prev": "1ed004fe7c0bd149cdc9a854d4759cd53a3699cda3df90ea0f3696f8c8519682",
+    "seqno": 8,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgJNjs0X7S4XqdqKCBT5NhyyXXN6/x0Mugz8LWpzQsoxwKp3BheWxvYWTFAvZ7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTAxY2Q2MzM2NDcwMjkyZjE0NDhkYzQ1MTliMmQ0ODJhMWJlNzBkMTRjZjZiYzc3ODRkZTUyZTcwODE4MWM4MGQ3NjBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwMjRkOGVjZDE3ZWQyZTE3YTlkYThhMDgxNGY5MzYxY2IyNWQ3MzdhZmYxZDBjYmEwY2ZjMmQ2YTczNDJjYTMxYzBhIiwidWlkIjoiYjA4NWE4ODg1NzU4OWYzYjhjNzczOGYwNzdmOGFjMTkiLCJ1c2VybmFtZSI6Imh1Z3N5In0sInNlcnZpY2UiOnsiaG9zdG5hbWUiOiJibGFoY2F0LmdpdGh1Yi5pbyIsInByb3RvY29sIjoiaHR0cHM6In0sInR5cGUiOiJ3ZWJfc2VydmljZV9iaW5kaW5nIiwidmVyc2lvbiI6MX0sImNsaWVudCI6eyJuYW1lIjoia2V5YmFzZS5pbyBnbyBjbGllbnQiLCJ2ZXJzaW9uIjoiMS4wLjE4In0sImN0aW1lIjoxNDc3ODgwMjc3LCJleHBpcmVfaW4iOjUwNDU3NjAwMCwibWVya2xlX3Jvb3QiOnsiY3RpbWUiOjE0Nzc4ODAxODEsImhhc2giOiI5NjcxNGE0MWM1YTMwNGRkYTU5ZjJiMTk5Mzk0MTQxOGZjYjBkYzYzZTk1N2U5MzE2YjNkMjcwOTMxNWU1NTgyNWE2NDI1NzFiNTY3MmQ5NGU5MTU3ODc0YTM3MGFjY2Q3Y2U3MWZmYjM1N2NjYzM1OTBjZGIyOTA0NjVmOWMxNiIsInNlcW5vIjo2OTQwODJ9LCJwcmV2IjoiMWVkMDA0ZmU3YzBiZDE0OWNkYzlhODU0ZDQ3NTljZDUzYTM2OTljZGEzZGY5MGVhMGYzNjk2ZjhjODUxOTY4MiIsInNlcW5vIjo4LCJ0YWciOiJzaWduYXR1cmUifaNzaWfEQB/AuqWAFvMntejhAvZ33+SVayItHNkjmB9wDx7+psbVX/bI4uziTjar03LHOZbwNlPMwhBMiP5D4uaAoZpXEgqoc2lnX3R5cGUgpGhhc2iCpHR5cGUIpXZhbHVlxCA0lF1niTrlRIi/mRdexS9wVRKo7j8BJyt1si0cuNkloKN0YWfNAgKndmVyc2lvbgE=
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/hugsy
+
+==================================================================

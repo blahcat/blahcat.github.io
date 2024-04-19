@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Some Time Travel musings</title>
+
+  
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+<link href="https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html" rel="canonical" />
+  <!-- Feed -->
+        <link href="https://blahcat.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Full Atom Feed" />
+          <link href="https://blahcat.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="BlahCats Categories Atom Feed" />
+
+  <link href="https://blahcat.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://blahcat.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://blahcat.github.io/assets/css/overrides.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+
+    <meta name="description" content="If WinDbg was already setting the standard of what modern debuggers should be like, no doubt WinDbg Preview brings it to a next level....">
+
+    <meta name="author" content="hugsy">
+
+    <meta name="tags" content="windows">
+    <meta name="tags" content="ttd">
+    <meta name="tags" content="js">
+    <meta name="tags" content="windbg">
+    <meta name="tags" content="malware">
+
+
+
+
+<!-- Open Graph -->
+<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="Some Time Travel musings"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:description" content="If WinDbg was already setting the standard of what modern debuggers should be like, no doubt WinDbg Preview brings it to a next level...."/>
+<meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:type" content="article"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:published_time" content="2018-11-02 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:modified_time" content="2018-11-02 00:00:00-07:00"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:author" content="https://blahcat.github.io/author/hugsy">
+<meta prefix="og: http://ogp.me/ns#" property="article:section" content="research"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="windows"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="ttd"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="js"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="windbg"/>
+<meta prefix="og: http://ogp.me/ns#" property="article:tag" content="malware"/>
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="https://blahcat.github.io/assets/images/windbg-ttd/header.png">
+
+<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="Some Time Travel musings">
+    <meta name="twitter:url" content="https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html">
+
+        <meta name="twitter:image:src" content="https://blahcat.github.io/assets/images/windbg-ttd/header.png">
+
+      <meta name="twitter:description" content="If WinDbg was already setting the standard of what modern debuggers should be like, no doubt WinDbg Preview brings it to a next level....">
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "Some Time Travel musings",
+  "headline": "Some Time Travel musings",
+  "datePublished": "2018-11-02 00:00:00-07:00",
+  "dateModified": "2018-11-02 00:00:00-07:00",
+  "author": {
+    "@type": "Person",
+    "name": "hugsy",
+    "url": "https://blahcat.github.io/author/hugsy"
+  },
+  "image": "https://blahcat.github.io/assets/images/windbg-ttd/header.png",
+  "url": "https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html",
+  "description": "If WinDbg was already setting the standard of what modern debuggers should be like, no doubt WinDbg Preview brings it to a next level...."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/pages/about.html" role="presentation">About</a></li>
+          <li><a href="/categories/" role="presentation">Browse By Category</a></li>
+          <li><a href="/tags/" role="presentation">Browse By Tag</a></li>
+          <li><a href="/pages/qemu-vm-repo" role="presentation">Qemu VMs</a></li>
+          <li><a href="/pages/exploitation-series" role="presentation">Exploitation Tutorials</a></li>
+          <li><a href="/pages/notes" role="presentation">Misc Notes</a></li>
+          <li><a href="/feeds/all.atom.xml" role="presentation">RSS Feed</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://blahcat.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Some Time Travel musings</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://blahcat.github.io/author/hugsy">hugsy</a>
+            <br>
+              Posted on <time style="font-weight: bold">02 Nov 2018</time>
+          </span>
+
+            <div class="post-cover cover" style="background-image: url('https://blahcat.github.io/assets/images/windbg-ttd/header.png')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>If WinDbg was already setting the standard of what modern debuggers should be like, no doubt <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview">WinDbg Preview</a> brings it to a next level. The JavaScript API is not perfect yet but already very efficient, so we don't have to rely on PyKd for proper (and portable) WinDbg scripting (I won't even mention WDS). As a start, I could not recommend enough reading <a class="fa fa-twitter" href="https://twitter.com/0vercl0k" target="_blank"> @0vercl0k</a> if you haven't already read it, which not only covers TTD but a lot more.</p>
+<h1>Time-Travel Debugging</h1>
+<h2>Introduction</h2>
+<p>Since the feature got publicly available last year, there hasn't been that much coverage on the topic and as I finally took some time to fiddle with it for various cases (from malware analysis to CTF) I figured I could contribute with a quick write-up.</p>
+<p>As the name implies, Time-Travel Debugging is a tool that will allow to travel through the runtime of process that you create or attach to. It'll monitor everything then store it a separate indexed database file, that can be fed to WinDbg Preview. The debugger will then have a Read-Only access on the execution, allowing to jump back and forth to desired points of the runtime. That's already quite nice, but what makes it more powerful is the integration with the Data Model (via the <code>dx</code> command) and the JS API.</p>
+<h2>Time Travel + Data Model</h2>
+<h3>TTD 101: Moving around</h3>
+<p>I was curious to see what could be done so I decided to record via WinDbg a simple Notepad session. TTD is as simple as it gets: start WinDbg (as Admin), and launch the target executable after checking the <code>Record process with Time Travel Debugging</code></p>
+<p><img alt="image_alt" src="/assets/images/windbg-ttd/startrecord.PNG"></p>
+<p>Typed some stuff and closed notepad. WinDbg starts by reading the trace and indexing the database, and breaks at the loader entry point. The indexes (look like <code>XX:YY</code> where <code>X</code> and <code>Y</code> are hex-digits) are like coordinates that can be used to travel around so we can move to an absolute position like</p>
+<div class="highlight"><pre><span></span><code>0:000&gt; !tt 7213:36
+Setting position: 7213:36
+(12c4.1dcc): Break instruction exception - code 80000003 (first/second chance not available)
+Time Travel Position: 7213:36
+KERNELBASE!VirtualAlloc:
+00007ffe`15c433a0 4053            push    rbx
+</code></pre></div>
+
+<p>It is also possible to simply step-over backwards (<code>p-</code>), step-into backwards (<code>t-</code>), or go backwards (<code>g-</code>) - one can notice that commands for backwards are the same as for forward, with a <code>-</code> suffixed to the command. All the other commands, like for breakpoints, or accessing memory/registers work just the same.</p>
+<p>That's already quite fun, but WinDbg can go a lot further.</p>
+<h3>Enter the Debugger Data Model...</h3>
+<p>WinDbg can use LINQ to query the TTD database, to synthetize a lot more of runtime information in a very painless way. To do so, a new attribute <code>TTD</code> was added to the runtime variables <code>$curprocess</code></p>
+<div class="highlight"><pre><span></span><code>0:000&gt; dx @$curprocess.TTD
+@$curprocess.TTD
+    Lifetime         : [2C:0, 2EB0F:0]
+    Threads
+    Events
+</code></pre></div>
+
+<p>and <code>$cursession</code></p>
+<div class="highlight"><pre><span></span><code>0:000&gt; dx @$cursession.TTD
+@$cursession.TTD                 : [object Object]
+    Calls            [Returns call information from the trace for the specified set of methods: TTD.Calls(&quot;module!method1&quot;, &quot;module!method2&quot;, ...) For example: dx @$cursession.TTD.Calls(&quot;user32!SendMessageA&quot;)]
+    Memory           [Returns memory access information for specified address range: TTD.Memory(startAddress, endAddress [, &quot;rwec&quot;])]
+    DefaultParameterCount : 0x4
+    AsyncQueryEnabled : false
+    Resources
+    Data             : Normalized data sources based on the contents of the time travel trace
+    Utility          : Methods that can be useful when analyzing time travel traces
+</code></pre></div>
+
+<div class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+You might want to enable DML too (by running the command <code>.prefer_dml 1</code>) if you want to click your way through those methods.
+</div>
+<p>Among some of the most interesting parts, we can now query function calls, like</p>
+<div class="highlight"><pre><span></span><code>0:000&gt; dx @$cursession.TTD.Calls(&quot;ntdll!mem*&quot;).Count()
+@$cursession.TTD.Calls(&quot;ntdll!mem*&quot;).Count() : 0x2ef8
+</code></pre></div>
+
+<p>Will count the number of calls to function matching <code>ntdll!mem*</code> pattern, or even filter function calls per parameter</p>
+<div class="highlight"><pre><span></span><code>0:000&gt; dx @$cursession.TTD.Calls(&quot;Kernel*!VirtualAlloc*&quot;).Where( c =&gt; c.Parameters[3] == 0x40 ).Count()
+$cursession.TTD.Calls(&quot;Kernel*!VirtualAlloc*&quot;).Where( c =&gt; c.Parameters[3] == 0x40).Count() : 0x1
+</code></pre></div>
+
+<p>Which will filter the calls to function matching <code>Kernel*!VirtualAlloc*</code> pattern, where the 4th parameter is <code>PAGE_EXECUTE_READWRITE</code> (0x40).</p>
+<p>Another useful feature is the memory access, exposed by</p>
+<div class="highlight"><pre><span></span><code>0:000&gt; dx $cursession.TTD
+  [...]
+  Memory       [Returns memory access information for specified address range: TTD.Memory(startAddress, endAddress [, &quot;rwec&quot;])]
+</code></pre></div>
+
+<p>To take the real life example of a self-decrypting packer, that would allocate some memory (likely in RWX), then decrypt the code and finally jump to it. If we were to reverse such packer, we don't care much about how the payload is decrypted (could be a simple XOR, could be AES, could be custom crypto, etc.), what we only care about is what the code looks like once decrypted. And that becomes stupidly easy with TTD + DDM:</p>
+<div class="highlight"><pre><span></span><code>// Isolate the address(es) newly allocated as RWX
+0:000&gt; dx @$cursession.TTD.Calls(&quot;Kernel*!VirtualAlloc*&quot;).Where( f =&gt; f.Parameters[3] == 0x40 ).Select( f =&gt; new {Address : f.ReturnValue } )
+
+// Time-Travel to when the 1st byte is executed
+0:000&gt; dx @$cursession.TTD.Memory(0xAddressFromAbove, 0xAddressFromAbove+1, &quot;e&quot;)[0].TimeStart.SeekTo()​
+</code></pre></div>
+
+<p>Done! Then you can <code>.writemem</code> that code into a file that IDA can disassemble.</p>
+<blockquote>
+<p><em>Update (11/11/2018)</em> :</p>
+<p>And since all this goodness can be used from JavaScript (via the <code>host.namespace.Debugger</code> namespace), it's really not far to write scripts for automatically dump such payloads, track heap allocations, enumerate all files created etc. And it came to me a surprise (not really actually, <a class="fa fa-twitter" href="https://twitter.com/0vercl0k" target="_blank"> @0vercl0k</a> just told me), that when using the <code>ttd.exe</code> binary as a standalone, one can pass the <code>-children</code> flag allowing TTD to also record children processes.</p>
+</blockquote>
+<blockquote class="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">The Time-Travel Debugging tool from <a href="https://twitter.com/hashtag/WinDbg?src=hash&amp;ref_src=twsrc%5Etfw">#WinDbg</a> Preview can be used as a standalone binary (ttd.exe)<br><br>Copy the TTD\ directory and you can use TTD without <a href="https://twitter.com/hashtag/WinDbg?src=hash&amp;ref_src=twsrc%5Etfw">#WinDbg</a>, allowing you to script your <a href="https://twitter.com/hashtag/TTD?src=hash&amp;ref_src=twsrc%5Etfw">#TTD</a> recording useful for:<br>- <a href="https://twitter.com/hashtag/fuzzing?src=hash&amp;ref_src=twsrc%5Etfw">#fuzzing</a> crash replay<br>- <a href="https://twitter.com/hashtag/malware?src=hash&amp;ref_src=twsrc%5Etfw">#malware</a> analysis<br>- bug tracking <a href="https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html">pic.twitter.com/yYZrkNRmD1</a></p>&mdash; windbgtips (@windbgtips) <a href="https://twitter.com/windbgtips/status/1061684978612789248?ref_src=twsrc%5Etfw">November 11, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h3>Nothing is forgotten</h3>
+<p>Back to the notepad session. Even though no file was saved to disk, I did type some stuff on the keyboard, so I figured that they must have been recorded somewhere by TTD. Let's hunt them down!</p>
+<p>Notepad uses Windows' Messaging mechanism so that when a key is stroke, an event is passed down to notepad (or any other app fwiw) who decides whether to pick it up or not (the Windows Message internals is not the focus of this post but <a href="http://www.winprog.org/tutorial/message_loop.html">this is a pretty good introduction</a>), to know whether the canvas must be redrawn, the window close, etc. This messaging system being articulated around fetching messages (via <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmessage"><code>user32!GetMessage</code></a>) and pushing them (via <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessage"><code>user32!SendMessage</code></a>). The <code>GetMessage()</code> function prototype is :</p>
+<div class="highlight"><pre><span></span><code><span class="n">BOOL</span><span class="w"> </span><span class="nf">GetMessage</span><span class="p">(</span>
+<span class="w">  </span><span class="n">LPMSG</span><span class="w"> </span><span class="n">lpMsg</span><span class="p">,</span>
+<span class="w">  </span><span class="n">HWND</span><span class="w">  </span><span class="n">hWnd</span><span class="p">,</span>
+<span class="w">  </span><span class="n">UINT</span><span class="w">  </span><span class="n">wMsgFilterMin</span><span class="p">,</span>
+<span class="w">  </span><span class="n">UINT</span><span class="w">  </span><span class="n">wMsgFilterMax</span>
+<span class="p">);</span>
+</code></pre></div>
+
+<p>It is easily possible to filter those calls as mentioned earlier:</p>
+<div class="highlight"><pre><span></span><code>0:000&gt; dx @$cursession.TTD.Calls(&quot;user32!GetMessage*&quot;)
+@$cursession.TTD.Calls(&quot;user32!GetMessage*&quot;).Count() : 0x1e8
+</code></pre></div>
+
+<p>One way I found to narrow so many calls down is to see is to focus rather on the message itself, which is Parameters[0] of the function call:</p>
+<p><img alt="image_alt" src="/assets/images/windbg-ttd/notepad1.png"></p>
+<p>It seems that the message is always stored at 0xa30fb6fc00, and has the <a href="https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-msg">following structure</a></p>
+<div class="highlight"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">tagMSG</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">HWND</span><span class="w">   </span><span class="n">hwnd</span><span class="p">;</span>
+<span class="w">  </span><span class="n">UINT</span><span class="w">   </span><span class="n">message</span><span class="p">;</span>
+<span class="w">  </span><span class="n">WPARAM</span><span class="w"> </span><span class="n">wParam</span><span class="p">;</span>
+<span class="w">  </span><span class="n">LPARAM</span><span class="w"> </span><span class="n">lParam</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DWORD</span><span class="w">  </span><span class="n">time</span><span class="p">;</span>
+<span class="w">  </span><span class="n">POINT</span><span class="w">  </span><span class="n">pt</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DWORD</span><span class="w">  </span><span class="n">lPrivate</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">MSG</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PMSG</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">NPMSG</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">LPMSG</span><span class="p">;</span>
+</code></pre></div>
+
+<p>We can now monitor all the memory accesses to the address 0xa30fb6fc00</p>
+<div class="highlight"><pre><span></span><code>0:000&gt; dx -r1 -nv (*((wintypes!MSG *)0xa30fb6fc00))
+(*((wintypes!MSG *)0xa30fb6fc00))                 : {msg=0x102 wp=0x74 lp=0x140001} [Type: MSG]
+    [+0x000] hwnd             : 0x12044a [Type: HWND__ *]
+    [+0x008] message          : 0x102 [Type: unsigned int]
+    [+0x010] wParam           : 0x74 [Type: unsigned __int64]
+    [+0x018] lParam           : 1310721 [Type: __int64]
+    [+0x020] time             : 0x0 [Type: unsigned long]
+    [+0x024] pt               [Type: tagPOINT]
+</code></pre></div>
+
+<p><code>MSG.wParam</code> in particular will hold the value of the keycode when the key is stroke, so we can also narrow it to ASCII characters</p>
+<div class="highlight"><pre><span></span><code>0:000&gt; dx -g @$cursession.TTD.Memory(0xa30fb6fc10, 0xa30fb6fc10+8, &quot;w&quot;).Where(m =&gt; m.Value &gt;= 0x20 &amp;&amp; m.Value &lt; 0x80)
+===============================================================================================================================================================================
+=           = (+) EventType   = (+) ThreadId = (+) UniqueThreadId = (+) TimeStart = (+) TimeEnd = (+) AccessType = (+) IP            = (+) Address     = (+) Size = (+) Value =
+===============================================================================================================================================================================
+= [0x5e]    - MemoryAccess    - 0x1dcc       - 0x2                - A04C:6A       - A04C:6A     - Write          - 0x7ffe169066ae    - 0xa30fb6fc10    - 0x8      - 0x54      =
+= [0x5f]    - MemoryAccess    - 0x1dcc       - 0x2                - A050:7        - A050:7      - Write          - 0x7ffe16911b4f    - 0xa30fb6fc10    - 0x8      - 0x74      =
+= [0x60]    - MemoryAccess    - 0x1dcc       - 0x2                - A695:6A       - A695:6A     - Write          - 0x7ffe169066ae    - 0xa30fb6fc10    - 0x8      - 0x74      =
+= [0x61]    - MemoryAccess    - 0x1dcc       - 0x2                - A70E:6A       - A70E:6A     - Write          - 0x7ffe169066ae    - 0xa30fb6fc10    - 0x8      - 0x48      =
+= [0x64]    - MemoryAccess    - 0x1dcc       - 0x2                - A72D:7        - A72D:7      - Write          - 0x7ffe16911b4f    - 0xa30fb6fc10    - 0x8      - 0x68      =
+= [0x65]    - MemoryAccess    - 0x1dcc       - 0x2                - ABE3:6A       - ABE3:6A     - Write          - 0x7ffe169066ae    - 0xa30fb6fc10    - 0x8      - 0x68      =
+[...]
+</code></pre></div>
+
+<p>That's a lot more interesting so we use LINQ even further to print the characters directly by casting the Value to <code>char</code> and we get</p>
+<div class="highlight"><pre><span></span><code>0:000&gt; dx -g @$cursession.TTD.Memory(0xa30fb6fc10, 0xa30fb6fc10+8, &quot;w&quot;).Where(m =&gt; m.Value &gt;= 0x20 &amp;&amp; m.Value &lt; 0x80).Select( c =&gt; (char)c.Value )
+====================
+=                  =
+====================
+= [0x5e] : 84 &#39;T&#39;  =
+= [0x5f] : 116 &#39;t&#39; =
+= [0x60] : 116 &#39;t&#39; =
+= [0x61] : 72 &#39;H&#39;  =
+= [0x64] : 104 &#39;h&#39; =
+= [0x65] : 104 &#39;h&#39; =
+= [0x66] : 84 &#39;T&#39;  =
+= [0x67] : 73 &#39;I&#39;  =
+= [0x68] : 105 &#39;i&#39; =
+= [0x69] : 105 &#39;i&#39; =
+= [0x6a] : 72 &#39;H&#39;  =
+= [0x6d] : 83 &#39;S&#39;  =
+= [0x6e] : 115 &#39;s&#39; =
+= [0x6f] : 115 &#39;s&#39; =
+= [0x70] : 73 &#39;I&#39;  =
+= [0x71] : 32 &#39; &#39;  = // Reads &#39;This &#39;
+[...]
+</code></pre></div>
+
+<p>Here we see multiple times the same character: the reason being that for one key stroke, multiple events are raised (<code>WM_KEYDOWN</code>, <code>WM_KEYUP</code>). Since we haven't done any filtering at the DDM level, notepad captures all the events. It would be fairly easy from that point to create a JS script to only get one type of message, but this will be left at the curiosity of the reader (focus on capturing only the messages of type <a href="https://docs.microsoft.com/en-us/windows/desktop/inputdev/wm-keydown"><code>WM_KEYDOWN</code></a> (0x100).</p>
+<h2>Last words</h2>
+<p>This concludes this light post about TTD and its DDM integration.</p>
+<p>TTD brings a new approach to traditional debugging which is a huge plus. Not only that, but its integration in WinDbg with LINQ and DDM makes it even more powerful, and I hope this small post helped in making those tools more approachable.</p>
+<p>In the mean time, I'll leave you with some links to dig deeper:</p>
+<ul>
+<li><a href="https://doar-e.github.io/blog/2017/12/01/debugger-data-model/" target="_blank">Debugger data model, Javascript &amp; x64 exception handling</a></li>
+<li><a href="https://www.youtube.com/watch?v=qFhJLbh6zzc&amp;" target="_blank">Channel9 - Introduction to Time Travel Debugging</a></li>
+<li><a href="https://docs.microsoft.com/en-us/shows/defrag-tools/186-time-travel-debugging-advanced" target="_blank">Channel9 - Advanced Time Travel Debugging</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLjAuO31Rg973XOVdi5RXWlrC-XlPZelGn" target="_blank">WinDbg YouTube Playlist</a></li>
+</ul>
+<p>Cheers!</p>
+            </section>
+
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Some Time Travel musings&amp;url=https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                
+              
+                <aside class="post-tags">
+<a href="https://blahcat.github.io/tag/windows">windows</a><a href="https://blahcat.github.io/tag/ttd">ttd</a><a href="https://blahcat.github.io/tag/js">js</a><a href="https://blahcat.github.io/tag/windbg">windbg</a><a href="https://blahcat.github.io/tag/malware">malware</a>                </aside>
+              
+               <a title="Category" style="font-weight: bold;" class="category_link" href="https://blahcat.github.io/category/research">research</a>
+
+                <div class="clear"></div>
+
+                <aside class="post-discussions">
+                    <div id="discussion_thread">
+                      Continue the discussion on
+                      <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=Some Time Travel musings">
+                        <i class="fa fa-github fa-lg"></i>
+                        GitHub
+                      </a>
+                      <div class="clear"></div>
+                    </div>
+                  </aside>
+
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="https://blahcat.github.io/assets/images/authors/hugsy.png" alt="hugsy" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="https://blahcat.github.io/author/hugsy">hugsy</a></h4>
+                            <p class="post-author-about">BWAAAAHHHH</p>
+                            <span class="post-author-website"><a href="/author/hugsy"><i class="ic ic-link"></i> Website</a></span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/hugsy"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-twitter"><a target="_blank" href="https://twitter.com/_hugsy_"><i class="ic ic-twitter"></i> Twitter</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://blahcat.github.io/posts/2018/12/02/quick-visualization-of-a-binary-file.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">Quick visualization of a binary file</h2>
+                            <p class="post-nav-excerpt">Here's a simple trick that I learned from the amazing @scanlime to quickly (and...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://blahcat.github.io/posts/2018/03/11/fuzzing-arbitrary-functions-in-elf-binaries.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Fuzzing arbitrary functions in ELF binaries</h2>
+                            <p class="post-nav-excerpt">I decided to give a descent test to the LIEF project. Executable parsers are not a new...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme"><a class="fa fa-twitter fa-3x" href="https://twitter.com/ctf_blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-github fa-3x" href="https://github.com/blahcat" target="_blank"></a>&nbsp;&nbsp;<a class="fa fa-youtube fa-3x" href="https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" target="_blank"></a></span>
+          <span class="credits-software">Powered by <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a> and <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a> theme</span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://blahcat.github.io/theme/js/script.js"></script>
+
+    <!-- Script specified by the user -->
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+</body>
+</html>
