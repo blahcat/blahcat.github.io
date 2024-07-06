@@ -245,22 +245,18 @@ kd> dx -g @$cursession.Processes.Select( p => new { ProcessName = p.Name, Pml4Ba
 Across several reboots in my VM labs, only 2 matches are shown consistently
 
  * Windows 2004 x64 Generation 1 (i.e. BIOS)
-```text
-========================================================
-=             = ProcessName            = Pml4Base      =
-========================================================
-= [0x0]       - Idle                   - 0x1aa000      =
-= [0x4]       - System                 - 0x1aa000      =
-```
+
+| PID | ProcessName | Pml4Base |
+|:--:|:--:|:--:|
+| 0x0 | Idle | 0x1aa000 |
+| 0x4 | System | 0x1aa000 |
 
  * Windows 2004 x64 Generation 2 (i.e. UEFI)
-```text
-=========================================================
-=            = ProcessName             = Pml4Base       =
-=========================================================
-= [0x0]      - Idle                    - 0x6d4000       =
-= [0x4]      - System                  - 0x6d4000       =
-```
+
+| PID | ProcessName | Pml4Base |
+|:--:|:--:|:--:|
+| 0x0 | Idle | 0x6d4000 |
+| 0x4 | System | 0x6d4000 |
 
 
 0x1aa000 for the physical address of a Gen1 (BIOS) Hyper-V VM, and 0x6d4000 for a Gen2 (UEFI). This seems to partially coincide with what was said in [Ricerca's article](#1) about the fact that the PML4 for System is at unrandomized physical address in most cases. From my limited testing the following physical addresses were found consistently (for Windows 2004 x64 with Kd):
@@ -299,7 +295,7 @@ for index in range(system_pml4_root, system_pml4_root+size_of_page, size_of_entr
     print("self-reference entry is at index: %d" % index)
 ```
 
-I hope not to make it sound simple, it is not and took me quite some time to figure out, so massive props to [@hugeh0ge](https://twitter.com/hugeh0ge){:target="_blank"} and [@_N4NU_](https://twitter.com/_N4NU_){:target="_blank"} for the technique, and [@chompie1337](https://web.archive.org/web/20220619035731/twitter.com/chompie1337){:target="_blank"} for the implementation. This technique provides a somewhat reliable way to defeat KASLR, SMEP & SMAP with no other vulnerability, but by mere knowledge of Intel processors and Windows memory management inner workings, for the vulnerability CVE-2020-0796, which, due to Microsoft's effort, made it tough.
+I hope not to make it sound simple, it is not and took me quite some time to figure out, so massive props to [`@hugeh0ge`](https://twitter.com/hugeh0ge){:target="_blank"} and [`@_N4NU_`](https://twitter.com/_N4NU_){:target="_blank"} for the technique, and [`@chompie1337`](https://web.archive.org/web/20220619035731/twitter.com/chompie1337){:target="_blank"} for the implementation. This technique provides a somewhat reliable way to defeat KASLR, SMEP & SMAP with no other vulnerability, but by mere knowledge of Intel processors and Windows memory management inner workings, for the vulnerability CVE-2020-0796, which, due to Microsoft's effort, made it tough.
 
 Thanks for reading...✌
 
