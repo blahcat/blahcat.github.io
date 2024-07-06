@@ -65,7 +65,7 @@ Sel        Base              Limit          Type    l ze an es ng Flags
 002B 00000000`00000000 00000000`ffffffff Data RW Ac 3 Bg Pg P  Nl 00000cf3
 ```
 
-There's more to say about the Segmentation, but for our purpose (reminder: _how does the CPU goes from VA to PA?_)
+There is plenty more to say about the segmentation mechanism on x86, but for our purpose (reminder: _how does the CPU goes from VA to PA?_), we'll stick to those basic highlights.
 
 
 ### Paging
@@ -75,13 +75,13 @@ Preparing this post, I came across [this blog post](https://connormcgarr.github.
 The best summary can be given by this diagram (again from AMD's manual)
 
 ![image_alt](https://i.ibb.co/k5TDWgw/image.png)
-(Src: AMD Programmer's Manual Volume 2)
+_Source: AMD Programmer's Manual Volume 2_
 
 
 
 ## What & why the hell is "Self-Reference PML4 entry" ?
 
-Back to the question, how the CPU goes from VA to PA, there is an intrinsic problem: the CPU only uses virtual address so how could the processor manipulates the permissions, flags, etc. of those PTEs which are physical? Simply by mapping the PTE tables in VAS, right? But that creates a recursive problem, because we still don't know how to go from VA to PA. And that's precisely where "Self-Reference PML4 entry" comes in. But let's go back a bit.
+Back to the problem at hand, i.e. understand how does the CPU go from VA to PA, there is an intrinsic problem: the CPU only uses virtual address so how could the processor manipulates the permissions, flags, etc. of those PTEs which are physical? Simply by mapping the PTE tables in VAS, right? But that creates a recursive problem, because we still don't know how to go from VA to PA. And that's precisely where "Self-Reference PML4 entry" comes in. But let's go back a bit.
 
 When a new process is created, a new PML4 is also allocated holding the physical root address for our process address space. From that physical root address and with all the offsets from the VA itself, the MMU can crawl down the physical page directories until getting the wanted data (see "Paging" above). This physical address is stored in the [`nt!_KPROCESS`](https://www.vergiliusproject.com/kernels/x64/Windows%2010%20%7C%202016/2004%2020H1%20(May%202020%20Update)/_KPROCESS){:target="_blank"} structure of the process, precisely in `_KPROCESS.DirectoryTableBase`.
 
@@ -299,9 +299,29 @@ for index in range(system_pml4_root, system_pml4_root+size_of_page, size_of_entr
     print("self-reference entry is at index: %d" % index)
 ```
 
-I hope not to make it sound simple, it is not and took me quite some time to figure out, so massive props to [`@hugeh0ge`](https://twitter.com/hugeh0ge){:target="_blank"} and [@_N4NU_](https://twitter.com/_N4NU_){:target="_blank"} for the technique, and [@chompie1337](https://web.archive.org/web/20220619035731/twitter.com/chompie1337){:target="_blank"} for the implementation. This technique provides a somewhat reliable way to defeat KASLR, SMEP & SMAP with no other vulnerability, but by mere knowledge of Intel processors and Windows memory management inner workings, for the vulnerability CVE-2020-0796, which, due to Microsoft's effort, made it tough.
+I hope not to make it sound simple, it is not and took me quite some time to figure out, so massive props to [@hugeh0ge](https://twitter.com/hugeh0ge){:target="_blank"} and [@_N4NU_](https://twitter.com/_N4NU_){:target="_blank"} for the technique, and [@chompie1337](https://web.archive.org/web/20220619035731/twitter.com/chompie1337){:target="_blank"} for the implementation. This technique provides a somewhat reliable way to defeat KASLR, SMEP & SMAP with no other vulnerability, but by mere knowledge of Intel processors and Windows memory management inner workings, for the vulnerability CVE-2020-0796, which, due to Microsoft's effort, made it tough.
 
 Thanks for reading...✌
+
+_Update_: A `@$selfref()` function was added to `PageExplorer.js`, allowing to easily retrieve the PML4 self-reference (tested 8 -> 11)
+
+```text
+0: kd> dx @$selfref()
+@$selfref()      : 0x1ec
+0: kd> dx @$ptview().pml4_table[ @$selfref() ].PhysicalPageAddress ==  @$ptview().pml4_table[ @$selfref() ].Children[ @$selfref() ].PhysicalPageAddress
+@$ptview().pml4_table[ @$selfref() ].PhysicalPageAddress ==  @$ptview().pml4_table[ @$selfref() ].Children[ @$selfref() ].PhysicalPageAddress : true
+0: kd> dx @$ptview().pml4_table[ @$selfref() ]
+@$ptview().pml4_table[ @$selfref() ]                 : PML4 Entry(PA=7d5000, Flags=[P RW K - - A D - -])
+    address          : 0x7d5f60
+    value            : 0x80000000007d5063
+    Flags            : Flags=[P RW K - - A D - -]
+    PageFrameNumber  : 0x7d5
+    Pfn              [Type: _MMPFN]
+    PhysicalPageAddress : 0x7d5000
+    Pte              : 0xfffff67b3d9ecf60 [Type: _MMPTE *]
+    Level            : PML4
+    Children
+```
 
 
 # Links
