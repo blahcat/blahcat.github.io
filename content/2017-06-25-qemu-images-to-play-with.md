@@ -27,7 +27,7 @@ All you need is [Qemu](http://www.qemu.org). Then download the link to your imag
 
 If you are on Linux/OSX, run in a terminal (or double-click) on the `./start.sh` script, when our Windows friend would simply need to double-click the `./start.bat`.
 
-Each VM will also TCP forward its SSH port for easy interaction. On Linux/OSX, just run `./ssh.sh`. Windows users will need tools like [`PuTTY`](http://www.putty.org).
+Each VM will also TCP forward its SSH port for easy interaction. On Linux/OSX, just run `./ssh.sh`. Windows users will need tools like [`PuTTY`](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html).
 
 Those images are battery-included, development tools, compilation and debugging tools too. Ever wondered what SPARC assembly looks like? Always feeling itchy to learn about memory corruption on PowerPC? Wait no more!
 
