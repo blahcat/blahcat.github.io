@@ -246,14 +246,14 @@ Across several reboots in my VM labs, only 2 matches are shown consistently
 
  * Windows 2004 x64 Generation 1 (i.e. BIOS)
 
-| PID | ProcessName | Pml4Base |
+| PID | Process Name | Pml4Base |
 |:--:|:--:|:--:|
 | 0x0 | Idle | 0x1aa000 |
 | 0x4 | System | 0x1aa000 |
 
  * Windows 2004 x64 Generation 2 (i.e. UEFI)
 
-| PID | ProcessName | Pml4Base |
+| PID | Process Name | Pml4Base |
 |:--:|:--:|:--:|
 | 0x0 | Idle | 0x6d4000 |
 | 0x4 | System | 0x6d4000 |
