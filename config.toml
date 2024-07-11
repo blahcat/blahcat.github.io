@@ -16,8 +16,8 @@ taxonomies = [
 
 [markdown]
 highlight_code = true
-render_emoji = true
 highlight_theme = "base16-ocean-dark" # https://www.getzola.org/documentation/getting-started/configuration/#syntax-highlighting
+render_emoji = true
 bottom_footnotes = true
 smart_punctuation = true
 external_links_target_blank = true

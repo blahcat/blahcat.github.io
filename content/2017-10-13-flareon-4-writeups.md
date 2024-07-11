@@ -20,7 +20,7 @@ This post is mostly a dump of the notes taken during all the challenges. Link to
 challenges and scripts are also given.
 
 
-# Menu #
+# Menu
 
 For quick jump:
 
@@ -33,7 +33,7 @@ All the challenges are in the ZIP file that you
 can [download here](https://mega.nz/#F!lVQzXZZQ!bZkK8Q2XkLb0O-RE-hCl1g).
 
 
-# The Arsenal #
+# The Arsenal
 
 My complete arsenal was (in no particular order):
 
@@ -70,16 +70,16 @@ My complete arsenal was (in no particular order):
 And a lot of C and Python snippets...
 
 
-# Challenge 1 #
+# Challenge 1
 
-## Instruction ##
+# Instruction
 
 ```text
 Welcome to the Fourth Flare-On Challenge! The key format, as always, will be a
 valid email address in the @flare-on.com domain.
 ```
 
-## Solution ##
+# Solution
 
 By checking the [HTML source
 code](https://mega.nz/#!1EQhhLrT!uWOWRRGc-8Lx2D0iLxkSk3qMSK-xcWBV8Pnj8CYTaRg),
@@ -98,16 +98,16 @@ ClientSideLoginsAreEasy@flare-on.com
 [Back to Menu](#menu)
 
 
-# Challenge 2 #
+# Challenge 2
 
-## Instruction ##
+# Instruction
 
 ```text
 You solved that last one really quickly! Have you ever tried to reverse engineer
 a compiled x86 binary? Let's see if you are still as quick.
 ```
 
-## Solution ##
+# Solution
 
 [`IgniteMe.exe`](https://mega.nz/#!gBIF0aYQ!82SWKCVa3hw2sI3f_2AsaHaoVwj2zux5ORXXfNMi2F4)
 is a small PE that reads
@@ -133,19 +133,19 @@ result R_y0u_H0t_3n0ugH_t0_1gn1t3@flare-on.com
 [Back to Menu](#menu)
 
 
-# Challenge 3 #
+# Challenge 3
 
 
-## Instruction ##
+# Instruction
 
-```
+```text
 Now that we see you have some skill in reverse engineering computer software,
 the FLARE team has decided that you should be tested to determine the extent of
 your abilities. You will most likely not finish, but take pride in the few
 points you may manage to earn yourself along the way.
 ```
 
-## Solution ##
+# Solution
 
 [`greek_to_me`](https://mega.nz/#!4cpGWS5S!QCTrpXnC8q4WYnMHaxbqFA4mPDOVC4q2toAYGKSfe68) is a PE file that will
 start by binding and listen tcp/2222, and receive 4 bytes from the socket. This
@@ -182,7 +182,7 @@ print s.recv(0x100)
 
 which will show as a response:
 
-```
+```text
 Congratulations! But wait, where's my flag?
 ```
 
@@ -196,16 +196,16 @@ Revealing the key to this level.
 [Back to Menu](#menu)
 
 
-# Challenge 4 #
+# Challenge 4
 
 
-## Instruction ##
+# Instruction
 
-```
+```text
 You're using a VM to run these right?
 ```
 
-## Solution ##
+# Solution
 
 This challenge was very fun at the beginning, but the last part really sucked:
 [`notepad.exe`](https://mega.nz/#!IZA3nbLK!qdpuFX29rpXHBfEdXRWMq5R-gHw-5QHiN9cAMhx2vsk) is a small PE that by all
@@ -216,7 +216,7 @@ interesting strings:
 
 ![image_alt](/assets/images/flareon-2017/c2be22c2350ecf3a792cfa07a72ee0c6a55e129e60642577e70994e53c3e2efd.png)
 
-```
+```text
 %USERPROFILE%\flareon2016challenge
 ImageHlp.dll
 CheckSumMappedFile
@@ -300,7 +300,7 @@ with the ones we are looking for. All we need now is drop those files in the
 `flareon2016challenge` directory, and tweak `notepad.exe` to update its
 timestamp. After 4 executions we get the `key.bin` file properly filled:
 
-```
+```bash
 ➜  xd ~/ctf/flareon_2017/4/key.bin
 00000000  55 8b ec 8b 4d 0c 56 57  8b 55 08 52 ff 15 30 20  |U...M.VW.U.R..0 |
 00000010  c0 40 50 ff d6 83 c4 08  00 83 c4 08 5d c3 cc cc  |.@P.........]...|
@@ -318,19 +318,19 @@ And after updating `notepad` to the last PE timestamp, we get:
 # Challenge 5
 
 
-## Instruction ##
+# Instruction
 
-```
+```text
 You're doing great. Let's take a break from all these hard challenges and play a little game.
 ```
 
-## Solution ##
+# Solution
 
 [`pewpewboat.exe`](https://mega.nz/#!pdgDDITS!CCXq80gh7M2YxOosfdd_jKXG2N9uUSG_1_5NLY_rbFg) is not a PE file but an
 x64 ELF that starts a nice ASCII implementation
 of [the Battleship game](https://en.wikipedia.org/wiki/Battleship_(game)).
 
-```
+```bash
 root@kali2:/ctf/flareon_2017/5 # ./pewpewboat.exe
 Loading first pew pew map...
    1 2 3 4 5 6 7 8
@@ -392,7 +392,7 @@ The function `draw_grid()` called with a pointer to the game board as
 parameter. By reading it, the function knows how to print a cell (empty, full)
 and therefore knows the configuration of the board.
 
-```
+```text
 gef➤  bp *0x403c3a
 gef➤  dps $rdi l1
 0x0000000000614010│+0x00: 0x0008087808087800	 ← $rax, $rdi
@@ -445,7 +445,7 @@ By advancing through all the levels, we can collect more letters:
 Reaching the final level and entering the valid positions of boats gets a
 message:
 
-```
+```text
 Final answer:
 Aye! You found some letters did ya? To find what you're looking for, you'll want to
 re-order them:
@@ -468,15 +468,15 @@ input, and after a bit of computation time obtain the key to finish the level:
 # Challenge 6
 
 
-## Instruction ##
+# Instruction
 
-```
+```text
 I hope you enjoyed your game. I know I did. We will now return to the topic of
 cyberspace electronic computer hacking and digital software reverse
 engineering.
 ```
 
-## Solution ##
+# Solution
 
 [`payload.dll`](https://mega.nz/#!Nd5g3ToA!ArZp4KMqteCSQQwywP2LE-xdYly-UoQEBoig4CfCuIY) is a PE32+ DLL x86-64. The
 DLL doesn't sweat much info out of the box, so I decide to use both dynamic and
@@ -573,7 +573,7 @@ the
 [Export Directory table](http://resources.infosecinstitute.com/the-export-directory/) then
 calls the function 0x180004710:
 
-```
+```asm
 .text:000000018000471E mov     [rsp+48h+var_18], rax
 .text:0000000180004723 lea     rcx, [rsp+48h+SystemTime] ; lpSystemTime
 .text:0000000180004728 call    cs:GetSystemTime
@@ -651,7 +651,8 @@ CallWithArgs(addr, p1, p2, p3, p4);
 ```
 
 That will print out successively the key parts via successive `MessageBox` calls.
-```
+
+```text
 0x77, 0x75, 0x75, 0x75, 0x74, 0x2d, 0x65, 0x78, 0x70, 0x30, 0x72, 0x74,
 0x73, 0x40, 0x66, 0x6c, 0x61, 0x72, 0x65, 0x2d, 0x6f, 0x6e, 0x2e, 0x63,
 ```
@@ -665,14 +666,14 @@ which translated gives `wuuut-exp0rts@flare-on.com`
 # Challenge 7
 
 
-## Instruction ##
+# Instruction
 
-```
+```text
 I want to play another game with you, but I also want you to be challenged
 because you weren't supposed to make it this far.
 ```
 
-## Solution ##
+# Solution
 
 
 [`zsud.exe`](https://mega.nz/#!BQIlHJ6Z!_-qOpHyiXaZqq2CV_o42du5blCGmkzrlJKrXs6WG2oU) is a PE32 binary. Running
@@ -681,7 +682,7 @@ because you weren't supposed to make it this far.
   1. this binary is C# compiled
   1. it embeds a DLL
 
-```
+```bash
 $  binwalk zsud.exe
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
@@ -831,15 +832,15 @@ mudd1ng_by_y0ur53lph@flare-on.com
 
 # Challenge 8
 
-## Instruction ##
+# Instruction
 
-```
+```text
 You seem to spend a lot of time looking at your phone. Maybe you would finish a mobile challenge faster.
 I want to play another game with you, but I also want you to be challenged
 because you weren't supposed to make it this far.
 ```
 
-## Solution ##
+# Solution
 
 This really fun challenge offers an Android APK
 file, [`flair.apk`](https://mega.nz/#!xFoXkTRa!L3h7J_copL4NuA3pEW0bR5Acrz7LeLXVFTV2sb_Ha08). The static analysis was
@@ -874,7 +875,7 @@ app. JADX shows that when the validation button is clicked on, the method
 function is a simple `memcmp()`-like function, so we can break on it and dump
 its arguments:
 
-```
+```bash
 $ jdb -attach localhost:8700
 > methods com.flare_on.flair.Brian
 [...]
@@ -960,16 +961,16 @@ And finally:
 
 
 
-## Instruction ##
+# Instruction
 
-```
+```text
 One of our computer scientists recently got an Arduino board. He disappeared for
 two days and then he went crazy. In his notebook he scrawled some insane
 jibberish that looks like HEX. We transcribed it, can you solve it?
 ```
 
 
-## Solution ##
+# Solution
 
 The challenge is in a text file
 named [`remorse.ino.hex`](https://mega.nz/#!NFQwXKYQ!OhtgRSr6U4yRBMnflhIwGgMZJXYaEeMnJG-1m0bWFJ4). This format
@@ -1008,7 +1009,7 @@ to manipulate the PINB and PINC (resp. at offset 0x23 and 0x26) without success,
 I saw that a change of value in PIND (offset 0x29) immediately provoked a
 response from the firmware:
 
-```
+```bash
 $ avr-gdb  -q -ex 'target remote localhost:1234'
 [...]
 (gdb) set {char}0x29=0
@@ -1050,16 +1051,16 @@ input/output data from the PIN or what the ABI was doing. So more than ever, RTF
 # Challenge 10
 
 
-## Instruction ##
+# Instruction
 
-```
+```text
 We have tested you thoroughly on x86 reversing but we forgot to cover some of
 the basics of other systems. You will encounter many strange scripting languages
 on the Information Superhighway. I know that Interweb challenges are easy, but
 we just need you to complete this real quick for our records.
 ```
 
-## Solution ##
+# Solution
 
 Another guessing game type of challenge. The challenge comes as a PHP script
 named [`shell.php`](https://mega.nz/#!MUAWhDTQ!qzAe4c6O0ADp3YyfCNVF0gimNSs44kvpLWwqcoldoKs). It was solvable in 3 different steps:
@@ -1082,7 +1083,7 @@ line 15, we know that the block once de-XOR-ed will have all bytes in
 Now the guessing game starts: we must guess at the same time the length and
 the key. So the idea is in pseudo-code
 
-```
+```text
 assuming len(key) = 32
 assuming charset = "0123456789abcdef"
 let candidate = (key[0], len(32))
@@ -1131,7 +1132,7 @@ chunk.
 
 This will be the main idea:
 
-```
+```python
 possible_candidates = {0: "abc", 1: "012", 2: "f", etc...}
 possible_block = []
 block_size = 4  # pure assumption
@@ -1146,7 +1147,7 @@ for candidate in generate_all_candidates( possible_candidates[0:block_size] ):
 I used Python's `itertools.product` to generate all the candidate blocks, and
 little by little recovered the value for `$param`:
 
-```
+```bash
 $ python bf2.py
 possible_key=de6952b84a49b934acb436418ad9d93d237df05769afc796d063000000000000
 (0, '$c=\'\';\r\n$key = "";\r\nif (isset($_POST[\'o_o\']))\r\n  $ka')
@@ -1199,7 +1200,7 @@ Just like step1 this approach gives us 2 possible length for the flag prefix
 
 So there again, semi-manual brute-force:
 
-```
+```python
 i = 9
 k0 = key[0::3]
 for t in string.printable:
@@ -1213,7 +1214,7 @@ for t in string.printable:
 We quickly notice that the output has some HTML in it, so we can discard
 candidates with invalid HTML patterns. For example:
 
-```
+```bash
 ➜  python  bf.py
 AAAAAAAA0froc ['8titl', 'ged C', '`</ti', ')- Ma', "41' H", '\t\n<bo', 'pext=', 'klor=', 'kd0="', '0froc', '$titl', 'phieu', 'anri"', 'gript', 'perva', '/=7,i', "X\\n';", '/=P[i', 'n-j+n', '6])j=', 'jerHT', 'ge(4)', '+scri', 'kdy>\r']
 AAAAAAAA2froc [':titl', 'eed C', 'b</ti', '+- Ma', "61' H", '\x0b\n<bo', 'rext=', 'ilor=', 'id0="', '2froc', '&titl', 'rhieu', 'cnri"', 'eript', 'rerva', '-=7,i', "Z\\n';", '-=P[i', 'l-j+n', '4])j=', 'herHT', 'ee(4)', ')scri', 'idy>\r']
@@ -1231,7 +1232,7 @@ so forth. Reiterating this for all bytes, we get the first subkey to be
 And reiterating the exact same thing for the 2nd and 3rd base64-encoded block
 and we get all the subkeys:
 
-```
+```python
 >>> k0='t_rsaat_4froc'
 >>> k1='hx__ayowkleno'
 >>> k2='3Oiwa_o3@a-.m'
@@ -1246,15 +1247,14 @@ and we get all the subkeys:
 # Challenge 11
 
 
-## Instruction ##
+# Instruction
 
-```
+```text
 Only two challenges to go. We have some bad hombres here but you're going to get
 the keys out.
-
 ```
 
-## Solution ##
+# Solution
 
 This challenge was out of space! And so fun! It comes as a PE32 file
 named [`covfefe.exe`](https://mega.nz/#!EdIHXLxD!ctm5aE88lVss0EafshM0APMebGDSjhEcXajC6F8GVYc).
@@ -1278,7 +1278,7 @@ The VM is an array of `int32_t` so
 The execution of the virtual machine starts at `pc_start = vm + 0x463`. And each
 instruction is executed in the same way:
 
-```
+```text
 execute_instruction(operand1, operand2, operand3) {
   [operand2] = [operand2] - [operand1]
   if [operand2] <= 0 && operand3 != -1:
@@ -1289,7 +1289,7 @@ execute_instruction(operand1, operand2, operand3) {
 Since the code is super easy, I decided to recreate the C source code from
 it. So first, I used WinDBG to dump the VM location:
 
-```
+```text
 0:000> .writemem F:\flareon_2017\11\dumpmem-00403000-L5000.dmp
 ```
 
@@ -1331,9 +1331,9 @@ And finally recover the key to this level = `subleq_and_reductio_ad_absurdum`.
 # Challenge 12
 
 
-## Instruction ##
+# Instruction
 
-```
+```text
 Sorry, we don't have a challenge for you. We were hacked and we think we lost
 it. Its name was "lab10" . The attacker left one binary behind and our
 sophisticated security devices captured network traffic (pcap) that may be
@@ -1341,7 +1341,7 @@ related. If you can recover the challenge from this and solve it then you win
 the Flare-On Challenge. If you can't then you do not win it.
 ```
 
-## Solution ##
+# Solution
 
 This level alone could have been an entire CTF. It came as 2 files:
 
@@ -1362,7 +1362,7 @@ the domain name doesn't point to the localhost
 The behavior seems consistent with the first TCP stream of the PCAP. However,
 the data received seems encoded/encrypted:
 
-```
+```text
 GET /secondstage HTTP/1.1
 Accept: */*
 Accept-Language: en-us
@@ -1395,7 +1395,7 @@ performs sequentially the following operations:
 Instead of decoding manually the encoded response from the C2 server, we can be
 lazy by recovering `secondstage.exe` breaking at 0x4104C1:
 
-```
+```text
 0:000> bp  0x4104C1; g
 Breakpoint 0 hit
 [...]
@@ -1463,7 +1463,7 @@ packet is received, the function ensures that its length is at least 0x24 bytes,
 and that the first 4 bytes are equal to "2017". This will be the aspect of the
 first 0x24 bytes of header:
 
-```
+```text
 0000 "2017"
 0004 DataCheckSum
 0008 HeaderSize
@@ -1483,7 +1483,7 @@ the instruction `004053CE cmp     edx, 4D4Ch`, which happens to be followed by a
 call to `Kernel32!VirtualAlloc()` with `PAGE_EXECUTE_READWRITE` (0x40) set for
 permission, then a `LoadLibraryA`. This must be it, so we can now use WinDBG to dump all those modules:
 
-```
+```text
 0:000> bp 004053ce ; g
 0:000> dd ecx+poi(ecx+3c)+50 l1
 0018d2b8  00017000
@@ -1575,7 +1575,7 @@ because it is a pure bitmap, there is no information of the dimensions of the
 image. In addition, the image is split in several packets, some of them are sent
 in plain text, like this
 
-```
+```hexdump
 00010A26  32 30 31 37 49 d8 69 59  24 00 00 00 4c 40 00 00   2017I.iY $...L@..
 00010A36  4c 40 00 00 51 29 8f 74  16 67 d7 ed 29 41 95 01   L@..Q).t .g..)A..
 00010A46  06 f5 05 45 1c 00 00 00  30 40 00 00 30 40 00 00   ...E.... 0@..0@..
@@ -1612,7 +1612,7 @@ to reach a host whose NetBIOS name is `larryjohnson-pc`, and if found, would run
 drop 2 files in `C:\staging`, `pse.exe` and `srv2.exe`. Finally it would execute
 the command:
 
-```
+```batch
 pse.exe \\larryjohnson-pc -i -c -f -d -u larry.johnson -p n3v3rgunnag1veUup -accepteula srv2.exe
 ```
 
@@ -1668,7 +1668,7 @@ base64 encoded key. And it will AES encrypt the file with the given key.
 As seen in the capture above, we were capable of decrypting the packet that
 holds the command used for encrypting the file.
 
-```
+```batch
 c:\staging\cf.exe lab10.zip tCqlc2+fFiLcuq1ee1eAPOMjxcdijh8z0jrakMA/jxg=
 ```
 
@@ -1712,7 +1712,7 @@ if __name__ == "__main__":
     open("lab10.zip", "wb").write(decrypted_file_content)
 ```
 
-```
+```bash
 $ python uf.py crypfile
 [+] data_size = 0x89334
 [+] iv: fec85f816b82806996fc991b5731d2e1
@@ -1735,7 +1735,7 @@ The answer is: 'n3v3r_gunna_l3t_you_down_1987_4_ever@flare-on.com'
 ```
 
 
-# Conclusion #
+# Conclusion
 
 Thank you to FireEye for those fun challenges... and congratulations to all the
 winners (especially those who managed to finish in under a week, massive

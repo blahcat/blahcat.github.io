@@ -12,7 +12,7 @@ categories = ["tutorial"]
 header-img = "/img/qemu-img.png"
 +++
 
-## Building a Debian Stretch (9) QEMU image running MIPSel ##
+# Building a Debian Stretch (9) QEMU image running MIPSel
 
 > **TL;DR**
 > Two new images, Debian Stretch on MIPSel and MIPS64el were added to
@@ -192,12 +192,12 @@ exit 0
 ```
 
 And the `ssh.sh`:
+
 ```bash
 #!/bin/sh
 echo "Existing users : 'root/root' & 'user/user'"
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 22055 user@127.0.0.1 -- $*
 exit 0
-
 ```
 
 For Windows, simply convert `script.sh` to Batch.
@@ -210,7 +210,7 @@ both have been added to the [folder on Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73
 The MIPS64el was created **exactly** the same way, except that QEMU required the
 proper CPU version to boot correctly:
 
-```
+```bash
 $ qemu-system-mips64el -M malta -cpu MIPS64R2-generic -m 1G \
   -hda ./disk.qcow2 \
   -initrd ./initrd.gz \

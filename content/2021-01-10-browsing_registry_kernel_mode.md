@@ -42,7 +42,7 @@ The best structure definition of a Hive I could find comes from [Windows Kernel 
 
 Some hives are loaded very early in the boot process, as the BCD needs to retrieve its configuration settings from it in the `BCD` hive; and also during kernel loading, hardware info are exposed from the `HARDWARE` hive. Once parsed and loaded from file to memory, all the system hives are linked via a `LIST_ENTRY` whose head is pointed by the exposed symbol `nt!CmpHiveListHead`, and can be iterated over as a list of `nt!_CMHIVE` object using the `nt!_CMHIVE.HiveList` field. Therefore a quick parsing can be done with our best friends WinDbg + DDM, which allows us to do some LINQ magic:
 
-```
+```text
 0: kd> dx -s @$hives = Debugger.Utility.Collections.FromListEntry(*(nt!_LIST_ENTRY*)&nt!CmpHiveListHead,"nt!_CMHIVE","HiveList")
 
 0: kd> dx @$hives.Count()
@@ -84,7 +84,7 @@ So when by browsing a key node, what to pay attention to are:
 
  - the SubKey list (i.e. ~_subfolders_)
 
-```
+```text
 0: kd> dt _CM_KEY_NODE
 nt!_CM_KEY_NODE
    [...]
@@ -95,7 +95,7 @@ nt!_CM_KEY_NODE
 
  - the Value list (i.e. ~_files_)
 
-```
+```text
 0: kd> dt _CM_KEY_NODE
 nt!_CM_KEY_NODE
   [...]
@@ -144,7 +144,7 @@ So the cell index is a ULONG, which can be decomposed as a bitmask that allows t
 
 Now how do we go from the key node to a cell, assuming we have a hive handle and an index? Remember above when we mentioned that the procedure to get to the cell is a function pointer inside the hive handle: `nt!_HHIVE.GetCellRoutine`? Well, that's how. Also interestingly, all the hive handles are pointing to the same function `nt!HvpGetCellPaged`, although it doesn't have to be the case:
 
-```
+```text
 0: kd> dt _HHIVE
 nt!_HHIVE
    +0x000 Signature        : Uint4B    // 0xbee0bee0
@@ -217,7 +217,7 @@ It was interesting to me to find that the engineers behind the CM have decided t
 
 Now that we've understood the logic behind Cells and how to navigate through them, the rest is easier to understand. As we've mentioned before, "Key Values" are roughly the equivalent of a regular filesystem files. To get the values of a specific key node, one can use the field `nt!_CM_KEY_NODE.ValueList` (of type `_CHILD_LIST`) we've briefly discussed above.
 
-```
+```text
 0: kd> dt _CHILD_LIST
 nt!_CHILD_LIST
    +0x000 Count            : Uint4B
@@ -226,7 +226,7 @@ nt!_CHILD_LIST
 
 Then it's as simple as it gets: the structure gives us the number of values and the Cell Index of the array (of the form of an array of size `_CHILD_LIST.Count` x `sizeof(HCELL_INDEX)`) of all the values of this key node. Then we simply iterate through the list of HCELL_INDEX using `GetCellAddress(KeyHive, Index)` to get the Key Nodes of type `CM_KEY_VALUE_SIGNATURE`: the type `CM_KEY_VALUE_SIGNATURE` will indicate that the current node has a structure of `nt!_CM_KEY_VALUE`, where the actual content and content length can be read.
 
-```
+```text
 0: kd> dt _CM_KEY_VALUE
 nt!_CM_KEY_VALUE
    +0x000 Signature        : Uint2B
@@ -247,7 +247,7 @@ nt!_CM_KEY_VALUE
 
 By knowing how cells work it is possible to know how subkeys will be linked: subkeys are just `_CM_KEY_NODE` objects. the structure gives 2 fields
 
-```
+```text
    +0x014 SubKeyCounts     : [2] Uint4B
    +0x01c SubKeyLists      : [2] Uint4B
 ```
@@ -265,7 +265,7 @@ graph LR;
 
 As we shown before from the linked list of `_CMHIVE` from `nt!CmpHiveListHead` we can iterate through all the system hives. Each hive object has a pointer to a handle of hive (`_HHIVE`) which exposes a `_DUAL` field named `Storage`: the index 0 is used for permanent storage, index 1 for volatile
 
-```
+```text
 0: kd> dt _DUAL
 nt!_DUAL
    +0x000 Length           : Uint4B
@@ -289,7 +289,7 @@ Y-- ".Storage[0=Permanent,1=Volatile]" --> W[_HMAP_DIRECTORY]
 
 The subkeys will be located in the `Map` element (of type `_HMAP_DIRECTORY`). The `_HMAP_DIRECTORY` structure simply contains 1 element, a table of 1024 `_HMAP_TABLE`, each of them structured of 1 element: a `Table` of 512 `_HMAP_ENTRY`.
 
-```
+```text
 0: kd> dt _HMAP_DIRECTORY
 nt!_HMAP_DIRECTORY
    +0x000 Directory        : [1024] Ptr64 _HMAP_TABLE
@@ -329,7 +329,7 @@ As a learning exercise, I always try to build a script/tool when digging into a 
 
 Example:
 
-```
+```text
 0: kd> dx @$cursession.Registry.Hives
 @$cursession.Registry.Hives                 : [object Generator]
     [0x0]            : \REGISTRY\MACHINE\SYSTEM

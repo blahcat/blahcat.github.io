@@ -77,7 +77,7 @@ Now the debugger is ready, you need to install WinDBG as the kernel debugger. A
 quick way, is to use [`Chocolatey`](https://chocolatey.org/) in an administrator prompt to install it
 as such:
 
-```
+```pwsh
 C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 <chocolatey is being installed...>
 C:\> choco install -y --force windbg
@@ -101,12 +101,13 @@ To enable it, start the Windows 7 debuggee VM, open a `cmd.exe` as
 Administrator, and add another entry to the boot loader
 using `bcdedit` utility:
 
-```
+```pwsh
 C:\> bcdedit /copy {current} /d "Windows 7 with kernel debug via COM"
 ```
 
 Then enable debug mode on new entry UUID:
-```
+
+```pwsh
 C:\> bcdedit /debug {UUID-RETURNED-BY-FORMER-COMMAND} on
 ```
 
@@ -116,14 +117,14 @@ Now instruct Windows serial communication as debugging medium, and use the
 "fastest" baud rate (i.e 115200 symbols/sec). Since we'll only use serial
 debugging for this VM, we can use the `bcdedit /dbgsettings` global switch.
 
-```
+```pwsh
 C:\> bcdedit /dbgsettings serial debugport:1 baud rate:115200
 ```
 
 *Note*: if we wanted to set debug settings specific to one entry of the boot
 loader, we would've used `bcdedit /set` instead. For instance:
 
-```
+```pwsh
 C:\> bcdedit /set {UUID-RETURNED-BY-FORMER-COMMAND} debugtype serial
 ```
 
@@ -151,7 +152,7 @@ Start the debugger VM first and prepare WinDBG for kernel-mode debugging
 
 WinDBG will then wait for communications on COM1.
 
-```
+```pwsh
 Microsoft (R) Windows Debugger Version 6.3.9600.17298 X86
 Copyright (c) Microsoft Corporation. All rights reserved.
 
@@ -215,7 +216,7 @@ Now open an administrator prompt and use `bcdedit` utility to create a
 new entry to the boot manager like we did on Windows 7, and enable the debug
 mode for it. But unlike Windows 7, now we have to setup the network properties:
 
-```
+```pwsh
 C:\> bcdedit /dbgsettings net hostip:ip.of.debugger.vm port:50000 key:Kernel.Debugging.Is.Fun
 C:\> bcdedit /set {dbgsettings} busparams <BusNumber>.<DeviceNumber>.<FunctionNumber>
 ```
@@ -230,7 +231,7 @@ Start the debugger VM first and prepare WinDBG for kernel-mode debugging
 (Ctrl-K) by selecting NET as debug vector, and set the Port and Key adequately.
 WinDBG will then be waiting for new connection:
 
-```
+```text
 Microsoft (R) Windows Debugger Version 6.3.9600.17336 AMD64
 Copyright (c) Microsoft Corporation. All rights reserved.
 

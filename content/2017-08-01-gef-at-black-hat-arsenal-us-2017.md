@@ -12,7 +12,7 @@ tags = ["gef","blackhat","arsenal"]
 header-img = "/img/gef-bh-usa-bg.png"
 +++
 
-## GEF at Black Hat Arsenal US 2017 ##
+# GEF at Black Hat Arsenal US 2017
 
 I had the privilege to be invited to present my tool [`GEF`](https://github.com/hugsy/gef){:target="_blank"} at [Black Hat Arsenal](https://blackhat.com){:target="_blank"} organized by [ToolsWatch](https://toolswatch.org){:target="_blank"} in Las Vegas this year.
 

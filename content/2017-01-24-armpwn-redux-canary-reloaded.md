@@ -17,7 +17,7 @@ header-img = "img/canary-header.png"
 > arbitrary file read.
 >
 
-## Intro ##
+# Intro
 
 First of, Happy New Year 2017 ✌
 
@@ -151,7 +151,7 @@ memory.
 The final exploitation script which combines all the steps described above can
 be found [here](https://gist.github.com/hugsy/a462b398721bfb7e6bbd678b6d0e852b).
 
-```
+```text
 $ python armpwn_leak_canary.py
 [+] Connected to 'rpi2-1:80'
 [+] Leaking AUVX

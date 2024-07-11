@@ -12,14 +12,14 @@ tags = ["windows","kernel", "mmu", "x64"]
 header-img = "/img/f7803990-4baa-4a9a-a09b-0cde30694fa6.png"
 +++
 
-Sometimes you read about a [completely awesome exploitation technique](#1), so you want to go deeper. So this is my notes about how trying to totally understand the exploitation of [CVE-2020-0796](#2), I ended up struggling finding good explanation about a critical structure of Windows paging mechanism: the "Self-Reference PML4 Entry".
+Sometimes you read about an awesome exploitation technique ([#1](#links)), so you want to go deeper. So this is my notes about how trying to totally understand the exploitation of CVE-2020-0796 ([#2](#links)), I ended up struggling finding good explanation about a critical structure of Windows paging mechanism: the "Self-Reference PML4 Entry".
 _Disclaimer_: If you came here for new stuff, so let me put your mind at peace: There's nothing new here, I don't claim to find anything what's being found and said by people way smarter, and I have probably understood it wrong anyway so don't judge/quote me. Also the post will only talk be about x64 and Windows here (and having a (L)KD open can help to follow along).
 
 
 
 ## MMU 101
 
-Although this post won't be only about the MMU (there's [a book for that](#3)), some background is required for understanding why there is a need for the so-called Self-Reference PML4 entry. The root question for that is a simple (but not trivial) one: how does the processor read/write a block of physical memory, **only** by knowing the virtual address, or in layman's term, how to go from Virtual Address to Physical Address?
+Although this post won't be only about the MMU (there's a book for that [#3](#links)), some background is required for understanding why there is a need for the so-called Self-Reference PML4 entry. The root question for that is a simple (but not trivial) one: how does the processor read/write a block of physical memory, **only** by knowing the virtual address, or in layman's term, how to go from Virtual Address to Physical Address?
 
 
 ### Segmentation
@@ -265,7 +265,7 @@ Across several reboots in my VM labs, only 2 matches are shown consistently
 | 0x4 | System | 0x6d4000 |
 
 
-0x1aa000 for the physical address of a Gen1 (BIOS) Hyper-V VM, and 0x6d4000 for a Gen2 (UEFI). This seems to partially coincide with what was said in [Ricerca's article](#1) about the fact that the PML4 for System is at unrandomized physical address in most cases. From my limited testing the following physical addresses were found consistently (for Windows 2004 x64 with Kd):
+0x1aa000 for the physical address of a Gen1 (BIOS) Hyper-V VM, and 0x6d4000 for a Gen2 (UEFI). This seems to partially coincide with what was said in Ricerca's article (see [#1](#links)) about the fact that the PML4 for System is at unrandomized physical address in most cases. From my limited testing the following physical addresses were found consistently (for Windows 2004 x64 with Kd):
 
 
 |      Platform       | PML4 Base |
@@ -330,8 +330,8 @@ _Update_: A `@$selfref()` function was added to `PageExplorer.js`, allowing to e
 
 What started picking my curiosity:
 
-  - [1] [Ricerca Security on exploiting the same bug](https://ricercasecurity.blogspot.com/2020/04/ill-ask-your-body-smbghost-pre-auth-rce.html){:name="1"}
-  - [2] [Chompie1337's CVE-2020-0796 exploit](https://github.com/chompie1337/SMBGhost_RCE_PoC/blob/master/exploit.py){:name="2"}
+  - [1] [Ricerca Security on exploiting the same bug](https://ricercasecurity.blogspot.com/2020/04/ill-ask-your-body-smbghost-pre-auth-rce.html)
+  - [2] [Chompie1337's CVE-2020-0796 exploit](https://github.com/chompie1337/SMBGhost_RCE_PoC/blob/master/exploit.py)
 
 
 The whole series of " Getting Physical: Extreme abuse of Intel based Paging Systems" by N. Economou & E. Nissim (CoreSecurity) is a must read/watch:
@@ -343,7 +343,7 @@ The whole series of " Getting Physical: Extreme abuse of Intel based Paging Syst
 
 Other useful resources:
 
-  - [3] ["What Makes It Page? The Windows 7 x64 Virtual Memory Manager" - M. Martignetti](https://www.amazon.com/What-Makes-Page-Windows-Virtual/dp/1479114294){:name="3"}
+  - [3] ["What Makes It Page? The Windows 7 x64 Virtual Memory Manager" - M. Martignetti](https://www.amazon.com/What-Makes-Page-Windows-Virtual/dp/1479114294)
   - ["Gynvael's Hacking Livestream #30: Windows Kernel Debugging Part III" - A. "honorary_bot" Shishkin](https://www.youtube.com/watch?v=7zTtVYjjquA)
   - ["Windows 8 Kernel Memory Protections Bypass" - J. Fetiveau](https://labs.f-secure.com/archive/windows-8-kernel-memory-protections-bypass/)
 

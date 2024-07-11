@@ -127,8 +127,7 @@ known thanks to the "Nice guy" command). So we need to:
    1. free the 3rd chunk
    1. free the 2nd chunk.
 
-```bash
-
+```text
           |  size = N      |
           |  data          |
           |   ..           |
@@ -140,7 +139,6 @@ known thanks to the "Nice guy" command). So we need to:
           |  data          |
           |                |
           |                |
-
 ```
 
 Upon the 2nd free, we will gain control of the `head_free_list_ptr`:

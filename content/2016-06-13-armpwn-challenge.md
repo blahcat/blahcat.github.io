@@ -9,7 +9,7 @@ categories = ["ctf", "research"]
 tags = ["pwn","arm","gef","gdb","ida","rop","pwntools"]
 +++
 
-## Info ##
+# Info
 
 A few weeks ago, I came across a GitHub repository created by [@5aelo](https://twitter.com/5aelo){:target="_blank" class="fa fa-twitter"} called [armpwn](https://github.com/saelo/armpwn) for people wanting
 to have a bit of ARM fun. I had recently spent some time adding new features and perfectionning old ones to
@@ -47,7 +47,7 @@ __Note__: since a solution to the challenge is available within the GitHub
 repo, I don't feel too bad publishing my own.
 
 
-## Web Application attack ##
+# Web Application attack
 
 Just like for a regular pentest, all we know here is that the port 80/tcp is open,
 and accessing to `/` redirect us to a page to turn on and off a LED (supposed
@@ -85,7 +85,7 @@ straight-forward, let's move on.
 Next, the binary analysis.
 
 
-## Reversing the binary ##
+# Reversing the binary
 
 We can use `IDA` to start with the static analysis. After a quick examination,
 the overall structure reveals itself quite clearly.
@@ -123,7 +123,7 @@ the socket and stored in local buffer of size 0xffc. The overflow comes clear as
 we controlled the size of the `Content-Length` header, we can forged an HTTP
 request whose body is big enough to corrupt the memory.
 
-```
+```asm
 .text:000015DC MOV     R1, #0          ; endptr
 .text:000015E0 MOV     R2, #10         ; base
 .text:000015E4 BL      strtol
@@ -201,14 +201,14 @@ highlights all the addresses in `$pc` executed.
 Using the `pattern` commands of `gef` we find out that we start overwriting the
 canary after sending 4042 bytes.
 
-## Exploitation ##
+# Exploitation
 
 ### Binary protections ###
 
 Even though we have a memory corruption, this is not enough since we have plenty
 of protection mechanism to defeat first ☹
 
-```
+```text
 gef➤  checksec
 [+] checksec for '/home/pi/armpwn/bin/websrv'
 Canary:                                           Yes
@@ -363,7 +363,7 @@ Now run it, enjoy the shell and a good coffee ☕
 The complete exploit code can be found
 [here](https://gist.github.com/hugsy/45d1c23f33f09126fe0838c1fe057687).
 
-## Final notes ##
+# Final notes
 
 Thanks to <a class="fa fa-twitter" href="https://twitter.com/5aelo" target="_blank"> @5aelo</a> for this fun
 challenge. It is a good way to get acquainted with

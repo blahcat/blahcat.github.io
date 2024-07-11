@@ -141,7 +141,7 @@ ULONG_PTR LookForThreadNamePoolAddress(PVOID pSystemBigPoolInfoBuffer, DWORD64 d
 
 That's pretty much it. [Put it all together](https://gist.github.com/hugsy/d89c6ee771a4decfdf4f088998d60d19) and you get:
 
-```
+```batch
 z:\> AllocateLargePool.exe 26948 4096
 [*] Target TID=26948
 [+] Data from buffer 000001BCD71A0000 (16 bytes) written at FFFFD8001E966010

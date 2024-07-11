@@ -14,8 +14,8 @@ header-img = "assets/images/libfuzzer-lief/header.png"
 
 I decided to give a descent test to
 the [LIEF](https://lief-project.github.io/) project. Executable parsers are
-[not](https://github.com/eliben/pyelftools) [a new](https://github.com/erocarrera/pefile) [thing]() but
-that one picked my curiosity (just like most Quarkslab projects) because it
+not a new thing ([pyelftools](https://github.com/eliben/pyelftools), [pefile](https://github.com/erocarrera/pefile), etc...)
+but that one picked my curiosity (just like most Quarkslab projects) because it
 also provides dead simple instrumentation functions. To top it up, LIEF is easy
 to use and well documented, which is becoming a rare perk in the circus of
 infosec tools.
@@ -54,7 +54,7 @@ realized this technique was relevant to dig into, so I chose to put it to
 practice by trying to find real vulnerabilities.
 
 
-## Concrete example: finding CVE-2018-6789 ##
+# Concrete example: finding CVE-2018-6789
 
 What better way to illustrate this technique than with a concrete example: earlier this
 week, <a class="fa fa-twitter" href="https://twitter.com/mehqq_" target="_blank"> mehqq_</a> released [a great blog post about CVE-2018-6789](https://devco.re/blog/2018/03/06/exim-off-by-one-RCE-exploiting-CVE-2018-6789-en/) detailing the exploit steps for an off-by-one vulnerability she discovered in Exim. The issue was fixed in [cf3cd306062a08969c41a1cdd32c6855f1abecf1](https://github.com/Exim/exim/commit/cf3cd306062a08969c41a1cdd32c6855f1abecf1) and given the CVE 2018-6789.
@@ -194,7 +194,7 @@ We can now use this skeleton to build a LibFuzzer-based fuzzer around this:
 
 Compile it, run it, and be amazed 😎 :
 
-```
+```bash
 $ clang-6.0 -DUSE_LIBFUZZER -O1 -g -fsanitize=fuzzer loader.cpp -no-pie -o fuzzer -ldl
 $ LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libasan.so.4.0.0 ./fuzzer
 INFO: Loaded 1 modules   (11 inline 8-bit counters): 11 [0x67d020, 0x67d02b),
@@ -218,7 +218,7 @@ And in less than a 1 second, we get the heap overflow found by <a class="fa fa-t
 >
 
 
-## Final words ##
+# Final words
 
 Although this technique is not as click-and-play like AFL since it requires a bit more work, it offers non-negligible pros:
 

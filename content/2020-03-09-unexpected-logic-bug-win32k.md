@@ -76,7 +76,7 @@ _EndTask+AF                   call    cs:__imp_GetWindowThreadProcessId
 And therein lied the bug: as shown above with the small C snippet, the owner of `GetDesktopWindow()` is `csrss` itself, therefore the lookup will return the `CSR_PROCESS` structure of `CSRSS` (which happens to be the first entry in the `CsrRootProcess` linked list). Finally, `winsrvext!EndTask()` will proceed to call `ntdll!NtTerminateProcess()` passing the handle to the
 process `CSRSS`, which has the value `(HANDLE)-1` (i.e. `GetCurrentProcess()`). WinDbg can be used to confirm that behavior:
 
-```
+```text
 0: kd> dps poi( csrsrv!CsrRootProcess )
 00000218`7d004550  00000000`00000c14 <- CSR_PROCESS.ClientId
 00000218`7d004558  00000000`00000c18
@@ -95,7 +95,7 @@ process `CSRSS`, which has the value `(HANDLE)-1` (i.e. `GetCurrentProcess()`). 
 
 Therefore, this will make `CSRSS` killing itself when invoking calling the syscall `nt!NtTerminateProcess(GetCurrentProcess(), 0 )`. As a critical process, killing CSRSS will immediately result in a BSoD, which BugCheck clearly shows. Also note that this crash can be triggered by any user even with any privilege. In WinDbg the faulting stack trace of our BSoD retraces exactly everything we show:
 
-```
+```text
 CRITICAL_PROCESS_DIED (ef)
         A critical system process died
 [...]

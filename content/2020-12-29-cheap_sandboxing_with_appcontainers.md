@@ -40,7 +40,7 @@ A useful feature added is the DllCharacteristics flag [`IMAGE_DLLCHARACTERISTICS
 
 AppContainers being session specific, they are linked to the Session Id: more precisely objects of the container will reside in the `\Sessions\<SessionId>\AppContainerNamedObjects\<AppContainerSid>`
 
-```
+```text
 lkd> dx @$cursession.Objects.Children.Where( x => x.Name == "Sessions").First().Children[2].Children
 @$cursession.Objects.Children.Where( x => x.Name == "Sessions").First().Children[2].Children                 : [object Generator]
     [0x0]            : \Sessions\2\AppContainerNamedObjects
@@ -138,7 +138,7 @@ Surprisingly not hard to implement in C/C++ (and by extension also in C#), I'm s
 
 The ~~complete~~ functional command line tool AppContainMe[[3]](#ref_3) that uses the AppContainer implementation allows to launch contained process:
 
-```
+```text
 PS> d:\code\pwn++\x64\release\appcontainme.exe
 [-]  syntax
         appcontainme.exe 'process_to_run.exe arg1 arg2' [d:\allowed\path1 d:\allowed\path2] [c:Capability1 c:Capability2] [r:regkey1 r:regkey2]
@@ -154,7 +154,7 @@ PS> AppContainMe powershell
 
 It won't also have any network access:
 
-```
+```text
 PS C:\WINDOWS\System32\WindowsPowerShell\v1.0> Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('http://google.com'))
 
 Exception calling "DownloadString" with "1" argument(s): "The remote name could not be resolved:
@@ -168,7 +168,7 @@ At line:1 char:1
 
 Or process listing:
 
-```
+```text
 PS C:\WINDOWS\System32\WindowsPowerShell\v1.0> ps
 
 Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
