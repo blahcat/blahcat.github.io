@@ -1,9 +1,13 @@
-date: 2020-12-29 00:00:00
-modified: 2020-12-29 00:00:00
-title: Cheap sandboxing with AppContainers
-author: hugsy
-category: research
-tags: windows, sandbox, appcontainer
++++
+title = "Cheap sandboxing with AppContainers"
+author = "hugsy"
+date = 2020-12-29T00:00:00Z
+updated = 2020-12-29T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows", "sandbox", "appcontainer"]
++++
 
 ## Background
 

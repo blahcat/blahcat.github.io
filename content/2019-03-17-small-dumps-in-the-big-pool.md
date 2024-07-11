@@ -1,11 +1,16 @@
-date: 2019-03-17 00:00:00
-modified: 2019-03-17 00:00:00
-title: Small dumps in the big pool
-author: hugsy
-category: research
-cover: assets/images/f4300721f56d68c92db76aa03c3bbd54.png
-og_image: assets/images/f4300721f56d68c92db76aa03c3bbd54.png
-tags: windows,kernel,pool,rw-primitive
++++
+title = "Small dumps in the big pool"
+author = "hugsy"
+date = 2019-03-17T00:00:00Z
+updated = 2019-03-17T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows,kernel,pool,rw-primitive"]
+
+[extra]
+header-img = "/img/f4300721f56d68c92db76aa03c3bbd54.png"
++++
 
 Or, on how to use the (Windows 10) new field `_ETHREAD.ThreadName` to stabilize kernel RW primitives
 

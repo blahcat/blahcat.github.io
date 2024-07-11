@@ -1,9 +1,13 @@
-date: 2021-01-10 00:00:00
-modified: 2021-01-10 00:00:00
-title: Browsing the registry in kernel-mode
-author: hugsy
-tags: windows , kernel , registry , windbg
-category: research
++++
+title = "Browsing the registry in kernel-mode"
+author = "hugsy"
+date = 2021-01-10T00:00:00Z
+updated = 2021-01-10T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows", "kernel", "registry", "windbg"]
++++
 
 One of Windows kernel subsystem I recently dug into is the Configuration Manager (CM), mostly because I found very scarce public resources about it despite its criticality: this subsystem is responsible for managing the configuration of all Windows resources, and in user-land is exposed via a very familiar mechanism, the [Windows Registry](https://docs.microsoft.com/en-us/troubleshoot/windows-server/performance/windows-registry-advanced-users). It is a pretty well documented [user-land mechanism](https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry), and so is its [kernel driver API](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/registry-trees-and-keys). My curiosity was around its inner working, and all the few (but brilliant) resources can be found in the link section below.
 

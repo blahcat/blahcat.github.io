@@ -1,9 +1,13 @@
-date: 2018-12-02 00:00:00
-modified: 2018-12-02 00:00:00
-title: Quick visualization of a binary file
-author: hugsy
-category: minis
-tags: binary,visualization
++++
+title = "Quick visualization of a binary file"
+author = "hugsy"
+date = 2018-12-02T00:00:00Z
+updated = 2018-12-02T00:00:00Z
+
+[taxonomies]
+categories = ["minis"]
+tags = ["binary","visualization"]
++++
 
 
 Here's a simple trick that I learned from the amazing  <a class="fa fa-twitter" href="https://twitter.com/scanlime" target="_blank"> @scanlime</a> to quickly (and universally) visualize the distribution of byte of any binary file, using the [Portable Graymap Format (PGM)](https://en.wikipedia.org/wiki/Netpbm_format) format.

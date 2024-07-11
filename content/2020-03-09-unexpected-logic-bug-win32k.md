@@ -1,10 +1,16 @@
-date: 2020-03-09 00:00:00
-modified: 2020-03-09 00:00:00
-title: An unexpected logic bug on Win32k
-author: hugsy
-category: research
-tags: windows,kernel,logic,bug,win32k
-cover: assets/images/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png
++++
+title = "An unexpected logic bug on Win32k"
+author = "hugsy"
+date = 2020-03-09T00:00:00Z
+updated = 2020-03-09T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows,kernel,logic,bug,win32k"]
+
+[extra]
+header-img = "/img/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png"
++++
 
 ## The short version
 

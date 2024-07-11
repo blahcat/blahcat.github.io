@@ -1,4 +1,8 @@
-title: Notes
++++
+title = "Notes"
+path = "notes"
+template = "page.html"
++++
 
 A collection of notes, mostly raw, unsorted and ugly taken my research
 

@@ -1,10 +1,16 @@
-date: 2018-03-11 00:00:00
-modified: 2018-03-11 00:00:00
-title: Fuzzing arbitrary functions in ELF binaries
-author: hugsy
-cover: assets/images/libfuzzer-lief/header.png
-category: research
-tags: fuzzing,elf,lief,libfuzzer,cve-2018-6789,exim
++++
+title = "Fuzzing arbitrary functions in ELF binaries"
+author = "hugsy"
+date = 2018-03-11T00:00:00Z
+updated = 2018-03-11T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["fuzzing","elf","lief","libfuzzer","cve-2018-6789","exim"]
+
+[extra]
+header-img = "assets/images/libfuzzer-lief/header.png"
++++
 
 I decided to give a descent test to
 the [LIEF](https://lief-project.github.io/) project. Executable parsers are
@@ -55,7 +61,7 @@ week, <a class="fa fa-twitter" href="https://twitter.com/mehqq_" target="_blank"
 
 [Exim](https://github.com/Exim/exim) is a MTA which once compiled is a standalone binary. So AFL would be of little help (network service), but it is a perfect practice case for LIEF + LibFuzzer.
 
-We must compile Exim as PIE (usually done with setting `-fPIC` in CFLAGS and `-pie` in `LDFLAGS`). But we also need the [address sanitizer]() since without them, off-by-one overflow in the heap may go unoticed.
+We must compile Exim as PIE (usually done with setting `-fPIC` in CFLAGS and `-pie` in `LDFLAGS`). But we also need the [address sanitizer](https://clang.llvm.org/docs/AddressSanitizer.html) since without them, off-by-one overflow in the heap may go unoticed.
 
 ### Compiling the target with ASAN & PIE ###
 
@@ -93,7 +99,7 @@ index 75d366fc..a82a9c6a 100755
 # message. Ensure that a broken config.h gets deleted.
 ```
 
-The compilation will occur normally and once compiled we can use `checksec` from [pwntools]() on the binary and make
+The compilation will occur normally and once compiled we can use `checksec` from [pwntools](https://docs.pwntools.com/en/stable/) on the binary and make
 sure it's PIE and ASAN compatible:
 
 ```bash

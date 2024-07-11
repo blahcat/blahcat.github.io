@@ -1,9 +1,13 @@
-title: Using new syscalls for read/write arbitrary memory on Linux.
-author: hugsy
-tags: linux, kernel, seccomp
-date: 2013-12-23 00:00 +0000
-modified: 2013-12-23 00:00 +0000
-category: research
++++
+title = "Using new syscalls for read/write arbitrary memory on Linux."
+author = "hugsy"
+date = 2013-12-23T00:00:00Z
+updated = 2013-12-23T00:00:00Z
+
+[taxonomies]
+tags = ["linux", "kernel", "seccomp"]
+categories = ["research"]
++++
 
 Even though well known methods exist to bypass ptrace deactivation on a process when spawning (fake `ptrace()` preloading, breakpoint on `ptrace()`, etc... ), it is trickier when process is already protected.
 

@@ -1,6 +1,11 @@
-title: Qemu VM Repo
-tags: linux, pwnm, debug, gef, arm, mips, aarch64, powerpc, sparc,
++++
+title = "Qemu VM Repo"
+path = "qemu"
+template = "page.html"
 
+[taxonomies]
+tags = ["linux", "pwn", "debug", "gef", "arm", "mips", "arm64", "powerpc", "sparc",]
++++
 
 ## Non-x86 Qemu VM Repository
 

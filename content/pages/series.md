@@ -1,5 +1,12 @@
-title: Exploitation Series
-tags: pwn
++++
+title = "Exploitation Series"
+path = "series"
+template = "page.html"
+
+[taxonomies]
+tags = ["pwn"]
++++
+
 
 This page centralizes series of posts from this blog into their corresponding categories:
 

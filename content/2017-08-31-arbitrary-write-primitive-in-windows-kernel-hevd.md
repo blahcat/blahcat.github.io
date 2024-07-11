@@ -1,10 +1,16 @@
-date: 2017-08-31 00:00:00
-modified: 2017-08-31 00:00:00
-title: Arbitrary Write primitive in Windows kernel (HEVD)
-author: hugsy
-category: tutorial
-cover: assets/images/win-kernel-debug/hevd-www-hal-interrupt.png
-tags: pwn,windows,hevd,kernel,pwn,write-what-where
++++
+date = 2017-08-31T00:00:00Z
+updated = 2017-08-31T00:00:00Z
+title = "Arbitrary Write primitive in Windows kernel (HEVD)"
+author = "hugsy"
+
+[taxonomies]
+categories = ["tutorial", "research"]
+tags = ["pwn","windows","hevd","kernel","pwn","write-what-where"]
+
+[extra]
+header-img = "/img/win-kernel-debug/hevd-www-hal-interrupt.png"
++++
 
 Back again to modern Windows kernel exploitation!
 

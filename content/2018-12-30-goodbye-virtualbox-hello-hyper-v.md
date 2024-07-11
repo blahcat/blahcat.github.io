@@ -1,10 +1,16 @@
-date: 2018-12-30 00:00:00
-modified: 2018-12-30 00:00:00
-title: Goodbye VirtualBox, hello Hyper-V
-author: hugsy
-cover: assets/images/vbox-to-hyperv-header.png
-category: research
-tags: windows,,hyperv,,virtualbox,,cheatsheet
++++
+title = "Goodbye VirtualBox, hello Hyper-V"
+author = "hugsy"
+date = 2018-12-30T00:00:00Z
+updated = 2018-12-30T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows","hyperv","virtualbox","cheatsheet"]
+
+[extra]
+header-img = "assets/images/vbox-to-hyperv-header.png"
++++
 
 A few scrap notes about my migration from VirtualBox to Hyper-V (in case I attempt to do the same again in the future 😁)
 

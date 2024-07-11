@@ -1,4 +1,8 @@
-title: About
++++
+title = "About"
+path = "about"
+template = "about.html"
++++
 
 
 This blog is all about technical stuff, no ads, no cookie or whatever to accept. Just content.

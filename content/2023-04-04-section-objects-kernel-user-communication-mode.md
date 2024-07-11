@@ -1,11 +1,15 @@
-title: Section Objects as Kernel/User communication mode
-author: hugsy
-category: research
-tags: windows, hack, memory-manager
-date: 2023-04-04 00:00 +0000
-modified: 2023-04-04 00:00 +0000
++++
+title = "Section Objects as Kernel/User communication mode"
+author = "hugsy"
+date = 2023-04-04T00:00:00Z
+updated = 2023-04-04T00:00:00Z
 
-I've recently decided to read cover to cover some Windows Internals books, and currently reading the amazing book ["What Makes It Page"](), it gave me some ideas to play with [Section Objects](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/section-objects-and-views) as they covered in great details. One thought that occurred to me was that even though a section is created from user or kernel land, its mapping can be in user-mode as much as in kernel (when called from the kernel).
+[taxonomies]
+categories = ["research"]
+tags = ["windows", "memory-manager", "section", "backdoor"]
++++
+
+I've recently decided to read cover to cover some Windows Internals books, and currently reading the amazing book ["What Makes It Page"](http://www.opening-windows.com/wmip/overview.htm), it gave me some ideas to play with [Section Objects](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/section-objects-and-views) as they covered in great details. One thought that occurred to me was that even though a section is created from user or kernel land, its mapping can be in user-mode as much as in kernel (when called from the kernel).
 
 
 ## Windows Section Objects

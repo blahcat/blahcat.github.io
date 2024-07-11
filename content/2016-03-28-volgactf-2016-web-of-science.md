@@ -1,9 +1,13 @@
-date: 2016-03-28 00:00:00
-modified: 2016-03-28 00:00:00
-title: VolgaCTF 2016 - Web of Science
-tags: pwn,volgactf-2016,x86
-author: hugsy
-category: ctf
++++
+title = "VolgaCTF 2016 - Web of Science"
+author = "hugsy"
+date = 2016-03-28T00:00:00Z
+updated = 2016-03-28T00:00:00Z
+
+["taxonomies"]
+tags = ["pwn","volgactf-2016","x86"]
+categories = [" ctf"]
++++
 
 ### Info ###
 

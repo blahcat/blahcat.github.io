@@ -1,10 +1,16 @@
-date: 2017-08-01 00:00:00
-modified: 2017-08-01 00:00:00
-title: GEF at Black Hat Arsenal US 2017
-author: hugsy
-tags: gef,blackhat,arsenal
-cover: assets/images/gef-bh-usa-bg.png
-category: talk
++++
+title = "GEF at Black Hat Arsenal US 2017"
+author = "hugsy"
+date = 2017-08-01T00:00:00Z
+updated = 2017-08-01T00:00:00Z
+
+[taxonomies]
+categories = ["talk"]
+tags = ["gef","blackhat","arsenal"]
+
+[extra]
+header-img = "/img/gef-bh-usa-bg.png"
++++
 
 ## GEF at Black Hat Arsenal US 2017 ##
 

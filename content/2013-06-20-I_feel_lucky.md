@@ -1,10 +1,13 @@
-title: I feel lucky - or why I wrote a FreeBSD 1-day in one day
-author: hugsy
-category: research
-tags: freebsd, 1day, lpe
-date: 2013-06-20 00:00 +0000
-modified: 2013-06-20 00:00 +0000
++++
+title = "I feel lucky - or why I wrote a FreeBSD 1-day in one day"
+author = "hugsy"
+date = 2013-06-20T00:00:00Z
+updated = 2013-06-20T00:00:00Z
 
+[taxonomies]
+categories = ["research"]
+tags = ["freebsd", "1day", "lpe"]
++++
 
 Sometimes life gives you eggs for free, you just need to spend some time making an omelet. That's exactly what happened to me on a recent engagement for a client: a typical PHP webapp full of holes left me with a nice stable shell access.
 

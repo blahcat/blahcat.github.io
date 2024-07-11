@@ -1,9 +1,13 @@
-date: 2017-01-26 00:00:00
-modified: 2017-01-26 00:00:00
-title: Insomni'Hack CTF 2017: bender_safer
-author: hugsy
-category: ctf
-tags: pwn,linux,insomnihack,mips,stack-overflow,rop,shellcode,keystone
++++
+title = "Insomni'Hack CTF 2017: bender_safer"
+author = "hugsy"
+date = 2017-01-26T00:00:00Z
+updated = 2017-01-26T00:00:00Z
+
+[taxonomies]
+categories = ["ctf"]
+tags = ["pwn","linux","insomnihack","mips","stack-overflow","rop","shellcode","keystone"]
++++
 
 [Insomni'Hack CTF 2017](https://web.archive.org/web/20170102081524/https://teaser.insomnihack.ch/) offered a series of 3
 challenges (i.e. 3 different flags) on the same binary, called `bender_safe`:

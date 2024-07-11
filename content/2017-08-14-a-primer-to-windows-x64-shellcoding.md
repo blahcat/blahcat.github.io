@@ -1,10 +1,16 @@
-date: 2017-08-14 00:00:00
-modified: 2017-08-14 00:00:00
-title: A Primer to Windows x64 shellcoding
-author: hugsy
-cover: assets/images/win-kernel-debug/bg.png
-tags: windows,kernel,debugging,pwn,token,shellcode
-category: tutorial
++++
+title = "A Primer to Windows x64 shellcoding"
+author = "hugsy"
+date = 2017-08-14T00:00:00Z
+updated = 2017-08-14T00:00:00Z
+
+[taxonomies]
+categories = ["tutorial"]
+tags = ["windows,kernel,debugging,pwn,token,shellcode"]
+
+[extra]
+header-img = "/img/win-kernel-debug/bg.png"
++++
 
 Continuing on the path to Windows kernel exploitation...
 

@@ -1,9 +1,13 @@
-date: 2016-03-14 00:00:00
-modified: 2016-03-14 00:00:00
-title: 0ctf 2016 - Warmup write-up
-author: hugsy
-tags: pwn,gef,ida,0ctf-2016,x86
-category: ctf
++++
+title = "0ctf 2016 - Warmup write-up"
+author = "hugsy"
+date = 2016-03-14T00:00:00Z
+updated = 2016-03-14T00:00:00Z
+
+[taxonomies]
+tags = ["pwn", "gef", "ida", "0ctf-2016", "x86"]
+categories = ["ctf"]
++++
 
 I participated to [0ctf](https://ctftime.org/team/4419/) but only had time to play for
 the reversing challenge `trace` (write-up coming up soon) during the competition

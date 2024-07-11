@@ -1,10 +1,16 @@
-date: 2018-01-07 00:00:00
-modified: 2018-01-07 00:00:00
-title: Building a Debian Stretch QEMU image for AARCH64
-author: hugsy
-category: tutorial
-tags: gef,qemu,aarch64
-cover: assets/images/qemu-img.png
++++
+title = "Building a Debian Stretch QEMU image for AARCH64"
+author = "hugsy"
+date = 2018-01-07T00:00:00Z
+updated = 2018-01-07T00:00:00Z
+
+[taxonomies]
+categories = ["tutorial"]
+tags = ["gef","qemu","aarch64"]
+
+[extra]
+header-img = "assets/images/qemu-img.png"
++++
 
 ## Introduction
 
@@ -16,8 +22,7 @@ If you're just interested in downloading the ready-to-use AARCH64 image, just go
 
 ## Pre-requisite
 
-Just like [we did earlier in the former post](), we will proceed with the Debian
-Net Installer, so you will require:
+Just like [we did earlier in the former post](https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html), we will proceed with the Debian Net Installer, so you will require:
 
 - an Internet connection
 - a recent QEMU (generally `{apt,dnf} install qemu` will suffice)

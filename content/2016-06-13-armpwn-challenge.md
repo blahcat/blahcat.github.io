@@ -1,10 +1,13 @@
-title: ARMPWN challenge write-up
-date: 2016-06-13 12:21:05 +1100
-modified: 2016-06-13 12:21:05 +1100
-comments: false
-author: hugsy
-tags: pwn,arm,gef,gdb,ida,ropgadget,pwntools
-category: ctf
++++
+title = "ARMPWN challenge write-up"
+author = "hugsy"
+date = 2016-06-13T12:21:05Z
+updated = 2016-06-13T12:21:05Z
+
+[taxonomies]
+categories = ["ctf", "research"]
+tags = ["pwn","arm","gef","gdb","ida","rop","pwntools"]
++++
 
 ## Info ##
 

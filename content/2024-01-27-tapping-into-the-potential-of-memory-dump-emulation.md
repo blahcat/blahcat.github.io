@@ -1,9 +1,13 @@
-title: Tapping into the potential of Memory Dump Emulation
-author: hugsy
-category: research
-tags: windows, hack, memory-dump, wtf, bochscpu, bochs, emulation
-date: 2024-01-27 00:00 +0000
-modified: 2024-03-26 00:00 +0000
++++
+title = "Tapping into the potential of Memory Dump Emulation"
+author = "hugsy"
+date = 2024-01-27T00:00:00Z
+updated = 2024-03-26T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows", "memory-dump", "wtf", "bochscpu", "bochs", "emulation"]
++++
 
 This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a structured reminder for my later self.
 

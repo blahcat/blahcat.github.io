@@ -1,9 +1,13 @@
-date: 2022-07-17 00:00:00
-modified: 2022-07-17 00:00:00
-title: WinDbgX undocumented workspace options
-author: hugsy
-category: minis
-tags: windows, windbg
++++
+title = "WinDbgX undocumented workspace options"
+author = "hugsy"
+date = 2022-07-17T00:00:00Z
+updated = 2022-07-17T00:00:00Z
+
+[taxonomies]
+categories = ["minis"]
+tags = ["windows", "windbg"]
++++
 
 How to use WinDbgX workspaces to make debugging even easier.
 

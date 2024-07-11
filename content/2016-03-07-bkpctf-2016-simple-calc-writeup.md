@@ -1,9 +1,13 @@
-title: BKPCTF 2016 - Simple Calc
-date:   2016-03-07 22:51:04 +1100
-author: hugsy
-tags:  pwn, gef, ida, bkpctf-2016, x86
-category: ctf
-modified:   2016-03-07 22:51:04 +1100
++++
+title = "BKPCTF 2016 - Simple Calc"
+date =   2016-03-07T22:51:04Z
+updated =   2016-03-07T22:51:04Z
+author = "hugsy"
+
+[taxonomies]
+tags = ["pwn", "gef", "ida", "bkpctf-2016", "x86"]
+categories = ["ctf"]
++++
 
 ### Info ###
 
@@ -28,7 +32,7 @@ which take in 2 DWORD operands, and apply the function. What is worth noticing i
 both operands and result are stored in the `.bss` (therefore at predictable
 addresses).
 
-```
+```asm
 [...]
 .bss:00000000006C4A84 add_operator_2  dd ?                    ; DATA XREF: adds+40
 .bss:00000000006C4A84                                         ; adds+69 ...

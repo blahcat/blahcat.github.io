@@ -1,9 +1,13 @@
-title: BKPCTF 2016 - Complex Calc
-author: hugsy
-category: ctf
-tags: pwn, gef , ida , bkpctf-2016 , x86 , heap-overflow
-date: 2016-03-08 00:00:00
-modified: 2016-03-08 00:00:00
++++
+title = "BKPCTF 2016 - Complex Calc"
+author = "hugsy"
+date = 2016-03-08T00:00:00Z
+updated = 2016-03-08T00:00:00Z
+
+[taxonomies]
+categories = ["ctf"]
+tags = ["pwn, gef , ida , bkpctf-2016 , x86 , heap-overflow"]
++++
 
 
 The challenge is the sequel to `simple_calc`. If you haven't read our [write-up](/posts/2016/03/07/bkpctf-2016-simple-calc-writeup.html), now is the time 😊

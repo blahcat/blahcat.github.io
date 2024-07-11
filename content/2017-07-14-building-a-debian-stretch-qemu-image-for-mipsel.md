@@ -1,10 +1,16 @@
-date: 2017-07-14 00:00:00
-modified: 2017-07-14 00:00:00
-title: Building a Debian Stretch QEMU image for MIPSel
-author: hugsy
-tags: howto,qemu,mipsel,mips64el
-cover: assets/images/qemu-img.png
-category: tutorial
++++
+title = "Building a Debian Stretch QEMU image for MIPSel"
+author = "hugsy"
+date = 2017-07-14T00:00:00Z
+updated = 2017-07-14T00:00:00Z
+
+[taxonomies]
+tags = ["howto","qemu","mipsel","mips64el"]
+categories = ["tutorial"]
+
+[extra]
+header-img = "/img/qemu-img.png"
++++
 
 ## Building a Debian Stretch (9) QEMU image running MIPSel ##
 
@@ -18,7 +24,7 @@ category: tutorial
 
 After releasing [the QEMU images](/posts/2017/06/25/qemu-images-to-play-with.html) I've created to test [`GEF`](https://github.com/hugsy/gef), I've received tons of demands from people asking for more images, but also for some DYI procedures.
 
-As  [@Fox0x01](https://twitter.com/Fox0x01){:target="_blank" class="fa fa-twitter"} already covered fairly exhaustively [how to build an QEMU ARMv6 compatible VM][https://azeria-labs.com/emulate-raspberry-pi-with-qemu/){:target="_blank"}, through this blog post I intend to provide a step-by-step how-to on building a Debian Stretch Malta MIPS32el image.
+As [@Fox0x01](https://twitter.com/Fox0x01){:target="_blank" class="fa fa-twitter"} already covered fairly exhaustively [how to build an QEMU ARMv6 compatible VM](https://azeria-labs.com/emulate-raspberry-pi-with-qemu/){:target="_blank"}, through this blog post I intend to provide a step-by-step how-to on building a Debian Stretch Malta MIPS32el image.
 
 <div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
 There is no miracle here, I've just spend a long time googling for solution every time I was facing a problem. This tuto is more for a being a personal reminder for the future times I need to build an image 😊

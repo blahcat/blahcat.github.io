@@ -1,9 +1,13 @@
-date: 2016-05-24 00:00:00
-modified: 2016-05-24 00:00:00
-title: DEFCON CTF 2016 - heapfun4u
-author: hugsy
-tags: pwn,defcon-2016,x86,heap
-category: ctf
++++
+title = "DEFCON CTF 2016 - heapfun4u"
+author = "hugsy"
+date = 2016-05-24T00:00:00Z
+updated = 2016-05-24T00:00:00Z
+
+[taxonomies]
+categories = ["ctf"]
+tags = ["pwn","defcon-2016","x86","heap"]
++++
 
 ### Info ###
 

@@ -1,9 +1,13 @@
-date: 2016-05-23 00:00:00
-modified: 2016-05-23 00:00:00
-title: DEFCON CTF 2016 - feedme
-author: hugsy
-tags: pwn,defcon-2016,x86,brop
-category: ctf
++++
+title = "DEFCON CTF 2016 - feedme"
+author = "hugsy"
+date = 2016-05-23T00:00:00Z
+updated = 2016-05-23T00:00:00Z
+
+[taxonomies]
+categories = ["ctf"]
+tags = ["pwn","defcon-2016","x86","brop"]
++++
 
 ### Info ###
 

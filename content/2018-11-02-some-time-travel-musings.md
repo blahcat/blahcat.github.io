@@ -1,10 +1,16 @@
-date: 2018-11-02 00:00:00
-modified: 2018-11-02 00:00:00
-title: Some Time Travel musings
-author: hugsy
-cover: assets/images/windbg-ttd/header.png
-category: research
-tags: windows,ttd,js,windbg,malware
++++
+title = "Some Time Travel musings"
+author = "hugsy"
+date = 2018-11-02T00:00:00Z
+updated = 2018-11-02T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows","ttd","js","windbg","malware"]
+
+[extra]
+header-img = "assets/images/windbg-ttd/header.png"
++++
 
 If WinDbg was already setting the standard of what modern debuggers should be like, no doubt [WinDbg Preview](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview) brings it to a next level. The JavaScript API is not perfect yet but already very efficient, so we don't have to rely on PyKd for proper (and portable) WinDbg scripting (I won't even mention WDS). As a start, I could not recommend enough reading <a class="fa fa-twitter" href="https://twitter.com/0vercl0k" target="_blank"> @0vercl0k</a> if you haven't already read it, which not only covers TTD but a lot more.
 

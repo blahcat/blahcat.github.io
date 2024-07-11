@@ -1,10 +1,16 @@
-date: 2017-10-13 00:00:00
-modified: 2017-10-13 00:00:00
-title: FlareOn 4 WriteUps
-author: hugsy
-category: ctf
-cover: assets/images/flareon-2017-header.png
-tags: reverse,flareon,windows,pe,linux,elf,arduino,avr
++++
+title = "FlareOn 4 WriteUps"
+author = "hugsy"
+date = 2017-10-13T00:00:00Z
+updated = 2017-10-13T00:00:00Z
+
+[taxonomies]
+categories = ["ctf"]
+tags = ["reverse","flareon","windows","pe","linux","elf","arduino,avr"]
+
+[extra]
+header-img = "/img/flareon-2017-header.png"
++++
 
 This year, I happened to finally have a chance to be in a good position to play
 [Flare-On CTF](https://flare-on.com), a yearly CTF published by [FireEye](https://web.archive.org/web/20170831191227/https://www.fireeye.com/blog/threat-research/2017/08/fourth-annual-flare-on-challenge.html). This
@@ -1366,7 +1372,7 @@ Cache-Control: no-cache
 
 HTTP/1.0 200 OK
 Server: SimpleHTTP/0.6 Python/2.7.12
-Date: Tue, 01 Aug 2017 17:04:02 GMT
+date = Tue, 01 Aug 2017 17:04:02 GMT
 Content-type: application/octet-stream
 Content-Length: 119812
 Last-Modified: Tue, 01 Aug 2017 14:46:13 GMT

@@ -1,10 +1,16 @@
-date: 2017-01-24 00:00:00
-modified: 2017-01-24 00:00:00
-title: ARMPWN redux: canary reloaded
-author: hugsy
-tags: linux,pwn,arm,ssp,armpwn
-header-img: "img/canary-header.png"
-category: ctf
++++
+title = "ARMPWN redux: canary reloaded"
+author = "hugsy"
+date = 2017-01-24T00:00:00Z
+updated = 2017-01-24T00:00:00Z
+
+[taxonomies]
+tags = ["linux,pwn,arm,ssp,armpwn"]
+categories = [" ctf"]
+
+[extra]
+header-img = "img/canary-header.png"
++++
 
 >
 > __TL;DR__: It is possible to defeat stack canary protection when a binary is vulnerable to

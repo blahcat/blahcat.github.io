@@ -1,10 +1,16 @@
-date: 2017-08-07 00:00:00
-modified: 2017-08-07 00:00:00
-title: Setting up a Windows VM lab for kernel debugging
-tags: windows,kernel,debug,virtualbox
-author: hugsy
-cover: assets/images/win-kernel-debug/win8-setup-kernel-mode.png
-category: tutorial
++++
+title = "Setting up a Windows VM lab for kernel debugging"
+author = "hugsy"
+date = 2017-08-07T00:00:00Z
+updated = 2017-08-07T00:00:00Z
+
+[taxonomies]
+categories = ["tutorial"]
+tags = ["windows","kernel","debug","virtualbox"]
+
+[extra]
+header-img = "/img/win-kernel-debug/win8-setup-kernel-mode.png"
++++
 
 This is the first on a series of posts on Windows kernel debugging and
 exploitation.

@@ -1,0 +1,34 @@
+# https://www.getzola.org/documentation/getting-started/configuration/
+base_url = "https://blahcat.github.io"
+title = "BlahCats Blog"
+description = "Tales of a binary encoded life..."
+theme = "zola-clean-blog"
+feed_filenames = ["atom.xml"]
+author = "hugsy"
+compile_sass = true
+build_search_index = true
+
+taxonomies = [
+    { name = "tags", feed = true },
+    { name = "categories", paginate_by = 5 },
+    { name = "authors" },
+]
+
+[markdown]
+highlight_code = true
+render_emoji = true
+highlight_theme = "base16-ocean-dark" # https://www.getzola.org/documentation/getting-started/configuration/#syntax-highlighting
+bottom_footnotes = true
+smart_punctuation = true
+external_links_target_blank = true
+external_links_no_follow = true
+external_links_no_referrer = true
+
+[slugify]
+paths = "on"
+taxonomies = "on"
+anchors = "on"
+paths_keep_dates = true
+
+[extra]
+# Put all your custom variables here

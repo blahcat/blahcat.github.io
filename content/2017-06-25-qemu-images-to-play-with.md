@@ -1,10 +1,16 @@
-date: 2017-06-25 00:00:00
-modified: 2017-06-25 00:00:00
-title: Some Qemu images to play with
-author: hugsy
-tags: linux,pwn,debug,arm,mips,aarch64,powerpc,sparc
-header-img: "img/qemu-img.png"
-category: misc
++++
+title = "Some Qemu images to play with"
+author = "hugsy"
+date = 2017-06-25T00:00:00Z
+updated = 2017-06-25T00:00:00Z
+
+[taxonomies]
+categories = ["misc"]
+tags = ["linux","pwn","debug","arm","mips","aarch64","powerpc","sparc"]
+
+[extra]
+header-img = "img/qemu-img.png"
++++
 
 > **TL;DR**
 > Ready-to-play Qemu images for under-rated architectures (ARM, MIPS, PowerPC,
