@@ -3,14 +3,14 @@ base_url = "https://blahcat.github.io"
 title = "BlahCats Blog"
 description = "Tales of a binary encoded life..."
 theme = "zola-clean-blog"
-feed_filenames = ["atom.xml"]
+feed_filenames = ["atom.xml", "rss.xml"]
 author = "hugsy"
 compile_sass = true
 build_search_index = true
 
 taxonomies = [
-    { name = "tags", feed = true },
-    { name = "categories", paginate_by = 5 },
+    { name = "categories", rss = true, paginate_by = 5 },
+    { name = "tags", rss = true, paginate_by = 5 },
     { name = "authors" },
 ]
 
