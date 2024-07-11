@@ -9,20 +9,36 @@ The environment variables added are:
  - `BLOG_POST_SLUG_TITLE` :
  - `BLOG_POST_AUTHOR` :
 """
-import requests
+
+from dataclasses import dataclass
+from typing import Optional
+import httpx
 import bs4
 import time
 import os
 
 ROOT: str = "https://blahcat.github.io"
-URL: str = f"{ROOT}/feeds/all.atom.xml"
+ATOM_FEED_URL: str = f"{ROOT}/feeds/all.atom.xml"
 
-time.sleep(10)
 
-h = requests.get(URL)
+@dataclass
+class SocialMedia:
+    twitter: Optional[str]
+    mastodon: Optional[str]
+    discord: Optional[str]
+    github: Optional[str]
+
+
+AUTHORS = {
+    "hugsy": SocialMedia("@_hugsy_", "@hugsy@infosec.exchange", "@crazy.hugsy", "hugsy")
+}
+
+time.sleep(2)
+
+h = httpx.get(ATOM_FEED_URL)
 assert h.status_code == 200
 
-soup = bs4.BeautifulSoup(h.text, "lxml")
+soup = bs4.BeautifulSoup(h.text, "xml")
 node = soup.find("entry")
 assert node is not None
 
@@ -34,32 +50,28 @@ def get(x: str):
 
 
 def strip_html(html: str):
-    s = bs4.BeautifulSoup(html, features="html.parser")
+    s = bs4.BeautifulSoup(html, features="xml")
     return s.get_text()
-
-
-title = get("title").text
-authors = [x.text for x in get("author").find_all("name")]
-published = get("published").text
-url = ROOT + get("link")["href"]
-slug = get("link")["href"][18:-5]
-summary = strip_html(get("summary").text)[:-3] + " [...]"
-
-author_twitters = []
-for author in authors:
-    if author == "hugsy":
-        author_twitters.append("@_hugsy_")
-# TODO automate this
-
-twitter_body = (
-    f"""New blog post: '{title}' by {' and '.join(author_twitters)} - {url}"""
-)
-twitter_body = twitter_body[:280]
 
 
 def env(x: str):
     os.system(f"echo {x} >> $GITHUB_ENV")
 
+
+title = get("title").text
+authors = [x.text for x in get("author").find_all("name")]
+published = get("published").text
+url = str(get("link")["href"])
+slug = str(get("link")["href"].rsplit("/")[-1])
+summary = strip_html(get("summary").text)[:-3] + " [...]"
+
+author_twitters = [
+    AUTHORS[n].twitter for n in authors if n in AUTHORS and AUTHORS[n].twitter
+]
+twitter_body = (
+    f"""New blog post: '{title}' by {' and '.join(author_twitters)} - {url}"""
+)
+twitter_body = twitter_body[:280]
 
 env(f"""BLOG_POST_TITLE="{title}" """)
 env(f"""BLOG_POST_PUBLISHED_DATE="{published}" """)

@@ -55,5 +55,5 @@ jobs:
       - if: '!cancelled()'
         run: |
           if [ -f spellcheck-output.txt ]; then
-              python scripts/ci_spellcheck_format.py spellcheck-output.txt >> ${GITHUB_STEP_SUMMARY}
+              python .github/scripts/ci_spellcheck_format.py spellcheck-output.txt >> ${GITHUB_STEP_SUMMARY}
           fi
