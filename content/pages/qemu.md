@@ -5,6 +5,9 @@ template = "page.html"
 
 [taxonomies]
 tags = ["linux", "pwn", "debug", "gef", "arm", "mips", "arm64", "powerpc", "sparc",]
+
+[extra]
+no_discuss = true
 +++
 
 ## Non-x86 Qemu VM Repository

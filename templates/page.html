@@ -27,30 +27,41 @@
 {% block content %}
 <!-- Post Content -->
 <article>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        {{ page.content | safe }}
-        {% if page.taxonomies.categories %}
-        <div class="post-tags">
-          <p>Categories:
-            {% for category in page.taxonomies.categories %}
-            <a href="{{ get_taxonomy_url(kind="categories", name=category) }}">#{{ category }}</a>
-            {% endfor %}
-          </p>
-        </div>
-        {% endif %}
-        {% if page.taxonomies.tags %}
-        <aside class="post-tags">
-          <p>Tags:
-            {% for tag in page.taxonomies.tags %}
-            <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}">#{{ tag }}</a>
-            {% endfor %}
-          </p>
-        </aside>
-        {% endif %}
+  <article class="post">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          {{ page.content | safe }}
+          {% if page.taxonomies.categories %}
+          <aside class="post-tags">
+            <p>Categories:
+              {% for category in page.taxonomies.categories %}
+              <a href="{{ get_taxonomy_url(kind="categories", name=category) }}">#{{ category }}</a>
+              {% endfor %}
+            </p>
+          </aside>
+          {% endif %}
+          {% if page.taxonomies.tags %}
+          <aside class="post-tags">
+            <p>Tags:
+              {% for tag in page.taxonomies.tags %}
+              <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}">#{{ tag }}</a>
+              {% endfor %}
+            </p>
+          </aside>
+          {% endif %}
+
+          {% if page.extra.no_discuss and page.extra.no_discuss == true %}
+          {% else %}
+          <aside class="post-discussion">
+            Discuss:
+              <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q={{ page.title }}" target="_blank">
+                <i class="fab fa-github fa-lg"></i>&nbsp;GitHub
+              </a>
+          </aside>
+          {% endif %}
       </div>
     </div>
-  </div>
+  </article>
 </article>
 {% endblock content %}

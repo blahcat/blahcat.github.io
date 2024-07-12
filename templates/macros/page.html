@@ -1,15 +1,21 @@
 {% macro page_title(page) %}
 <a href="{{ page.permalink }}">
-    <h2 class="post-title">{{ page.title }}</h2>
+    <h2 class="page-title">{{ page.title }}</h2>
 </a>
-<p class="post-meta">Posted by
-    <a href="/author/{{config.author}}">{{config.author}}</a>
+<p class="page-meta">Posted by
+    <b>{{config.author}}</b>
+    {% if page.date %}
+    on {{ page.date | date(format="%e %B %Y")}}
+    {% endif %}
     </p>
 {% endmacro page_title %}
 
 {% macro page_header(page) %}
 <h1>{{ page.title }}</h1>
 <span class="meta">Posted by
-    <a href="/author/{{config.author}}">{{config.author}}</a>
+    <b>{{config.author}}</b>
+    {% if page.date %}
+    on {{ page.date | date(format="%e %B %Y")}}
+    {% endif %}
 </span>
 {% endmacro page_header %}

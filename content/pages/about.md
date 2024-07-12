@@ -2,6 +2,9 @@
 title = "About"
 path = "about"
 template = "about.html"
+
+[extra]
+no_discuss = true
 +++
 
 

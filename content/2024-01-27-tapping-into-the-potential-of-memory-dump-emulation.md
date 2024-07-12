@@ -11,6 +11,9 @@ aliases = [
 [taxonomies]
 categories = ["research"]
 tags = ["windows", "memory-dump", "wtf", "bochscpu", "bochs", "emulation"]
+
+[extra]
+discuss = true
 +++
 
 This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a structured reminder for my later self.
