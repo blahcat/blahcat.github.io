@@ -6,7 +6,7 @@ updated = 2016-03-28T00:00:00Z
 
 ["taxonomies"]
 tags = ["pwn","volgactf-2016","x86"]
-categories = [" ctf"]
+categories = ["ctf"]
 +++
 
 ### Info ###

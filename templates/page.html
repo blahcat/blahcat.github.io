@@ -32,15 +32,18 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           {{ page.content | safe }}
-          {% if page.taxonomies.categories %}
+
+          <hr>
+
           <aside class="post-tags">
+          {% if page.taxonomies.categories %}
             <p>Categories:
               {% for category in page.taxonomies.categories %}
               <a href="{{ get_taxonomy_url(kind="categories", name=category) }}">#{{ category }}</a>
               {% endfor %}
             </p>
-          </aside>
           {% endif %}
+
           {% if page.taxonomies.tags %}
           <aside class="post-tags">
             <p>Tags:
@@ -48,11 +51,12 @@
               <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}">#{{ tag }}</a>
               {% endfor %}
             </p>
-          </aside>
           {% endif %}
+          </aside>
 
           {% if page.extra.no_discuss and page.extra.no_discuss == true %}
           {% else %}
+          <hr>
           <aside class="post-discussion">
             Discuss:
               <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q={{ page.title }}" target="_blank">

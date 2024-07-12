@@ -6,7 +6,7 @@ updated = 2017-01-24T00:00:00Z
 
 [taxonomies]
 tags = ["linux,pwn,arm,ssp,armpwn"]
-categories = [" ctf"]
+categories = ["ctf"]
 
 [extra]
 header_img = "img/canary-header.png"
