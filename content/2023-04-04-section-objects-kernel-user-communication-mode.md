@@ -153,7 +153,7 @@ NTSTATUS  MiMapViewOfSectionCommon(
 ```
 
 
-What matters the most here would be the `BaseAddress` argument which will hold the UM address of the mapping. Meaning that Section Objects can be used to create communication channels between kernel <-> user mode (on top of obviously user <-> user). This is particularly nice especially because it allows to control finely the permission to the area: for instance a driver could create a section as read-writable, map its own view as RW, but expose to any process as RO. As a matter of fact, this is exactly how Windows 11 decided to protect the `(K)USER_SHARED_DATA` memory region, frequently used by kernel exploit since it's read/writable in ring-0 at a well-known address, making it a perfect way to bypass ALSR. The protection was added in 22H1 global variable which is initialized at boot-time and mapped as RW from the kernel through the `nt!MmWriteableUserSharedData`; however from user-mode only a read-only view is exposed to processes.  For complete details about that protection, I invite the reader to refer to Connor McGarr's in-depth [excellent blog post](https://connormcgarr.github.io/kuser-shared-data-changes-win-11/){:target=blank} on the subject.
+What matters the most here would be the `BaseAddress` argument which will hold the UM address of the mapping. Meaning that Section Objects can be used to create communication channels between kernel <-> user mode (on top of obviously user <-> user). This is particularly nice especially because it allows to control finely the permission to the area: for instance a driver could create a section as read-writable, map its own view as RW, but expose to any process as RO. As a matter of fact, this is exactly how Windows 11 decided to protect the `(K)USER_SHARED_DATA` memory region, frequently used by kernel exploit since it's read/writable in ring-0 at a well-known address, making it a perfect way to bypass ALSR. The protection was added in 22H1 global variable which is initialized at boot-time and mapped as RW from the kernel through the `nt!MmWriteableUserSharedData`; however from user-mode only a read-only view is exposed to processes.  For complete details about that protection, I invite the reader to refer to Connor McGarr's in-depth [excellent blog post](https://connormcgarr.github.io/kuser-shared-data-changes-win-11/) on the subject.
 
 
 ## Section Object as a Kernel/User Communication Vector
@@ -365,7 +365,7 @@ Isn't Windows awesome?
 There are a lot of possible fun uses of sections, and since I want to try to document more of my "stuff". Some offensive cool use case would be for instance, would be to expose code "on-demand" to a specific thread/process, removing the mapped execution page(s) from the process VAD as soon as we're done.
 I'll try to post follow-up updates.
 
-For those interested in the code, you would find a minifilter driver ready to build & compile on the Github project: [<i class="fa fa-github"></i> hugsy/shared-kernel-user-section-driver](https://github.com/hugsy/shared-kernel-user-section-driver){:target=blank}
+For those interested in the code, you would find a minifilter driver ready to build & compile on the Github project: {{ github(user="hugsy/shared-kernel-user-section-driver") }}
 
 So, see you next time?
 
