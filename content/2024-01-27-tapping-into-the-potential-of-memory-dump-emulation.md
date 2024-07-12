@@ -18,8 +18,6 @@ discuss = true
 
 This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a structured reminder for my later self.
 
-<!-- more -->
-
 ## Introduction
 
 [`What-The-Fuzz`](https://github.com/0vercl0k/wtf) is one of my favorite tools, and beyond the tool itself I really enjoy the story behind the creation of the tool itself and all of the surrounding libraries [0vercl0k](https://github.com/0vercl0k) had to build, including `kdmp-parser`, `symbolizer`, leveraged [yrp](https://github.com/yrp604)'s underestimated bochs-based emulation library `bochscpu`. 0vercl0k explained all of this better than I possible could, so if you haven't read it yet, please stop reading this post now and read the blog post dedicated to WTF: [Building a new snapshot fuzzer & fuzzing IDA](https://doar-e.github.io/blog/2021/07/15/building-a-new-snapshot-fuzzer-fuzzing-ida/).

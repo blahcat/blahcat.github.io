@@ -11,7 +11,11 @@
           {% for page in paginator.pages %}
           <div class="post-preview">
             {{ page_macros::page_title(page=page) }}
+            {% if page.summary %}
             <p class="post-summary">{{ page.summary | safe }}</p>
+            {% else %}
+            <p class="post-summary">{{ page.content | safe | striptags | truncate(length=200) }}</p>
+            {% endif %}
           </div>
           {% endfor %}
         </div>
