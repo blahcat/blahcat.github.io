@@ -1,6 +1,6 @@
 +++
 title = "VolgaCTF 2016 - Web of Science"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2016-03-28T00:00:00Z
 updated = 2016-03-28T00:00:00Z
 

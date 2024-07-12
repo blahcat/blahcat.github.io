@@ -1,6 +1,6 @@
 +++
 title = "FlareOn 4 WriteUps"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2017-10-13T00:00:00Z
 updated = 2017-10-13T00:00:00Z
 

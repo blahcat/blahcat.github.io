@@ -1,6 +1,6 @@
 +++
 title = "Small dumps in the big pool"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2019-03-17T00:00:00Z
 updated = 2019-03-17T00:00:00Z
 

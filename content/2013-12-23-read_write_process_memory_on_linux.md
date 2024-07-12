@@ -1,6 +1,6 @@
 +++
 title = "Using new syscalls for read/write arbitrary memory on Linux."
-author = "hugsy"
+authors = ["hugsy"]
 date = 2013-12-23T00:00:00Z
 updated = 2013-12-23T00:00:00Z
 

@@ -1,6 +1,6 @@
 +++
 title = "Install Hyper-V & Sandbox on Windows 10/11 Home"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2022-08-06T00:00:00Z
 updated = 2022-08-06T00:00:00Z
 

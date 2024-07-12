@@ -1,6 +1,6 @@
 +++
 title = "HITB 2016 - Bakery write-up"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2016-04-01T00:00:00Z
 updated = 2016-04-01T00:00:00Z
 

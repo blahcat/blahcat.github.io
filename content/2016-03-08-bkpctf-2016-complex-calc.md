@@ -1,6 +1,6 @@
 +++
 title = "BKPCTF 2016 - Complex Calc"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2016-03-08T00:00:00Z
 updated = 2016-03-08T00:00:00Z
 

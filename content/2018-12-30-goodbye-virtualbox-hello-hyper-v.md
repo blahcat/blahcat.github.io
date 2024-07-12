@@ -1,6 +1,6 @@
 +++
 title = "Goodbye VirtualBox, hello Hyper-V"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2018-12-30T00:00:00Z
 updated = 2018-12-30T00:00:00Z
 

@@ -1,6 +1,6 @@
 +++
 title = "Some Time Travel musings"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2018-11-02T00:00:00Z
 updated = 2018-11-02T00:00:00Z
 

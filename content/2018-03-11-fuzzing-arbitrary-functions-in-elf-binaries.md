@@ -1,6 +1,6 @@
 +++
 title = "Fuzzing arbitrary functions in ELF binaries"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2018-03-11T00:00:00Z
 updated = 2018-03-11T00:00:00Z
 

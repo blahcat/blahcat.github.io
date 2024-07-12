@@ -1,6 +1,6 @@
 +++
 title = "GEF at Black Hat Arsenal US 2017"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2017-08-01T00:00:00Z
 updated = 2017-08-01T00:00:00Z
 

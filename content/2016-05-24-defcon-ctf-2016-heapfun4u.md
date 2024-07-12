@@ -1,6 +1,6 @@
 +++
 title = "DEFCON CTF 2016 - heapfun4u"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2016-05-24T00:00:00Z
 updated = 2016-05-24T00:00:00Z
 

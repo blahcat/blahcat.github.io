@@ -1,6 +1,6 @@
 +++
 title = "Ruxmon 08/2016 - Making GDB great again"
-author = "hugsy"
+authors = ["hugsy"]
 date =   2016-08-27T11:52:34Z
 updated =   2016-08-27T11:52:34Z
 

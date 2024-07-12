@@ -1,6 +1,6 @@
 +++
 title = "Enumerating processes from KD"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2020-05-23T00:00:00Z
 updated = 2020-05-23T00:00:00Z
 

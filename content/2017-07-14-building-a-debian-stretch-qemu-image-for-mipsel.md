@@ -1,6 +1,6 @@
 +++
 title = "Building a Debian Stretch QEMU image for MIPSel"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2017-07-14T00:00:00Z
 updated = 2017-07-14T00:00:00Z
 

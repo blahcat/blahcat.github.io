@@ -2,7 +2,7 @@
 title = "BKPCTF 2016 - Simple Calc"
 date =   2016-03-07T22:51:04Z
 updated =   2016-03-07T22:51:04Z
-author = "hugsy"
+authors = ["hugsy"]
 
 [taxonomies]
 tags = ["pwn", "gef", "ida", "bkpctf-2016", "x86"]

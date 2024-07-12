@@ -1,6 +1,6 @@
 +++
 title = "TWCTF 2016 - reverse_box writeup"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2016-09-06T00:00:00Z
 updated = 2016-09-06T00:00:00Z
 

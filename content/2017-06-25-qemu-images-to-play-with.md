@@ -1,6 +1,6 @@
 +++
 title = "Some Qemu images to play with"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2017-06-25T00:00:00Z
 updated = 2017-06-25T00:00:00Z
 

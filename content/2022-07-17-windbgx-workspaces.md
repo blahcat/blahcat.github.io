@@ -1,6 +1,6 @@
 +++
 title = "WinDbgX undocumented workspace options"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2022-07-17T00:00:00Z
 updated = 2022-07-17T00:00:00Z
 

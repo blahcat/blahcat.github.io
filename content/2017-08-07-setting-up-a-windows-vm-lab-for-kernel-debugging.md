@@ -1,6 +1,6 @@
 +++
 title = "Setting up a Windows VM lab for kernel debugging"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2017-08-07T00:00:00Z
 updated = 2017-08-07T00:00:00Z
 

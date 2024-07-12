@@ -1,6 +1,6 @@
 +++
 title = "Scripting with Windows Root Directory Object"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2019-01-30T00:00:00Z
 updated = 2019-01-30T00:00:00Z
 

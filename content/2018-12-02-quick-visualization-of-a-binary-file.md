@@ -1,6 +1,6 @@
 +++
 title = "Quick visualization of a binary file"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2018-12-02T00:00:00Z
 updated = 2018-12-02T00:00:00Z
 

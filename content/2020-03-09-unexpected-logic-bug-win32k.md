@@ -1,6 +1,6 @@
 +++
 title = "An unexpected logic bug on Win32k"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2020-03-09T00:00:00Z
 updated = 2020-03-09T00:00:00Z
 

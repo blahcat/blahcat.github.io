@@ -1,6 +1,6 @@
 +++
 title = "Browsing the registry in kernel-mode"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2021-01-10T00:00:00Z
 updated = 2021-01-10T00:00:00Z
 

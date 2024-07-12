@@ -1,6 +1,6 @@
 +++
 title = "Cheap sandboxing with AppContainers"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2020-12-29T00:00:00Z
 updated = 2020-12-29T00:00:00Z
 

@@ -1,6 +1,6 @@
 +++
 title = "ARMPWN redux: canary reloaded"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2017-01-24T00:00:00Z
 updated = 2017-01-24T00:00:00Z
 

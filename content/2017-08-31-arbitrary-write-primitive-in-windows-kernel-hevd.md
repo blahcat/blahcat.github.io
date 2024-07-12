@@ -2,7 +2,7 @@
 date = 2017-08-31T00:00:00Z
 updated = 2017-08-31T00:00:00Z
 title = "Arbitrary Write primitive in Windows kernel (HEVD)"
-author = "hugsy"
+authors = ["hugsy"]
 
 [taxonomies]
 categories = ["tutorial", "research"]

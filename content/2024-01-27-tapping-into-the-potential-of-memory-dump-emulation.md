@@ -1,6 +1,6 @@
 +++
 title = "Tapping into the potential of Memory Dump Emulation"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2024-01-27T00:00:00Z
 updated = 2024-03-26T00:00:00Z
 

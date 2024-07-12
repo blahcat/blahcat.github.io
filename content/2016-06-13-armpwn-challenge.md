@@ -1,6 +1,6 @@
 +++
 title = "ARMPWN challenge write-up"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2016-06-13T12:21:05Z
 updated = 2016-06-13T12:21:05Z
 

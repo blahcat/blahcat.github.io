@@ -1,6 +1,6 @@
 +++
 title = "DEFCON CTF 2016 - feedme"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2016-05-23T00:00:00Z
 updated = 2016-05-23T00:00:00Z
 

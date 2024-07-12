@@ -1,6 +1,6 @@
 +++
 title = "Section Objects as Kernel/User communication mode"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2023-04-04T00:00:00Z
 updated = 2023-04-04T00:00:00Z
 

@@ -3,7 +3,7 @@
     <h2 class="page-title">{{ page.title }}</h2>
 </a>
 <p class="page-meta">Posted by
-    <b>{{config.author}}</b>
+    <b>{{page.authors | join(sep=", ")}}</b>
     {% if page.date %}
     on {{ page.date | date(format="%e %B %Y")}}
     {% endif %}
@@ -13,9 +13,12 @@
 {% macro page_header(page) %}
 <h1>{{ page.title }}</h1>
 <span class="meta">Posted by
-    <b>{{config.author}}</b>
+    <b>{{page.authors | join(sep=", ")}}</b>
     {% if page.date %}
     on {{ page.date | date(format="%e %B %Y")}}
     {% endif %}
+    <br>
+    <br>
+    <i>Reading time: {{ page.reading_time }}min</i>
 </span>
 {% endmacro page_header %}

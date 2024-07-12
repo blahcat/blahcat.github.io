@@ -1,6 +1,6 @@
 +++
 title = "0ctf 2016 - Warmup write-up"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2016-03-14T00:00:00Z
 updated = 2016-03-14T00:00:00Z
 

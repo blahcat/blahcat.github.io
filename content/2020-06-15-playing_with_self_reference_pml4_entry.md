@@ -1,6 +1,6 @@
 +++
 title = "Some toying with the Self-Reference PML4 Entry"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2020-06-15T00:00:00Z
 updated = 2024-07-01T00:00:00Z
 

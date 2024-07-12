@@ -1,6 +1,6 @@
 +++
 title = "Insomni'Hack CTF 2017: bender_safer"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2017-01-26T00:00:00Z
 updated = 2017-01-26T00:00:00Z
 

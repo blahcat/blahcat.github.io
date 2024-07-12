@@ -1,6 +1,6 @@
 +++
 title = "Setup KDCOM for 2 Hyper-V VMs"
-author = "hugsy"
+authors = ["hugsy"]
 date = 2022-07-14T00:00:00Z
 updated = 2022-07-14T00:00:00Z
 
