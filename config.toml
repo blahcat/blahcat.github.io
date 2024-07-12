@@ -41,7 +41,6 @@ clean_blog_menu = [
     { url = "$BASE_URL/notes", name = "Notes" },
     { url = "$BASE_URL/about", name = "About" },
     { url = "$BASE_URL/qemu", name = "Qemu VMs" },
-
 ]
 
 clean_blog_social = [

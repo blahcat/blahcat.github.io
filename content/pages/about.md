@@ -13,7 +13,7 @@ Unless specified otherwise, all content is released under the [CopyLeft license]
 
 Follow us on:
  - {{ twitter(user="ctf_blahcat") }}
- - <a class="fa fa-github" href="https://github.com/blahcat" target="_blank">&nbsp;Github</a>
+ - {{ github(user="blahcat") }}
 
 
 ## Recommended blogs ##
@@ -35,11 +35,10 @@ Follow us on:
   - [Needle in a Thread Stack](https://needleinathreadstack.wordpress.com/)
   - [Hyper-V Internals](https://hvinternals.blogspot.com/)
   - [Old New Things](https://devblogs.microsoft.com/oldnewthing/)
-  - <a class="fa fa-github" target="_blank" href="https://scorpiosoftware.net/">&nbsp;@zodiacon's blog</a>
-  - <a class="fa fa-github" target="_blank" href="https://www.ivanlef0u.tuxfamily.org/">&nbsp;@ivanlef0u's blog</a>
-  - <a class="fa fa-github" target="_blank" href="https://0vercl0k.tuxfamily.org/bl0g/">&nbsp;@0vercl0k's blog</a>
-  - <a class="fa fa-github" target="_blank" href="https://connormcgarr.github.io">@33y0re</a>
-  - <a class="fa fa-github" target="_blank" href="https://syfuhs.net/">@SteveSyfuhs' blog</a>
-  - <a class="fa fa-github" target="_blank" href="https://csandker.io/">@0xcsandker's blog</a>
-  - <a class="fa fa-github" target="_blank" href="https://j00ru.vexillium.org/">&nbsp;@j00ru's blog</a>
-  -
+  - [Ivanlef0u's blog](https://www.ivanlef0u.tuxfamily.org)
+  - [Connor Mc Garr's blog](https://connormcgarr.github.io)
+  - {{ github(user="zodiacon")}}['s blog](https://scorpiosoftware.net/)
+  - {{ github(user="0vercl0k")}}[@'s blog](https://0vercl0k.tuxfamily.org/bl0g)
+  - {{ twitter(user="SteveSyfuhs")}}['s blog](https://syfuhs.net/)
+  - {{ twitter(user="0xcsandker")}}['s blog](https://csandker.io/)
+  - {{ twitter(user="j00ru")}} ['s blog](https://j00ru.vexillium.org/)
