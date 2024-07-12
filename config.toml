@@ -8,7 +8,7 @@ feed_filenames = ["atom.xml", "rss.xml"]
 author = "hugsy"
 compile_sass = true
 build_search_index = true
-minify_html = false
+minify_html = true
 
 taxonomies = [
     { name = "categories", rss = true, paginate_by = 10 },

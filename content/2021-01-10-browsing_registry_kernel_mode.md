@@ -32,7 +32,7 @@ As a tree, a __Hive__ can be browsed, exposing:
 
 Therefore a Key can contain Sub-Keys but also Values, just like a folder can contain sub-folders and files. Later on, we'll explain how to enumerate them, as we must go over some pre-requisites first. It could be noted that the analogy of a typical File System is true to the point where it is possible to abuse some situations via Symbolic Links (exploiting `REG_LINK` types) but we won't be covering that today.
 
-{% note(type="caution") %}
+{% note(type="tip") %}
 For convenience, the following equivalence will be used throughout this post:
  * Top-Level Keys = Root Keys
  * Sub Keys = Keys (as long as they aren't Root Keys)
