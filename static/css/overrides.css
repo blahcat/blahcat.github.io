@@ -1,0 +1,63 @@
+article {
+    font-family: Roboto;
+    font-style: normal;
+    text-align: justify;
+}
+
+a[class="category_link"] {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 5px;
+}
+
+a[class="tag_link"] {
+    border-radius: 25px;
+    border: 2px solid #8a0e6b;
+    padding: 2px;
+}
+
+div[class="alert-info"] {
+    border-radius: 15px;
+    border: 2px solid #0e4f95;
+    padding: 10px;
+    background-color: #1982f361;
+}
+
+div[class="alert-success"] {
+    border-radius: 15px;
+    border: 2px solid #096916;
+    padding: 10px;
+    background-color: #3ce51161;
+}
+
+div[class="alert-warning"] {
+    border-radius: 15px;
+    border: 2px solid #5f2405;
+    padding: 10px;
+    background-color: #b6661161;
+}
+
+div[class="alert-error"] {
+    border-radius: 15px;
+    border: 2px solid #5f0505;
+    padding: 10px;
+    background-color: #670d0d61;
+}
+
+img {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.post-discussions {
+    text-align: center;
+    position: relative;
+    padding: 1em 1em;
+    z-index: 10;
+    border-top: 1px solid #e5e4e1;
+    clear: both;
+}
+
+.post-discussions a:hover {
+    text-decoration: underline;
+}

@@ -65,15 +65,15 @@ $ qemu-system-aarch64 -smp 2 -M virt -cpu cortex-a57 -m 1G \
 ```
 
 
-![1.debian.installer.png](https://i.imgur.com/PAExOmJ.png)
+{{ img(src="https://i.imgur.com/PAExOmJ.png" title="1.debian.installer.png") }}
 
 Then, go grab a coffee while the installer does its magic:
 
-![2.debian.installer.png](https://i.imgur.com/1Mgoscl.png)
+{{ img(src="https://i.imgur.com/1Mgoscl.png" title="2.debian.installer.png") }}
 
 And finally:
 
-![3.debian.installer.png](https://i.imgur.com/IfvQpTC.png)
+{{ img(src="https://i.imgur.com/IfvQpTC.png" title="3.debian.installer.png") }}
 
 
 Now we must shutdown the VM, and extract the initrd and kernel from the image, as follow:
@@ -109,7 +109,7 @@ $ qemu-system-aarch64 -smp 2 -M virt -cpu cortex-a57 -m 1G \
 
 And that's it!
 
-![4.debian.installer.png](https://i.imgur.com/519SOdy.png)
+{{ img(src="https://i.imgur.com/519SOdy.png" title="4.debian.installer.png") }}
 
 The ready-to-use image (with gcc, gdb, gef, etc.) is available [here](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA).
 

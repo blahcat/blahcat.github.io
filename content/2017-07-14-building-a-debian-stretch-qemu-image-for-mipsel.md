@@ -80,16 +80,16 @@ kernel will try to decompress `initrd`. The reason is:
 Then your MIPSel (Malta-flavor) system boots, and you end up in the regular
 `ncurses` Debian installer.
 
-![1.debian.installer.png"%](https://i.imgur.com/IqDge4n.png)
+{{ img(src="https://i.imgur.com/IqDge4n.png" title="1.debian.installer.png"%") }}
 
 Let the installer do its magic.
 
-![3.debian.partition.png](https://i.imgur.com/Lg6Db5x.png)
+{{ img(src="https://i.imgur.com/Lg6Db5x.png" title="3.debian.partition.png") }}
 
 Since it's a VM for test and lab stuff, the guided partitioning is more than
 enough (and select `All files in one partition`). Feel free to tweak that part.
 
-![2.debian.installation.png](https://i.imgur.com/iv31UxH.png)
+{{ img(src="https://i.imgur.com/iv31UxH.png" title="2.debian.installation.png") }}
 
 I usually install only the minimum OS to get a running shell once I boot. For
 there I install everything from `apt-get`. With a proper `openssh-server`
@@ -101,13 +101,13 @@ installed, I then create 2 scripts:
 
 Debian will detect no boot loader, and show the following warning:
 
-![7.debian.end_installer.png](https://i.imgur.com/fuxZCDU.png)
+{{ img(src="https://i.imgur.com/fuxZCDU.png" title="7.debian.end_installer.png") }}
 
 So remember to append `root=/dev/sda1` to `-append` option before running your
 Qemu.
 
 Then the installation will finish successfully:
-![6.debian.complete.png](http://i.imgur.com/qFvh3cM.png)
+{{ img(src="http://i.imgur.com/qFvh3cM.png" title="6.debian.complete.png") }}
 
 
 ### Fixing the last quirks ###
@@ -152,7 +152,7 @@ $ qemu-system-mipsel -M malta -m 1G \
   -nographic
 ```
 
-![9.first.boot.png](http://i.imgur.com/6h0Wxed.png)
+{{ img(src="http://i.imgur.com/6h0Wxed.png" title="9.first.boot.png") }}
 
 On all the images I've created, Debian doesn't properly DHCP the Ethernet
 interface (get a wrong name for the interface), so it must be done manually at

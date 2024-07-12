@@ -84,7 +84,7 @@ Here with `CryptSvc`. Also make the border red so we can find the window easily!
     </TargetOptions>
 </TargetConfig>
 ```
-![image](https://user-images.githubusercontent.com/590234/179410823-7b10187c-cd85-46cc-a8c5-f44ff61a5db5.png)
+{{ img(src="https://user-images.githubusercontent.com/590234/179410823-7b10187c-cd85-46cc-a8c5-f44ff61a5db5.png" title="image") }}
 
 ### Setup a ARM64 Qemu debugging profile
 

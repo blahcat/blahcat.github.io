@@ -97,7 +97,7 @@ kd> dt nt!_TOKEN ffffc000`2f405590
 
 So basically, if we create a process (say `cmd.exe`), and overwrite its token with the `System` token value we found (0xffffc0002f405590), our process will be running as `System`. Let's try!
 
-![image_alt](/img/win-kernel-debug/token-bump-via-windbg-1.png)
+{{ img(src="/img/win-kernel-debug/token-bump-via-windbg-1.png" title="image_alt") }}
 
 We search our process using `kd`:
 
@@ -119,7 +119,7 @@ kd> eq 0xffffe000babfd900+0x348 0xffffc0002f405590
 
 And tada ...
 
-![image_alt](/img/win-kernel-debug/token-bump-via-windbg-2.png)
+{{ img(src="/img/win-kernel-debug/token-bump-via-windbg-2.png" title="image_alt") }}
 
 Now we know how to transform any unprivileged process into a privileged one
 using `kd`.

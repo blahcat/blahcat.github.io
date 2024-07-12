@@ -49,7 +49,7 @@ Unless stated otherwise, `root` password is `root`, and an low privilege account
 
 > **Update**: the current ARMv6 image is based on a Raspberry Pi image. Therefore, the username is `pi` , password `raspberry` and is sudoer NOPASSWD. I will update the image soon to fix this.
 
-![vbox-qemu](/img/vbox.png)
+{{ img(src="/img/vbox.png" title="vbox-qemu") }}
 
 
 ## But why ?
@@ -74,7 +74,7 @@ Well, those VMs were built from scratch using Qemu, which takes forever. I will 
 
 Hope you'll enjoy it!
 
-![buzz-qemu](https://i.imgflip.com/1ri3fi.jpg)
+{{ img(src="https://i.imgflip.com/1ri3fi.jpg" title="buzz-qemu") }}
 
 Oh and if you happen to be wandering in Black Hat Las Vegas 2017, come say hi at [the Black Hat Arsenal booth](https://www.blackhat.com/us-17/arsenal/schedule/index.html#gdb-enhanced-features-gef-8048)
 

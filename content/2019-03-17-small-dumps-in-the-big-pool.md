@@ -18,17 +18,17 @@ Or, on how to use the (Windows 10) new field `_ETHREAD.ThreadName` to stabilize 
 
 Keeping on with experimenting with Windows 10 I noticed a field part of the `nt!_ETHREAD` structure, called `ThreadName`. For a minute, the field name misled me to think threads were now [Named Objects](https://docs.microsoft.com/en-us/windows/desktop/sync/object-names) on Windows. What it is instead, is a convenient and native way to name a thread, any thread by attaching a `UNICODE_STRING` structure to it. Thanks to {{ twitter(user="PetrBenes") }}'s invaluable [`ntdiff`](https://ntdiff.github.io/) it became clear that this field was introduced with Windows 10, more specifically 1607.
 
-![ntdiff](/img/small-pool/ntdiff.png)
+{{ img(src="/img/small-pool/ntdiff.png" title="ntdiff") }}
 
 [Source](https://ntdiff.github.io/#versionLeft=Win8.1_U1%2Fx64%2FSystem32&filenameLeft=ntoskrnl.exe&typeLeft=Standalone%2F_ETHREAD&versionRight=Win10_1607_RS1%2Fx64%2FSystem32&filenameRight=ntoskrnl.exe&typeRight=Standalone%2F_ETHREAD)
 
 So how to use it? Is it even reachable? The answer was as immediate as [Googling "windows set thread name"](https://google.com/search?q=windows+10+set+thread+name) which leads to an [MSDN article](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-set-a-thread-name-in-native-code?view=vs-2017). This article mentions the [`SetThreadDescription()`](https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-setthreaddescription) in `processthreadsapi.h`. Disassembling `kernelbase.dll` shows that this function is merely a wrapper around the syscall `NtSetInformationThread()` with a `ThreadInformationClass` set to 0x26 (`ThreadNameInformation`).
 
-![ida-setthreaddescription](/img/small-pool/ida-setthreaddescription.png)
+{{ img(src="/img/small-pool/ida-setthreaddescription.png" title="ida-setthreaddescription") }}
 
 Once in `ntoskrnl` (IDA), the syscall performs various checks (is the `_ETHREAD.ThreadName` already allocated, is the input size and buffer correct etc.), and then call `ExAllocatePoolWithTag()` with a tag of `ThNm` and as `NonPagedPoolNx`, and the size provided by the `UNICODE_STRING` structure, plus `sizeof(UNICODE_STRING)`. Finally, the user buffer will be `memmove`-ed into this new pool.
 
-![ntsetinformationthread-1](/img/small-pool/ntsetinformationthread-1.png)
+{{ img(src="/img/small-pool/ntsetinformationthread-1.png" title="ntsetinformationthread-1") }}
 
 Since the unicode buffer and its size are fully user controlled, this means that the syscall `NtSetInformationThread(0x26)` provides a way to allocate an arbitrary sized pool in the kernel, for each thread we create and/or can open a handle to via `OpenThread()`.
 
@@ -42,7 +42,7 @@ The following code is enough to populate the `_ETHREAD.ThreadName` of a designed
 
 The acute observer may notice that only `THREAD_SET_LIMITED_INFORMATION` class information is used. Therefore setting thread name with `ThreadNameInformation` is an operation that is not considered privileged and should work very reliably, just like `THREAD_QUERY_LIMITED_INFORMATION` to retrieve the thread name.
 
-![image_alt](/img/small-pool/setthreadname-1.png)
+{{ img(src="/img/small-pool/setthreadname-1.png" title="image_alt") }}
 
 
 From WinDbg, the `!poolfind` command can be used to filter by tag name, in this case `ThNm` (0x6d4e6854), or query `!pool` with the address from the field `_ETHREAD!ThreadName`. This confirms that we fully control the content and size of pools. To be in the large pool, the chunk must be of at least 0x1000 bytes, making the minimum actual pool data size of 0x1000-0x10 bytes (for the header). And for the maxiumum allocatable size, during this experiment it was shown possible to allocate thread name up to 0xfff0 bytes (65520):
@@ -60,7 +60,7 @@ tid=5488
 data stored at FFFFDD07B6F8C010
 ```
 
-![image_alt](/img/small-pool/setthreadname-2.png)
+{{ img(src="/img/small-pool/setthreadname-2.png" title="image_alt") }}
 
 Which makes sense, since larger size would overflow the `Length` field of the `UNICODE_STRING` (i.e. `sizeof(WORD)`), which is checked during the `NtSetInformationThread(ThreadNameInformation)` syscall.
 
@@ -153,7 +153,7 @@ What about local DoS? Well yes, it is a pretty simple to destabilize the system 
 
 As a side note, on my test VM (Windows 10 RS5 with 2 vCpus and 2GB of RAM), I could force a process to spawn ~0xb900 threads before the system became unusable.
 
-![image_alt](/img/small-pool/dos-1.png)
+{{ img(src="/img/small-pool/dos-1.png" title="image_alt") }}
 
 ## Final words
 

@@ -1,0 +1,24 @@
+<a href="{{src}}" target="_blank">
+<img
+    src="{{src}}"
+
+    {% if id %}
+    id="{{id}}"
+    {% endif %}
+
+    {% if title %}
+    title="{{ title }}"
+    alt="{{ title }}"
+    {% endif %}
+
+    {% if width %}
+    width="{{width}}"
+    {% else %}
+    width="100%"
+    {% endif %}
+
+    {% if height %}
+    height="{{height}}"
+    {% endif %}
+/>
+</a>

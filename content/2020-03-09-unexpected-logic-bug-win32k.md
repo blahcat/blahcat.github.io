@@ -26,7 +26,7 @@ int WinMain(HINSTANCE h, HINSTANCE ins, LPSTR cmd, int nb)
 
 Just compile, run (here on a build 19569.1000 x64) and enjoy:
 
-![bsod](https://i.imgur.com/DRxULeh.png)
+{{ img(src="https://i.imgur.com/DRxULeh.png" title="bsod") }}
 
 
 ## The less short version
@@ -55,7 +55,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 ```
 which will output the PID of CSRSS
 
-![finding_csrss](https://i.imgur.com/Q4XsJZP.png)
+{{ img(src="https://i.imgur.com/Q4XsJZP.png" title="finding_csrss") }}
 
 
 In turn, CSRSS will consume that message and call `winsrvext!SrvEndTask()` then `winsrvext!EndTask()`. In this function, in order to determine the process to terminate `csrss` will invoke `GetWindowThreadProcessId()` and will use the found process id value to look into the [`CSR_PROCESS`](http://www.geoffchappell.com/studies/windows/win32/csrsrv/api/process/process.htm) linked

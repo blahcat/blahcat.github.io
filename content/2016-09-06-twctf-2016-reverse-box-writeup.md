@@ -38,7 +38,7 @@ $ file ./reverse_box
 Using [Binary-Ninja](https://binary.ninja) disassembler, we can see that the
 `main` function is not doing much, but something like
 
-![binja-1](https://i.imgur.com/6B6g3Du.png)
+{{ img(src="https://i.imgur.com/6B6g3Du.png" title="binja-1") }}
 
 ```c
 fill_buffer(buffer[0x100]);
@@ -53,7 +53,7 @@ permutations and rotations on this buffer. This means that there is a finite
 number (exactly 256) of possible configurations for the buffer used to generate
 the hash.
 
-![binja-2](https://i.imgur.com/oPlPALo.png)
+{{ img(src="https://i.imgur.com/oPlPALo.png" title="binja-2") }}
 
 Since I was feeling lazy and didn't want to reverse the whole thing, I decided to
 use my tool [`gef`](https://github.com/hugsy/gef.git) and

@@ -47,7 +47,7 @@ But hold your breath, here comes the Debugger Data Model...
 
 With the [help of Alex Ionescu pointing out my shortcomings](https://github.com/hugsy/windbg_js_scripts/pull/1) - but always for my benefit -, I ended up with writing [`ObjectExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/45926ab380ba6185cc8e210d77f1a7c56ec05323/scripts/ObjectExplorer.js), a surprisingly short JS scripts for WinDbg, which parses and exposes in a structured way the content of `nt!ObpRootDirectoryObject`.
 
-![image_alt](/img/{D1BF677A-5CFD-4C16-8ABA-1492397D7E17}.jpg)
+{{ img(src="/img/{D1BF677A-5CFD-4C16-8ABA-1492397D7E17}.jpg" title="image_alt") }}
 
 
 Not only it's all click-friendly when I'm feeling it's too complicated to type on a keyboard, but the absolute awesome thing is the total integration with LINQ, so you can actually search those objects programmatically (which is impossible with `WinObj` for instance). Say you want to enumerate the `nt!_OBJECT_TYPE` keys of all the `ObjectTypes` on your version of Windows, well...
@@ -82,7 +82,7 @@ lkd> dx -g @$AlpcPorts.Select( alpc => new { AlpcName= alpc.Name, ProcessOwnerNa
 
 and we get:
 
-![image_alt](/img/{68EB5886-B508-4F69-81E2-DDC726638542}.png)
+{{ img(src="/img/{68EB5886-B508-4F69-81E2-DDC726638542}.png" title="image_alt") }}
 
 
 You get the gist. Pretty cool, right?

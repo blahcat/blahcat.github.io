@@ -62,7 +62,7 @@ VirtualBox to do the following:
     pipe/socket" is **unchecked**.
 
 
-![image_alt](/img/win-kernel-debug/dbg-uart-settings.png)
+{{ img(src="/img/win-kernel-debug/dbg-uart-settings.png" title="image_alt") }}
 
 
   * in the "Network" tab, on top of the the default NAT-ed network created by
@@ -70,7 +70,7 @@ VirtualBox to do the following:
     existing interface on the host (for example `vboxnet0`).
 
 
-![image_alt](/img/win-kernel-debug/dbg-network-settings.png)
+{{ img(src="/img/win-kernel-debug/dbg-network-settings.png" title="image_alt") }}
 
 
 Now the debugger is ready, you need to install WinDBG as the kernel debugger. A
@@ -111,7 +111,7 @@ Then enable debug mode on new entry UUID:
 C:\> bcdedit /debug {UUID-RETURNED-BY-FORMER-COMMAND} on
 ```
 
-![image_alt](/img/win-kernel-debug/win7-bcdedit-enable-debug.png)
+{{ img(src="/img/win-kernel-debug/win7-bcdedit-enable-debug.png" title="image_alt") }}
 
 Now instruct Windows serial communication as debugging medium, and use the
 "fastest" baud rate (i.e 115200 symbols/sec). Since we'll only use serial
@@ -134,7 +134,7 @@ Now, shutdown the VM and go to its settings on VirtualBox (**Machine** ->
 Pipe` as Port Mode. Last provide a path to file in the `Path/Address` field, for
 example `/tmp/win7-kd-pipe`.
 
-![image_alt](/img/win-kernel-debug/win7-vbox-settings.png)
+{{ img(src="/img/win-kernel-debug/win7-vbox-settings.png" title="image_alt") }}
 
 The tickbox `Connect to existing pipe/socket` means that the debuggee will
 always have to be started **after** the debugger VM, or VirtualBox will throw an
@@ -148,7 +148,7 @@ error.
 Start the debugger VM first and prepare WinDBG for kernel-mode debugging
 (Ctrl-K) by selecting COM as debug vector:
 
-![image_alt](/img/win-kernel-debug/win7-windbg-option.png)
+{{ img(src="/img/win-kernel-debug/win7-windbg-option.png" title="image_alt") }}
 
 WinDBG will then wait for communications on COM1.
 
@@ -169,12 +169,12 @@ Deferred                                       srv*c:\syms*http://msdl.microsoft
 Start the debuggee, and when the boot loader menu shows up, select the entry
 named `Windows 7 with kernel debug via COM`.
 
-![image_alt](/img/win-kernel-debug/win7-boot-manager.png)
+{{ img(src="/img/win-kernel-debug/win7-boot-manager.png" title="image_alt") }}
 
 As you see Windows already indicates that this entry will be in debug mode. And
 when you press Enter, the debugger VM will be attached to the debuggee.
 
-![image_alt](/img/win-kernel-debug/win7-debug-session.png)
+{{ img(src="/img/win-kernel-debug/win7-debug-session.png" title="image_alt") }}
 
 You're now debugging the Windows 7 x86 VM kernel!! But as you'll see, Serial
 Port debugging will drastically slow down all operations on the debuggee. This
@@ -206,7 +206,7 @@ System -> Advanced system settings -> on the Hardware tab). Expand "Network
 adapters" and select the 2nd device's properties menu. On the new window, the
 "Location" field will be required to assignate this interface for debugging:
 
-![image_alt](/img/win-kernel-debug/win8-network-controller-properties.png)
+{{ img(src="/img/win-kernel-debug/win8-network-controller-properties.png" title="image_alt") }}
 
 This indicates us the bus parameters we will need to provide `bcdedit` later on,
 with the format `<BusNumber>:<DeviceNumber>:<FunctionNumber>` (in this case
@@ -221,7 +221,7 @@ C:\> bcdedit /dbgsettings net hostip:ip.of.debugger.vm port:50000 key:Kernel.Deb
 C:\> bcdedit /set {dbgsettings} busparams <BusNumber>.<DeviceNumber>.<FunctionNumber>
 ```
 
-![image_alt](/img/win-kernel-debug/win8-setup-kernel-mode.png)
+{{ img(src="/img/win-kernel-debug/win8-setup-kernel-mode.png" title="image_alt") }}
 
 ### Running the debugging session
 
@@ -245,13 +245,13 @@ Waiting to reconnect...
 Start the VM. When the boot loader menu shows up, select the one with the
 network kernel mode enabled
 
-![image_alt](/img/win-kernel-debug/win8-boot-loader.png)
+{{ img(src="/img/win-kernel-debug/win8-boot-loader.png" title="image_alt") }}
 
 The debugger will show some activity immediately. Note that execution of the
 debuggee will not stop, so you may hit Ctrl-Break at any time to force an
 interruption:
 
-![image_alt](/img/win-kernel-debug/win8-success.png)
+{{ img(src="/img/win-kernel-debug/win8-success.png" title="image_alt") }}
 
 
 In this post, we've presented 2 techniques for kernel debugging, depending on

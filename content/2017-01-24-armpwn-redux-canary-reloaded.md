@@ -162,7 +162,7 @@ $ python armpwn_leak_canary.py
 
 To be we fetched the correct value for the canary of the remote process, we can use [this script](https://github.com/elttam/canary-fun/blob/master/read_canary_from_pid.py) locally to compare the values for the canary:
 
-![image_alt](https://i.imgur.com/IWpuMIy.png)
+{{ img(src="https://i.imgur.com/IWpuMIy.png" title="image_alt") }}
 
 
 

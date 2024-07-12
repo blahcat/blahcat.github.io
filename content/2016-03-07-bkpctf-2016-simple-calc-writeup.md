@@ -23,7 +23,7 @@ Partial RELRO   No canary found   NX enabled    No PIE          No RPATH   No RU
 
 `simple_calc` offered a binary that expects us to make some calculations. It will ask for a number of calculations (say *N*) to perform and will `malloc()` *N*x4 bytes in the heap. If we decompile with [IDA](https://www.hex-rays.com/products/ida/), it'll look something like this:
 
-![vuln_in_ida](https://i.imgur.com/aFaqYf6.png)
+{{ img(src="https://i.imgur.com/aFaqYf6.png" title="vuln_in_ida") }}
 
 Then a loop of *N* iterations will commence,
 each iteration offering to perform one of the possible arithmetic operations,
@@ -51,7 +51,7 @@ addresses).
 By exiting, `simple_calc` performs a `memcpy()` of the malloc-ed buffer (whose
 length is controlled by us) into a stack buffer (of length 0x28 bytes) located
 at $rbp+40h.
-![overflow](https://i.imgur.com/0wcLH24.png)
+{{ img(src="https://i.imgur.com/0wcLH24.png" title="overflow") }}
 
 It is then easy to spot the trivial stack buffer overflow.
 
@@ -92,7 +92,7 @@ def pwn(s):
 We execute and a SIGSEGV was well caught (as seen with
 [`gef`](https://github.com/hugsy/gef)) :
 
-![gef](https://i.imgur.com/rn4XSOR.png)
+{{ img(src="https://i.imgur.com/rn4XSOR.png" title="gef") }}
 
 However, the faulty instruction is in the `free()` following the `memcpy()` and
 yet not in the return from the main function.

@@ -38,7 +38,7 @@ Binary:  [..] 00000000 00100000 10011011 00000000
 
 Which we can parse combined with the format given by the AMD manual:
 
-![image_alt](https://i.ibb.co/NNgJdgz/image.png)
+{{ img(src="https://i.ibb.co/NNgJdgz/image.png" title="image_alt") }}
 (Src: AMD Programmer's Manual Volume 2)
 
 ```txt
@@ -53,7 +53,7 @@ Which we can parse combined with the format given by the AMD manual:
 
 The current CPL being given by the 2 lowest bytes of CS, it is now easy to understand how the CPU performs privilege check: by simply comparing the CPL from CS register and DPL from the segment descriptor, or if you prefer a visual diagram from the AMD manual:
 
-![image_alt](https://i.ibb.co/kDFzxB8/image.png)
+{{ img(src="https://i.ibb.co/kDFzxB8/image.png" title="image_alt") }}
 (Src: AMD Programmer's Manual Volume 2)
 
 As we saw earlier, the `Address` and `Limit` parts of the descriptor are equal to 0 in Long-Mode (64-bit) - this may be the source of confusion I read in some blog posts (but no name shaming, it's not the point 😋).
@@ -80,7 +80,7 @@ Preparing this post, I came across [this blog post](https://connormcgarr.github.
 
 The best summary can be given by this diagram (again from AMD's manual)
 
-![image_alt](https://i.ibb.co/k5TDWgw/image.png)
+{{ img(src="https://i.ibb.co/k5TDWgw/image.png" title="image_alt") }}
 _Source: AMD Programmer's Manual Volume 2_
 
 

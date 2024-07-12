@@ -38,7 +38,7 @@ It is a baking program, that allows to build your own recipe.
 
 After printing the available ingredients, the `main` function does this (at
 0x0400CBC)
-![image_alt](https://i.imgur.com/yrFucNx.png)
+{{ img(src="https://i.imgur.com/yrFucNx.png" title="image_alt") }}
 
 Which translates to the pseudo-code:
 ```c

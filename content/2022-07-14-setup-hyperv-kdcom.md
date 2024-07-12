@@ -36,4 +36,4 @@ windbgx -k com:pipe,port=\\.\com1,resets=0,reconnect
 
 Enjoy
 
-![image](https://user-images.githubusercontent.com/590234/179017302-76f5a1ca-acc3-48fb-a6d1-e7d13ba74a45.png)
+{{ img(src="https://user-images.githubusercontent.com/590234/179017302-76f5a1ca-acc3-48fb-a6d1-e7d13ba74a45.png" title="image") }}

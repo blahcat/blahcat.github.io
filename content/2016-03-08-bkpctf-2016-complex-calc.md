@@ -37,7 +37,7 @@ One of my new toys for quite a few months now is IDA Python plugin
 [diaphora](https://github.com/joxeankoret/diaphora) by Joxean Koret (aka
 {{ twitter(user="matalaz") }}). By diffing then, the issue is immediately visible:
 
-![image_alt](https://i.imgur.com/0tkaNNT.png)
+{{ img(src="https://i.imgur.com/0tkaNNT.png" title="image_alt") }}
 
 The `free()` function was modified so we cannot benefit from the graceful exit
 of the function by simply passing a NULL pointer. Now, `free()` will always
@@ -53,7 +53,7 @@ work. So I will assume you know as well.
 
 To stand on common ground, here is what a heap chunk looks like:
 
-![image_alt](https://i.imgur.com/EVnKlBg.png)
+{{ img(src="https://i.imgur.com/EVnKlBg.png" title="image_alt") }}
 
 When `free()` is called, some checks are made to know how the chunk must be
 deallocated:
@@ -68,7 +68,7 @@ deallocated:
 
 This actually shows quite well in the flow graph:
 
-![image_alt](https://i.imgur.com/omGULMz.png)
+{{ img(src="https://i.imgur.com/omGULMz.png" title="image_alt") }}
 
 Since we control what is written in the heap (same method than `simple_calc`),
 we can control whether we want to deallocate using `unlink` or `munmap` (simply
@@ -118,7 +118,7 @@ now which value should we use then for operator_1 and operator_2 ?
 
 Let's go back to `free()` flow graph:
 
-![image_alt](https://i.imgur.com/7ZEy4nD.png)
+{{ img(src="https://i.imgur.com/7ZEy4nD.png" title="image_alt") }}
 
 As we see, several conditions must be filled:
 

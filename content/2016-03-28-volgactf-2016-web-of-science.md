@@ -29,7 +29,7 @@ Full RelRO:                                       No
 It's a simple dynamically linked binary for x86-64. We have a canary stack
 however the stack is executable (the '90s says hello!), which `gef`
 confirms instantly:
-![exec-stack](https://i.imgur.com/LfT3dt1.png)
+{{ img(src="https://i.imgur.com/LfT3dt1.png" title="exec-stack") }}
 
 
 ### Vulnerabilities ###
@@ -38,7 +38,7 @@ confirms instantly:
 The binary is full of vulnerabilities, many of which were automatically detected
 by the `format-string-helper` command from [GDB-GEF](https://github.com/hugsy/gef.git)
 
-![fmt-str-gef](https://i.imgur.com/cqYmZLi.png)
+{{ img(src="https://i.imgur.com/cqYmZLi.png" title="fmt-str-gef") }}
 
 Without any static analysis, we immediately spot that many (if not all)
 `printf()` calls are vulnerable to format string vulnerabilities, where we
@@ -57,7 +57,7 @@ When adding a paper (`add_paper()` function), a stack buffer of 1096 bytes is
 allocated on the stack. It is then possible to populate different fields of this
 stack allocated paper as shown here:
 
-![add-paper-fill-info](https://i.imgur.com/dTZmTgS.png)
+{{ img(src="https://i.imgur.com/dTZmTgS.png" title="add-paper-fill-info") }}
 
 When saving the stack buffer is then copied to the .bss segment:
 
@@ -89,7 +89,7 @@ The `view_paper()` function (at 0x400D52) receives a pointer to a paper and
 displays its information using `printf()` - which makes us understand what
 triggered the `gef` plugin for format string.
 
-![view-paper](https://i.imgur.com/f7hs6qZ.png)
+{{ img(src="https://i.imgur.com/f7hs6qZ.png" title="view-paper") }}
 
 
 ### Exploitation ###
@@ -188,7 +188,7 @@ All done mate !
 
 Final word (or image):
 
-![image_alt](https://i.imgur.com/PjfFC2f.jpg)
+{{ img(src="https://i.imgur.com/PjfFC2f.jpg" title="image_alt") }}
 
 Full exploit is : [gef-exploit.py](https://gist.github.com/hugsy/deae32e1da40e7b8c754)
 

@@ -77,7 +77,7 @@ Flags: [ carry  parity  adjust  zero  sign  trap  INTERRUPT  direction  overflow
 The interesting function is at 0x08049036:
 
 
-![do-feedme](https://i.imgur.com/WLAWsAW.png)
+{{ img(src="https://i.imgur.com/WLAWsAW.png" title="do-feedme") }}
 
 This function basically will:
 

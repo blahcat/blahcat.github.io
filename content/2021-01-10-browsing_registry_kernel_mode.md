@@ -13,8 +13,9 @@ One of Windows kernel subsystem I recently dug into is the Configuration Manager
 
 What I wondered was: How is the registry handled in the kernel (i.e. by the CM)? So in the same way that I explored [other](/2020/06/14/playing_with_self_reference_pml4_entry/) [Windows](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/VadExplorer.js) [subsystems](/2019/01/30/playing-with-windows-root-directory-object/), I tried to keep a practical approach, and the result was this WinDbg Js script, `RegistryExplorer.js`[^0] that'll be referring to throughout this post. This script allows to browse and query via LINQ the registry in a kernel debugging session.
 
-_Notes_: this is a collection of notes, do not blindly trust, assume mistakes. Also, you'll find the KD commands are given to reproduce easily, but your offset/index may vary. Last, everything was done/tested against Windows 10 x64 1909: I assume those findings to be applicable to other versions, but it may not be the case.
-
+{% note() %}
+This is a collection of notes, do not blindly trust, assume mistakes. Also, you'll find the KD commands are given to reproduce easily, but your offset/index may vary. Last, everything was done/tested against Windows 10 x64 1909: I assume those findings to be applicable to other versions, but it may not be the case.
+{% end %}
 
 ## Overview
 
@@ -31,13 +32,15 @@ As a tree, a __Hive__ can be browsed, exposing:
 
 Therefore a Key can contain Sub-Keys but also Values, just like a folder can contain sub-folders and files. Later on, we'll explain how to enumerate them, as we must go over some pre-requisites first. It could be noted that the analogy of a typical File System is true to the point where it is possible to abuse some situations via Symbolic Links (exploiting `REG_LINK` types) but we won't be covering that today.
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> for convenience, the following equivalence will be used throughout this post:</div>
-  * Top-Level Keys = Root Keys
-  * Sub Keys = Keys (as long as they aren't Root Keys)
+{% note(type="caution") %}
+For convenience, the following equivalence will be used throughout this post:
+ * Top-Level Keys = Root Keys
+ * Sub Keys = Keys (as long as they aren't Root Keys)
+{% end %}
 
 The best structure definition of a Hive I could find comes from "Windows Kernel Internals NT Registry Implementation"[^1] (you'll find many references to the PDF in this post).
 
-![image_alt](/img/950bbc05-e57e-4d49-96a4-9aefec9a8ef6.png)
+{{ img(src="/img/950bbc05-e57e-4d49-96a4-9aefec9a8ef6.png", title="Hive Layout") }}
 
 
 Some hives are loaded very early in the boot process, as the BCD needs to retrieve its configuration settings from it in the `BCD` hive; and also during kernel loading, hardware info are exposed from the `HARDWARE` hive. Once parsed and loaded from file to memory, all the system hives are linked via a `LIST_ENTRY` whose head is pointed by the exposed symbol `nt!CmpHiveListHead`, and can be iterated over as a list of `nt!_CMHIVE` object using the `nt!_CMHIVE.HiveList` field. Therefore a quick parsing can be done with our best friends WinDbg + DDM, which allows us to do some LINQ magic:
@@ -110,7 +113,7 @@ nt!_CHILD_LIST
 
 And looking up a specific Value can be summarized as such:
 
-![img](https://i.imgur.com/VpAuNWf.png)
+{{ img(src="//i.imgur.com/VpAuNWf.png", title="Lookup of value `Foo`") }}
 Source[^1]
 
 As we see from the symbols, Value and SubKey lists are not designated by direct pointers in memory, but instead by indexes. Those indexes point to Cells, which contains either the data itself or the next key node to parse to reach the data. We've kept mentioning `Cells` without covering it, it now becomes important to do so, know how Cells are, how they work and how they can be accessed.
@@ -322,7 +325,7 @@ The last nibble of `PermanentBinAddress` is used for meta-data, so we can bitwis
 
 As a learning exercise, I always try to build a script/tool when digging into a topic, and here the result is another WinDbg JS script, `RegistryExplorer.js`[^0] which will allow to navigate through the registry using WinDbg Debugger Data Model (and therefore also query it via LINQ)
 
-![image_alt](/img/5787cef5-11cc-4a1f-97b7-2f6533812b2d.png)
+{{ img(src="/img/5787cef5-11cc-4a1f-97b7-2f6533812b2d.png" title="image_alt") }}
 
 <div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> a better version was done by {{ twitter(user="msuiche") }} here[^3]</div>
 
@@ -352,7 +355,8 @@ Example:
 
 Or the click-friendly version 😀
 
-![registryexplorer](/img/0a76e279-63a2-4643-8f1f-bd3c877323d8.png)
+{{ img(src="/img/0a76e279-63a2-4643-8f1f-bd3c877323d8.png", title="RegistryExplorer.js") }}
+
 
 
 ### Practical Toy Example: dumping SAM

@@ -31,7 +31,7 @@ After not that much effort in IDA by tracing down the IOCTL dispatching function
 callgraph, we spot the function `TriggerArbitraryOverwrite()` which can be
 reached via a IOCTL with a code of 0x22200B. The vulnerability is easy to spot:
 
-![image_alt](/img/win-kernel-debug/hevd-www-ida-vuln-spotting.png)
+{{ img(src="/img/win-kernel-debug/hevd-www-ida-vuln-spotting.png" title="image_alt") }}
 
 After checking the address we passed and printing some kernel debug messages,
 the function copies the value dereferenced from `rbx` (which is the function
@@ -164,7 +164,7 @@ in memory. Researchers such as
 SP1 used to have this section static and with Read/Write/Execute permission
 (although it exists on Windows 8 and up, it is "only" Read/Write)
 
-![Windows 8.1 HAL section](/img/win-kernel-debug/hevd-www-hal-interrupt.png)
+{{ img(src="/img/win-kernel-debug/hevd-www-hal-interrupt.png" title="Windows 8.1 HAL section") }}
 
 __Note__: Looking for references about HAL interrupt table corruption, I came across this recent and fantastic
 [blog post](https://labs.bluefrostsecurity.de/blog/2017/05/11/windows-10-hals-heap-extinction-of-the-halpinterruptcontroller-table-exploitation-technique/) by [@NicoEconomou](https://twitter.com/NicoEconomou) that covers exactly this approach. I might dedicate a future post applying this technique to HEVD as this table is also an excellent target for WWW scenario.
@@ -201,7 +201,7 @@ DeviceIoControl(hDevice, IOCTL_HEVD_ARBITRARY_OVERWRITE, lpBufferIn, sizeof(lpBu
 ```
 
 And if we test with dummy values:
-![exploit-test](/img/win-kernel-debug/hevd-www-testing-exploit.png)
+{{ img(src="/img/win-kernel-debug/hevd-www-testing-exploit.png" title="exploit-test") }}
 
 The `WHAT` corresponds to our shellcode (`lpShellcode`), which we know. Now we need the
 `WHERE` (i.e. `nt!HalDispatchTable[1]`)... which a kernel address! As we know, any
@@ -270,7 +270,7 @@ NtQueryIntervalProfile(dummy1, &dummy2);
 
 The clean final exploit can be found [here](https://github.com/hugsy/hevd/blob/c04e46ababbb78913ef228c31389370f17d8e48a/ArbitraryOverwrite/exploit.c).
 
-![image_alt](/img/win-kernel-debug/hevd-www-final-exploit.png)
+{{ img(src="/img/win-kernel-debug/hevd-www-final-exploit.png" title="image_alt") }}
 
 You can now enjoy the privileged shell so well deserved!
 

@@ -27,7 +27,7 @@ Get-ChildItem  $env:SystemRoot\Servicing\Packages\*DisposableClientVM*.mum | For
 Enable-WindowsOptionalFeature  -All -Online -FeatureName Containers-DisposableClientVM
 ```
 
-![image](https://user-images.githubusercontent.com/590234/183723930-583c191c-d67a-43d1-8c5a-8c6dd6d4c78a.png)
+{{ img(src="https://user-images.githubusercontent.com/590234/183723930-583c191c-d67a-43d1-8c5a-8c6dd6d4c78a.png" title="image") }}
 
 
 Another useful miniz! 👋

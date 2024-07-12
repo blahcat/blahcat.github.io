@@ -53,7 +53,7 @@ $ sudo ./install.sh
 PS C:\Users\hugsy> Set-VM "Ubuntu 18.04 x64" -EnhancedSessionTransportType HvSocket
 ```
  4. Start the VM. When switching to the RDP session, Hyper-V Manager will prompt the desired resolution and show the XRDP prompt.
-    ![image_alt](https://github.com/Microsoft/linux-vm-tools/raw/master/wiki/media/xorglogin.PNG)
+    {{ img(src="https://github.com/Microsoft/linux-vm-tools/raw/master/wiki/media/xorglogin.PNG" title="image_alt") }}
  5. Login as usual and enjoy the enhanced mode.
 
 For Fedora/RedHat, it [may also be working](https://bugzilla.redhat.com/show_bug.cgi?id=1553453).

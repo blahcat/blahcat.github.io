@@ -19,7 +19,7 @@ So off-the-shelf sandboxing products were disregarded immediately because they a
 
 AppContainers are not new and by the look of it, they are here to stay. They were introduced in Windows 8 as an in-kernel isolation mechanism (a-la seccomp for Linux) and are the default model for UWP applications which a simple look at the new Calculator in Process Hacker shows immediately:
 
-![image_alt](/img/4f110a8b-5af4-4f03-8c8d-6fe8e297fffe.png)
+{{ img(src="/img/4f110a8b-5af4-4f03-8c8d-6fe8e297fffe.png" title="image_alt") }}
 
 As the MSDN mentions, AppContainers operates on 6 levels of isolation, each programmatically customizable:
 
@@ -150,7 +150,7 @@ It's not complete but does the trick for me: without any option, the process wil
 PS> AppContainMe powershell
 ```
 
-![image_alt](/img/29d17988-bf1f-4a1c-8b63-b01e97e6b53f.png)
+{{ img(src="/img/29d17988-bf1f-4a1c-8b63-b01e97e6b53f.png" title="image_alt") }}
 
 It won't also have any network access:
 
@@ -177,10 +177,10 @@ Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
 ```
 
 So that confirms all the "isolation" points that are stated in the MSDN. It also works perfectly well for Win32 GUI apps, for PDF Readers
-![PDF Reader](/img/1e3a7b9c-7ef6-481d-a803-d0a969b3eab4.png)
+{{ img(src="/img/1e3a7b9c-7ef6-481d-a803-d0a969b3eab4.png" title="PDF Reader") }}
 
 Also, for having lightweight web browsing sessions (like with [`qtweb.exe`](http://www.qtweb.net/))
-![Web browser](/img/283fd853-c2c7-4846-9b7c-242bfe1b02a1.png)
+{{ img(src="/img/283fd853-c2c7-4846-9b7c-242bfe1b02a1.png" title="Web browser") }}
 
 That's pretty much it for this small post about AppContainers. If you want to play out-of-the-box with `AppContainMe`, a release archive with all the files is [here](https://github.com/hugsy/pwn--/releases).
 

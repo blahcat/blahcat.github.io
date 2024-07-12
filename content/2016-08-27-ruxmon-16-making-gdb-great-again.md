@@ -19,4 +19,4 @@ Find the [PDF slides here](http://christophe.alladoum.free.fr/public/ruxmon-08-1
 
 And send me your insults/feedbacks on [gef new IRC channel](https://webchat.freenode.net/?channels=##gef)!
 
-![trump-meme](https://i.imgur.com/jlkM0P6.jpg)
+{{ img(src="https://i.imgur.com/jlkM0P6.jpg" title="trump-meme") }}

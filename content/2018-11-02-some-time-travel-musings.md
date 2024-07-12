@@ -30,7 +30,7 @@ As the name implies, Time-Travel Debugging is a tool that will allow to travel t
 
 I was curious to see what could be done so I decided to record via WinDbg a simple Notepad session. TTD is as simple as it gets: start WinDbg (as Admin), and launch the target executable after checking the `Record process with Time Travel Debugging`
 
-![image_alt](/img/windbg-ttd/startrecord.PNG)
+{{ img(src="/img/windbg-ttd/startrecord.PNG" title="image_alt") }}
 
 Typed some stuff and closed notepad. WinDbg starts by reading the trace and indexing the database, and breaks at the loader entry point. The indexes (look like `XX:YY` where `X` and `Y` are hex-digits) are like coordinates that can be used to travel around so we can move to an absolute position like
 
@@ -149,7 +149,7 @@ It is easily possible to filter those calls as mentioned earlier:
 
 One way I found to narrow so many calls down is to see is to focus rather on the message itself, which is Parameters[0] of the function call:
 
-![image_alt](/img/windbg-ttd/notepad1.png)
+{{ img(src="/img/windbg-ttd/notepad1.png" title="image_alt") }}
 
 It seems that the message is always stored at 0xa30fb6fc00, and has the [following structure](https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-msg)
 

@@ -45,7 +45,7 @@ linked file). Stack canary and PIE are not on, but NX is.
 The binary is really small, does not do much either, so the vulnerability is
 quite easy to find and trigger.
 
-![vuln](https://i.imgur.com/jpU2YsD.png)
+{{ img(src="https://i.imgur.com/jpU2YsD.png" title="vuln") }}
 
 At 0x08048174, We have a `read(socket, buffer, 52)` where buffer can only
 contain 32 bytes, so we have a classic stack overflow. A part of the challenge

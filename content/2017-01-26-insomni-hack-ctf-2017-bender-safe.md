@@ -98,7 +98,7 @@ store the number of passwords to store in 2 locations, a dedicated variable
 (i.e. `passwords[0]`, @ebp-0x410). The number of passwords is used as a counter for a loop
 that will read the passwords from stdin, thanks to the `read_passwords` function.
 
-![image_alt](https://i.imgur.com/7UfE0bU.png)
+{{ img(src="https://i.imgur.com/7UfE0bU.png" title="image_alt") }}
 
 After spending way too long spent trying to check for an arithmetic mistake, I
 reviewed more thoroughly the function `read_passwords`.
@@ -107,7 +107,7 @@ The function `read_passwords` takes two arguments, a pointer to a buffer and a
 integer, which corresponds to the size of data to read. The buffer is populated
 one character at a time, in the following loop:
 
-![image_alt](https://i.imgur.com/OYLowAm.png)
+{{ img(src="https://i.imgur.com/OYLowAm.png" title="image_alt") }}
 
 The interesting bit starts around 0x401640: when a `\n` character is provided to
 fill the byte at offset `i` (i.e. `buffer[i]`), the function performs an additional
@@ -159,7 +159,7 @@ gef➤  x/x 0x7fff62d8
 And if we populate the 12 remaining passwords with "A"*102 the return address
 (`$ra` register) gets corrupted, which we can observe by taking the exit:
 
-![image_alt](https://i.imgur.com/INggKTu.png)
+{{ img(src="https://i.imgur.com/INggKTu.png" title="image_alt") }}
 
 
 ### Exploitation ###
@@ -200,7 +200,7 @@ if __name__ == "__main__":
 And we now know that the PC is controlled at offset 921, as we are on a Big
 Endian architecture:
 
-![image_alt](https://i.imgur.com/NYLt8XQ.png)
+{{ img(src="https://i.imgur.com/NYLt8XQ.png" title="image_alt") }}
 
 
 #### ROP-ing to a fixed area ####
@@ -327,7 +327,7 @@ We have now all the components to launch our exploit. The final version is
 available
 [here](https://gist.github.com/hugsy/3e64b7cae4de38ba153a23e5491bff24).
 
-![image_alt22](https://i.imgur.com/VJgWcia.png)
+{{ img(src="https://i.imgur.com/VJgWcia.png" title="image_alt22") }}
 
 
 ### Conclusion ###

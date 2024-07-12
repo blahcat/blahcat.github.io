@@ -211,7 +211,7 @@ We're running more than 1 million executions/second/core on the function
 
 And in less than a 1 second, we get the heap overflow found by {{ twitter(user="mehqq_") }}, CVE-2018-6789:
 
-![image_alt](/img/libfuzzer-lief/fuzz-result.png)
+{{ img(src="/img/libfuzzer-lief/fuzz-result.png" title="image_alt") }}
 
 >
 > **Note**: Earlier this week, I was notified by {{ twitter(user="mehqq_") }} that this is OOB read is a different bug. I will post an update soon showcasing the actual bug instead. My bad for the confusion.
