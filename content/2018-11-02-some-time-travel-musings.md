@@ -9,10 +9,10 @@ categories = ["research"]
 tags = ["windows","ttd","js","windbg","malware"]
 
 [extra]
-header-img = "assets/images/windbg-ttd/header.png"
+header-img = "/img/windbg-ttd/header.png"
 +++
 
-If WinDbg was already setting the standard of what modern debuggers should be like, no doubt [WinDbg Preview](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview) brings it to a next level. The JavaScript API is not perfect yet but already very efficient, so we don't have to rely on PyKd for proper (and portable) WinDbg scripting (I won't even mention WDS). As a start, I could not recommend enough reading <a class="fa fa-twitter" href="https://twitter.com/0vercl0k" target="_blank"> @0vercl0k</a> if you haven't already read it, which not only covers TTD but a lot more.
+If WinDbg was already setting the standard of what modern debuggers should be like, no doubt [WinDbg Preview](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview) brings it to a next level. The JavaScript API is not perfect yet but already very efficient, so we don't have to rely on PyKd for proper (and portable) WinDbg scripting (I won't even mention WDS). As a start, I could not recommend enough reading {{ twitter(user="0vercl0k") }} if you haven't already read it, which not only covers TTD but a lot more.
 
 
 # Time-Travel Debugging
@@ -30,11 +30,11 @@ As the name implies, Time-Travel Debugging is a tool that will allow to travel t
 
 I was curious to see what could be done so I decided to record via WinDbg a simple Notepad session. TTD is as simple as it gets: start WinDbg (as Admin), and launch the target executable after checking the `Record process with Time Travel Debugging`
 
-![image_alt](/assets/images/windbg-ttd/startrecord.PNG)
+![image_alt](/img/windbg-ttd/startrecord.PNG)
 
 Typed some stuff and closed notepad. WinDbg starts by reading the trace and indexing the database, and breaks at the loader entry point. The indexes (look like `XX:YY` where `X` and `Y` are hex-digits) are like coordinates that can be used to travel around so we can move to an absolute position like
 
-```text
+```txt
 0:000> !tt 7213:36
 Setting position: 7213:36
 (12c4.1dcc): Break instruction exception - code 80000003 (first/second chance not available)
@@ -52,7 +52,7 @@ That's already quite fun, but WinDbg can go a lot further.
 
 WinDbg can use LINQ to query the TTD database, to synthetize a lot more of runtime information in a very painless way. To do so, a new attribute `TTD` was added to the runtime variables `$curprocess`
 
-```text
+```txt
 0:000> dx @$curprocess.TTD
 @$curprocess.TTD
     Lifetime         : [2C:0, 2EB0F:0]
@@ -62,7 +62,7 @@ WinDbg can use LINQ to query the TTD database, to synthetize a lot more of runti
 
 and `$cursession`
 
-```text
+```txt
 0:000> dx @$cursession.TTD
 @$cursession.TTD                 : [object Object]
     Calls            [Returns call information from the trace for the specified set of methods: TTD.Calls("module!method1", "module!method2", ...) For example: dx @$cursession.TTD.Calls("user32!SendMessageA")]
@@ -80,14 +80,14 @@ You might want to enable DML too (by running the command `.prefer_dml 1`) if you
 
 Among some of the most interesting parts, we can now query function calls, like
 
-```text
+```txt
 0:000> dx @$cursession.TTD.Calls("ntdll!mem*").Count()
 @$cursession.TTD.Calls("ntdll!mem*").Count() : 0x2ef8
 ```
 
 Will count the number of calls to function matching `ntdll!mem*` pattern, or even filter function calls per parameter
 
-```text
+```txt
 0:000> dx @$cursession.TTD.Calls("Kernel*!VirtualAlloc*").Where( c => c.Parameters[3] == 0x40 ).Count()
 $cursession.TTD.Calls("Kernel*!VirtualAlloc*").Where( c => c.Parameters[3] == 0x40).Count() : 0x1
 ```
@@ -97,7 +97,7 @@ Which will filter the calls to function matching `Kernel*!VirtualAlloc*` pattern
 
 Another useful feature is the memory access, exposed by
 
-```text
+```txt
 0:000> dx $cursession.TTD
   [...]
   Memory       [Returns memory access information for specified address range: TTD.Memory(startAddress, endAddress [, "rwec"])]
@@ -105,7 +105,7 @@ Another useful feature is the memory access, exposed by
 
 To take the real life example of a self-decrypting packer, that would allocate some memory (likely in RWX), then decrypt the code and finally jump to it. If we were to reverse such packer, we don't care much about how the payload is decrypted (could be a simple XOR, could be AES, could be custom crypto, etc.), what we only care about is what the code looks like once decrypted. And that becomes stupidly easy with TTD + DDM:
 
-```text
+```txt
 // Isolate the address(es) newly allocated as RWX
 0:000> dx @$cursession.TTD.Calls("Kernel*!VirtualAlloc*").Where( f => f.Parameters[3] == 0x40 ).Select( f => new {Address : f.ReturnValue } )
 
@@ -118,7 +118,7 @@ Done! Then you can `.writemem` that code into a file that IDA can disassemble.
 >
 > _Update (11/11/2018)_ :
 >
-> And since all this goodness can be used from JavaScript (via the `host.namespace.Debugger` namespace), it's really not far to write scripts for automatically dump such payloads, track heap allocations, enumerate all files created etc. And it came to me a surprise (not really actually, <a class="fa fa-twitter" href="https://twitter.com/0vercl0k" target="_blank"> @0vercl0k</a> just told me), that when using the `ttd.exe` binary as a standalone, one can pass the `-children` flag allowing TTD to also record children processes.
+> And since all this goodness can be used from JavaScript (via the `host.namespace.Debugger` namespace), it's really not far to write scripts for automatically dump such payloads, track heap allocations, enumerate all files created etc. And it came to me a surprise (not really actually, {{ twitter(user="0vercl0k") }} just told me), that when using the `ttd.exe` binary as a standalone, one can pass the `-children` flag allowing TTD to also record children processes.
 
 
 <blockquote class="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">The Time-Travel Debugging tool from <a href="https://twitter.com/hashtag/WinDbg?src=hash&amp;ref_src=twsrc%5Etfw">#WinDbg</a> Preview can be used as a standalone binary (ttd.exe)<br><br>Copy the TTD\ directory and you can use TTD without <a href="https://twitter.com/hashtag/WinDbg?src=hash&amp;ref_src=twsrc%5Etfw">#WinDbg</a>, allowing you to script your <a href="https://twitter.com/hashtag/TTD?src=hash&amp;ref_src=twsrc%5Etfw">#TTD</a> recording useful for:<br>- <a href="https://twitter.com/hashtag/fuzzing?src=hash&amp;ref_src=twsrc%5Etfw">#fuzzing</a> crash replay<br>- <a href="https://twitter.com/hashtag/malware?src=hash&amp;ref_src=twsrc%5Etfw">#malware</a> analysis<br>- bug tracking <a href="https://blahcat.github.io/posts/2018/11/02/some-time-travel-musings.html">pic.twitter.com/yYZrkNRmD1</a></p>&mdash; windbgtips (@windbgtips) <a href="https://twitter.com/windbgtips/status/1061684978612789248?ref_src=twsrc%5Etfw">November 11, 2018</a></blockquote>
@@ -142,14 +142,14 @@ BOOL GetMessage(
 
 It is easily possible to filter those calls as mentioned earlier:
 
-```text
+```txt
 0:000> dx @$cursession.TTD.Calls("user32!GetMessage*")
 @$cursession.TTD.Calls("user32!GetMessage*").Count() : 0x1e8
 ```
 
 One way I found to narrow so many calls down is to see is to focus rather on the message itself, which is Parameters[0] of the function call:
 
-![image_alt](/assets/images/windbg-ttd/notepad1.png)
+![image_alt](/img/windbg-ttd/notepad1.png)
 
 It seems that the message is always stored at 0xa30fb6fc00, and has the [following structure](https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-msg)
 
@@ -167,7 +167,7 @@ typedef struct tagMSG {
 
 We can now monitor all the memory accesses to the address 0xa30fb6fc00
 
-```text
+```txt
 0:000> dx -r1 -nv (*((wintypes!MSG *)0xa30fb6fc00))
 (*((wintypes!MSG *)0xa30fb6fc00))                 : {msg=0x102 wp=0x74 lp=0x140001} [Type: MSG]
     [+0x000] hwnd             : 0x12044a [Type: HWND__ *]
@@ -181,7 +181,7 @@ We can now monitor all the memory accesses to the address 0xa30fb6fc00
 
 `MSG.wParam` in particular will hold the value of the keycode when the key is stroke, so we can also narrow it to ASCII characters
 
-```text
+```txt
 0:000> dx -g @$cursession.TTD.Memory(0xa30fb6fc10, 0xa30fb6fc10+8, "w").Where(m => m.Value >= 0x20 && m.Value < 0x80)
 ===============================================================================================================================================================================
 =           = (+) EventType   = (+) ThreadId = (+) UniqueThreadId = (+) TimeStart = (+) TimeEnd = (+) AccessType = (+) IP            = (+) Address     = (+) Size = (+) Value =
@@ -197,7 +197,7 @@ We can now monitor all the memory accesses to the address 0xa30fb6fc00
 
 That's a lot more interesting so we use LINQ even further to print the characters directly by casting the Value to `char` and we get
 
-```text
+```txt
 0:000> dx -g @$cursession.TTD.Memory(0xa30fb6fc10, 0xa30fb6fc10+8, "w").Where(m => m.Value >= 0x20 && m.Value < 0x80).Select( c => (char)c.Value )
 ====================
 =                  =
@@ -232,9 +232,9 @@ TTD brings a new approach to traditional debugging which is a huge plus. Not onl
 
 In the mean time, I'll leave you with some links to dig deeper:
 
-- [Debugger data model, Javascript & x64 exception handling](https://doar-e.github.io/blog/2017/12/01/debugger-data-model/){:target="_blank"}
-- [Channel9 - Introduction to Time Travel Debugging](https://www.youtube.com/watch?v=qFhJLbh6zzc&){:target="_blank"}
-- [Channel9 - Advanced Time Travel Debugging](https://docs.microsoft.com/en-us/shows/defrag-tools/186-time-travel-debugging-advanced){:target="_blank"}
-- [WinDbg YouTube Playlist](https://www.youtube.com/playlist?list=PLjAuO31Rg973XOVdi5RXWlrC-XlPZelGn){:target="_blank"}
+- [Debugger data model, Javascript & x64 exception handling](https://doar-e.github.io/blog/2017/12/01/debugger-data-model/)
+- [Channel9 - Introduction to Time Travel Debugging](https://www.youtube.com/watch?v=qFhJLbh6zzc&)
+- [Channel9 - Advanced Time Travel Debugging](https://docs.microsoft.com/en-us/shows/defrag-tools/186-time-travel-debugging-advanced)
+- [WinDbg YouTube Playlist](https://www.youtube.com/playlist?list=PLjAuO31Rg973XOVdi5RXWlrC-XlPZelGn)
 
 Cheers!

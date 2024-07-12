@@ -26,7 +26,7 @@ Although this post won't be only about the MMU (there's a book for that [#3](#li
 
 On Intel and AMD processors, a virtual address is a combination of a _segment number_ **and** _a linear address_, or `segment_number:linear_address` and even on 64b architecture segmentation is still necessary. So in long mode, a code virtual address is never just `0xLinearAddress` but always `cs:0xLinearAddress`, data is `ds:0xLinearAddress`, stack is `ss:0xLinearAddress`, and so on, where `cs`, `ds`, `ss` register holds a WORD value corresponding to an index (with the 2 least significant bit OR-ed, designating the CPL) . The segment number will be added to the value of the register `gdtr` and will get the segment descriptor:
 
-```text
+```txt
 kd> r cs, rip, gdtr
 cs=0010 rip=fffff80041e811e0, gdtr=fffff80044b5dfb0
 kd> dd @gdtr + @cs l2
@@ -41,7 +41,7 @@ Which we can parse combined with the format given by the AMD manual:
 ![image_alt](https://i.ibb.co/NNgJdgz/image.png)
 (Src: AMD Programmer's Manual Volume 2)
 
-```text
+```txt
 0x00209b00   = 0000 0000 ‭ 0010 0000 1001 1011 0000 0000‬
                [BaseL  ]  gdLa      P| 1 1CRA [BaseM  ]
                                      |
@@ -59,7 +59,7 @@ The current CPL being given by the 2 lowest bytes of CS, it is now easy to under
 As we saw earlier, the `Address` and `Limit` parts of the descriptor are equal to 0 in Long-Mode (64-bit) - this may be the source of confusion I read in some blog posts (but no name shaming, it's not the point 😋).
 
 Also if you're lazy (like me) and addicted to WinDbg (like me), the `dg` command will pretty-print all those info for you:
-```text
+```txt
 kd> dg @cs
                                                     P Si Gr Pr Lo
 Sel        Base              Limit          Type    l ze an es ng Flags
@@ -76,7 +76,7 @@ There is plenty more to say about the segmentation mechanism on x86, but for our
 
 ### Paging
 
-Preparing this post, I came across [this blog post](https://connormcgarr.github.io/paging/){:target="_blank"} that [@33y0re](https://twitter.com/33y0re){:target="_blank"} wrote recently, and where he did a really good job summarizing how paging works on x86-64 long-mode, and how to explore it on Windows. Therefore I will send you reader to his article, and assume from then on you know of PML4, PDPT, PD, PT and what a canonical linear address is.
+Preparing this post, I came across [this blog post](https://connormcgarr.github.io/paging/) that [@33y0re](https://twitter.com/33y0re) wrote recently, and where he did a really good job summarizing how paging works on x86-64 long-mode, and how to explore it on Windows. Therefore I will send you reader to his article, and assume from then on you know of PML4, PDPT, PD, PT and what a canonical linear address is.
 
 The best summary can be given by this diagram (again from AMD's manual)
 
@@ -89,7 +89,7 @@ _Source: AMD Programmer's Manual Volume 2_
 
 Back to the problem at hand, i.e. understand how does the CPU go from VA to PA, there is an intrinsic problem: the CPU only uses virtual address so how could the processor manipulates the permissions, flags, etc. of those PTEs which are physical? Simply by mapping the PTE tables in VAS, right? But that creates a recursive problem, because we still don't know how to go from VA to PA. And that's precisely where "Self-Reference PML4 entry" comes in. But let's go back a bit.
 
-When a new process is created, a new PML4 is also allocated holding the physical root address for our process address space. From that physical root address and with all the offsets from the VA itself, the MMU can crawl down the physical page directories until getting the wanted data (see "Paging" above). This physical address is stored in the [`nt!_KPROCESS`](https://www.vergiliusproject.com/kernels/x64/Windows%2010%20%7C%202016/2004%2020H1%20(May%202020%20Update)/_KPROCESS){:target="_blank"} structure of the process, precisely in `_KPROCESS.DirectoryTableBase`.
+When a new process is created, a new PML4 is also allocated holding the physical root address for our process address space. From that physical root address and with all the offsets from the VA itself, the MMU can crawl down the physical page directories until getting the wanted data (see "Paging" above). This physical address is stored in the [`nt!_KPROCESS`](https://www.vergiliusproject.com/kernels/x64/Windows%2010%20%7C%202016/2004%2020H1%20(May%202020%20Update)/_KPROCESS) structure of the process, precisely in `_KPROCESS.DirectoryTableBase`.
 
 To experiment this behavior, we can create a simple program that will only `int3` so that KD gets the hand while still in user-mode:
 
@@ -99,7 +99,7 @@ void main() {__asm__("int3;"); }
 
 Compile and execute, and as expected KD notifies the breakpoint:
 
-```text
+```txt
 Break instruction exception - code 80000003 (first chance)
 int3+0x6d08:
 0033:00007ff7`83f26d08 cc              int     3
@@ -115,7 +115,7 @@ But we slightly digressed, back to the topic: in order to map in the VAS our PML
 
 On Windows 7, the self-ref entry index is a static value (0x1ed) whereas Windows 10 randomizes it on boot. So to understand why this Self-Reference Entry is helpful, let's process a virtual address like the MMU would: the PML4 index corresponds to the 39:47 bits of a VA, so the value 0x1ed (or 0b111101101) would be as follow:
 
-```text
+```txt
 Bi| 6   ...  4444 4444 3333  ...
 t#| 3   ...  7654 3210 9876  ...
 Va|          1111 0110 1xxx     <<-- 0x1ed
@@ -126,7 +126,7 @@ So for all Windows from 7 to 10 TH2, the PML4 table of **all processes** was alw
 
 So let's translate a special VA 0xFFFFF6FB\`7DBED000‬ to a physical address (PA): by decomposing its indexes we get:
 
-```text
+```txt
  *   pml4e_offset     : 0x1ed
  *   pdpe_offset      : 0x1ed
  *   pde_offset       : 0x1ed
@@ -134,11 +134,11 @@ So let's translate a special VA 0xFFFFF6FB\`7DBED000‬ to a physical address (P
  *   offset           : 0x000
 ```
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> the output is from my [`PageExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/PageExplorer.js){:target="_blank"} WinDbg script.</div>
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> the output is from my [`PageExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/PageExplorer.js) WinDbg script.</div>
 
 The PML4E of the current process can be reached at `CR3 + 0x1ed*@$ptrsize`: but the content is the base physical address of the PML4 itself again! So the PDPE will itself also translate to the PML4 and so on until we read the `PTE+offset` which again will return the base address of the PML4 (because `offset=0`)! So what we get is an easy way to read the content of not just the PML4 itself, but any page directory, and all simply by knowing that 9-bit value (and therefore, calculating the corresponding PXE)! So you can artificially create VA simply by their offset, for instance to read the PageTable instead?
 
-```text
+```txt
  *   pml4e_offset     : 0x1ed
  *   pdpe_offset      : 0x000
  *   pde_offset       : 0x000
@@ -147,7 +147,7 @@ The PML4E of the current process can be reached at `CR3 + 0x1ed*@$ptrsize`: but 
 ```
 
 And build the address as
-```text
+```txt
 0xffff<<48 | $pml4e_offset<<39 | $pdpe_offset<<30 | $pde_offset<<21 | $pte_offset<<12 | $offset
  => 0xffff<<48 | 0x1ed<<39 | 0<<30 | 0<<21 | 0<<12 | 0
 ```
@@ -164,7 +164,7 @@ To summarize (or if you just jumped to the end of this section), what's awesome 
 Up until Windows 10 TH2, the magic index for the Self-Reference PML4 entry was 0x1ed as mentioned above. But what about Windows 10 from 1607? Well Microsoft uped their game, as a [constant battle for improving Windows security](https://www.blackhat.com/docs/us-16/materials/us-16-Weston-Windows-10-Mitigation-Improvements.pdf){:target="blank"} the index is randomized at boot-time, so 0x1ed is now one of the 512 possible values (i.e. 9-bit index) that the Self-Reference entry index can have. And side effect, it also broke some of their own tools, like the `!pte2va` WinDbg command.
 
 On Windows 2004 x64, 0xFFFFF680`00000000 points to nothing (at least most of the times 🤓)
-```text
+```txt
 kd> db 0xFFFFF680`00000000 l20
 fffff680`00000000  ?? ?? ?? ?? ?? ?? ?? ??-?? ?? ?? ?? ?? ?? ?? ??  ????????????????
 fffff680`00000010  ?? ?? ?? ?? ?? ?? ?? ??-?? ?? ?? ?? ?? ?? ?? ??  ????????????????
@@ -172,7 +172,7 @@ fffff680`00000010  ?? ?? ?? ?? ?? ?? ?? ??-?? ?? ?? ?? ?? ?? ?? ??  ????????????
 
 But is it really 512 values for the entry? Well no, because the most significant bit must be set to 1 for the Sign-Extension to properly make it a kernel canonical address. So it is more 256 values (from 0x100 to 0x1ff). If we're in KD, this index can be retrieved by a new global symbol `nt!MmPteBase`, and so the self-reference entry can be known as:
 
-```text
+```txt
 kd> dq nt!MmPteBase l1
 fffff804`29e29388  fffff880`00000000
 kd> ? (poi(nt!MmPteBase) >> 0n39) & 0x1ff
@@ -182,13 +182,13 @@ Evaluate expression: 497 = 00000000`000001f1
 In our current KD session on a Windows 2004 (on Hyper-V), the self-reference entry has the index of 0x1f1. So now we have the PML4 index, we can craft the virtual address to get its physical address:
 
  - calculate the PTE VA
-```text
+```txt
 kd> ? 0xffff<<0n48 | 0x1f1<<0n39 | 0x1f1<<0n30 | 0x1f1<<0n21 | 0x1f1<<0n12 | 000
 Evaluate expression: -7711643201536 = fffff8fc`7e3f1000
 ```
 
  - get the entry info
-```text
+```txt
 kd> !pte 0xfffff8fc7e3f1000
 @$pte(0xfffff8fc7e3f1000)                 : VA=0xfffff8fc7e3f1000, PA=0x4c7d1000, Offset=0x0
     va               : -7711643201536
@@ -209,7 +209,7 @@ kd> !pte 0xfffff8fc7e3f1000
 As we see, for each entry (PML4E, PDPTE, etc.) the base address found is always the same **and** matches the content of `CR3`.
 We can also easily prove this is the self-reference entry index: as stated above, the entry index (in our example 0x1f1) has to be the same for all processes, meaning that if we break into another process context, the kernel PXE will be the same. Let's try with our `int3.exe` again:
 
-```text
+```txt
 Break instruction exception - code 80000003 (first chance)
 0033:00007ff6`2ac36d08 cc              int     3
 kd> !pte 0xfffff8fc7e3f1000
@@ -230,7 +230,7 @@ kd> !pte 0xfffff8fc7e3f1000
 ```
 
 And to confirm the VA points to the correct PA:
-```text
+```txt
 kd> db 0xfffff8fc7e3f1000
 fffff8fc`7e3f1000  67 28 16 62 00 00 00 8a-67 58 c8 11 00 00 00 8a  g(.b....gX......
 fffff8fc`7e3f1010  00 00 00 00 00 00 00 00-67 f8 40 77 00 00 00 8a  ........g.@w....
@@ -244,7 +244,7 @@ Same data, the VA to PA conversion was successful, and the recursive page entrie
 
 Last, one can ask: is there any kind of randomization of the allocation of the physical pages themselves? Legit question, and I experimented using some LINQ querying:
 
-```text
+```txt
 kd> dx -g @$cursession.Processes.Select( p => new { ProcessName = p.Name, Pml4Base = p.KernelObject.Pcb.DirectoryTableBase & 0xfffffffffff000})
 ```
 
@@ -280,7 +280,7 @@ Across several reboots in my VM labs, only 2 matches are shown consistently
 
 <div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> if you have other values on your environment (Qemu, VMware), feel free to contact me and I'll update the table with the result of the KD command</div>
 
-```text
+```txt
 dx @$cursession.Processes.Where( p => p.Name == "System").First().KernelObject.Pcb.DirectoryTableBase & ~0xfff
 ```
 
@@ -301,13 +301,13 @@ for index in range(system_pml4_root, system_pml4_root+size_of_page, size_of_entr
     print("self-reference entry is at index: %d" % index)
 ```
 
-I hope not to make it sound simple, it is not and took me quite some time to figure out, so massive props to [`@hugeh0ge`](https://twitter.com/hugeh0ge){:target="_blank"} and [`@_N4NU_`](https://twitter.com/_N4NU_){:target="_blank"} for the technique, and [`@chompie1337`](https://web.archive.org/web/20220619035731/twitter.com/chompie1337){:target="_blank"} for the implementation. This technique provides a somewhat reliable way to defeat KASLR, SMEP & SMAP with no other vulnerability, but by mere knowledge of Intel processors and Windows memory management inner workings, for the vulnerability CVE-2020-0796, which, due to Microsoft's effort, made it tough.
+I hope not to make it sound simple, it is not and took me quite some time to figure out, so massive props to [`@hugeh0ge`](https://twitter.com/hugeh0ge) and [`@_N4NU_`](https://twitter.com/_N4NU_) for the technique, and [`@chompie1337`](https://web.archive.org/web/20220619035731/twitter.com/chompie1337) for the implementation. This technique provides a somewhat reliable way to defeat KASLR, SMEP & SMAP with no other vulnerability, but by mere knowledge of Intel processors and Windows memory management inner workings, for the vulnerability CVE-2020-0796, which, due to Microsoft's effort, made it tough.
 
 Thanks for reading...✌
 
 _Update_: A `@$selfref()` function was added to `PageExplorer.js`, allowing to easily retrieve the PML4 self-reference (tested 8 -> 11)
 
-```text
+```txt
 0: kd> dx @$selfref()
 @$selfref()      : 0x1ec
 0: kd> dx @$ptview().pml4_table[ @$selfref() ].PhysicalPageAddress ==  @$ptview().pml4_table[ @$selfref() ].Children[ @$selfref() ].PhysicalPageAddress

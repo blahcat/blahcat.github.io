@@ -1,0 +1,32 @@
+{% import "macros/post.html" as post_macros %}
+
+{% extends "base.html" %}
+
+{% block content %}
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="posts">
+          {% for page in paginator.pages %}
+          <div class="post-preview">
+            {{ post_macros::post_title(post=page) }}
+            <p class="post-summary">{{ page.summary | safe }}</p>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Paginator -->
+        <div class="clearfix">
+          {% if paginator.previous %}
+          <a class="btn btn-primary float-left" href="{{ paginator.previous }}"> &larr; Newer Posts</a>
+          {% endif %}
+          {% if paginator.next %}
+          <a class="btn btn-primary float-right" href="{{ paginator.next }}">Older Posts &rarr;</a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock content %}

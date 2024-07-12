@@ -9,7 +9,7 @@ categories = ["research"]
 tags = ["windows","hyperv","virtualbox","cheatsheet"]
 
 [extra]
-header-img = "assets/images/vbox-to-hyperv-header.png"
+header-img = "/img/vbox-to-hyperv-header.png"
 +++
 
 A few scrap notes about my migration from VirtualBox to Hyper-V (in case I attempt to do the same again in the future 😁)
@@ -61,7 +61,7 @@ For Fedora/RedHat, it [may also be working](https://bugzilla.redhat.com/show_bug
 > Update (2019/04/28):
 > If you're using a different WM, you may also need to edit your `~/.xsession` to set proper WM value. For instance
 
-```text
+```txt
 env -u SESSION_MANAGER -u DBUS_SESSION_BUS_ADDRESS mate-session  # for mate (could be unity, xfce4-session, gnome3, etc.)
 ```
 
@@ -104,9 +104,9 @@ And this will conclude my pesky rant 😀
 
 Some links to conclude:
 
- - [https://github.com/Microsoft/linux-vm-tools](https://github.com/Microsoft/linux-vm-tools){:target="_blank"}
- - [https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/](https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/){:target="_blank"}
- - [https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v](https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v){:target="_blank"}
+ - [https://github.com/Microsoft/linux-vm-tools](https://github.com/Microsoft/linux-vm-tools)
+ - [https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/](https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/)
+ - [https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v](https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v)
 
 
 Cheatsheet over...

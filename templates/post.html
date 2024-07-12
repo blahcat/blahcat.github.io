@@ -1,0 +1,50 @@
+{% import "macros/post.html" as post_macros %}
+
+{% extends "base.html" %}
+
+{% block header %}
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ get_url(path="/img/post-bg.jpg")}}')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-heading">
+          {{ post_macros::post_header(post=page) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+{% endblock header %}
+
+{% block content %}
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        {{ page.content | safe }}
+        {% if page.taxonomies.categories %}
+        <div class="post-tags">
+          <p>Categories:
+            {% for category in page.taxonomies.categories %}
+            <a href="{{ get_taxonomy_url(kind="categories", name=category) }}">#{{ category }}</a>
+            {% endfor %}
+          </p>
+        </div>
+        {% endif %}
+        {% if page.taxonomies.tags %}
+        <div class="post-tags">
+          <p>Tags:
+            {% for tag in page.taxonomies.tags %}
+            <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}">#{{ tag }}</a>
+            {% endfor %}
+          </p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</article>
+{% endblock content %}

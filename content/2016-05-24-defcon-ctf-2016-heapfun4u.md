@@ -127,7 +127,7 @@ known thanks to the "Nice guy" command). So we need to:
    1. free the 3rd chunk
    1. free the 2nd chunk.
 
-```text
+```txt
           |  size = N      |
           |  data          |
           |   ..           |
@@ -211,7 +211,7 @@ The stack layout is hard to fully control at the level of the
 `allocate_buffer()` function. However, this function is called by the `main()`
 function, which uses a very large buffer (0x100 bytes) to store values read from stdin:
 
-```text
+```txt
 .text:0000000000400905 ; int __cdecl main(int, char **, char **)
 .text:0000000000400905 main proc near
 .text:0000000000400905
@@ -221,7 +221,7 @@ function, which uses a very large buffer (0x100 bytes) to store values read from
 
 Additionally, its location is very easy to pinpoint:
 
-```text
+```txt
                |       |    RetAddr       |
 context of     |       |   SFP of main    |
 main()         |       |     size         |
@@ -315,8 +315,8 @@ id
 uid=1000(vagrant) gid=1000(vagrant) groups=1000(vagrant),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),115(lpadmin),116(sambashare) vagrant@ubuntu-wily-15:/home/vagrant$
 ```
 
-At that time, my teammate from TheGoonies <a class="fa fa-twitter" href="https://twitter.com/rick2600" target="_blank"> @rick2600</a> had also read the flag file, which was:
+At that time, my teammate from TheGoonies {{ twitter(user="rick2600") }} had also read the flag file, which was:
 
-```text
+```txt
 The flag is: Oh noze you pwned my h33p.
 ```

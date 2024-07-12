@@ -89,7 +89,7 @@ My exploit was in 4 parts:
 
 Done! Simply execute the target binary to get a root shell.
 
-```shell
+```bash
  $ id
  uid=1001(user) gid=1001(user) groups=1001(user)
  $ gcc -Wall ./mmap.c && ./a.out

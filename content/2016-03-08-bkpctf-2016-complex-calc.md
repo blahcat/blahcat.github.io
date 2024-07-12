@@ -35,7 +35,7 @@ control). Let's do some bindiffing!
 
 One of my new toys for quite a few months now is IDA Python plugin
 [diaphora](https://github.com/joxeankoret/diaphora) by Joxean Koret (aka
-<a class="fa fa-twitter" href="https://twitter.com/matalaz" target="_blank"> matalaz</a>). By diffing then, the issue is immediately visible:
+{{ twitter(user="matalaz") }}). By diffing then, the issue is immediately visible:
 
 ![image_alt](https://i.imgur.com/0tkaNNT.png)
 

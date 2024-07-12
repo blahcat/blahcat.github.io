@@ -74,7 +74,7 @@ And a lot of C and Python snippets...
 
 # Instruction
 
-```text
+```txt
 Welcome to the Fourth Flare-On Challenge! The key format, as always, will be a
 valid email address in the @flare-on.com domain.
 ```
@@ -85,7 +85,7 @@ By checking the [HTML source
 code](https://mega.nz/#!1EQhhLrT!uWOWRRGc-8Lx2D0iLxkSk3qMSK-xcWBV8Pnj8CYTaRg),
 we see:
 
-![image_alt](/assets/images/flareon-2017/17161f3635f37c0b278c18262e4a29eb4f21675316ff9a086557e390ca3be67e.png)
+![image_alt](/img/flareon-2017/17161f3635f37c0b278c18262e4a29eb4f21675316ff9a086557e390ca3be67e.png)
 
 Classic ROT-13, can be decoded by:
 
@@ -102,7 +102,7 @@ ClientSideLoginsAreEasy@flare-on.com
 
 # Instruction
 
-```text
+```txt
 You solved that last one really quickly! Have you ever tried to reverse engineer
 a compiled x86 binary? Let's see if you are still as quick.
 ```
@@ -115,7 +115,7 @@ what a buffer from stdin and chain-xor it in reverse (with an IV set to `4` by
 function at 0x00401000) and then compared to an `encoded_key` located at
 0x0403000:
 
-```text
+```txt
 00403000  0d 26 49 45 2a 17 78 44-2b 6c 5d 5e 45 12 2f 17  .&IE*.xD+l]^E./.
 00403010  2b 44 6f 6e 56 09 5f 45-47 73 26 0a 0d 13 17 48  +DonV._EGs&....H
 00403020  42 01 40 4d 0c 02 69 00                          B.@M..i.
@@ -138,7 +138,7 @@ result R_y0u_H0t_3n0ugH_t0_1gn1t3@flare-on.com
 
 # Instruction
 
-```text
+```txt
 Now that we see you have some skill in reverse engineering computer software,
 the FLARE team has decided that you should be tested to determine the extent of
 your abilities. You will most likely not finish, but take pride in the few
@@ -151,7 +151,7 @@ points you may manage to earn yourself along the way.
 start by binding and listen tcp/2222, and receive 4 bytes from the socket. This
 value read will be used to decode the instructions at 0x40107c to 0x4010ee:
 
-![image_alt1](/assets/images/flareon-2017/489d77b797f222ef52533b5da295fd7e733c9156ec43cbd44aa1f8163ece1f81.png)
+![image_alt1](/img/flareon-2017/489d77b797f222ef52533b5da295fd7e733c9156ec43cbd44aa1f8163ece1f81.png)
 
 Being lazy, I've reconstructed
 [this C script](https://gist.github.com/7c7ee0e9cd9399a5ec975a72cfe58486) from
@@ -182,14 +182,14 @@ print s.recv(0x100)
 
 which will show as a response:
 
-```text
+```txt
 Congratulations! But wait, where's my flag?
 ```
 
 But by setting WinDBG to break at 0x040107c and by passing the correct decoding
 key when prompted, a whole new code shows up:
 
-![image_alt](/assets/images/flareon-2017/05d0733685c70aa9802ace1c97c240ace73a3c18c941219d975775cae32d10a5.png)
+![image_alt](/img/flareon-2017/05d0733685c70aa9802ace1c97c240ace73a3c18c941219d975775cae32d10a5.png)
 
 Revealing the key to this level.
 
@@ -201,7 +201,7 @@ Revealing the key to this level.
 
 # Instruction
 
-```text
+```txt
 You're using a VM to run these right?
 ```
 
@@ -214,9 +214,9 @@ the instruction to this challenge, I expected a malware or something hostile,
 but it is nothing of the sort. Disassembling the `start` in IDA shows a bunch of
 interesting strings:
 
-![image_alt](/assets/images/flareon-2017/c2be22c2350ecf3a792cfa07a72ee0c6a55e129e60642577e70994e53c3e2efd.png)
+![image_alt](/img/flareon-2017/c2be22c2350ecf3a792cfa07a72ee0c6a55e129e60642577e70994e53c3e2efd.png)
 
-```text
+```txt
 %USERPROFILE%\flareon2016challenge
 ImageHlp.dll
 CheckSumMappedFile
@@ -226,7 +226,7 @@ MessageBoxA
 
 So I created the folder `flareon2016challenge` and spawned `procmon`:
 
-![image_alt](/assets/images/flareon-2017/9e3fc6079d951d311ad3bacdee5d98d5d191b63663d7803e93ec1f260cbde521.png)
+![image_alt](/img/flareon-2017/9e3fc6079d951d311ad3bacdee5d98d5d191b63663d7803e93ec1f260cbde521.png)
 
 clearly showing that `notepad` is looking for something in this
 directory. Breaking
@@ -238,7 +238,7 @@ a
 and calling the function at 0x1014E20 when a file is found. That's where stuff
 gets interesting.
 
-![image_alt]/assets/images/flareon-2017/d9d6b730545915c4d7a94f05ff7b42ab7b5ba9fa5a9bc119147d6a35dd357c18.png)
+![image_alt]/img/flareon-2017/d9d6b730545915c4d7a94f05ff7b42ab7b5ba9fa5a9bc119147d6a35dd357c18.png)
 
 `notepad` maps the file in memory, checks if it started with `MZ`, gets the
 value at offset 0x3c, then jump to
@@ -254,7 +254,7 @@ of the current program (`notepad.exe`) and the PE file mapped to memory. If
 those 2 values are the ones expected, then 2 functions are called successively:
 
  1. Function @ 0x1014350 which will format the timestamp of the mapped file and
- `MessageBox`-it ![image_alt](/assets/images/flareon-2017/3321b96da80e52cd9e26eda05122bb1bd58a18216d6aeb1b4205162d2ed6dbf6.png)
+ `MessageBox`-it ![image_alt](/img/flareon-2017/3321b96da80e52cd9e26eda05122bb1bd58a18216d6aeb1b4205162d2ed6dbf6.png)
  1. Function @ 0x1014BAC which will open a file `key.bin` in
     `flareon2016challenge` folder and write 8 bytes from some offset
     in the mapped file into it.
@@ -309,7 +309,7 @@ timestamp. After 4 executions we get the `key.bin` file properly filled:
 
 And after updating `notepad` to the last PE timestamp, we get:
 
-![image_alt](/assets/images/flareon-2017/fe5e80d5dd81c1350413732f30ed5ba2b2e4ae1cf92b00504fa6a0bba1b9a820.png)
+![image_alt](/img/flareon-2017/fe5e80d5dd81c1350413732f30ed5ba2b2e4ae1cf92b00504fa6a0bba1b9a820.png)
 
 
 [Back to Menu](#menu)
@@ -320,7 +320,7 @@ And after updating `notepad` to the last PE timestamp, we get:
 
 # Instruction
 
-```text
+```txt
 You're doing great. Let's take a break from all these hard challenges and play a little game.
 ```
 
@@ -355,13 +355,13 @@ The binary starts by initializing the PRNG with the current timestamp, then
 allocated a 0x240 in the heap, and starts populating it randomly. It then enters
 a loop of game, where the player (us) have 0x64 attempts to win the game.
 
-![image_alt](/assets/images/flareon-2017/c1042765b377b68599461aa2c7fbabeb502f831a49db09cb5bb6223a22c99bce.png)
+![image_alt](/img/flareon-2017/c1042765b377b68599461aa2c7fbabeb502f831a49db09cb5bb6223a22c99bce.png)
 
 Inside the loop, the function `play()` (at 0x4038d6) is called and will print the game grid
 and display whether your shot was hit or miss. The coordinates themselves are
 read from the function `enter_coor()` (at 0x40377d).
 
-![image_alt](/assets/images/flareon-2017/aea95f918e61631fae4e6fe1d003951d1fc30d7fcf0e8ac787b14983e264c876.png)
+![image_alt](/img/flareon-2017/aea95f918e61631fae4e6fe1d003951d1fc30d7fcf0e8ac787b14983e264c876.png)
 
 So if we want to win, we need to
 
@@ -392,7 +392,7 @@ The function `draw_grid()` called with a pointer to the game board as
 parameter. By reading it, the function knows how to print a cell (empty, full)
 and therefore knows the configuration of the board.
 
-```text
+```txt
 gef➤  bp *0x403c3a
 gef➤  dps $rdi l1
 0x0000000000614010│+0x00: 0x0008087808087800	 ← $rax, $rdi
@@ -445,7 +445,7 @@ By advancing through all the levels, we can collect more letters:
 Reaching the final level and entering the valid positions of boats gets a
 message:
 
-```text
+```txt
 Final answer:
 Aye! You found some letters did ya? To find what you're looking for, you'll want to
 re-order them:
@@ -460,7 +460,7 @@ By simply applying this formula, we find the result to be `ohgjurervfgurehz`
 which when in uppercase ROT13-ed gives `BUTWHEREISTHERUM`. Give this password as
 input, and after a bit of computation time obtain the key to finish the level:
 
-![image_alt](/assets/images/flareon-2017/532e605c764a754f32dbb0d2581913dbf0283d76e21f12cbf92841cfae67f8c4.png)
+![image_alt](/img/flareon-2017/532e605c764a754f32dbb0d2581913dbf0283d76e21f12cbf92841cfae67f8c4.png)
 
 [Back to Menu](#menu)
 
@@ -470,7 +470,7 @@ input, and after a bit of computation time obtain the key to finish the level:
 
 # Instruction
 
-```text
+```txt
 I hope you enjoyed your game. I know I did. We will now return to the topic of
 cyberspace electronic computer hacking and digital software reverse
 engineering.
@@ -560,13 +560,13 @@ Using the loader, we can now invoke this function easily:
 
 Which when compiled and executed triggers to display the following MessageBox:
 
-![image_alt](/assets/images/flareon-2017/eaca6198b81df65f296bc6d280437944ee7745fae6c9168d2500b12d0a5c1345.png)
+![image_alt](/img/flareon-2017/eaca6198b81df65f296bc6d280437944ee7745fae6c9168d2500b12d0a5c1345.png)
 
 We get one letter of the key! Good start, but how could we get more? And why do
 we get the 26th character? To know that we must understand the function
 0x180005D30:
 
-![image_alt](/assets/images/flareon-2017/a686c1bd8e99734457a6cec1549cfdb8218e5ebaa9e62e412110bb9a9062508e.png)
+![image_alt](/img/flareon-2017/a686c1bd8e99734457a6cec1549cfdb8218e5ebaa9e62e412110bb9a9062508e.png)
 
 This function gets a pointer to
 the
@@ -652,7 +652,7 @@ CallWithArgs(addr, p1, p2, p3, p4);
 
 That will print out successively the key parts via successive `MessageBox` calls.
 
-```text
+```txt
 0x77, 0x75, 0x75, 0x75, 0x74, 0x2d, 0x65, 0x78, 0x70, 0x30, 0x72, 0x74,
 0x73, 0x40, 0x66, 0x6c, 0x61, 0x72, 0x65, 0x2d, 0x6f, 0x6e, 0x2e, 0x63,
 ```
@@ -668,7 +668,7 @@ which translated gives `wuuut-exp0rts@flare-on.com`
 
 # Instruction
 
-```text
+```txt
 I want to play another game with you, but I also want you to be challenged
 because you weren't supposed to make it this far.
 ```
@@ -700,7 +700,7 @@ AES decrypted with the key "`soooooo_sorry_zis_is_not_ze_flag`". The result is a
 Powershell script that is being invoked, and that is another maze game, entirely
 written in Powershell. The script can be downloaded [here](https://gist.github.com/750558c5ed49c291e50dc460821e8e09).
 
-![image_alt](/assets/images/flareon-2017/090d3fe35ac25fcec9052f0e216f72c75da6d96a367abe4451d04ff0af7ad5cd.png)
+![image_alt](/img/flareon-2017/090d3fe35ac25fcec9052f0e216f72c75da6d96a367abe4451d04ff0af7ad5cd.png)
 
 The game is an escape room, so it would make sense that the flag will be given
 to us if we escape! And since it's a maze, we need to find the proper
@@ -748,7 +748,7 @@ while True:
 ```
 
 And we start getting the beginning of the path:
-![image_alt](/assets/images/flareon-2017/304507dabd5f847b7beafec89b19e225540db7649cedfc0e2ebe4703df14a06b.png)
+![image_alt](/img/flareon-2017/304507dabd5f847b7beafec89b19e225540db7649cedfc0e2ebe4703df14a06b.png)
 
 ```python
 directions ='wnneesssnewne'
@@ -817,7 +817,7 @@ $helmet = 1;
 
 Then execute only this portion of code to see:
 
-![image_alt2](/assets/images/flareon-2017/dededfb9d354408d37fab58d50b62856c51ef5a3326ab05a42470df936f6dbf1.png)
+![image_alt2](/img/flareon-2017/dededfb9d354408d37fab58d50b62856c51ef5a3326ab05a42470df936f6dbf1.png)
 
 Which unhexlified gives the flag:
 
@@ -834,7 +834,7 @@ mudd1ng_by_y0ur53lph@flare-on.com
 
 # Instruction
 
-```text
+```txt
 You seem to spend a lot of time looking at your phone. Maybe you would finish a mobile challenge faster.
 I want to play another game with you, but I also want you to be challenged
 because you weren't supposed to make it this far.
@@ -848,7 +848,7 @@ exclusively done with JADX and I used the awesome GenyMotion + JDB for the dynam
 
 This app presents itself as a traditional Android app, `com.flare_on.flair`:
 
-![image_alt](/assets/images/flareon-2017/638b63ff20d2447bdcf9ca2f7dbf3e9a8800178722580185a0c9c7f86652f707.png)
+![image_alt](/img/flareon-2017/638b63ff20d2447bdcf9ca2f7dbf3e9a8800178722580185a0c9c7f86652f707.png)
 
 You can get the final flag by solving the 4 mini challenges:
 
@@ -862,7 +862,7 @@ You can get the final flag by solving the 4 mini challenges:
 
 Using `JADX`, we can reach easily the method `simply solve com.flare_on.flair.Michael.checkPassword()`:
 
-![image_alt](/assets/images/flareon-2017/ad3a22fa907e8c8185c87b256bfc4fa542c68eb5dfcc508d4ea8620adab9d859.png)
+![image_alt](/img/flareon-2017/ad3a22fa907e8c8185c87b256bfc4fa542c68eb5dfcc508d4ea8620adab9d859.png)
 
 Which trivially gives us the first answer: `MYPRSHE__FTW`
 
@@ -950,7 +950,7 @@ And we get:
 
 And finally:
 
-![image_alt](/assets/images/flareon-2017/7ecf50b91265cdd05f48d3910c20c9d48899a3e19645fbe263f8c34a696d00cc.png)
+![image_alt](/img/flareon-2017/7ecf50b91265cdd05f48d3910c20c9d48899a3e19645fbe263f8c34a696d00cc.png)
 
 
 
@@ -963,7 +963,7 @@ And finally:
 
 # Instruction
 
-```text
+```txt
 One of our computer scientists recently got an Arduino board. He disappeared for
 two days and then he went crazy. In his notebook he scrawled some insane
 jibberish that looks like HEX. We transcribed it, can you solve it?
@@ -997,12 +997,12 @@ $ obj-x86_64-linux-gnu/simduino.elf -d -v -v ../../../remorse.ino.hex
 Simduino will open a /dev/pts that can be used for UART (so we can use tools
 like `picocom` or `minicom` to debug it).
 
-![image_alt](/assets/images/flareon-2017/cd4cd292a48fa1fc086b50e5617459edec3e9d40513de244bf57428f0c372348.png)
+![image_alt](/img/flareon-2017/cd4cd292a48fa1fc086b50e5617459edec3e9d40513de244bf57428f0c372348.png)
 
 The firmware seems to be expecting a new PIN configuration: luckily I came
 across this information in the datasheet ("35. Register Summary").
 
-![image_alt](/assets/images/flareon-2017/33d2e78e17819a705d01a9c9c0412090361e7ad02beb4692106996ac8e832f7b.png)
+![image_alt](/img/flareon-2017/33d2e78e17819a705d01a9c9c0412090361e7ad02beb4692106996ac8e832f7b.png)
 
 After trying
 to manipulate the PINB and PINC (resp. at offset 0x23 and 0x26) without success,
@@ -1039,7 +1039,7 @@ $ i=0; while [ $i -lt 256 ]; do sleep 5 ; xdotool key ctrl+c Up Return ; i=$((i 
 
 Went for a coffee, and when back saw the pleasant screen:
 
-![image_alt3](/assets/images/flareon-2017/72de36af7ebcf629992d8b5f9f3a54e20cb01d6335fd961984d34b0840ea4b7e.png)
+![image_alt3](/img/flareon-2017/72de36af7ebcf629992d8b5f9f3a54e20cb01d6335fd961984d34b0840ea4b7e.png)
 
 This challenge was a good reminder that reading the documentation first kept me
 from spending probably hours of not understanding how the CPU was getting
@@ -1053,7 +1053,7 @@ input/output data from the PIN or what the ABI was doing. So more than ever, RTF
 
 # Instruction
 
-```text
+```txt
 We have tested you thoroughly on x86 reversing but we forgot to cover some of
 the basics of other systems. You will encounter many strange scripting languages
 on the Information Superhighway. I know that Interweb challenges are easy, but
@@ -1083,7 +1083,7 @@ line 15, we know that the block once de-XOR-ed will have all bytes in
 Now the guessing game starts: we must guess at the same time the length and
 the key. So the idea is in pseudo-code
 
-```text
+```txt
 assuming len(key) = 32
 assuming charset = "0123456789abcdef"
 let candidate = (key[0], len(32))
@@ -1249,7 +1249,7 @@ and we get all the subkeys:
 
 # Instruction
 
-```text
+```txt
 Only two challenges to go. We have some bad hombres here but you're going to get
 the keys out.
 ```
@@ -1264,7 +1264,7 @@ from the PE points us nostalgically to
 Rick Astley timeless masterpiece, "Never Gonna Give You Up".
 
 Many other strings appear, but are weirdly aligned to one DWORD per character:
-![image_alt](/assets/images/flareon-2017/a0e353204c9ddbd73d9a71c3c6ec53ba7c068d4ab487d43726ebfbe66aef3e8b.png)
+![image_alt](/img/flareon-2017/a0e353204c9ddbd73d9a71c3c6ec53ba7c068d4ab487d43726ebfbe66aef3e8b.png)
 
 Actually `covfefe.exe` is very simple, and only asks for finding a correct
 password. The PE itself only:
@@ -1278,7 +1278,7 @@ The VM is an array of `int32_t` so
 The execution of the virtual machine starts at `pc_start = vm + 0x463`. And each
 instruction is executed in the same way:
 
-```text
+```txt
 execute_instruction(operand1, operand2, operand3) {
   [operand2] = [operand2] - [operand1]
   if [operand2] <= 0 && operand3 != -1:
@@ -1289,7 +1289,7 @@ execute_instruction(operand1, operand2, operand3) {
 Since the code is super easy, I decided to recreate the C source code from
 it. So first, I used WinDBG to dump the VM location:
 
-```text
+```txt
 0:000> .writemem F:\flareon_2017\11\dumpmem-00403000-L5000.dmp
 ```
 
@@ -1304,24 +1304,24 @@ reason for that
 being that it greatly helped tracking down operations at the bytecode level
 of the VM.
 
-![image_alt](/assets/images/flareon-2017/202dd92a07c692ff036fd5b27d7ff1c85f1af93cd33007abf2fb31bd44498270.png)
+![image_alt](/img/flareon-2017/202dd92a07c692ff036fd5b27d7ff1c85f1af93cd33007abf2fb31bd44498270.png)
 
 We know that we must provide a good password to validate the task. So there must
 be a comparison that fails as soon as a wrong character is entered. Those
 new tools were of great help to identify the culprit: the comparison instruction
 is done in the block at 0xde6.
 
-![image_alt](/assets/images/flareon-2017/a25240fe0264b71f12bf0371e663fe5357dd0b9f6366056b34814a5bd2670e2b.png)
+![image_alt](/img/flareon-2017/a25240fe0264b71f12bf0371e663fe5357dd0b9f6366056b34814a5bd2670e2b.png)
 
 Now that we know that, all I need was to use the C script to "set a breakpoint"
 at 0xde9 and see what value was expected.
-![image_alt](/assets/images/flareon-2017/dc8897ca8ce6dc0a124da94b1e7e7ddf7fc442b137930a003c31875b547c3ec9.png)
+![image_alt](/img/flareon-2017/dc8897ca8ce6dc0a124da94b1e7e7ddf7fc442b137930a003c31875b547c3ec9.png)
 
 Knowing this, creating the brute-force script
 ([`cov.py`](https://gist.github.com/hugsy/12ffb0aaacbf87db3247ad1a07acb13c#file-cov-py))
 was the next immediate step:
 
-![image_alt5](/assets/images/flareon-2017/5afbab3abc4ad96ab713f58c496eaee64e2efb5ae92760a084c6f5cf55a90caa.png)
+![image_alt5](/img/flareon-2017/5afbab3abc4ad96ab713f58c496eaee64e2efb5ae92760a084c6f5cf55a90caa.png)
 
 And finally recover the key to this level = `subleq_and_reductio_ad_absurdum`.
 
@@ -1333,7 +1333,7 @@ And finally recover the key to this level = `subleq_and_reductio_ad_absurdum`.
 
 # Instruction
 
-```text
+```txt
 Sorry, we don't have a challenge for you. We were hacked and we think we lost
 it. Its name was "lab10" . The attacker left one binary behind and our
 sophisticated security devices captured network traffic (pcap) that may be
@@ -1357,12 +1357,12 @@ stager to download and execute the real payload. Using API Monitor, we can trace
 that it attempts to connect to FQDN `maybe.suspicious.to`, checking also that
 the domain name doesn't point to the localhost
 
-![image_alt](/assets/images/flareon-2017/c1de5ea5895e4bb38d54167604de4dff8c75dd14d757d40b1d1992419d085232.png)
+![image_alt](/img/flareon-2017/c1de5ea5895e4bb38d54167604de4dff8c75dd14d757d40b1d1992419d085232.png)
 
 The behavior seems consistent with the first TCP stream of the PCAP. However,
 the data received seems encoded/encrypted:
 
-```text
+```txt
 GET /secondstage HTTP/1.1
 Accept: */*
 Accept-Language: en-us
@@ -1390,12 +1390,12 @@ performs sequentially the following operations:
   1. decode the buffer, recovering a valid PE file, `secondstage.exe`
   1. invoke `secondstage.exe` by [hollowing](https://www.trustwave.com/Resources/SpiderLabs-Blog/Analyzing-Malware-Hollow-Processes/) the default HTTP browser
 
-![image_alt](/assets/images/flareon-2017/7d5697ef3325169816f81bd29388f6575c6dd51d23d9fcf11c26dc778f29b354.png)
+![image_alt](/img/flareon-2017/7d5697ef3325169816f81bd29388f6575c6dd51d23d9fcf11c26dc778f29b354.png)
 
 Instead of decoding manually the encoded response from the C2 server, we can be
 lazy by recovering `secondstage.exe` breaking at 0x4104C1:
 
-```text
+```txt
 0:000> bp  0x4104C1; g
 Breakpoint 0 hit
 [...]
@@ -1433,9 +1433,9 @@ ensuring a bit of obfuscation during static analysis, since all function calls
 will be performed by indirect calls. Then if the executable is run on
 client-side, initiates the connection to the C2 server:
 
-![image_alt](/assets/images/flareon-2017/ae6aff7a8232b182109f61df0cd50bf78f7ce4a5f162c8c16a5591b5f0f7aecc.png)
+![image_alt](/img/flareon-2017/ae6aff7a8232b182109f61df0cd50bf78f7ce4a5f162c8c16a5591b5f0f7aecc.png)
 
-![image_alt](/assets/images/flareon-2017/a06c9b431092bbd3e382f3d703dbe4828d0702f0140ee009aac3b341c145c32e.png)
+![image_alt](/img/flareon-2017/a06c9b431092bbd3e382f3d703dbe4828d0702f0140ee009aac3b341c145c32e.png)
 
 Every time a packet is received the function 0x0402C50 is called for parsing the
 new message, and sending the answer back. The C2 is still behind the FQDN
@@ -1463,7 +1463,7 @@ packet is received, the function ensures that its length is at least 0x24 bytes,
 and that the first 4 bytes are equal to "2017". This will be the aspect of the
 first 0x24 bytes of header:
 
-```text
+```txt
 0000 "2017"
 0004 DataCheckSum
 0008 HeaderSize
@@ -1483,7 +1483,7 @@ the instruction `004053CE cmp     edx, 4D4Ch`, which happens to be followed by a
 call to `Kernel32!VirtualAlloc()` with `PAGE_EXECUTE_READWRITE` (0x40) set for
 permission, then a `LoadLibraryA`. This must be it, so we can now use WinDBG to dump all those modules:
 
-```text
+```txt
 0:000> bp 004053ce ; g
 0:000> dd ecx+poi(ecx+3c)+50 l1
 0018d2b8  00017000
@@ -1495,7 +1495,7 @@ Writing 17000 bytes..............................................
 replacing "LM\x00\x00" with "MZ\x00\x00", and "NOP\x00" with
 "PE\x00\x00". Finally the entry point must be xored with the value 0xABCDABCD.
 
-![image_alt](/assets/images/flareon-2017/bbcda00a98ff78d846bfa7a6e2b0e846cdcd50a8cc7cd8b4b4a8b79f4a1b49db.png)
+![image_alt](/img/flareon-2017/bbcda00a98ff78d846bfa7a6e2b0e846cdcd50a8cc7cd8b4b4a8b79f4a1b49db.png)
 
 ### Reversing the "Loadable Modules" ###
 
@@ -1565,7 +1565,7 @@ parse the data of the PCAP (the final version of the parser can be [found here](
 
 ### Reconstructing the screen capture ###
 
-![image_alt](/assets/images/flareon-2017/18a58c8dbdd8b039dc0b8492474e2ae4c0180ecc2e88a26f2d5708059aee9d4b.png)
+![image_alt](/img/flareon-2017/18a58c8dbdd8b039dc0b8492474e2ae4c0180ecc2e88a26f2d5708059aee9d4b.png)
 
 `m.dll` captures the desktop as a bitmap and send the raw data back to the C2
 (uses the same function as
@@ -1575,7 +1575,7 @@ because it is a pure bitmap, there is no information of the dimensions of the
 image. In addition, the image is split in several packets, some of them are sent
 in plain text, like this
 
-```hexdump
+```txt
 00010A26  32 30 31 37 49 d8 69 59  24 00 00 00 4c 40 00 00   2017I.iY $...L@..
 00010A36  4c 40 00 00 51 29 8f 74  16 67 d7 ed 29 41 95 01   L@..Q).t .g..)A..
 00010A46  06 f5 05 45 1c 00 00 00  30 40 00 00 30 40 00 00   ...E.... 0@..0@..
@@ -1596,7 +1596,7 @@ by <i class="fa fa-twitter"> alex_k_polyakov</i>, I used the
 website [RawPixels.net](http://rawpixels.net), and when setting a resolution of
 1420x720, the following capture showed up:
 
-![image_alt6](/assets/images/flareon-2017/018ab4320dc95fa3b751227369cd27f7ee759579323d695c2453bcf9966179e0.png)
+![image_alt6](/img/flareon-2017/018ab4320dc95fa3b751227369cd27f7ee759579323d695c2453bcf9966179e0.png)
 
 After all those efforts, finally a good lead on the challenge to find.
 
@@ -1605,14 +1605,14 @@ After all those efforts, finally a good lead on the challenge to find.
 
 Continuing the replay of packets showed something very interesting:
 
-![image_alt](/assets/images/flareon-2017/01c609d44427749a2caa64d7cb8ae54f41788be7313e2c94fd9cd8f65476cc9c.png)
+![image_alt](/img/flareon-2017/01c609d44427749a2caa64d7cb8ae54f41788be7313e2c94fd9cd8f65476cc9c.png)
 
 `secondstage.exe` was sending commands to a child process `cmd.exe`, attempting
 to reach a host whose NetBIOS name is `larryjohnson-pc`, and if found, would run
 drop 2 files in `C:\staging`, `pse.exe` and `srv2.exe`. Finally it would execute
 the command:
 
-```batch
+```bat
 pse.exe \\larryjohnson-pc -i -c -f -d -u larry.johnson -p n3v3rgunnag1veUup -accepteula srv2.exe
 ```
 
@@ -1651,9 +1651,9 @@ leading to not be able to decrypt files later on...
 But after some long hours perfecting the decrypting script, [the result](https://gist.github.com/hugsy/9b141827b66843ebbabc183731649f53#file-level12-py) pays off
 directly, and all traffic is now in plain text, revealing some crispy information:
 
-![image_alt](/assets/images/flareon-2017/0d1da3b02573a0f2c451b9cf801355666639e4454e26ea138b1836bdd969b36e.png)
+![image_alt](/img/flareon-2017/0d1da3b02573a0f2c451b9cf801355666639e4454e26ea138b1836bdd969b36e.png)
 
-![image_alt](/assets/images/flareon-2017/54e0782509ce641e04edd2b4bb2fef3d80f31c6640451952464ff9d50b5cb851.png)
+![image_alt](/img/flareon-2017/54e0782509ce641e04edd2b4bb2fef3d80f31c6640451952464ff9d50b5cb851.png)
 
 2 new files can be found from the extract:
 
@@ -1663,12 +1663,12 @@ directly, and all traffic is now in plain text, revealing some crispy informatio
 `cf.exe` doesn't show much mystery: it takes 2 parameters, a path to file, and a
 base64 encoded key. And it will AES encrypt the file with the given key.
 
-![image_alt](/assets/images/flareon-2017/0fbe4ce9c0d1295088fa6938b36081272c976a99ca80fef5f27ec3c89ea0cafb.png)
+![image_alt](/img/flareon-2017/0fbe4ce9c0d1295088fa6938b36081272c976a99ca80fef5f27ec3c89ea0cafb.png)
 
 As seen in the capture above, we were capable of decrypting the packet that
 holds the command used for encrypting the file.
 
-```batch
+```bat
 c:\staging\cf.exe lab10.zip tCqlc2+fFiLcuq1ee1eAPOMjxcdijh8z0jrakMA/jxg=
 ```
 
@@ -1750,6 +1750,6 @@ challenge 12, it was **huge** in all the possible meanings, and it must
 certainly have required a serious patience to build!
 
 And final thanks to <i class="fa fa-twitter"> alex_k_polyakov</i>,
-<i class="fa fa-twitter"> n4x0r31</i> and <a class="fa fa-twitter" href="https://twitter.com/aymansagy" target="_blank"> @aymansagy</a>.
+<i class="fa fa-twitter"> n4x0r31</i> and {{ twitter(user="aymansagy") }}.
 
 See you next year for Flare-On 5!

@@ -1,0 +1,17 @@
+{% macro post_title(post) %}
+<a href="{{ post.permalink }}">
+    <h2 class="post-title">{{ post.title }}</h2>
+</a>
+<p class="post-meta">Posted by
+    <b>{{config.author}}</b>
+    on {{ post.date | date(format="%e %B %Y")}}
+    </p>
+{% endmacro post_title %}
+
+{% macro post_header(post) %}
+<h1>{{ post.title }}</h1>
+<span class="meta">Posted by
+    <b>{{config.author}}</b>
+    on {{ post.date | date(format="%e %B %Y")}}
+</span>
+{% endmacro post_header %}

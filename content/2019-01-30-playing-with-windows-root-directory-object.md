@@ -12,7 +12,7 @@ tags = ["windows","kernel","windbg","javascript","object-manager"]
 header-img = "/img/{1910FC37-E777-418F-83EC-2A2543969515}.jpg"
 +++
 
-Still on my way to learning of Windows kernel, I spend considerable amount of time on [WinDbg Preview](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview). I've been [scripting my way](https://github.com/hugsy/windbg_js_scripts) to understand its components, the last in date was `nt!ObpRootDirectoryObject`. This pointer is well documented, especially <a class="fa fa-twitter" href="https://twitter.com/ivanlef0u" target="_blank"> @ivanlef0u</a>'s article [about it](https://www.ivanlef0u.tuxfamily.org/?p=34) (french) is a good place to start.
+Still on my way to learning of Windows kernel, I spend considerable amount of time on [WinDbg Preview](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview). I've been [scripting my way](https://github.com/hugsy/windbg_js_scripts) to understand its components, the last in date was `nt!ObpRootDirectoryObject`. This pointer is well documented, especially {{ twitter(user="ivanlef0u") }}'s article [about it](https://www.ivanlef0u.tuxfamily.org/?p=34) (french) is a good place to start.
 
 
 ## The Status Quo
@@ -35,7 +35,7 @@ NTSTATUS NtQueryDirectoryObject(
     _Out_opt_ PULONG ReturnLength);
 ```
 
-[source](https://github.com/hfiref0x/WinObjEx64/blob/6f6d4480d724e3430b49ff15da1b01c12793c499/Source/WinObjEx64/ntos/ntos.h#L8583-L8598){:target="_blank"}
+[source](https://github.com/hfiref0x/WinObjEx64/blob/6f6d4480d724e3430b49ff15da1b01c12793c499/Source/WinObjEx64/ntos/ntos.h#L8583-L8598)
 
 
 Those tools are excellent, I use them big time but I was curious if it was possible to extend the data model to expose object tree in a similar fashion. Because the problem in KM (as we can see in Ivan's post) is that the structures hold a lot of pointers, `LIST_ENTRY`s and other goodies that must be dereferenced manually which turns out to be a tedious task. Also that approach prevents from easily querying the directory object.
@@ -47,18 +47,18 @@ But hold your breath, here comes the Debugger Data Model...
 
 With the [help of Alex Ionescu pointing out my shortcomings](https://github.com/hugsy/windbg_js_scripts/pull/1) - but always for my benefit -, I ended up with writing [`ObjectExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/45926ab380ba6185cc8e210d77f1a7c56ec05323/scripts/ObjectExplorer.js), a surprisingly short JS scripts for WinDbg, which parses and exposes in a structured way the content of `nt!ObpRootDirectoryObject`.
 
-![image_alt](/assets/images/{D1BF677A-5CFD-4C16-8ABA-1492397D7E17}.jpg)
+![image_alt](/img/{D1BF677A-5CFD-4C16-8ABA-1492397D7E17}.jpg)
 
 
 Not only it's all click-friendly when I'm feeling it's too complicated to type on a keyboard, but the absolute awesome thing is the total integration with LINQ, so you can actually search those objects programmatically (which is impossible with `WinObj` for instance). Say you want to enumerate the `nt!_OBJECT_TYPE` keys of all the `ObjectTypes` on your version of Windows, well...
 
-```text
+```txt
 lkd> dx -g -r1 @$cursession.Objects.Children.Where( obj => obj.Name == "ObjectTypes" ).First().Children.Select(o => new { Name = o.RawObjectHeader.Name, Key = (char*)&o.RawObjectHeader.Key})
 ```
 
 which produces something like:
 
-```text
+```txt
 ==============================================================================================
 =           = (+) Name                              = (+) Key                                =
 ==============================================================================================
@@ -75,14 +75,14 @@ which produces something like:
 
 Or enumerate all processes owning an ALPC port object from the `\RPC Control` directory can be seen as easily as
 
-```text
+```txt
 lkd> dx -r0 @$AlpcPorts = @$cursession.Objects.Children.Where( obj => obj.Name == "RPC Control" ).First().Children.Where( rpc => rpc.Type == "ALPC Port")
 lkd> dx -g @$AlpcPorts.Select( alpc => new { AlpcName= alpc.Name, ProcessOwnerName= (char*) alpc.Object.OwnerProcess->ImageFileName })
 ```
 
 and we get:
 
-![image_alt](/assets/images/{68EB5886-B508-4F69-81E2-DDC726638542}.png)
+![image_alt](/img/{68EB5886-B508-4F69-81E2-DDC726638542}.png)
 
 
 You get the gist. Pretty cool, right?

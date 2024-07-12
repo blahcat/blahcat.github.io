@@ -11,7 +11,7 @@ tags = ["pwn","arm","gef","gdb","ida","rop","pwntools"]
 
 # Info
 
-A few weeks ago, I came across a GitHub repository created by [@5aelo](https://twitter.com/5aelo){:target="_blank" class="fa fa-twitter"} called [armpwn](https://github.com/saelo/armpwn) for people wanting
+A few weeks ago, I came across a GitHub repository created by [`@5aelo`](https://twitter.com/5aelo) called [armpwn](https://github.com/saelo/armpwn) for people wanting
 to have a bit of ARM fun. I had recently spent some time adding new features and perfectionning old ones to
 my exploit helper for GDB, [`gef`](https://github.com/hugsy/gef.git) and I saw
 there a perfect practice case. On top of that, I had nothing better to do
@@ -208,7 +208,7 @@ canary after sending 4042 bytes.
 Even though we have a memory corruption, this is not enough since we have plenty
 of protection mechanism to defeat first ☹
 
-```text
+```txt
 gef➤  checksec
 [+] checksec for '/home/pi/armpwn/bin/websrv'
 Canary:                                           Yes
@@ -365,7 +365,7 @@ The complete exploit code can be found
 
 # Final notes
 
-Thanks to <a class="fa fa-twitter" href="https://twitter.com/5aelo" target="_blank"> @5aelo</a> for this fun
+Thanks to {{ twitter(user="5aelo") }} for this fun
 challenge. It is a good way to get acquainted with
 ARM exploitation, and is one of the reason why I build
 [`gef`](https://github.com/hugsy/gef.git) in a first

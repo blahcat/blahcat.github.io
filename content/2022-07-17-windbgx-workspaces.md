@@ -90,7 +90,7 @@ Here with `CryptSvc`. Also make the border red so we can find the window easily!
 
 [Using EXDI](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/configuring-the-exdi-debugger-transport), and the provided `ExdiGdbSrv.dll` (in `C:\Program Files\WindowsApps\Microsoft.WinDbg_1.2206.19001.0_x64__8wekyb3d8bbwe\amd64\ExdiGdbSrv.dll`)
 
-```batch
+```bat
 regsvr32 ExdiGdbSrv.dll
 ```
 

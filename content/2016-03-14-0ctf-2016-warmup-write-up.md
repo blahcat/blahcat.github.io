@@ -59,7 +59,7 @@ is however due to the fact that our controlled part is quite limited
 In addition to not having a lot of gadgets (the source was written in pure
 assembly), no libc, etc. 0ctf organizers added that
 
-```text
+```txt
 notice: This service is protected by a sandbox, you can only read the flag at /home/warmup/flag
 ```
 

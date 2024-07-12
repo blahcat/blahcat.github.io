@@ -37,12 +37,12 @@ Therefore a Key can contain Sub-Keys but also Values, just like a folder can con
 
 The best structure definition of a Hive I could find comes from [Windows Kernel Internals NT Registry Implementation](#link_1) (you'll find many references to the PDF in this post).
 
-![image_alt](/assets/images/950bbc05-e57e-4d49-96a4-9aefec9a8ef6.png){:width="750px"}
+![image_alt](/img/950bbc05-e57e-4d49-96a4-9aefec9a8ef6.png){:width="750px"}
 
 
 Some hives are loaded very early in the boot process, as the BCD needs to retrieve its configuration settings from it in the `BCD` hive; and also during kernel loading, hardware info are exposed from the `HARDWARE` hive. Once parsed and loaded from file to memory, all the system hives are linked via a `LIST_ENTRY` whose head is pointed by the exposed symbol `nt!CmpHiveListHead`, and can be iterated over as a list of `nt!_CMHIVE` object using the `nt!_CMHIVE.HiveList` field. Therefore a quick parsing can be done with our best friends WinDbg + DDM, which allows us to do some LINQ magic:
 
-```text
+```txt
 0: kd> dx -s @$hives = Debugger.Utility.Collections.FromListEntry(*(nt!_LIST_ENTRY*)&nt!CmpHiveListHead,"nt!_CMHIVE","HiveList")
 
 0: kd> dx @$hives.Count()
@@ -84,7 +84,7 @@ So when by browsing a key node, what to pay attention to are:
 
  - the SubKey list (i.e. ~_subfolders_)
 
-```text
+```txt
 0: kd> dt _CM_KEY_NODE
 nt!_CM_KEY_NODE
    [...]
@@ -95,7 +95,7 @@ nt!_CM_KEY_NODE
 
  - the Value list (i.e. ~_files_)
 
-```text
+```txt
 0: kd> dt _CM_KEY_NODE
 nt!_CM_KEY_NODE
   [...]
@@ -144,7 +144,7 @@ So the cell index is a ULONG, which can be decomposed as a bitmask that allows t
 
 Now how do we go from the key node to a cell, assuming we have a hive handle and an index? Remember above when we mentioned that the procedure to get to the cell is a function pointer inside the hive handle: `nt!_HHIVE.GetCellRoutine`? Well, that's how. Also interestingly, all the hive handles are pointing to the same function `nt!HvpGetCellPaged`, although it doesn't have to be the case:
 
-```text
+```txt
 0: kd> dt _HHIVE
 nt!_HHIVE
    +0x000 Signature        : Uint4B    // 0xbee0bee0
@@ -217,7 +217,7 @@ It was interesting to me to find that the engineers behind the CM have decided t
 
 Now that we've understood the logic behind Cells and how to navigate through them, the rest is easier to understand. As we've mentioned before, "Key Values" are roughly the equivalent of a regular filesystem files. To get the values of a specific key node, one can use the field `nt!_CM_KEY_NODE.ValueList` (of type `_CHILD_LIST`) we've briefly discussed above.
 
-```text
+```txt
 0: kd> dt _CHILD_LIST
 nt!_CHILD_LIST
    +0x000 Count            : Uint4B
@@ -226,7 +226,7 @@ nt!_CHILD_LIST
 
 Then it's as simple as it gets: the structure gives us the number of values and the Cell Index of the array (of the form of an array of size `_CHILD_LIST.Count` x `sizeof(HCELL_INDEX)`) of all the values of this key node. Then we simply iterate through the list of HCELL_INDEX using `GetCellAddress(KeyHive, Index)` to get the Key Nodes of type `CM_KEY_VALUE_SIGNATURE`: the type `CM_KEY_VALUE_SIGNATURE` will indicate that the current node has a structure of `nt!_CM_KEY_VALUE`, where the actual content and content length can be read.
 
-```text
+```txt
 0: kd> dt _CM_KEY_VALUE
 nt!_CM_KEY_VALUE
    +0x000 Signature        : Uint2B
@@ -247,7 +247,7 @@ nt!_CM_KEY_VALUE
 
 By knowing how cells work it is possible to know how subkeys will be linked: subkeys are just `_CM_KEY_NODE` objects. the structure gives 2 fields
 
-```text
+```txt
    +0x014 SubKeyCounts     : [2] Uint4B
    +0x01c SubKeyLists      : [2] Uint4B
 ```
@@ -265,7 +265,7 @@ graph LR;
 
 As we shown before from the linked list of `_CMHIVE` from `nt!CmpHiveListHead` we can iterate through all the system hives. Each hive object has a pointer to a handle of hive (`_HHIVE`) which exposes a `_DUAL` field named `Storage`: the index 0 is used for permanent storage, index 1 for volatile
 
-```text
+```txt
 0: kd> dt _DUAL
 nt!_DUAL
    +0x000 Length           : Uint4B
@@ -289,7 +289,7 @@ Y-- ".Storage[0=Permanent,1=Volatile]" --> W[_HMAP_DIRECTORY]
 
 The subkeys will be located in the `Map` element (of type `_HMAP_DIRECTORY`). The `_HMAP_DIRECTORY` structure simply contains 1 element, a table of 1024 `_HMAP_TABLE`, each of them structured of 1 element: a `Table` of 512 `_HMAP_ENTRY`.
 
-```text
+```txt
 0: kd> dt _HMAP_DIRECTORY
 nt!_HMAP_DIRECTORY
    +0x000 Directory        : [1024] Ptr64 _HMAP_TABLE
@@ -323,13 +323,13 @@ The last nibble of `PermanentBinAddress` is used for meta-data, so we can bitwis
 
 As a learning exercise, I always try to build a script/tool when digging into a topic, and here the result is another WinDbg JS script, [`RegistryExplorer.js`](#link_0) which will allow to navigate through the registry using WinDbg Debugger Data Model (and therefore also query it via LINQ)
 
-![image_alt](/assets/images/5787cef5-11cc-4a1f-97b7-2f6533812b2d.png){:width="500px"}
+![image_alt](/img/5787cef5-11cc-4a1f-97b7-2f6533812b2d.png){:width="500px"}
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> a better version was done by <a class="fa fa-twitter" href="https://twitter.com/msuiche" target="_blank"> @msuiche</a> [here](#link_3)</div>
+<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> a better version was done by {{ twitter(user="msuiche") }} [here](#link_3)</div>
 
 Example:
 
-```text
+```txt
 0: kd> dx @$cursession.Registry.Hives
 @$cursession.Registry.Hives                 : [object Generator]
     [0x0]            : \REGISTRY\MACHINE\SYSTEM
@@ -353,14 +353,14 @@ Example:
 
 Or the click-friendly version 😀
 
-![registryexplorer](/assets/images/0a76e279-63a2-4643-8f1f-bd3c877323d8.png){:width="750px"}
+![registryexplorer](/img/0a76e279-63a2-4643-8f1f-bd3c877323d8.png){:width="750px"}
 
 
 ### Practical Toy Example: dumping SAM
 
 Any beginner pentester would (should?*) know that in user-mode, a local Administrator account has enough privilege to dump the `SAM` & `SYSTEM` hives from the command line using `reg.exe`: (* If you didn't know, I'd suggest reading [this](#link_4) ASAP)
 
-```batch
+```bat
 PS C:\WINDOWS\system32> reg.exe save HKLM\SAM C:\Temp\SAM.bkp
 The operation completed successfully.
 ```
@@ -376,14 +376,14 @@ And then real life strikes...
 
 As I was trying to get those values manually, the initial script failed (crashed) complaining there was an invalid access to user-mode memory:
 
-```text
+```txt
 GetCellDataAddress(Hive=ffffab04d1191000, Index=32): type=0 table=0 block=0 offset=32
     [0x0]            : Unable to read target memory at '0x280f6fa1850' in method 'readMemoryValues' [at registryexplorer (line 20 col 18)]
 ```
 
 It seemed that the cells for accessing the SAM were at some points hitting user-mode area, in a process different than `System`, so the address access walking the wrong page table, and hence the exception from WinDbg. Which got immediately confirmed:
 
-```text
+```txt
 0: kd> dt _hmap_entry ffffab04d1191000
 nt!_HMAP_ENTRY
    +0x000 BlockOffset      : 0
@@ -393,7 +393,7 @@ nt!_HMAP_ENTRY
 
 Then how does the kernel know where to fetch this information? Well it turned out that the hive handle can hold reference to a process in its `ViewMap.ProcessTuple` attribute, of type `_CMSI_PROCESS_TUPLE` which holds both a handle to the `_EPROCESS` and a pointer to the `_EPROCESS`. We can use that information to determine the backing process:
 
-```text
+```txt
 0: kd> dt _hhive ffffab04d1191000 ViewMap.ProcessTuple
 nt!_HHIVE
    +0x0d8 ViewMap              :
@@ -409,7 +409,7 @@ nt!_HHIVE
 
 It points to the `Registry` process, which makes sense. To confirm, we can switch to the context of the process, and try to re-access the UM address `0x280f6fa1850`:
 
-```text
+```txt
 0: kd> dx -s @$cursession.Processes.Where( x => x.Name == "Registry").First().SwitchTo()
 0: kd> db 0x280f6fa1850
 00000280`f6fa1850  a8 ff ff ff 6e 6b 20 00-4a 92 fb 8e 6b 38 d5 01  ....nk .J...k8..
@@ -425,7 +425,7 @@ The signature `kn` (0x6b6e) at `0x280f6fa1850+sizeof(ULONG)` confirms we're hitt
 
 Now I could access some keys & values but not everything:
 
-```text
+```txt
 0: kd> dx @$SamHive = @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First()
 
 0: kd> dx @$SamHive.RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys
@@ -438,7 +438,7 @@ Now I could access some keys & values but not everything:
 
 The 2nd issue faced was that when trying to access some keys in UM for the `HKLM\SAM` hive, WinDbg would inconsistently return some access violation error. This reason was somewhat easier to figure out the cause, less easy for a programmatic remediation.
 
-```text
+```txt
 0: kd> dx @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First().RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys[2].Subkeys
 @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First().RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys[2].Subkeys                 : [object Generator]
 GetCellDataAddress(Hive=ffffab04d1191000, Index=8096) = 280f6fa2fa0
@@ -447,7 +447,7 @@ GetCellDataAddress(Hive=ffffab04d1191000, Index=8096) = 280f6fa2fa0
 
 The cause behind it was not the calculation method of the Cell address but due to the fact that the page was paged out. The clue for me was the fact the missing is usually surrounded by other mapped pages.
 
-```text
+```txt
 0: kd> db 280f6fa2fa0
 00000280`f6fa2fa0  ?? ?? ?? ?? ?? ?? ?? ??-?? ?? ?? ?? ?? ?? ?? ??  ????????????????
 00000280`f6fa2fb0  ?? ?? ?? ?? ?? ?? ?? ??-?? ?? ?? ?? ?? ?? ?? ??  ????????????????
@@ -461,7 +461,7 @@ The cause behind it was not the calculation method of the Cell address but due t
 
 I didn't find a way to solve this programmatically (i.e. force WinDbg to page-in), although just a reboot is enough to make sure the desired pages are still in memory. Then we can finally access the keys and values:
 
-```text
+```txt
 0: kd> dx @$UserEncryptedPasswords = @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First().RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys[2].Subkeys
 @$cursession.Registry.Hives.Where( x => x.MountPoint.EndsWith("SAM")).First().RootNode.Subkeys[0].Subkeys[0].Subkeys.Where(x => x.KeyName == "Account").First().Subkeys[2].Subkeys                 : [object Generator]
     [0x0]            : 000001F4
@@ -474,7 +474,7 @@ I didn't find a way to solve this programmatically (i.e. force WinDbg to page-in
 
 So then to dump the keys for the `Administrator` (UID=500=0x1f4)
 
-```text
+```txt
 0: kd> dx @$UserEncryptedPasswords[0].Values
 @$UserEncryptedPasswords[0].Values                                  : [object Generator]
     [0x0]            : F
@@ -511,8 +511,8 @@ Links to resources I couldn't understand anything without.
  - <a name="link_1">[1]</a> [Windows Kernel Internals NT Registry Implementation](https://web.archive.org/web/20220720121211/https://ivanlef0u.fr/repo/madchat/vxdevl/papers/winsys/wk_internals/registry.pdf)
  - <a name="link_2">[2]</a> [MSDN - Registry Hives](https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-hives)
  - <a name="link_3">[3]</a> [comaeio/SwishDbgExt - Github](https://github.com/comaeio/SwishDbgExt)
- - <a name="link_4">[4]</a> [Dumping Windows Credentials - <a class="fa fa-twitter" href="https://twitter.com/lanjelot" target="_blank"> @lanjelot</a> ](https://web.archive.org/web/20140127003901/https://www.securusglobal.com/community/2013/12/20/dumping-windows-credentials/)
- - <a name="link_5">[5]</a> [ReactOS - Github](https://github.com/reactos/reactos){:target="_blank"}
+ - <a name="link_4">[4]</a> [Dumping Windows Credentials - {{ twitter(user="lanjelot") }} ](https://web.archive.org/web/20140127003901/https://www.securusglobal.com/community/2013/12/20/dumping-windows-credentials/)
+ - <a name="link_5">[5]</a> [ReactOS - Github](https://github.com/reactos/reactos)
  - <a name="link_6">[6]</a> Windows Internals 6th - Part 1, Chapter 4: Management Mechanism - The Registry
  - <a name="link_7">[7]</a> [Enumerating Registry Hives](http://moyix.blogspot.com/2008/02/enumerating-registry-hives.html)
 

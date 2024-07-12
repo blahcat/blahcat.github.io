@@ -24,7 +24,7 @@ header-img = "/img/qemu-img.png"
 
 After releasing [the QEMU images](/posts/2017/06/25/qemu-images-to-play-with.html) I've created to test [`GEF`](https://github.com/hugsy/gef), I've received tons of demands from people asking for more images, but also for some DYI procedures.
 
-As [@Fox0x01](https://twitter.com/Fox0x01){:target="_blank" class="fa fa-twitter"} already covered fairly exhaustively [how to build an QEMU ARMv6 compatible VM](https://azeria-labs.com/emulate-raspberry-pi-with-qemu/){:target="_blank"}, through this blog post I intend to provide a step-by-step how-to on building a Debian Stretch Malta MIPS32el image.
+As [`@Fox0x01`](https://twitter.com/Fox0x01) already covered fairly exhaustively [how to build an QEMU ARMv6 compatible VM](https://azeria-labs.com/emulate-raspberry-pi-with-qemu/), through this blog post I intend to provide a step-by-step how-to on building a Debian Stretch Malta MIPS32el image.
 
 <div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
 There is no miracle here, I've just spend a long time googling for solution every time I was facing a problem. This tuto is more for a being a personal reminder for the future times I need to build an image 😊
@@ -205,7 +205,7 @@ For Windows, simply convert `script.sh` to Batch.
 ### Download the new images ###
 
 Since I've built in parallel a Malta MIPS32el and MIPS64el for this tutorial,
-both have been added to the [folder on Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA){:target="_blank"}
+both have been added to the [folder on Mega.nz](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA)
 
 The MIPS64el was created **exactly** the same way, except that QEMU required the
 proper CPU version to boot correctly:

@@ -37,7 +37,7 @@ The
 [`!process`](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-process) extension
 of WinDBG provides a structured display of one or all the processes.
 
-```text
+```txt
 kd> !process 0 0 System
 PROCESS ffffe000baa6c040
    SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
@@ -49,7 +49,7 @@ This leaks the address of the `_EPROCESS` structure in the kernel, of the proces
 named `System`. Using `dt` will provide a lot more info (here, massively
 truncated to what interests us):
 
-```text
+```txt
 kd> dt _EPROCESS ffffe000baa6c040
 ntdll!_EPROCESS
    +0x000 Pcb              : _KPROCESS
@@ -66,7 +66,7 @@ ntdll!_EPROCESS
 At `nt!_EPROCESS.Token` (+0x348) we get the process token, which holds a pointer to an
 ["Executive Fast Reference" structure](https://git.reactos.org/?p=reactos.git;a=blob;f=reactos/sdk/include/ndk/extypes.h;h=feaf7b95df50f7a9d95108882a2cdd71263a675b;hb=HEAD#l418).
 
-```text
+```txt
 kd> dt nt!_EX_FAST_REF ffffe000baa6c040+348
    +0x000 Object           : 0xffffc000`2f405598 Void
    +0x000 RefCnt           : 0y1000
@@ -76,7 +76,7 @@ kd> dt nt!_EX_FAST_REF ffffe000baa6c040+348
 If we nullify the last nibble of the address (i.e. AND with -0xf on x64, -7 on
 x86), we end up having the `System` token's address:
 
-```text
+```txt
 kd> ? 0xffffc000`2f405598 & -f
 Evaluate expression: -70367951432304 = ffffc000`2f405590
 
@@ -97,11 +97,11 @@ kd> dt nt!_TOKEN ffffc000`2f405590
 
 So basically, if we create a process (say `cmd.exe`), and overwrite its token with the `System` token value we found (0xffffc0002f405590), our process will be running as `System`. Let's try!
 
-![image_alt](/assets/images/win-kernel-debug/token-bump-via-windbg-1.png)
+![image_alt](/img/win-kernel-debug/token-bump-via-windbg-1.png)
 
 We search our process using `kd`:
 
-```text
+```txt
 kd> !process 0 0 cmd.exe
 PROCESS ffffe000babfd900
     SessionId: 1  Cid: 09fc    Peb: 7ff6fa81c000  ParentCid: 0714
@@ -111,7 +111,7 @@ PROCESS ffffe000babfd900
 
 Overwrite the offset 0x348 with the `SYSTEM` token pointer (0xffffc0002f405590).
 
-```text
+```txt
 kd> dq ffffe000bc043900+348 l1
 ffffe000`bc043c48  ffffc000`30723426
 kd> eq 0xffffe000babfd900+0x348 0xffffc0002f405590
@@ -119,7 +119,7 @@ kd> eq 0xffffe000babfd900+0x348 0xffffc0002f405590
 
 And tada ...
 
-![image_alt](/assets/images/win-kernel-debug/token-bump-via-windbg-2.png)
+![image_alt](/img/win-kernel-debug/token-bump-via-windbg-2.png)
 
 Now we know how to transform any unprivileged process into a privileged one
 using `kd`.
@@ -149,7 +149,7 @@ This is exactly the purpose of the routine `nt!PsGetCurrentProcess`, but
 since we can't call it directly (thank you ASLR), we can still check what is it
 doing under the hood:
 
-```text
+```txt
 kd> uf nt!PsGetCurrentProcess
 nt!PsGetCurrentProcess:
 fffff801`feb06e84 65488b042588010000   mov   rax,qword ptr gs:[188h]
@@ -164,7 +164,7 @@ kd> dps gs:188 l1
 specifically the kernel thread (KTHREAD) `nt!KiInitialThread`). If we check the content of
 this structure at the offset 0xb8, we find the structure to the current process:
 
-```text
+```txt
 kd> dt nt!_EPROCESS poi(nt!KiInitialThread+b8)
    +0x000 Pcb              : _KPROCESS
    [...]
@@ -190,7 +190,7 @@ The processes are stored in the `ActiveProcessLinks` (offset 0x2e8) of the
 `nt!_EPROCESS` structure, via a `_LIST_ENTRY`, which is a doubly linked list in
 its simplest form:
 
-```text
+```txt
 kd> dt _LIST_ENTRY
 ntdll!_LIST_ENTRY
    +0x000 Flink            : Ptr64 _LIST_ENTRY
