@@ -9,7 +9,7 @@ categories = ["tutorial"]
 tags = ["windows","kernel","debug","virtualbox"]
 
 [extra]
-header-img = "/img/win-kernel-debug/win8-setup-kernel-mode.png"
+header_img = "/img/win-kernel-debug/win8-setup-kernel-mode.png"
 +++
 
 This is the first on a series of posts on Windows kernel debugging and

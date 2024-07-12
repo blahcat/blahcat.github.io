@@ -9,7 +9,7 @@ categories = ["tutorial"]
 tags = ["gef","qemu","aarch64"]
 
 [extra]
-header-img = "/img/qemu-img.png"
+header_img = "/img/qemu-img.png"
 +++
 
 ## Introduction

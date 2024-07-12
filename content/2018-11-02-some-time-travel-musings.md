@@ -9,7 +9,7 @@ categories = ["research"]
 tags = ["windows","ttd","js","windbg","malware"]
 
 [extra]
-header-img = "/img/windbg-ttd/header.png"
+header_img = "/img/windbg-ttd/header.png"
 +++
 
 If WinDbg was already setting the standard of what modern debuggers should be like, no doubt [WinDbg Preview](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview) brings it to a next level. The JavaScript API is not perfect yet but already very efficient, so we don't have to rely on PyKd for proper (and portable) WinDbg scripting (I won't even mention WDS). As a start, I could not recommend enough reading {{ twitter(user="0vercl0k") }} if you haven't already read it, which not only covers TTD but a lot more.

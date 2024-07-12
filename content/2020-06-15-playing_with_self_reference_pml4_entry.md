@@ -9,7 +9,7 @@ categories = ["research"]
 tags = ["windows","kernel", "mmu", "x64"]
 
 [extra]
-header-img = "/img/f7803990-4baa-4a9a-a09b-0cde30694fa6.png"
+header_img = "/img/f7803990-4baa-4a9a-a09b-0cde30694fa6.png"
 +++
 
 Sometimes you read about an awesome exploitation technique ([#1](#links)), so you want to go deeper. So this is my notes about how trying to totally understand the exploitation of CVE-2020-0796 ([#2](#links)), I ended up struggling finding good explanation about a critical structure of Windows paging mechanism: the "Self-Reference PML4 Entry".

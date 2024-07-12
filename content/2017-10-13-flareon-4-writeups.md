@@ -9,7 +9,7 @@ categories = ["ctf"]
 tags = ["reverse","flareon","windows","pe","linux","elf","arduino,avr"]
 
 [extra]
-header-img = "/img/flareon-2017-header.png"
+header_img = "/img/flareon-2017-header.png"
 +++
 
 This year, I happened to finally have a chance to be in a good position to play

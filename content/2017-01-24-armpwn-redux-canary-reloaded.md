@@ -9,7 +9,7 @@ tags = ["linux,pwn,arm,ssp,armpwn"]
 categories = [" ctf"]
 
 [extra]
-header-img = "img/canary-header.png"
+header_img = "img/canary-header.png"
 +++
 
 >

@@ -9,7 +9,7 @@ categories = ["talk"]
 tags = ["gef","blackhat","arsenal"]
 
 [extra]
-header-img = "/img/gef-bh-usa-bg.png"
+header_img = "/img/gef-bh-usa-bg.png"
 +++
 
 # GEF at Black Hat Arsenal US 2017

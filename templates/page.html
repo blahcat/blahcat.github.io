@@ -4,7 +4,13 @@
 
 {% block header %}
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('{{ get_url(path="/img/post-bg.jpg")}}')">
+<header class="masthead"
+  {% if page.extra.header_img %}
+  style="background-image: url('{{ get_url(path=page.extra.header_img)}}')"
+  {% else %}
+  style="background-image: url('{{ get_url(path=config.extra.clean_default_bg_cover)}}')"
+  {% endif %}
+  >
   <div class="overlay"></div>
   <div class="container">
     <div class="row">
@@ -35,13 +41,13 @@
         </div>
         {% endif %}
         {% if page.taxonomies.tags %}
-        <div class="post-tags">
+        <aside class="post-tags">
           <p>Tags:
             {% for tag in page.taxonomies.tags %}
             <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}">#{{ tag }}</a>
             {% endfor %}
           </p>
-        </div>
+        </aside>
         {% endif %}
       </div>
     </div>

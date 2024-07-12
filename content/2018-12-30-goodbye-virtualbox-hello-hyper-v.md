@@ -9,7 +9,7 @@ categories = ["research"]
 tags = ["windows","hyperv","virtualbox","cheatsheet"]
 
 [extra]
-header-img = "/img/vbox-to-hyperv-header.png"
+header_img = "/img/vbox-to-hyperv-header.png"
 +++
 
 A few scrap notes about my migration from VirtualBox to Hyper-V (in case I attempt to do the same again in the future 😁)

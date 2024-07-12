@@ -9,7 +9,7 @@ categories = ["research"]
 tags = ["windows,kernel,logic,bug,win32k"]
 
 [extra]
-header-img = "/img/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png"
+header_img = "/img/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png"
 +++
 
 ## The short version

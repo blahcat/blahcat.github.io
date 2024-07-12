@@ -9,7 +9,7 @@ categories = ["tutorial", "research"]
 tags = ["pwn","windows","hevd","kernel","pwn","write-what-where"]
 
 [extra]
-header-img = "/img/win-kernel-debug/hevd-www-hal-interrupt.png"
+header_img = "/img/win-kernel-debug/hevd-www-hal-interrupt.png"
 +++
 
 Back again to modern Windows kernel exploitation!

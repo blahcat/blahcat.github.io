@@ -9,7 +9,7 @@ categories = ["research"]
 tags = ["fuzzing","elf","lief","libfuzzer","cve-2018-6789","exim"]
 
 [extra]
-header-img = "/img/libfuzzer-lief/header.png"
+header_img = "/img/libfuzzer-lief/header.png"
 +++
 
 I decided to give a descent test to

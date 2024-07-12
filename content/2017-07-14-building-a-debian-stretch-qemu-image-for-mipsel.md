@@ -9,7 +9,7 @@ tags = ["howto","qemu","mipsel","mips64el"]
 categories = ["tutorial"]
 
 [extra]
-header-img = "/img/qemu-img.png"
+header_img = "/img/qemu-img.png"
 +++
 
 # Building a Debian Stretch (9) QEMU image running MIPSel

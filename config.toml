@@ -33,7 +33,7 @@ anchors = "on"
 paths_keep_dates = true
 
 [extra]
-author = "hugsy"
+clean_default_bg_cover = "/img/blog-cover.png"
 
 clean_blog_menu = [
     { url = "$BASE_URL", name = "Home" },

@@ -9,7 +9,7 @@ categories = [" research"]
 tags = ["windows","kernel","windbg","javascript","object-manager"]
 
 [extra]
-header-img = "/img/{1910FC37-E777-418F-83EC-2A2543969515}.jpg"
+header_img = "/img/{1910FC37-E777-418F-83EC-2A2543969515}.jpg"
 +++
 
 Still on my way to learning of Windows kernel, I spend considerable amount of time on [WinDbg Preview](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-using-windbg-preview). I've been [scripting my way](https://github.com/hugsy/windbg_js_scripts) to understand its components, the last in date was `nt!ObpRootDirectoryObject`. This pointer is well documented, especially {{ twitter(user="ivanlef0u") }}'s article [about it](https://www.ivanlef0u.tuxfamily.org/?p=34) (french) is a good place to start.

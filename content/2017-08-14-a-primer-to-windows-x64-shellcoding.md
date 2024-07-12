@@ -9,7 +9,7 @@ categories = ["tutorial"]
 tags = ["windows,kernel,debugging,pwn,token,shellcode"]
 
 [extra]
-header-img = "/img/win-kernel-debug/bg.png"
+header_img = "/img/win-kernel-debug/bg.png"
 +++
 
 Continuing on the path to Windows kernel exploitation...

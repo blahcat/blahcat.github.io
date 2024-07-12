@@ -9,7 +9,7 @@ categories = ["research"]
 tags = ["windows,kernel,pool,rw-primitive"]
 
 [extra]
-header-img = "/img/f4300721f56d68c92db76aa03c3bbd54.png"
+header_img = "/img/f4300721f56d68c92db76aa03c3bbd54.png"
 +++
 
 Or, on how to use the (Windows 10) new field `_ETHREAD.ThreadName` to stabilize kernel RW primitives

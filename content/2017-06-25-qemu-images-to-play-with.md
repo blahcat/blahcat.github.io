@@ -9,7 +9,7 @@ categories = ["misc"]
 tags = ["linux","pwn","debug","arm","mips","aarch64","powerpc","sparc"]
 
 [extra]
-header-img = "img/qemu-img.png"
+header_img = "img/qemu-img.png"
 +++
 
 > **TL;DR**
