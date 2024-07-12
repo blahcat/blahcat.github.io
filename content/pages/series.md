@@ -53,11 +53,11 @@ This page centralizes series of posts from this blog into their corresponding ca
 
 | Id   | Article                                                               |                  Author |
 | :--- | :-------------------------------------------------------------------- | ----------------------: |
-| 0    | [Setting things up](#){:target="blank"}    _(soon)_                   | [hugsy](/author/hugsy) |
-| 1    | [Windows Stack-Based Buffer Overflow](#){:target="blank"}    _(soon)_ | [hugsy](/author/hugsy) |
-| 2    | [Windows SEH Stack-Based Buffer Overflow](#){:target="blank"}    _(todo)_ |  |
-| 3    | [Windows Heap Based Buffer Overflow](#){:target="blank"}    _(todo)_ |  |
-| 4    | [Windows DLL Hijacking](#){:target="blank"}    _(todo)_ |  |
+| 0    | [Setting things up](#)    _(soon)_                   | [hugsy](/author/hugsy) |
+| 1    | [Windows Stack-Based Buffer Overflow](#)    _(soon)_ | [hugsy](/author/hugsy) |
+| 2    | [Windows SEH Stack-Based Buffer Overflow](#)    _(todo)_ |  |
+| 3    | [Windows Heap Based Buffer Overflow](#)    _(todo)_ |  |
+| 4    | [Windows DLL Hijacking](#)    _(todo)_ |  |
 
 
 
@@ -65,17 +65,17 @@ This page centralizes series of posts from this blog into their corresponding ca
 
 | Id   | Article                                                                                                                                 |                  Author |
 | :--- | :-------------------------------------------------------------------------------------------------------------------------------------- | ----------------------: |
-| 0    | [WinDBG cheatsheet](https://github.com/hugsy/defcon_27_windbg_workshop/blob/master/windbg_cheatsheet.md){:target="blank"}               | [hugsy](/author/hugsy) |
-| 1    | [Setting up a Windows VM lab for kernel debugging](/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging){:target="blank"}       | [hugsy](/author/hugsy) |
-| 2    | [A Primer to Windows x64 shellcoding](/posts/2017/08/14/a-primer-to-windows-x64-shellcoding){:target="blank"}                                 | [hugsy](/author/hugsy) |
-| 3    | [First exploit in Windows Kernel (HEVD)](/posts/2017/08/18/first-exploit-in-windows-kernel-hevd){:target="blank"}                             | [hugsy](/author/hugsy) |
-| 4    | [Arbitrary Write (aka Write-What-Where) exploits (HEVD)](/posts/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd){:target="blank"} | [hugsy](/author/hugsy) |
-| 5    | [Double-Fetch (HEVD)](#){:target="blank"}    _(soon)_                                                                                  | [hugsy](/author/hugsy) |
+| 0    | [WinDBG cheatsheet](https://github.com/hugsy/defcon_27_windbg_workshop/blob/master/windbg_cheatsheet.md)               | [hugsy](/author/hugsy) |
+| 1    | [Setting up a Windows VM lab for kernel debugging](/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging)       | [hugsy](/author/hugsy) |
+| 2    | [A Primer to Windows x64 shellcoding](/posts/2017/08/14/a-primer-to-windows-x64-shellcoding)                                 | [hugsy](/author/hugsy) |
+| 3    | [First exploit in Windows Kernel (HEVD)](/posts/2017/08/18/first-exploit-in-windows-kernel-hevd)                             | [hugsy](/author/hugsy) |
+| 4    | [Arbitrary Write (aka Write-What-Where) exploits (HEVD)](/posts/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd) | [hugsy](/author/hugsy) |
+| 5    | [Double-Fetch (HEVD)](#)    _(soon)_                                                                                  | [hugsy](/author/hugsy) |
 
 
 ### Driver development ###
 
 | Id   | Article                                                               |                  Author |
 | :--- | :-------------------------------------------------------------------- | ----------------------: |
-| 0    | [Setting things up](#){:target="blank"}    _(soon)_                   | [hugsy](/author/hugsy) |
-| 1    | [IO Manager, Driver & Device Objects](#){:target="blank"}    _(soon)_ | [hugsy](/author/hugsy) |
+| 0    | [Setting things up](#)    _(soon)_                   | [hugsy](/author/hugsy) |
+| 1    | [IO Manager, Driver & Device Objects](#)    _(soon)_ | [hugsy](/author/hugsy) |

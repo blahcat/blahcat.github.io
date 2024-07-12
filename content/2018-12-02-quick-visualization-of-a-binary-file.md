@@ -26,4 +26,4 @@ $ (echo "P5 512 4096 255";
 
 Then open the file with any image viewer like `feh` or `IrFanView`.
 
-![evil.dll.pgm](/img/quick-visualization/evil.dll.pgm.png){:width="750px"}
+![evil.dll.pgm](/img/quick-visualization/evil.dll.pgm.png)
