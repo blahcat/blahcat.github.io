@@ -141,17 +141,17 @@ m+= "Range: bytes={:d}-{:d}\r\n\r\n".format(at_random_address,at_random_address+
 s.send(m)
 ```
 
-
-<div markdown="span" class="alert-warning"><i class="fa fa-info-circle">&nbsp;Warning:</i> `yama/ptrace_scope` must be set to 0 to be able to read the process</div>
+{% note(type="warning") %}
+`yama/ptrace_scope` must be set to 0 to be able to read the process
 memory.
-
+{% end %}
 
 ### Fire!
 
 The final exploitation script which combines all the steps described above can
 be found [here](https://gist.github.com/hugsy/a462b398721bfb7e6bbd678b6d0e852b).
 
-```txt
+```bash
 $ python armpwn_leak_canary.py
 [+] Connected to 'rpi2-1:80'
 [+] Leaking AUVX

@@ -81,7 +81,9 @@ $ FULLECHO='' LFLAGS+="-L/usr/lib/llvm-6.0/lib/clang/6.0.0/lib/linux/ -lasan -pi
   LIBS+="-lasan -pie" make -e clean all
 ```
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> in some cases, the use of ASAN fails to create the configuration file required</div>
+{% note() %}
+in some cases, the use of ASAN fails to create the configuration file required
+{% end %}
 for the compilation. So edit `$EXIM/src/scripts/Configure-config.h` shell script
 to avoid the premature ending:
 

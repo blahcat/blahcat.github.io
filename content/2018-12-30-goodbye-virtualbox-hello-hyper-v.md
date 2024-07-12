@@ -65,8 +65,9 @@ For Fedora/RedHat, it [may also be working](https://bugzilla.redhat.com/show_bug
 env -u SESSION_MANAGER -u DBUS_SESSION_BUS_ADDRESS mate-session  # for mate (could be unity, xfce4-session, gnome3, etc.)
 ```
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+{% note() %}
 To switch back to the regular view, simply click on **View** → uncheck **Enhanced session**.
+{% end %}
 </div>
 
 

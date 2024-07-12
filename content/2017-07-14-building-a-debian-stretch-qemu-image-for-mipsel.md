@@ -26,8 +26,9 @@ After releasing [the QEMU images](/posts/2017/06/25/qemu-images-to-play-with.htm
 
 As [`@Fox0x01`](https://twitter.com/Fox0x01) already covered fairly exhaustively [how to build an QEMU ARMv6 compatible VM](https://azeria-labs.com/emulate-raspberry-pi-with-qemu/), through this blog post I intend to provide a step-by-step how-to on building a Debian Stretch Malta MIPS32el image.
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+{% note() %}
 There is no miracle here, I've just spend a long time googling for solution every time I was facing a problem. This tuto is more for a being a personal reminder for the future times I need to build an image 😊
+{% end %}
 </div>
 
 

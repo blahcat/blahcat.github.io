@@ -56,7 +56,9 @@ As for file/folder objects, they will be located in `%LOCALAPPDATA%\Packages\<Na
 ## Building an AppContainer Process
 
 <br>
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> All the snippets below are C/C++ used in my [`pwn++`](https://github.com/hugsy/pwn--) library. Refer to the source code for the full implementation. Additionally, as I was already implementing my own version, I stumbled upon [@zodiacon](https://twitter.com/zodiacon)'s article[[1]](#ref_1) and implementation[[2]](#ref_2). You might prefer reading/using it if you want a serious implementation.</div>
+{% note() %}
+All the snippets below are C/C++ used in my [`pwn++`](https://github.com/hugsy/pwn--) library. Refer to the source code for the full implementation. Additionally, as I was already implementing my own version, I stumbled upon [@zodiacon](https://twitter.com/zodiacon)'s article[[1]](#ref_1) and implementation[[2]](#ref_2). You might prefer reading/using it if you want a serious implementation.
+{% end %}
 
 
 ### Create an AppContainer profile

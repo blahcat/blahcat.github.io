@@ -43,7 +43,9 @@ Index: sys/vm/vm_map.c
 
 It kindda gave a good pointer of where to start: the usual rule for setuid dictates that a write access should immediately imply losing the elevated privilege. But this is where the bug was: by `mmap` a setuid binary (which any user can do), I can then choose to `ptrace` the process, and use `PT_WRITE` command to overwrite the `mmap`-ed memory, effectively overwriting the setuid binary!
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> I was in a rush, so my exploit is partially destructive as I overwrite directly the setuid binary. If you choose to use it, please make a copy to be able to restore it.</div>
+{% note() %}
+I was in a rush, so my exploit is partially destructive as I overwrite directly the setuid binary. If you choose to use it, please make a copy to be able to restore it.
+{% end %}
 
 My exploit was in 4 parts:
 

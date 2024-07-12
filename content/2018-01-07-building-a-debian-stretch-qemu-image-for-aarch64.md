@@ -47,7 +47,9 @@ $ qemu-img create -f qcow2 disk.qcow2 20G
 
 ## Installation steps
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> since most steps are similar with the ones described in the post before, I'll simply show the commands I've used so they can be copy/pasted for reproduction.</div>
+{% note() %}
+since most steps are similar with the ones described in the post before, I'll simply show the commands I've used so they can be copy/pasted for reproduction.
+{% end %}
 
 Start with running the installer (with 2 vCPUs and 1GB Ram):
 

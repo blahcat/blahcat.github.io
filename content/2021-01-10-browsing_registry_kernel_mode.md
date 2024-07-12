@@ -327,7 +327,9 @@ As a learning exercise, I always try to build a script/tool when digging into a 
 
 {{ img(src="/img/5787cef5-11cc-4a1f-97b7-2f6533812b2d.png" title="image_alt") }}
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> a better version was done by {{ twitter(user="msuiche") }} here[^3]</div>
+{% note() %}
+a better version was done by {{ twitter(user="msuiche") }} here[^3]
+{% end %}
 
 Example:
 

@@ -26,8 +26,9 @@ user-land?
 The classic technique is to steal the `System` process token and copy it into the
 structure of our targeted arbitrary (but unprivileged) process (say `cmd.exe`).
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+{% note() %}
 Our target here will the Modern.IE Windows 8.1 x64 we created in the [previous post](/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging), that we'll interact with using `kd` via Network debugging. Refer to previous post if you need to set it up.
+{% end %}
 </div>
 
 
@@ -93,7 +94,9 @@ kd> dt nt!_TOKEN ffffc000`2f405590
     [...]
 ```
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> the WinDBG extension [`!token`](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-token) provides a more detailed (and parsed) output. You might to refer to it instead whenever  you are analyzing tokens.</div>
+{% note() %}
+the WinDBG extension [`!token`](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-token) provides a more detailed (and parsed) output. You might to refer to it instead whenever  you are analyzing tokens.
+{% end %}
 
 So basically, if we create a process (say `cmd.exe`), and overwrite its token with the `System` token value we found (0xffffc0002f405590), our process will be running as `System`. Let's try!
 
