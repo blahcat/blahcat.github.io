@@ -13,6 +13,7 @@ categories = ["research"]
 tags = ["windows", "memory-dump", "wtf", "bochscpu", "bochs", "emulation"]
 
 [extra]
+header_img = "/img/d9e336f7-602d-4efb-8234-0630e0d54f72.png"
 discuss = true
 +++
 
