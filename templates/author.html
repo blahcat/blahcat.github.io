@@ -26,6 +26,26 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           {{ page.content | safe }}
+
+          <hr>
+
+          {# Get pages by authors #}
+          {% set section = get_section(path="_index.md") %}
+          {% set_global pages_by_author = [] %}
+          {% for p in section.pages %}
+            {% if p.authors is containing(page.title) %}
+              {% set_global pages_by_author = pages_by_author | concat(with=p) %}
+            {% endif %}
+          {% endfor %}
+
+          Articles by {{page.title}} ({{ pages_by_author | length }}):
+          <ul>
+          {% for p in pages_by_author %}
+          <li>
+            {{ p.date | date(format="%Y/%m/%d") }} - <a href="{{ p.path }}">{{ p.title }}</a>
+          </li>
+          {% endfor %}
+          </ul>
       </div>
     </div>
   </article>
