@@ -6,9 +6,9 @@ aliases = ["/author/hugsy"]
 
 [extra]
 avatar = "/img/authors/hugsy.png"
-github = "https://github.com/hugsy"
-discord = ""
-twitter = "https://twitter.com/_hugsy_"
+github = "hugsy"
+discord = ".hugsy"
+twitter = "_hugsy_"
 no_discuss = true
 +++
 

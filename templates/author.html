@@ -25,9 +25,50 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
+
+          <!-- Social Media -->
+          <ul class="list-inline text-center">
+            {% if page.extra.github %}
+            <li class="list-inline-item">
+              <a href="//github.com/{{ page.extra.github }}">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            {% endif %}
+
+            {% if page.extra.twitter %}
+            <li class="list-inline-item">
+              <a href="//twitter.com/{{ page.extra.twitter }}">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            {% endif %}
+
+            {% if page.extra.discord %}
+            <li class="list-inline-item">
+              <a href="//discord.com/users/{{ page.extra.discord }}">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-discord fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+
+          <hr>
+
+          <!-- Description -->
           {{ page.content | safe }}
 
           <hr>
+          <!-- Articles -->
 
           {# Get pages by authors #}
           {% set section = get_section(path="_index.md") %}
