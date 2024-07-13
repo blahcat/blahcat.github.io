@@ -1,7 +1,8 @@
 +++
 title = "hugsy"
 authors = ["hugsy"]
-path = "/author/hugsy"
+path = "/authors/hugsy"
+aliases = ["/author/hugsy"]
 
 [extra]
 avatar = "/img/authors/hugsy.png"

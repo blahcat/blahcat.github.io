@@ -1,0 +1,23 @@
+{% import "macros/page.html" as page_macros %}
+
+{% extends "base.html" %}
+
+{% block content %}
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="posts">
+          Authors:
+          <ul>
+          {% for page in section.pages %}
+            <li>
+              <a href="{{ get_url(path=page.path) }}">{{ page.title }}</a>
+            </li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

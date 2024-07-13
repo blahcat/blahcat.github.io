@@ -15,10 +15,10 @@
 <span class="meta">Posted by
     <b>{{page.authors | join(sep=", ")}}</b>
     {% if page.date %}
-    on {{ page.date | date(format="%e %B %Y")}}
+    | {{ page.date | date(format="%e %B %Y")}}
     {% endif %}
     <br>
     <br>
-    <i>Reading time: {{ page.reading_time }}min</i>
+    <i>Reading time: {{ page.reading_time }} min</i>
 </span>
 {% endmacro page_header %}

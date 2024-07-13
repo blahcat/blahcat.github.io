@@ -3,9 +3,33 @@
 {% extends "base.html" %}
 
 {% block header %}
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ get_url(path=page.extra.avatar)}}')" >
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-heading">
+          {{ page_macros::page_header(page=page) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 {% endblock header %}
 
 {% block content %}
+<!-- Post Content -->
+<article>
+  <article class="post">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          {{ page.content | safe }}
+      </div>
+    </div>
+  </article>
+</article>
 {% endblock content %}
 
 {% block extrascripts %}
