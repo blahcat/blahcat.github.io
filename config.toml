@@ -32,6 +32,10 @@ taxonomies = "on"
 anchors = "on"
 paths_keep_dates = true
 
+[link_checker]
+internal_level = "error"
+external_level = "warn"
+
 [extra]
 clean_default_bg_cover = "/img/blog-cover.png"
 
