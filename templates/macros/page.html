@@ -2,20 +2,28 @@
 <a href="{{ page.permalink }}">
     <h2 class="page-title">{{ page.title }}</h2>
 </a>
-<p class="page-meta">Posted by
-    <b>{{page.authors | join(sep=", ")}}</b>
+<p class="page-meta">
+    Authors: {{page.authors | join(sep=", ")}}
     {% if page.date %}
-    on {{ page.date | date(format="%e %B %Y")}}
+    | Date: {{ page.date | date(format="%e %b %Y")}}
     {% endif %}
-    </p>
+    {% if page.taxonomies.categories %}
+    | Categories: {{ page.taxonomies.categories | join(sep=", ") }}
+    {% endif %}
+</p>
 {% endmacro page_title %}
 
 {% macro page_header(page) %}
 <h1>{{ page.title }}</h1>
-<span class="meta">Posted by
-    <b>{{page.authors | join(sep=", ")}}</b>
+<span class="meta">
+    <b>
+        •
+        {% for author in page.authors %}
+        <a href="/author/{{author}}">{{author}}</a> •
+        {% endfor %}
+    </b>
     {% if page.date %}
-    | {{ page.date | date(format="%e %B %Y")}}
+    {{ page.date | date(format="%e %B %Y")}}
     {% endif %}
     <br>
     <br>

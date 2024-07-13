@@ -11,7 +11,7 @@ tags = ["pwn","arm","gef","gdb","ida","rop","pwntools"]
 
 # Info
 
-A few weeks ago, I came across a GitHub repository created by [`@5aelo`](https://twitter.com/5aelo) called [armpwn](https://github.com/saelo/armpwn) for people wanting
+A few weeks ago, I came across a GitHub repository created by {{ twitter(user="5aelo") }} for people wanting
 to have a bit of ARM fun. I had recently spent some time adding new features and perfectionning old ones to
 my exploit helper for GDB, [`gef`](https://github.com/hugsy/gef.git) and I saw
 there a perfect practice case. On top of that, I had nothing better to do

@@ -34,7 +34,7 @@ Following the well-known Feynman principle that ["what you cannot create, you do
 So immediately, I was stopped: originally `bochscpu` was written in Rust, `kdmp-parser` and `udmp-parser` in C++ and only `kdmp-parser` had an embryo of Python bindings (many API/structures missing, no PyPI). Perfect, so I set myself to completely dive into those libs by
 
    - creating Python bindings for `udmp-parser` and `bochscpu`
-   - improving the Python bindings `kdmp-parser` [originally had](https://github.com/0vercl0k/kdmp-parser/tree/3bec915e6f5304c187765be7ce3cfde713d7c29b), developed by [@masthoon](https://github.com/masthoon)
+   - improving the Python bindings `kdmp-parser` [originally had](https://github.com/0vercl0k/kdmp-parser/tree/3bec915e6f5304c187765be7ce3cfde713d7c29b), developed by {{ github(user="masthoon") }}
 
 At the time of this article, anyone can `pip install` any of those packages and start playing directly within the Python interpreter 3.8+ on either Windows, Linux and MacOS (since 0.1.7+) So just in order to reproduce any of the stuff mentioned below, all one would need do is:
 
@@ -457,10 +457,10 @@ Cheers 🍻
 
 Here are the links to those giants referred in the title:
 
-1. [https://github.com/bochs-emu/Bochs](https://github.com/bochs-emu/Bochs)
-1. [https://github.com/yrp604/bochscpu](https://github.com/yrp604/bochscpu)
-1. [https://github.com/0vercl0k/wtf](https://github.com/0vercl0k/wtf)
-1. [https://github.com/0vercl0k/kdmp-parser](https://github.com/0vercl0k/kdmp-parser)
-1. [https://github.com/0vercl0k/udmp-parser](https://github.com/0vercl0k/udmp-parser)
-1. [https://github.com/googleprojectzero/bochspwn](https://github.com/googleprojectzero/bochspwn)
-1. [https://github.com/googleprojectzero/bochspwn-reloaded](https://github.com/googleprojectzero/bochspwn-reloaded)
+1. {{ github(user="bochs-emu/Bochs") }}
+1. {{ github(user="yrp604/bochscpu") }}
+1. {{ github(user="0vercl0k/wtf") }}
+1. {{ github(user="0vercl0k/kdmp-parser") }}
+1. {{ github(user="0vercl0k/udmp-parser") }}
+1. {{ github(user="googleprojectzero/bochspwn") }}
+1. {{ github(user="googleprojectzero/bochspwn-reloaded") }}

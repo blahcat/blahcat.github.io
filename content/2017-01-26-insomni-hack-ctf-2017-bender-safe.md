@@ -315,7 +315,7 @@ r.send(sc)
 ```
 
 >
-> **Update**: as [@0xGrimmlin](https://twitter.com/0xGrimmlin) [mentioned](https://twitter.com/0xGrimmlin/status/824959540349112321), during the CTF,
+> **Update**: as {{ twitter(user="0xGrimmlin](https://twitter.com/0xGrimmlin) [mentioned") }}, during the CTF,
 > the challenge was actually QEMU chroot-ed, so technically this shellcode would
 > not have worked, but you could similarly build another one doing
 > open/read/write(stdout)
