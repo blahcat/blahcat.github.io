@@ -99,11 +99,9 @@
         <div class="col-lg-8 col-md-10 mx-auto">
           {{ page.content | safe }}
 
-          <hr>
-
           <aside class="post-tags">
           {% if page.taxonomies.categories %}
-            <p>Categories:
+            <p >Categories:
               {% for category in page.taxonomies.categories %}
               <a href="{{ get_taxonomy_url(kind="categories", name=category) }}">#{{ category }}</a>
               {% endfor %}
@@ -111,7 +109,6 @@
           {% endif %}
 
           {% if page.taxonomies.tags %}
-          <aside class="post-tags">
             <p>Tags:
               {% for tag in page.taxonomies.tags %}
               <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}">#{{ tag }}</a>
@@ -122,48 +119,57 @@
 
           {% if page.extra.no_discuss and page.extra.no_discuss == true %}
           {% else %}
-          <hr>
           <aside class="post-discussion">
-            Discuss:
+            Join the Discussion on
               <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q={{ page.title }}" target="_blank">
                 <i class="fab fa-github fa-lg"></i>&nbsp;GitHub
               </a>
           </aside>
           {% endif %}
 
-          <hr>
           <aside class="post-nav">
-            <!-- Next post -->
-            {% if page.higher %}
-            <a class="post-nav-next" href="{{ page.higher.permalink }}">
-              <section class="post-nav-teaser">
-                <i class="ic ic-arrow-left"></i><h2 class="post-nav-title">{{page.higher.title}}</h2>
-                <p class="post-nav-excerpt">
-                  {% if page.higher.summary %}
-                  {{ page.higher.summary | safe }}
-                  {% else %}
-                  {{ page.higher.content | safe | striptags | truncate(length=75) }}
+            <div class="container">
+              <div class="row">
+                <!-- Next post -->
+                <div class="col">
+                  {% if page.lower %}
+                  <b>Next:</b><br>
+                  <a class="post-nav-prev" href="{{ page.lower.permalink }}">
+                    <section class="post-nav-teaser">
+                      <b class="post-nav-title">{{page.lower.title}}</b>
+                      <p class="post-nav-excerpt">
+                        {% if page.lower.summary %}
+                        {{ page.lower.summary | safe }}
+                        {% else %}
+                        {{ page.lower.content | safe | striptags | truncate(length=75) }}
+                        {% endif %}
+                      </p>
+                    </section>
+                  </a>
                   {% endif %}
-                </p>
-              </section>
-            </a>
-            {% endif %}
+                </div>
+                <!-- Previous post -->
+                <div class="col">
+                  {% if page.higher %}
+                  <b>Previous:</b><br>
+                  <a class="post-nav-next" href="{{ page.higher.permalink }}">
+                    <section class="post-nav-teaser">
+                      <b class="post-nav-title">{{page.higher.title}}</b>
+                      <p class="post-nav-excerpt">
+                        {% if page.higher.summary %}
+                        {{ page.higher.summary | safe }}
+                        {% else %}
+                        {{ page.higher.content | safe | striptags | truncate(length=75) }}
+                        {% endif %}
+                      </p>
+                    </section>
+                  </a>
+                  {% endif %}
+                </div>
 
-            <!-- Previous post -->
-            {% if page.lower %}
-            <a class="post-nav-prev" href="{{ page.lower.permalink }}">
-              <section class="post-nav-teaser">
-                <i class="ic ic-arrow-left"></i><h2 class="post-nav-title">{{page.lower.title}}</h2>
-                <p class="post-nav-excerpt">
-                  {% if page.lower.summary %}
-                  {{ page.lower.summary | safe }}
-                  {% else %}
-                  {{ page.lower.content | safe | striptags | truncate(length=75) }}
-                  {% endif %}
-                </p>
-              </section>
-            </a>
-            {% endif %}
+              </div>
+            </div>
+
           </aside>
       </div>
     </div>

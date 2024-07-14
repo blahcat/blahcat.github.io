@@ -14,7 +14,7 @@ header_img = "/img/gef-bh-usa-bg.png"
 
 # GEF at Black Hat Arsenal US 2017
 
-I had the privilege to be invited to present my tool [`GEF`](https://github.com/hugsy/gef) at [Black Hat Arsenal](https://blackhat.com) organized by [ToolsWatch](https://toolswatch.org) in Las Vegas this year.
+I had the privilege to be invited to present my tool [`GEF`](https://github.com/hugsy/gef) at [Black Hat Arsenal](https://blackhat.com) organized by ToolsWatch in Las Vegas this year.
 
 I did prepare a bunch of things for this presentation, including a good polishing of the docs, and a series of screencasts for people new to the tool, so they can start using the best features straight away.
 
