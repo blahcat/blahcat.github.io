@@ -77,7 +77,6 @@ and `$cursession`
 {% note() %}
 You might want to enable DML too (by running the command `.prefer_dml 1`) if you want to click your way through those methods.
 {% end %}
-</div>
 
 Among some of the most interesting parts, we can now query function calls, like
 

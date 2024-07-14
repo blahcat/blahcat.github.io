@@ -29,7 +29,6 @@ As {{ twitter(user="Fox0x01") }}, through this blog post I intend to provide a s
 {% note() %}
 There is no miracle here, I've just spend a long time googling for solution every time I was facing a problem. This tuto is more for a being a personal reminder for the future times I need to build an image 😊
 {% end %}
-</div>
 
 
 ### Pre-requisites ###

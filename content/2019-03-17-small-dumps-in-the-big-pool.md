@@ -6,7 +6,7 @@ updated = 2019-03-17T00:00:00Z
 
 [taxonomies]
 categories = ["research"]
-tags = ["windows,kernel,pool,rw-primitive"]
+tags = ["windows","kernel","pool","rw-primitive"]
 
 [extra]
 header_img = "/img/f4300721f56d68c92db76aa03c3bbd54.png"
@@ -35,7 +35,6 @@ Since the unicode buffer and its size are fully user controlled, this means that
 {% note() %}
 The code was tested on Windows 10 RS5 x64. To work on 32b one might need to adjust the offsets. Also Windows must be at least 1607.
 {% end %}
-</div>
 
 The following code is enough to populate the `_ETHREAD.ThreadName` of a designed thread:
 
@@ -92,7 +91,7 @@ HRESULT hRes = NtQuerySystemInformation(
 ```
 
 If large enough the buffer `pBuffer` will be populated by the kernel by `N` entries of `SYSTEM_BIGPOOL_ENTRY` structured as follow:
-```
+```text
 0x00 NumberOfEntries
 
 Entry0
@@ -106,6 +105,7 @@ Entry1
 {
   0x20 Entry1.Address
 [...]
+}
 ```
 
 Which becomes trivial to parse to get the thread kernel address, simply by looking up for the entry that would match the condition `strncmp( info->PoolTag, "ThNm", 4)==0`. In the case of multi-threaded process with many ThreadName entries, it is possible to refine the search by using the size as a secondary search index:

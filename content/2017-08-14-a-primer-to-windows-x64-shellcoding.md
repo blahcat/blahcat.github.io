@@ -29,7 +29,6 @@ structure of our targeted arbitrary (but unprivileged) process (say `cmd.exe`).
 {% note() %}
 Our target here will the Modern.IE Windows 8.1 x64 we created in the [previous post](/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging), that we'll interact with using `kd` via Network debugging. Refer to previous post if you need to set it up.
 {% end %}
-</div>
 
 
 # Stealing SYSTEM token using `kd`

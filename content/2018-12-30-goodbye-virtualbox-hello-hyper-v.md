@@ -68,7 +68,6 @@ env -u SESSION_MANAGER -u DBUS_SESSION_BUS_ADDRESS mate-session  # for mate (cou
 {% note() %}
 To switch back to the regular view, simply click on **View** → uncheck **Enhanced session**.
 {% end %}
-</div>
 
 
 ## Sharing folders
