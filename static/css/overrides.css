@@ -61,3 +61,17 @@ img {
 .post-discussions a:hover {
     text-decoration: underline;
 }
+
+.post-nav {
+    position: relative;
+    border-bottom: 1px solid #e5e4e1;
+}
+
+.post-nav-teaser {
+    padding: 1.5em 0;
+    min-height: 6em;
+}
+
+.post-nav-next .post-nav-teaser {
+    padding-right: 1em;
+}
