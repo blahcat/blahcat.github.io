@@ -2,6 +2,72 @@
 
 {% extends "base.html" %}
 
+{% block title %}
+  {{ page.title }}
+{% endblock title %}
+
+{% block header_meta %}
+    <!-- Open Graph -->
+    <meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:type" content="blog" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:title" content="{{ page.title }}" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:description"
+      {% if page.summary %}
+      content="{{ page.summary }}"
+      {% else %}
+      content="{{ page.title }} - by {{ page.authors | join(sep=", ")}}"
+      {% endif %}
+    />
+    <meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:url" content="{{ get_url(path=page.path) }}" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:image"
+      {% if page.extra.header_img %}
+      content="{{ get_url(path=page.extra.header_img)}}"
+      {% else %}
+      content="{{ get_url(path=config.extra.clean_default_bg_cover)}}"
+      {% endif %}
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="BlahCats">
+    <meta name="twitter:description"
+      {% if page.summary %}
+      content="{{ page.summary }}"
+      {% else %}
+      content="{{ page.title }} - by {{ page.authors | join(sep=", ")}}"
+      {% endif %}
+    />
+    <meta name="twitter:url" content="{{ get_url(path=page.path) }}" />
+    <meta name="twitter:image:src"
+      {% if page.extra.header_img %}
+      content="{{ get_url(path=page.extra.header_img)}}"
+      {% else %}
+      content="{{ get_url(path=config.extra.clean_default_bg_cover)}}"
+      {% endif %}
+    />
+
+    <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Website",
+      "name": " BlahCats",
+      "url" : "{{ get_url(path=page.path) }}",
+      {% if page.extra.header_img %}
+      "image": {{ get_url(path=page.extra.header_img)}}",
+      {% else %}
+      "image": {{ get_url(path=config.extra.clean_default_bg_cover)}}",
+      {% endif %}
+      {% if page.summary %}
+      "description": {{ page.summary }}",
+      {% else %}
+      "description": {{ page.title }} - by {{ page.authors | join(sep=", ")}}",
+      {% endif %}
+    }
+    </script>
+{% endblock header_meta %}
+
 {% block header %}
 <!-- Page Header -->
 <header class="masthead"

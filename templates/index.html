@@ -2,6 +2,40 @@
 
 {% extends "base.html" %}
 
+{% block header_meta %}
+  <meta name="description" content="Tales of a binary encoded life...">
+  <meta name="author" content="BlahCats">
+
+    <!-- Open Graph -->
+    <meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:type" content="blog" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:title" content="BlahCats" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:description" content="Tales of a binary encoded life..." />
+    <meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:url" content="https://blahcat.github.io/" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:image"
+        content="https://blahcat.github.io/img/blog-cover.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="BlahCats">
+    <meta name="twitter:description" content="Tales of a binary encoded life...">
+    <meta name="twitter:url" content="https://blahcat.github.io/">
+    <meta name="twitter:image:src" content="https://blahcat.github.io/img/blog-cover.png">
+
+    <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Website",
+      "name": " BlahCats ",
+      "url" : "https://blahcat.github.io/",
+      "image": "https://blahcat.github.io/img/blog-cover.png",
+      "description": "Tales of a binary encoded life..."
+    }
+    </script>
+{% endblock header_meta %}
+
 {% block content %}
   <!-- Main Content -->
   <div class="container">
