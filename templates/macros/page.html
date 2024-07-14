@@ -3,12 +3,12 @@
     <h2 class="page-title">{{ page.title }}</h2>
 </a>
 <p class="page-meta">
-    Authors: {{page.authors | join(sep=", ")}}
+    Published by <b>{{page.authors | join(sep=", ")}}</b>
     {% if page.date %}
-    | Date: {{ page.date | date(format="%e %b %Y")}}
+    , on {{ page.date | date(format="%e %B %Y")}}
     {% endif %}
     {% if page.taxonomies.categories %}
-    | Categories: {{ page.taxonomies.categories | join(sep=", ") }}
+    , under <i>{{ page.taxonomies.categories | join(sep=", ") }}</i>
     {% endif %}
 </p>
 {% endmacro page_title %}
