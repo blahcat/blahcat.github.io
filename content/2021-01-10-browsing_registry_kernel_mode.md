@@ -7,11 +7,14 @@ updated = 2021-01-10T00:00:00Z
 [taxonomies]
 categories = ["research"]
 tags = ["windows", "kernel", "registry", "windbg"]
+
+[extra]
+header_img = "/img/950bbc05-e57e-4d49-96a4-9aefec9a8ef6.png"
 +++
 
 One of Windows kernel subsystem I recently dug into is the Configuration Manager ({{ abbr(abbr="CM", title="Configuration Manager") }}), mostly because I found very scarce public resources about it despite its criticality: this subsystem is responsible for managing the configuration of all Windows resources, and in user-land is exposed via a very familiar mechanism, the [Windows Registry](https://docs.microsoft.com/en-us/troubleshoot/windows-server/performance/windows-registry-advanced-users). It is a pretty well documented [user-land mechanism](https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry), and so is its [kernel driver API](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/registry-trees-and-keys). My curiosity was around its inner working, and all the few (but brilliant) resources can be found in the link section below.
 
-What I wondered was: How is the registry handled in the kernel (i.e. by the {{ abbr(abbr="CM", title="Configuration Manager") }})? So in the same way that I explored [other](/2020/06/14/playing_with_self_reference_pml4_entry/) [Windows](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/VadExplorer.js) [subsystems](/2019/01/30/playing-with-windows-root-directory-object/), I tried to keep a practical approach, and the result was this WinDbg Js script, `RegistryExplorer.js`[^0] that'll be referring to throughout this post. This script allows to browse and query via LINQ the registry in a kernel debugging session.
+What I wondered was: How is the registry handled in the kernel by the {{ abbr(abbr="CM", title="Configuration Manager") }}? So in the same way that I explored [other](/2020/06/14/playing_with_self_reference_pml4_entry/) [Windows](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/VadExplorer.js) [subsystems](/2019/01/30/playing-with-windows-root-directory-object/), I tried to keep a practical approach, and the result was this WinDbg Js script, `RegistryExplorer.js`[^0] that'll be referring to throughout this post. This script allows to browse and query via LINQ the registry in a kernel debugging session.
 
 {% note() %}
 This is a collection of notes, do not blindly trust, assume mistakes. Also, you'll find the KD commands are given to reproduce easily, but your offset/index may vary. Last, everything was done/tested against Windows 10 x64 1909: I assume those findings to be applicable to other versions, but it may not be the case.
