@@ -19,12 +19,12 @@ _Disclaimer_: If you came here for new stuff, so let me put your mind at peace: 
 
 ## MMU 101
 
-Although this post won't be only about the MMU (there's a book for that [#3](#links)), some background is required for understanding why there is a need for the so-called Self-Reference PML4 entry. The root question for that is a simple (but not trivial) one: how does the processor read/write a block of physical memory, **only** by knowing the virtual address, or in layman's term, how to go from Virtual Address to Physical Address?
+Although this post won't be only about the {{ abbr(abbr="MDL", title="Memory Management Unit") }} (there's a book for that [#3](#links)), some background is required for understanding why there is a need for the so-called Self-Reference PML4 entry. The root question for that is a simple (but not trivial) one: how does the processor read/write a block of physical memory, **only** by knowing the virtual address, or in layman's term, how to go from Virtual Address to Physical Address?
 
 
 ### Segmentation
 
-On Intel and AMD processors, a virtual address is a combination of a _segment number_ **and** _a linear address_, or `segment_number:linear_address` and even on 64b architecture segmentation is still necessary. So in long mode, a code virtual address is never just `0xLinearAddress` but always `cs:0xLinearAddress`, data is `ds:0xLinearAddress`, stack is `ss:0xLinearAddress`, and so on, where `cs`, `ds`, `ss` register holds a WORD value corresponding to an index (with the 2 least significant bit OR-ed, designating the CPL) . The segment number will be added to the value of the register `gdtr` and will get the segment descriptor:
+On Intel and AMD processors, a virtual address is a combination of a _segment number_ **and** _a linear address_, or `segment_number:linear_address` and even on 64b architecture segmentation is still necessary. So in long mode, a code virtual address is never just `0xLinearAddress` but always `cs:0xLinearAddress`, data is `ds:0xLinearAddress`, stack is `ss:0xLinearAddress`, and so on, where `cs`, `ds`, `ss` register holds a WORD value corresponding to an index (with the 2 least significant bit OR-ed, designating the {{ abbr(abbr="CPL", title="Current Privilege Level") }}) . The segment number will be added to the value of the register `gdtr` and will get the segment descriptor:
 
 ```txt
 kd> r cs, rip, gdtr
@@ -51,7 +51,7 @@ Which we can parse combined with the format given by the AMD manual:
                [ BaseAddress 15:0 ]  [  Seg Limit 15:0  ]
 ```
 
-The current CPL being given by the 2 lowest bytes of CS, it is now easy to understand how the CPU performs privilege check: by simply comparing the CPL from CS register and DPL from the segment descriptor, or if you prefer a visual diagram from the AMD manual:
+The {{ abbr(abbr="CPL", title="Current Privilege Level") }} being given by the 2 lowest bytes of CS, it is now easy to understand how the CPU performs privilege check: by simply comparing the {{ abbr(abbr="CPL", title="Current Privilege Level") }} from CS register and {{ abbr(abbr="DPL", title="Descriptor Privilege Level") }} from the segment descriptor, or if you prefer a visual diagram from the AMD manual:
 
 {{ img(src="https://i.ibb.co/kDFzxB8/image.png" title="image_alt") }}
 (Src: AMD Programmer's Manual Volume 2)
@@ -89,7 +89,7 @@ _Source: AMD Programmer's Manual Volume 2_
 
 Back to the problem at hand, i.e. understand how does the CPU go from VA to PA, there is an intrinsic problem: the CPU only uses virtual address so how could the processor manipulates the permissions, flags, etc. of those PTEs which are physical? Simply by mapping the PTE tables in VAS, right? But that creates a recursive problem, because we still don't know how to go from VA to PA. And that's precisely where "Self-Reference PML4 entry" comes in. But let's go back a bit.
 
-When a new process is created, a new PML4 is also allocated holding the physical root address for our process address space. From that physical root address and with all the offsets from the VA itself, the MMU can crawl down the physical page directories until getting the wanted data (see "Paging" above). This physical address is stored in the [`nt!_KPROCESS`](https://www.vergiliusproject.com/kernels/x64/Windows%2010%20%7C%202016/2004%2020H1%20(May%202020%20Update)/_KPROCESS) structure of the process, precisely in `_KPROCESS.DirectoryTableBase`.
+When a new process is created, a new PML4 is also allocated holding the physical root address for our process address space. From that physical root address and with all the offsets from the VA itself, the {{ abbr(abbr="MDL", title="Memory Management Unit") }} can crawl down the physical page directories until getting the wanted data (see "Paging" above). This physical address is stored in the [`nt!_KPROCESS`](https://www.vergiliusproject.com/kernels/x64/Windows%2010%20%7C%202016/2004%2020H1%20(May%202020%20Update)/_KPROCESS) structure of the process, precisely in `_KPROCESS.DirectoryTableBase`.
 
 To experiment this behavior, we can create a simple program that will only `int3` so that KD gets the hand while still in user-mode:
 
@@ -113,7 +113,7 @@ So when a process switch occurs, the kernel can move `nt!_EPROCESS.KernelObject.
 
 But we slightly digressed, back to the topic: in order to map in the VAS our PML4 which is in physical address space, the kernel needs a way to always know at least one entry of the PML4: this is the <u>"Self-Reference Entry"</u>. Also seen to be called "auto-entry", the *Self-Reference Entry* (or "self-ref entry" for short) is a special PML4 index (so then only 9-bit in size) that only the kernel knows (hence between 0x100-0x1ff), and whose content points the physical address of the PML4 itself. By doing so, Windows kernel gives itself an easy way to reach by a virtual address, any directory (PML4, PDPT, PDE, etc.).
 
-On Windows 7, the self-ref entry index is a static value (0x1ed) whereas Windows 10 randomizes it on boot. So to understand why this Self-Reference Entry is helpful, let's process a virtual address like the MMU would: the PML4 index corresponds to the 39:47 bits of a VA, so the value 0x1ed (or 0b111101101) would be as follow:
+On Windows 7, the self-ref entry index is a static value (0x1ed) whereas Windows 10 randomizes it on boot. So to understand why this Self-Reference Entry is helpful, let's process a virtual address like the {{ abbr(abbr="MDL", title="Memory Management Unit") }} would: the PML4 index corresponds to the 39:47 bits of a VA, so the value 0x1ed (or 0b111101101) would be as follow:
 
 ```txt
 Bi| 6   ...  4444 4444 3333  ...
@@ -289,7 +289,7 @@ dx @$cursession.Processes.Where( p => p.Name == "System").First().KernelObject.P
 ```
 
 
-And this is really the subtlety of Ricerca's exploit: they showed that only with a fixed physical address (associated to the SYSTEM process), and a fixed virtual area (the `nt!_KUSER_SHARED_DATA` section at 0xfffff780\`00000000) that is always at a known location since NT4, one can create an MDL used in Direct Memory Access, and achieve arbitrary read to virtual addresses simply by recursing through the PML4E, the PDPTE, etc. just like the MMU does. Since they could read the PML4 entirely at a fixed physical address, say 0x1aa000, they could determine the index of the "Self-Reference Entry" from a simple for-loop going through the PML4 page (very approximate pseudo-code):
+And this is really the subtlety of Ricerca's exploit: they showed that only with a fixed physical address (associated to the SYSTEM process), and a fixed virtual area (the `nt!_KUSER_SHARED_DATA` section at 0xfffff780\`00000000) that is always at a known location since NT4, one can create an {{ abbr(abbr="MDL", title="Memory Descriptor List") }} used in Direct Memory Access, and achieve arbitrary read to virtual addresses simply by recursing through the PML4E, the PDPTE, etc. just like the {{ abbr(abbr="MDL", title="Memory Management Unit") }} does. Since they could read the PML4 entirely at a fixed physical address, say 0x1aa000, they could determine the index of the "Self-Reference Entry" from a simple for-loop going through the PML4 page (very approximate pseudo-code):
 
 ```python
 system_pml4_root = 0x1aa000
@@ -351,19 +351,3 @@ Other useful resources:
   - ["Gynvael's Hacking Livestream #30: Windows Kernel Debugging Part III" - A. "honorary_bot" Shishkin](https://www.youtube.com/watch?v=7zTtVYjjquA)
   - ["Windows 8 Kernel Memory Protections Bypass" - J. Fetiveau](https://labs.f-secure.com/archive/windows-8-kernel-memory-protections-bypass/)
 
-*[CPL]: Current Privilege Level
-*[DPL]: Descriptor Privilege Level
-*[MDL]: Memory Descriptor List
-*[MMU]: Memory Management Unit
-*[PA]: Physical Address
-*[PAS]: Physical Address Space
-*[PD]: Page Descriptor
-*[PDE]: Page Descriptor Entry
-*[PDPT]: Page Directory Pointer Table
-*[PDPTE]: Page Directory Pointer Table Entry
-*[PML4]: Page Map Level 4
-*[PML4E]: Page Map Level 4 Entry
-*[PT]: Page Table
-*[PTE]: Page Table Entry
-*[VA]: Virtual Address
-*[VAS]: Virtual Address Space

@@ -9,9 +9,9 @@ categories = ["research"]
 tags = ["windows", "kernel", "registry", "windbg"]
 +++
 
-One of Windows kernel subsystem I recently dug into is the Configuration Manager (CM), mostly because I found very scarce public resources about it despite its criticality: this subsystem is responsible for managing the configuration of all Windows resources, and in user-land is exposed via a very familiar mechanism, the [Windows Registry](https://docs.microsoft.com/en-us/troubleshoot/windows-server/performance/windows-registry-advanced-users). It is a pretty well documented [user-land mechanism](https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry), and so is its [kernel driver API](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/registry-trees-and-keys). My curiosity was around its inner working, and all the few (but brilliant) resources can be found in the link section below.
+One of Windows kernel subsystem I recently dug into is the Configuration Manager ({{ abbr(abbr="CM", title="Configuration Manager") }}), mostly because I found very scarce public resources about it despite its criticality: this subsystem is responsible for managing the configuration of all Windows resources, and in user-land is exposed via a very familiar mechanism, the [Windows Registry](https://docs.microsoft.com/en-us/troubleshoot/windows-server/performance/windows-registry-advanced-users). It is a pretty well documented [user-land mechanism](https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry), and so is its [kernel driver API](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/registry-trees-and-keys). My curiosity was around its inner working, and all the few (but brilliant) resources can be found in the link section below.
 
-What I wondered was: How is the registry handled in the kernel (i.e. by the CM)? So in the same way that I explored [other](/2020/06/14/playing_with_self_reference_pml4_entry/) [Windows](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/VadExplorer.js) [subsystems](/2019/01/30/playing-with-windows-root-directory-object/), I tried to keep a practical approach, and the result was this WinDbg Js script, `RegistryExplorer.js`[^0] that'll be referring to throughout this post. This script allows to browse and query via LINQ the registry in a kernel debugging session.
+What I wondered was: How is the registry handled in the kernel (i.e. by the {{ abbr(abbr="CM", title="Configuration Manager") }})? So in the same way that I explored [other](/2020/06/14/playing_with_self_reference_pml4_entry/) [Windows](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/VadExplorer.js) [subsystems](/2019/01/30/playing-with-windows-root-directory-object/), I tried to keep a practical approach, and the result was this WinDbg Js script, `RegistryExplorer.js`[^0] that'll be referring to throughout this post. This script allows to browse and query via LINQ the registry in a kernel debugging session.
 
 {% note() %}
 This is a collection of notes, do not blindly trust, assume mistakes. Also, you'll find the KD commands are given to reproduce easily, but your offset/index may vary. Last, everything was done/tested against Windows 10 x64 1909: I assume those findings to be applicable to other versions, but it may not be the case.
@@ -43,7 +43,7 @@ The best structure definition of a Hive I could find comes from "Windows Kernel 
 {{ img(src="/img/950bbc05-e57e-4d49-96a4-9aefec9a8ef6.png", title="Hive Layout") }}
 
 
-Some hives are loaded very early in the boot process, as the BCD needs to retrieve its configuration settings from it in the `BCD` hive; and also during kernel loading, hardware info are exposed from the `HARDWARE` hive. Once parsed and loaded from file to memory, all the system hives are linked via a `LIST_ENTRY` whose head is pointed by the exposed symbol `nt!CmpHiveListHead`, and can be iterated over as a list of `nt!_CMHIVE` object using the `nt!_CMHIVE.HiveList` field. Therefore a quick parsing can be done with our best friends WinDbg + DDM, which allows us to do some LINQ magic:
+Some hives are loaded very early in the boot process, as the {{ abbr(abbr="BCD", title="Boot Configuration Database") }} needs to retrieve its configuration settings from it in the {{ abbr(abbr="CM", title="Boot Configuration Database") }} hive; and also during kernel loading, hardware info are exposed from the `HARDWARE` hive. Once parsed and loaded from file to memory, all the system hives are linked via a `LIST_ENTRY` whose head is pointed by the exposed symbol `nt!CmpHiveListHead`, and can be iterated over as a list of `nt!_CMHIVE` object using the `nt!_CMHIVE.HiveList` field. Therefore a quick parsing can be done with our best friends WinDbg + DDM, which allows us to do some LINQ magic:
 
 ```txt
 0: kd> dx -s @$hives = Debugger.Utility.Collections.FromListEntry(*(nt!_LIST_ENTRY*)&nt!CmpHiveListHead,"nt!_CMHIVE","HiveList")
@@ -502,31 +502,18 @@ And done, we've got the data! We can now totally navigate the Registry from a KD
 
 ## Outro
 
-Understanding those bits of the CM took more work than I imagined, but as it was nicely engineered, it was fun to go through. The CM is way more complex than that, but this is the basics: we didn't cover more advanced stuff like the use of the `.LOG` file, the memory management of the CM and other funkiness, but I hope this article was interesting and useful to you and thanks for making it this far.
+Understanding those bits of the {{ abbr(abbr="CM", title="Configuration Manager") }} took more work than I imagined, but as it was nicely engineered, it was fun to go through. The {{ abbr(abbr="CM", title="Configuration Manager") }} is way more complex than that, but this is the basics: we didn't cover more advanced stuff like the use of the `.LOG` file, the memory management of the {{ abbr(abbr="CM", title="Configuration Manager") }} and other funkiness, but I hope this article was interesting and useful to you and thanks for making it this far.
 
 Peace out ✌
 
 
+##  References
 
-## Appendix
-
-### References
-
- * [comaeio/SwishDbgExt - Github](https://github.com/comaeio/SwishDbgExt)
- * [ReactOS - Github](https://github.com/reactos/reactos)
+ * {{ github(user="comaeio/SwishDbgExt") }}
+ * {{ github(user="reactos/reactos") }}
  * [Windows Internals 6th - Part 1](https://www.microsoftpressstore.com/store/windows-internals-part-1-9780735648739), Chapter 4: Management Mechanism - The Registry
- * [Enumerating Registry Hives](http://moyix.blogspot.com/2008/02/enumerating-registry-hives.html)
+ * [Enumerating Registry Hives - moyix](http://moyix.blogspot.com/2008/02/enumerating-registry-hives.html)
 
-
-
-
-
-### Acronyms
-
-* CM: Configuration Manager
-* BCD: Boot Configuration Database
-* UM: User-Mode
-* KM: Kernel-Mode
 
 [^0]: [`RegistryExplorer.js`](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/RegistryExplorer.js)
 [^1]: [Windows Kernel Internals NT Registry Implementation](https://web.archive.org/web/20220720121211/https://ivanlef0u.fr/repo/madchat/vxdevl/papers/winsys/wk_internals/registry.pdf)
