@@ -6,7 +6,7 @@ updated = 2016-03-08T00:00:00Z
 
 [taxonomies]
 categories = ["ctf"]
-tags = ["pwn, gef , ida , bkpctf-2016 , x86 , heap-overflow"]
+tags = ["pwn","gef","ida","bkpctf-2016","x86","heap-overflow"]
 +++
 
 

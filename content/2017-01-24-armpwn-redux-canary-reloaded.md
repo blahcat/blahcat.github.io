@@ -5,7 +5,7 @@ date = 2017-01-24T00:00:00Z
 updated = 2017-01-24T00:00:00Z
 
 [taxonomies]
-tags = ["linux,pwn,arm,ssp,armpwn"]
+tags = ["linux","pwn","arm","ssp","armpwn"]
 categories = ["ctf"]
 
 [extra]

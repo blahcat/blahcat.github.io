@@ -6,7 +6,7 @@ updated = 2020-03-09T00:00:00Z
 
 [taxonomies]
 categories = ["research"]
-tags = ["windows,kernel,logic,bug,win32k"]
+tags = ["windows","kernel","logic","bug,win32k"]
 
 [extra]
 header_img = "/img/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png"

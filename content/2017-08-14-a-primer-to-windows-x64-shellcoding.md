@@ -6,7 +6,7 @@ updated = 2017-08-14T00:00:00Z
 
 [taxonomies]
 categories = ["tutorial"]
-tags = ["windows,kernel,debugging,pwn,token,shellcode"]
+tags = ["windows","kernel","debugging","pwn","token","shellcode"]
 
 [extra]
 header_img = "/img/win-kernel-debug/bg.png"
