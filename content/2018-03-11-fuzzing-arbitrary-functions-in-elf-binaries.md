@@ -14,7 +14,7 @@ header_img = "/img/libfuzzer-lief/header.png"
 
 I decided to give a descent test to
 the [LIEF](https://lief-project.github.io/) project. Executable parsers are
-not a new thing ([pyelftools](https://github.com/eliben/pyelftools), [pefile](https://github.com/erocarrera/pefile), etc...)
+not a new thing ([`pyelftools`](https://github.com/eliben/pyelftools), [`pefile`](https://github.com/erocarrera/pefile), etc...)
 but that one picked my curiosity (just like most Quarkslab projects) because it
 also provides dead simple instrumentation functions. To top it up, LIEF is easy
 to use and well documented, which is becoming a rare perk in the circus of
