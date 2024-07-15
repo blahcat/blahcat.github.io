@@ -3,6 +3,7 @@ title = "Goodbye VirtualBox, hello Hyper-V"
 authors = ["hugsy"]
 date = 2018-12-30T00:00:00Z
 updated = 2018-12-30T00:00:00Z
+aliases = ["/posts/2018/12/30/goodbye-virtualbox-hello-hyper-v.html"]
 
 [taxonomies]
 categories = ["research"]

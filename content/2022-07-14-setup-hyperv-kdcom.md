@@ -3,6 +3,7 @@ title = "Setup KDCOM for 2 Hyper-V VMs"
 authors = ["hugsy"]
 date = 2022-07-14T00:00:00Z
 updated = 2022-07-14T00:00:00Z
+aliases = ["/posts/2022/07/14/setup-kdcom-for-2-hyper-v-vms.html"]
 
 [taxonomies]
 categories = ["minis"]

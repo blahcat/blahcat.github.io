@@ -3,7 +3,7 @@ title = "Building a Debian Stretch QEMU image for AARCH64"
 authors = ["hugsy"]
 date = 2018-01-07T00:00:00Z
 updated = 2018-01-07T00:00:00Z
-
+aliases = ["/posts/2018/01/07/building-a-debian-stretch-qemu-image-for-aarch64.html"]
 [taxonomies]
 categories = ["tutorial"]
 tags = ["gef","qemu","aarch64"]

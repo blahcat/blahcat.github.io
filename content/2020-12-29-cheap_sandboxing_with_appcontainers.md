@@ -3,6 +3,7 @@ title = "Cheap sandboxing with AppContainers"
 authors = ["hugsy"]
 date = 2020-12-29T00:00:00Z
 updated = 2020-12-29T00:00:00Z
+aliases = ["/posts/2020/12/29/cheap-sandboxing-with-appcontainers.html"]
 
 [taxonomies]
 categories = ["research"]

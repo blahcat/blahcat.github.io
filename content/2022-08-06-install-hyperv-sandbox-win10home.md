@@ -3,6 +3,7 @@ title = "Install Hyper-V & Sandbox on Windows 10/11 Home"
 authors = ["hugsy"]
 date = 2022-08-06T00:00:00Z
 updated = 2022-08-06T00:00:00Z
+aliases = ["/posts/2022/08/06/install-hyper-v-sandbox-on-windows-1011-home.html"]
 
 [taxonomies]
 categories = ["minis"]

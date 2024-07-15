@@ -3,6 +3,7 @@ title = "Small dumps in the big pool"
 authors = ["hugsy"]
 date = 2019-03-17T00:00:00Z
 updated = 2019-03-17T00:00:00Z
+aliases = ["/posts/2019/03/17/small-dumps-in-the-big-pool.html"]
 
 [taxonomies]
 categories = ["research"]

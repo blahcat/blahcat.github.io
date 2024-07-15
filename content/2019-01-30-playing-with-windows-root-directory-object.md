@@ -3,6 +3,7 @@ title = "Scripting with Windows Root Directory Object"
 authors = ["hugsy"]
 date = 2019-01-30T00:00:00Z
 updated = 2019-01-30T00:00:00Z
+aliases = ["/posts/2019/01/30/playing-with-windows-root-directory-object.html"]
 
 [taxonomies]
 categories = [" research"]

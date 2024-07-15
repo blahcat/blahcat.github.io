@@ -3,6 +3,7 @@ title = "FlareOn 4 WriteUps"
 authors = ["hugsy"]
 date = 2017-10-13T00:00:00Z
 updated = 2017-10-13T00:00:00Z
+aliases = ["/posts/2017/10/13/flareon-4-writeups.html"]
 
 [taxonomies]
 categories = ["ctf"]

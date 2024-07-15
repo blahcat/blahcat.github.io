@@ -3,6 +3,7 @@ title = "Browsing the registry in kernel-mode"
 authors = ["hugsy"]
 date = 2021-01-10T00:00:00Z
 updated = 2021-01-10T00:00:00Z
+aliases = ["/posts/2021/01/10/browsing-the-registry-in-kernel-mode.html"]
 
 [taxonomies]
 categories = ["research"]
