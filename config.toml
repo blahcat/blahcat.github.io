@@ -1,0 +1,56 @@
+# https://www.getzola.org/documentation/getting-started/configuration/
+base_url = "https://blahcat.github.io"
+title = "BlahCats Blog"
+description = "Tales of a binary encoded life..."
+theme = "zola-clean-blog"
+generate_feeds = true
+feed_filenames = ["atom.xml", "rss.xml"]
+author = "hugsy"
+compile_sass = true
+build_search_index = true
+minify_html = true
+
+taxonomies = [
+    { name = "categories", rss = true, paginate_by = 10 },
+    { name = "tags", rss = true, paginate_by = 10 },
+    { name = "authors" },
+]
+
+[markdown]
+highlight_code = true
+highlight_theme = "base16-ocean-dark" # https://www.getzola.org/documentation/getting-started/configuration/#syntax-highlighting
+render_emoji = true
+bottom_footnotes = true
+smart_punctuation = true
+external_links_target_blank = true
+external_links_no_follow = true
+external_links_no_referrer = true
+
+[slugify]
+paths = "on"
+taxonomies = "on"
+anchors = "on"
+paths_keep_dates = true
+
+[link_checker]
+internal_level = "error"
+external_level = "warn"
+
+[extra]
+clean_default_bg_cover = "/img/blog-cover.png"
+
+clean_blog_menu = [
+    { url = "$BASE_URL", name = "Home" },
+    { url = "$BASE_URL/series", name = "Series" },
+    { url = "$BASE_URL/notes", name = "Notes" },
+    { url = "$BASE_URL/about", name = "About" },
+    { url = "$BASE_URL/qemu", name = "Qemu VMs" },
+]
+
+clean_blog_social = [
+    { icon = "fas fa-rss", url = "$BASE_URL/atom.xml" },
+    { icon = "fab fa-twitter", url = "https://twitter.com/ctf_blahcat" },
+    { icon = "fab fa-github", url = "https://github.com/blahcat" },
+    { icon = "fab fa-youtube", url = "https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg" },
+    { icon = "fab fa-discord", url = "https://discord.gg/hSbqxxBgRX" },
+]

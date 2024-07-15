@@ -1,9 +1,13 @@
-date: 2016-03-14 00:00:00
-modified: 2016-03-14 00:00:00
-title: 0ctf 2016 - Warmup write-up
-author: hugsy
-tags: pwn,gef,ida,0ctf-2016,x86
-category: ctf
++++
+title = "0ctf 2016 - Warmup write-up"
+authors = ["hugsy"]
+date = 2016-03-14T00:00:00Z
+updated = 2016-03-14T00:00:00Z
+
+[taxonomies]
+tags = ["pwn", "gef", "ida", "0ctf-2016", "x86"]
+categories = ["ctf"]
++++
 
 I participated to [0ctf](https://ctftime.org/team/4419/) but only had time to play for
 the reversing challenge `trace` (write-up coming up soon) during the competition
@@ -41,7 +45,7 @@ linked file). Stack canary and PIE are not on, but NX is.
 The binary is really small, does not do much either, so the vulnerability is
 quite easy to find and trigger.
 
-![vuln](https://i.imgur.com/jpU2YsD.png)
+{{ img(src="https://i.imgur.com/jpU2YsD.png" title="vuln") }}
 
 At 0x08048174, We have a `read(socket, buffer, 52)` where buffer can only
 contain 32 bytes, so we have a classic stack overflow. A part of the challenge
@@ -55,7 +59,7 @@ is however due to the fact that our controlled part is quite limited
 In addition to not having a lot of gadgets (the source was written in pure
 assembly), no libc, etc. 0ctf organizers added that
 
-```
+```txt
 notice: This service is protected by a sandbox, you can only read the flag at /home/warmup/flag
 ```
 

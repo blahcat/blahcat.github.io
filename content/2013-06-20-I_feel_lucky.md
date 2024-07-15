@@ -1,10 +1,13 @@
-title: I feel lucky - or why I wrote a FreeBSD 1-day in one day
-author: hugsy
-category: research
-tags: freebsd, 1day, lpe
-date: 2013-06-20 00:00 +0000
-modified: 2013-06-20 00:00 +0000
++++
+title = "I feel lucky - or why I wrote a FreeBSD 1-day in one day"
+authors = ["hugsy"]
+date = 2013-06-20T00:00:00Z
+updated = 2013-06-20T00:00:00Z
 
+[taxonomies]
+categories = ["research"]
+tags = ["freebsd", "1day", "lpe"]
++++
 
 Sometimes life gives you eggs for free, you just need to spend some time making an omelet. That's exactly what happened to me on a recent engagement for a client: a typical PHP webapp full of holes left me with a nice stable shell access.
 
@@ -40,7 +43,9 @@ Index: sys/vm/vm_map.c
 
 It kindda gave a good pointer of where to start: the usual rule for setuid dictates that a write access should immediately imply losing the elevated privilege. But this is where the bug was: by `mmap` a setuid binary (which any user can do), I can then choose to `ptrace` the process, and use `PT_WRITE` command to overwrite the `mmap`-ed memory, effectively overwriting the setuid binary!
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> I was in a rush, so my exploit is partially destructive as I overwrite directly the setuid binary. If you choose to use it, please make a copy to be able to restore it.</div>
+{% note() %}
+I was in a rush, so my exploit is partially destructive as I overwrite directly the setuid binary. If you choose to use it, please make a copy to be able to restore it.
+{% end %}
 
 My exploit was in 4 parts:
 
@@ -86,7 +91,7 @@ My exploit was in 4 parts:
 
 Done! Simply execute the target binary to get a root shell.
 
-```shell
+```bash
  $ id
  uid=1001(user) gid=1001(user) groups=1001(user)
  $ gcc -Wall ./mmap.c && ./a.out

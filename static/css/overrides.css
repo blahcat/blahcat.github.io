@@ -1,0 +1,132 @@
+body {
+    font-family: Roboto;
+    font-style: normal;
+    text-align: justify;
+}
+
+pre code {
+    font-family:
+        "Consolas",
+        "Liberation Mono",
+        "Courier New",
+        monospace;
+    font-style: normal;
+    font-size: 0.80em;
+}
+
+article {
+    font-family: Roboto;
+    font-style: normal;
+    text-align: justify;
+}
+
+a[class="category_link"] {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 5px;
+}
+
+a[class="tag_link"] {
+    border-radius: 25px;
+    border: 2px solid #8a0e6b;
+    padding: 2px;
+}
+
+div[class="alert-info"] {
+    border-radius: 15px;
+    border: 1px solid #0e4f95;
+    padding: 5px;
+    background-color: #1982f361;
+}
+
+div[class="alert-success"] {
+    border-radius: 15px;
+    border: 1px solid #096916;
+    padding: 5px;
+    background-color: #3ce51161;
+}
+
+div[class="alert-warning"] {
+    border-radius: 15px;
+    border: 2px solid #5f2405;
+    padding: 5px;
+    background-color: #b6661161;
+}
+
+div[class="alert-error"] {
+    border-radius: 15px;
+    border: 2px solid #5f0505;
+    padding: 5px;
+    background-color: #670d0d61;
+}
+
+img {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.post-tags {
+    font-size: 0.80em;
+    border-top: 1px solid #e5e4e1;
+}
+
+.post-tags a {
+    display: inline-block;
+    /* margin: 0 0.333em 0.666em 0; */
+    padding: 0.575em 1em;
+    background: #fff;
+    border: 1px solid #094707;
+    font-size: 0.75em;
+    font-weight: 500;
+    line-height: 1.333em;
+    text-align: center;
+    text-decoration: none;
+    color: #094707;
+    border-radius: 2em;
+    transition: all ease 0.3s;
+    box-sizing: border-box
+}
+
+.post-tags a:hover,
+.post-tags a:focus {
+    background: #f26a3d;
+    color: #fff
+}
+
+.post-discussion {
+    text-align: center;
+    position: relative;
+    padding: 1em 1em;
+    font-size: 0.80em;
+    z-index: 5;
+    border-top: 1px solid #e5e4e1;
+    clear: both;
+}
+
+.post-discussions a:hover {
+    text-decoration: underline;
+}
+
+.post-nav {
+    position: relative;
+    border-top: 1px solid #e5e4e1;
+    font-size: 0.80em;
+    margin-top: 10px;
+}
+
+.post-nav-right,
+.post-nav-prev {
+    font-size: 0.90em;
+}
+
+.post-nav a:hover {
+    text-decoration: none;
+}
+
+.post-nav-teaser {
+    padding: 1.5em 0;
+    min-height: 6em;
+}
+
+.post-nav-next .post-nav-teaser {
+    padding-right: 1em;
+}

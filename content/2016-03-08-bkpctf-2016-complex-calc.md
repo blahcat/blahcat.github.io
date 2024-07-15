@@ -1,9 +1,13 @@
-title: BKPCTF 2016 - Complex Calc
-author: hugsy
-category: ctf
-tags: pwn, gef , ida , bkpctf-2016 , x86 , heap-overflow
-date: 2016-03-08 00:00:00
-modified: 2016-03-08 00:00:00
++++
+title = "BKPCTF 2016 - Complex Calc"
+authors = ["hugsy"]
+date = 2016-03-08T00:00:00Z
+updated = 2016-03-08T00:00:00Z
+
+[taxonomies]
+categories = ["ctf"]
+tags = ["pwn","gef","ida","bkpctf-2016","x86","heap-overflow"]
++++
 
 
 The challenge is the sequel to `simple_calc`. If you haven't read our [write-up](/posts/2016/03/07/bkpctf-2016-simple-calc-writeup.html), now is the time 😊
@@ -31,9 +35,9 @@ control). Let's do some bindiffing!
 
 One of my new toys for quite a few months now is IDA Python plugin
 [diaphora](https://github.com/joxeankoret/diaphora) by Joxean Koret (aka
-<a class="fa fa-twitter" href="https://twitter.com/matalaz" target="_blank"> matalaz</a>). By diffing then, the issue is immediately visible:
+{{ twitter(user="matalaz") }}). By diffing then, the issue is immediately visible:
 
-![image_alt](https://i.imgur.com/0tkaNNT.png)
+{{ img(src="https://i.imgur.com/0tkaNNT.png" title="image_alt") }}
 
 The `free()` function was modified so we cannot benefit from the graceful exit
 of the function by simply passing a NULL pointer. Now, `free()` will always
@@ -49,7 +53,7 @@ work. So I will assume you know as well.
 
 To stand on common ground, here is what a heap chunk looks like:
 
-![image_alt](https://i.imgur.com/EVnKlBg.png)
+{{ img(src="https://i.imgur.com/EVnKlBg.png" title="image_alt") }}
 
 When `free()` is called, some checks are made to know how the chunk must be
 deallocated:
@@ -64,7 +68,7 @@ deallocated:
 
 This actually shows quite well in the flow graph:
 
-![image_alt](https://i.imgur.com/omGULMz.png)
+{{ img(src="https://i.imgur.com/omGULMz.png" title="image_alt") }}
 
 Since we control what is written in the heap (same method than `simple_calc`),
 we can control whether we want to deallocate using `unlink` or `munmap` (simply
@@ -114,7 +118,7 @@ now which value should we use then for operator_1 and operator_2 ?
 
 Let's go back to `free()` flow graph:
 
-![image_alt](https://i.imgur.com/7ZEy4nD.png)
+{{ img(src="https://i.imgur.com/7ZEy4nD.png" title="image_alt") }}
 
 As we see, several conditions must be filled:
 

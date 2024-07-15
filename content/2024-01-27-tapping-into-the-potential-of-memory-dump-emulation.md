@@ -1,9 +1,21 @@
-title: Tapping into the potential of Memory Dump Emulation
-author: hugsy
-category: research
-tags: windows, hack, memory-dump, wtf, bochscpu, bochs, emulation
-date: 2024-01-27 00:00 +0000
-modified: 2024-03-26 00:00 +0000
++++
+title = "Tapping into the potential of Memory Dump Emulation"
+authors = ["hugsy"]
+date = 2024-01-27T00:00:00Z
+updated = 2024-03-26T00:00:00Z
+
+aliases = [
+  "/posts/2024/01/27/tapping-into-the-potential-of-memory-dump-emulation.html"
+]
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows", "memory-dump", "wtf", "bochscpu", "bochs", "emulation"]
+
+[extra]
+header_img = "/img/d9e336f7-602d-4efb-8234-0630e0d54f72.png"
+discuss = true
++++
 
 This post summarizes some of the work I've been doing for the past few months during my (few) off times. Nothing new, mostly just a structured reminder for my later self.
 
@@ -22,7 +34,7 @@ Following the well-known Feynman principle that ["what you cannot create, you do
 So immediately, I was stopped: originally `bochscpu` was written in Rust, `kdmp-parser` and `udmp-parser` in C++ and only `kdmp-parser` had an embryo of Python bindings (many API/structures missing, no PyPI). Perfect, so I set myself to completely dive into those libs by
 
    - creating Python bindings for `udmp-parser` and `bochscpu`
-   - improving the Python bindings `kdmp-parser` [originally had](https://github.com/0vercl0k/kdmp-parser/tree/3bec915e6f5304c187765be7ce3cfde713d7c29b), developed by [@masthoon](https://github.com/masthoon)
+   - improving the Python bindings `kdmp-parser` [originally had](https://github.com/0vercl0k/kdmp-parser/tree/3bec915e6f5304c187765be7ce3cfde713d7c29b), developed by {{ github(user="masthoon") }}
 
 At the time of this article, anyone can `pip install` any of those packages and start playing directly within the Python interpreter 3.8+ on either Windows, Linux and MacOS (since 0.1.7+) So just in order to reproduce any of the stuff mentioned below, all one would need do is:
 
@@ -63,7 +75,7 @@ Armed with those libraries, running the emulator from a Windows kernel dump is n
 
 First from a KdNet session, you can easily create a dump at an interesting point. When looking for interesting attack surface, I like to use my own [IRP monitor tool](https://github.com/hugsy/CFB) #ShamelessSelfPromo; but for our example really anything would do, like the following:
 
-```text
+```txt
 kd> bp /w "@$curprocess.Name == \"explorer.exe\"" nt!NtDeviceIoControlFile
 [...]
 Breakpoint 0 hit
@@ -72,13 +84,13 @@ fffff807`4f7a4670 4883ec68        sub     rsp,68h
 ```
 
 One way to get the dump would be using `.dump` command as such
-```text
+```txt
 kd> .dump /ka c:\temp\ActiveKDump.dmp
 ```
 
 But a better way would be to use the [yrp's `bdump.js`](https://github.com/yrp604/bdump) script
 
-```text
+```txt
 kd> .scriptload "C:\bdump\bdump.js"
 [...]
 
@@ -150,7 +162,7 @@ sess.run(hooks)
 sess.stop()
 ```
 
-``` console
+```bat
 $ python kdump_runner.py
 Executing RIP=0xfffff80720a9d4c0 on cpu_id=0
 Executing RIP=0xfffff80720a9d4c4 on cpu_id=0
@@ -269,7 +281,7 @@ int main()
 }
 ```
 
-![Get the dump](/assets/images/d9e336f7-602d-4efb-8234-0630e0d54f72.png)
+{{ img(src="/img/d9e336f7-602d-4efb-8234-0630e0d54f72.png" title="Get the dump") }}
 
 Continuing our emulator from above, we can now invoke directly any function (here we're interested in `cryptbase!SystemFunction036`) in the dump:
 
@@ -289,7 +301,7 @@ sess.run([hook,])
 
 And we can successfully dump all future values:
 
-![emulate](/assets/images/a0641b11-efdc-4d06-84af-51d404cf0ed5.png){width=50%}
+{{ img(src="/img/a0641b11-efdc-4d06-84af-51d404cf0ed5.png" title="emulate") }}
 
 Same values, mission accomplished.
 
@@ -298,7 +310,7 @@ Same values, mission accomplished.
 
 Well as the saying goes...
 
-![same-but-different](https://media.giphy.com/media/xTiTnL7OS5ZWUUWMU0/giphy.gif){width=25%}
+{{ img(src="https://media.giphy.com/media/xTiTnL7OS5ZWUUWMU0/giphy.gif" title="same-but-different") }}
 
 using [lief](https://lief-project.github.io/doc/latest/tutorials/12_elf_coredump.html) we can parse and populate the memory layout
 
@@ -331,11 +343,11 @@ int main()
 ```
 
 Compile
-![Alt text](/assets/images/a31f6e3a-5c8a-40a6-8c6d-29e6b023d07a.png)
+{{ img(src="/img/a31f6e3a-5c8a-40a6-8c6d-29e6b023d07a.png" title="Alt text") }}
 
 
 And run
-![Alt text](/assets/images/8594fc66-e5da-477d-850c-1ea320c42ccf.png)
+{{ img(src="/img/8594fc66-e5da-477d-850c-1ea320c42ccf.png" title="Alt text") }}
 
 and unsurprisingly, same result
 
@@ -401,7 +413,7 @@ sess.run([hook,])
 
 Testing with [HEVD](https://github.com/hacksysteam/HackSysExtremeVulnerableDriver/) [Double-Fetch](https://github.com/hacksysteam/HackSysExtremeVulnerableDriver/blob/master/Driver/HEVD/Windows/DoubleFetch.c) example, immediately reveals it:
 
-```console
+```bat
 ❯ python .\hevd_double_fetch.py X:\hevd_double_fetch_dump\mem.dmp X:\hevd_double_fetch_dump\regs.json
 INFO:Parsed KernelDumpParser(X:\hevd_double_fetch_dump\mem.dmp, CompleteMemoryDump)
 ERROR:Possible usermode bochscpu._bochscpu.memory.AccessType.Read double fetch on VA=0x5f0008:
@@ -428,7 +440,7 @@ cs=0010  ss=0018  ds=002b  es=002b  fs=0053  gs=002b
 
 Which we can double-check with a disassembler (highlighted in magenta)
 
-![Alt text](/assets/images/0bd46b07-e495-419d-ae11-8373868735fe.png)
+{{ img(src="/img/0bd46b07-e495-419d-ae11-8373868735fe.png" title="Alt text") }}
 
 
 
@@ -445,10 +457,10 @@ Cheers 🍻
 
 Here are the links to those giants referred in the title:
 
-1. [https://github.com/bochs-emu/Bochs](https://github.com/bochs-emu/Bochs)
-1. [https://github.com/yrp604/bochscpu](https://github.com/yrp604/bochscpu)
-1. [https://github.com/0vercl0k/wtf](https://github.com/0vercl0k/wtf)
-1. [https://github.com/0vercl0k/kdmp-parser](https://github.com/0vercl0k/kdmp-parser)
-1. [https://github.com/0vercl0k/udmp-parser](https://github.com/0vercl0k/udmp-parser)
-1. [https://github.com/googleprojectzero/bochspwn](https://github.com/googleprojectzero/bochspwn)
-1. [https://github.com/googleprojectzero/bochspwn-reloaded](https://github.com/googleprojectzero/bochspwn-reloaded)
+1. {{ github(user="bochs-emu/Bochs") }}
+1. {{ github(user="yrp604/bochscpu") }}
+1. {{ github(user="0vercl0k/wtf") }}
+1. {{ github(user="0vercl0k/kdmp-parser") }}
+1. {{ github(user="0vercl0k/udmp-parser") }}
+1. {{ github(user="googleprojectzero/bochspwn") }}
+1. {{ github(user="googleprojectzero/bochspwn-reloaded") }}

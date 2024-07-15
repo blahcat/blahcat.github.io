@@ -1,0 +1,183 @@
+{% import "macros/page.html" as page_macros %}
+
+{% extends "base.html" %}
+
+{% block title %}
+  {{ page.title }}
+{% endblock title %}
+
+{% block header_meta %}
+    <!-- Open Graph -->
+    <meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="BlahCats" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:type" content="blog" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:title" content="{{ page.title }}" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:description"
+      {% if page.summary %}
+      content="{{ page.summary }}"
+      {% else %}
+      content="{{ page.title }} - by {{ page.authors | join(sep=", ")}}"
+      {% endif %}
+    />
+    <meta prefix="og: http://ogp.me/ns#" property="og:locale" content="en_US" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:url" content="{{ get_url(path=page.path) }}" />
+    <meta prefix="og: http://ogp.me/ns#" property="og:image"
+      {% if page.extra.header_img %}
+      content="{{ get_url(path=page.extra.header_img)}}"
+      {% else %}
+      content="{{ get_url(path=config.extra.clean_default_bg_cover)}}"
+      {% endif %}
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ctf_blahcat">
+    <meta name="twitter:title" content="BlahCats">
+    <meta name="twitter:description"
+      {% if page.summary %}
+      content="{{ page.summary }}"
+      {% else %}
+      content="{{ page.title }} - by {{ page.authors | join(sep=", ")}}"
+      {% endif %}
+    />
+    <meta name="twitter:url" content="{{ get_url(path=page.path) }}" />
+    <meta name="twitter:image:src"
+      {% if page.extra.header_img %}
+      content="{{ get_url(path=page.extra.header_img)}}"
+      {% else %}
+      content="{{ get_url(path=config.extra.clean_default_bg_cover)}}"
+      {% endif %}
+    />
+
+    <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Website",
+      "name": " BlahCats",
+      "url" : "{{ get_url(path=page.path) }}",
+      {% if page.extra.header_img %}
+      "image": {{ get_url(path=page.extra.header_img)}}",
+      {% else %}
+      "image": {{ get_url(path=config.extra.clean_default_bg_cover)}}",
+      {% endif %}
+      {% if page.summary %}
+      "description": {{ page.summary }}",
+      {% else %}
+      "description": {{ page.title }} - by {{ page.authors | join(sep=", ")}}",
+      {% endif %}
+    }
+    </script>
+{% endblock header_meta %}
+
+{% block header %}
+<!-- Page Header -->
+<header class="masthead"
+  {% if page.extra.header_img %}
+  style="background-image: url('{{ get_url(path=page.extra.header_img)}}')"
+  {% else %}
+  style="background-image: url('{{ get_url(path=config.extra.clean_default_bg_cover)}}')"
+  {% endif %}
+  >
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-heading">
+          {{ page_macros::page_header(page=page) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+{% endblock header %}
+
+{% block content %}
+<!-- Post Content -->
+<article>
+  <article class="post">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          {{ page.content | safe }}
+
+          <aside class="post-tags">
+          {% if page.taxonomies.categories %}
+            <p >Categories:
+              {% for category in page.taxonomies.categories %}
+              <a href="{{ get_taxonomy_url(kind="categories", name=category) }}">#{{ category }}</a>
+              {% endfor %}
+            </p>
+          {% endif %}
+
+          {% if page.taxonomies.tags %}
+            <p>Tags:
+              {% for tag in page.taxonomies.tags %}
+              <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}">#{{ tag }}</a>
+              {% endfor %}
+            </p>
+          {% endif %}
+          </aside>
+
+          {% if page.extra.no_discuss and page.extra.no_discuss == true %}
+          {% else %}
+          <aside class="post-discussion">
+            Join the Discussion on
+              <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q={{ page.title }}" target="_blank">
+                <i class="fab fa-github fa-lg"></i>&nbsp;GitHub
+              </a>
+          </aside>
+          {% endif %}
+
+          <aside class="post-nav">
+            <div class="container">
+              <div class="row">
+                <!-- Next post -->
+                <div class="col">
+                  {% if page.lower %}
+                  <b>Next:</b><br>
+                  <a class="post-nav-prev" href="{{ page.lower.permalink }}">
+                    <section class="post-nav-teaser">
+                      <b class="post-nav-title">{{page.lower.title}}</b>
+                      <p class="post-nav-excerpt">
+                        {% if page.lower.summary %}
+                        {{ page.lower.summary | safe }}
+                        {% else %}
+                        {{ page.lower.content | safe | striptags | truncate(length=75) }}
+                        {% endif %}
+                      </p>
+                    </section>
+                  </a>
+                  {% endif %}
+                </div>
+                <!-- Previous post -->
+                <div class="col">
+                  {% if page.higher %}
+                  <b>Previous:</b><br>
+                  <a class="post-nav-next" href="{{ page.higher.permalink }}">
+                    <section class="post-nav-teaser">
+                      <b class="post-nav-title">{{page.higher.title}}</b>
+                      <p class="post-nav-excerpt">
+                        {% if page.higher.summary %}
+                        {{ page.higher.summary | safe }}
+                        {% else %}
+                        {{ page.higher.content | safe | striptags | truncate(length=75) }}
+                        {% endif %}
+                      </p>
+                    </section>
+                  </a>
+                  {% endif %}
+                </div>
+
+              </div>
+            </div>
+
+          </aside>
+      </div>
+    </div>
+  </article>
+</article>
+{% endblock content %}
+
+{% block extrascripts %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+<div class="mermaidTooltip" style="opacity: 0;"></div>
+{% endblock extrasripts %}

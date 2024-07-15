@@ -1,10 +1,16 @@
-date: 2018-01-07 00:00:00
-modified: 2018-01-07 00:00:00
-title: Building a Debian Stretch QEMU image for AARCH64
-author: hugsy
-category: tutorial
-tags: gef,qemu,aarch64
-cover: assets/images/qemu-img.png
++++
+title = "Building a Debian Stretch QEMU image for AARCH64"
+authors = ["hugsy"]
+date = 2018-01-07T00:00:00Z
+updated = 2018-01-07T00:00:00Z
+
+[taxonomies]
+categories = ["tutorial"]
+tags = ["gef","qemu","aarch64"]
+
+[extra]
+header_img = "/img/qemu-img.png"
++++
 
 ## Introduction
 
@@ -16,8 +22,7 @@ If you're just interested in downloading the ready-to-use AARCH64 image, just go
 
 ## Pre-requisite
 
-Just like [we did earlier in the former post](), we will proceed with the Debian
-Net Installer, so you will require:
+Just like [we did earlier in the former post](https://blahcat.github.io/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html), we will proceed with the Debian Net Installer, so you will require:
 
 - an Internet connection
 - a recent QEMU (generally `{apt,dnf} install qemu` will suffice)
@@ -42,7 +47,9 @@ $ qemu-img create -f qcow2 disk.qcow2 20G
 
 ## Installation steps
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> since most steps are similar with the ones described in the post before, I'll simply show the commands I've used so they can be copy/pasted for reproduction.</div>
+{% note() %}
+since most steps are similar with the ones described in the post before, I'll simply show the commands I've used so they can be copy/pasted for reproduction.
+{% end %}
 
 Start with running the installer (with 2 vCPUs and 1GB Ram):
 
@@ -60,15 +67,15 @@ $ qemu-system-aarch64 -smp 2 -M virt -cpu cortex-a57 -m 1G \
 ```
 
 
-![1.debian.installer.png](https://i.imgur.com/PAExOmJ.png)
+{{ img(src="https://i.imgur.com/PAExOmJ.png" title="1.debian.installer.png") }}
 
 Then, go grab a coffee while the installer does its magic:
 
-![2.debian.installer.png](https://i.imgur.com/1Mgoscl.png)
+{{ img(src="https://i.imgur.com/1Mgoscl.png" title="2.debian.installer.png") }}
 
 And finally:
 
-![3.debian.installer.png](https://i.imgur.com/IfvQpTC.png)
+{{ img(src="https://i.imgur.com/IfvQpTC.png" title="3.debian.installer.png") }}
 
 
 Now we must shutdown the VM, and extract the initrd and kernel from the image, as follow:
@@ -104,7 +111,7 @@ $ qemu-system-aarch64 -smp 2 -M virt -cpu cortex-a57 -m 1G \
 
 And that's it!
 
-![4.debian.installer.png](https://i.imgur.com/519SOdy.png)
+{{ img(src="https://i.imgur.com/519SOdy.png" title="4.debian.installer.png") }}
 
 The ready-to-use image (with gcc, gdb, gef, etc.) is available [here](https://mega.nz/#F!oMoVzQaJ!iS73iiQQ3t_6HuE-XpnyaA).
 

@@ -1,10 +1,16 @@
-date: 2020-03-09 00:00:00
-modified: 2020-03-09 00:00:00
-title: An unexpected logic bug on Win32k
-author: hugsy
-category: research
-tags: windows,kernel,logic,bug,win32k
-cover: assets/images/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png
++++
+title = "An unexpected logic bug on Win32k"
+authors = ["hugsy"]
+date = 2020-03-09T00:00:00Z
+updated = 2020-03-09T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows","kernel","logic","bug,win32k"]
+
+[extra]
+header_img = "/img/CDA9D98DF912DE08CB61AD0A3A148723A37BC3F3.png"
++++
 
 ## The short version
 
@@ -20,20 +26,20 @@ int WinMain(HINSTANCE h, HINSTANCE ins, LPSTR cmd, int nb)
 
 Just compile, run (here on a build 19569.1000 x64) and enjoy:
 
-![bsod](https://i.imgur.com/DRxULeh.png)
+{{ img(src="https://i.imgur.com/DRxULeh.png" title="bsod") }}
 
 
 ## The less short version
 
-Reversing `Win32k.sys` driver has been my hobby lately mostly to understand it (finally) seriously - if there is such a thing. This is a really small funny logic bug I encountered while reversing it, which I don't feel too bad disclosing since there is [no security exploitability](https://www.microsoft.com/en-us/msrc/windows-security-servicing-criteria){:target="_blank"} (simply annoying your sysadmin).
+Reversing `Win32k.sys` driver has been my hobby lately mostly to understand it (finally) seriously - if there is such a thing. This is a really small funny logic bug I encountered while reversing it, which I don't feel too bad disclosing since there is [no security exploitability](https://www.microsoft.com/en-us/msrc/windows-security-servicing-criteria) (simply annoying your sysadmin).
 
 
 ### The juicy part
 
-The legacy function [EndTask](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-endtask){:target="_blank"} can be used to forcefully close the specific window whose handle is passed as argument, and free all associated resources. Although deprecated according to the MSDN, it is still callable even on the latest Windows versions.
+The legacy function [EndTask](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-endtask) can be used to forcefully close the specific window whose handle is passed as argument, and free all associated resources. Although deprecated according to the MSDN, it is still callable even on the latest Windows versions.
 
-The function `user32!EndTask()` is merely a wrapper designed to forward some specific messages to the [CSRSS](https://en.wikipedia.org/wiki/Client/Server_Runtime_Subsystem){:target="_blank"} via an ALPC, using the exported function
-`ntdll!CsrClientCallServer` with the ApiNumber 0x30401. Easily enough, the function takes the handle to the window to shut down. The function operates with the thread's token, and is unprivileged. Starting playing around, I remembered that `GetDesktopWindow()` will return a valid handle to the desktop window, but has [many interesting properties](https://devblogs.microsoft.com/oldnewthing/20040224-00/?p=40493){:target="_blank"} including that that it is owned by `csrss.exe`. That can be quickly demonstrated using the following code:
+The function `user32!EndTask()` is merely a wrapper designed to forward some specific messages to the [CSRSS](https://en.wikipedia.org/wiki/Client/Server_Runtime_Subsystem) via an ALPC, using the exported function
+`ntdll!CsrClientCallServer` with the ApiNumber 0x30401. Easily enough, the function takes the handle to the window to shut down. The function operates with the thread's token, and is unprivileged. Starting playing around, I remembered that `GetDesktopWindow()` will return a valid handle to the desktop window, but has [many interesting properties](https://devblogs.microsoft.com/oldnewthing/20040224-00/?p=40493) including that that it is owned by `csrss.exe`. That can be quickly demonstrated using the following code:
 
 ```c
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -49,10 +55,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 ```
 which will output the PID of CSRSS
 
-![finding_csrss](https://i.imgur.com/Q4XsJZP.png)
+{{ img(src="https://i.imgur.com/Q4XsJZP.png" title="finding_csrss") }}
 
 
-In turn, CSRSS will consume that message and call `winsrvext!SrvEndTask()` then `winsrvext!EndTask()`. In this function, in order to determine the process to terminate `csrss` will invoke `GetWindowThreadProcessId()` and will use the found process id value to look into the [`CSR_PROCESS`](http://www.geoffchappell.com/studies/windows/win32/csrsrv/api/process/process.htm){:target="_blank"} linked
+In turn, CSRSS will consume that message and call `winsrvext!SrvEndTask()` then `winsrvext!EndTask()`. In this function, in order to determine the process to terminate `csrss` will invoke `GetWindowThreadProcessId()` and will use the found process id value to look into the [`CSR_PROCESS`](http://www.geoffchappell.com/studies/windows/win32/csrsrv/api/process/process.htm) linked
 list (via `csrsrv!CsrRootProcess`), and find the `CSR_PROCESS` structure associated to such PID. From `winsrvext.dll`:
 
 ```asm
@@ -70,7 +76,7 @@ _EndTask+AF                   call    cs:__imp_GetWindowThreadProcessId
 And therein lied the bug: as shown above with the small C snippet, the owner of `GetDesktopWindow()` is `csrss` itself, therefore the lookup will return the `CSR_PROCESS` structure of `CSRSS` (which happens to be the first entry in the `CsrRootProcess` linked list). Finally, `winsrvext!EndTask()` will proceed to call `ntdll!NtTerminateProcess()` passing the handle to the
 process `CSRSS`, which has the value `(HANDLE)-1` (i.e. `GetCurrentProcess()`). WinDbg can be used to confirm that behavior:
 
-```
+```txt
 0: kd> dps poi( csrsrv!CsrRootProcess )
 00000218`7d004550  00000000`00000c14 <- CSR_PROCESS.ClientId
 00000218`7d004558  00000000`00000c18
@@ -89,7 +95,7 @@ process `CSRSS`, which has the value `(HANDLE)-1` (i.e. `GetCurrentProcess()`). 
 
 Therefore, this will make `CSRSS` killing itself when invoking calling the syscall `nt!NtTerminateProcess(GetCurrentProcess(), 0 )`. As a critical process, killing CSRSS will immediately result in a BSoD, which BugCheck clearly shows. Also note that this crash can be triggered by any user even with any privilege. In WinDbg the faulting stack trace of our BSoD retraces exactly everything we show:
 
-```
+```txt
 CRITICAL_PROCESS_DIED (ef)
         A critical system process died
 [...]

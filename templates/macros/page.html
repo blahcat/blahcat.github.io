@@ -1,0 +1,32 @@
+{% macro page_title(page) %}
+<a href="{{ page.permalink }}">
+    <h2 class="page-title">{{ page.title }}</h2>
+</a>
+<p class="page-meta">
+    Published by <b>{{page.authors | join(sep=", ")}}</b>
+    {% if page.date %}
+    , on {{ page.date | date(format="%e %B %Y")}}
+    {% endif %}
+    {% if page.taxonomies.categories %}
+    , under <i>{{ page.taxonomies.categories | join(sep=", ") }}</i>
+    {% endif %}
+</p>
+{% endmacro page_title %}
+
+{% macro page_header(page) %}
+<h1>{{ page.title }}</h1>
+<span class="meta">
+    <b>
+        •
+        {% for author in page.authors %}
+        <a href="/author/{{author}}">{{author}}</a> •
+        {% endfor %}
+    </b>
+    {% if page.date %}
+    {{ page.date | date(format="%e %B %Y")}}
+    {% endif %}
+    <br>
+    <br>
+    <i>Reading time: {{ page.reading_time }} min</i>
+</span>
+{% endmacro page_header %}

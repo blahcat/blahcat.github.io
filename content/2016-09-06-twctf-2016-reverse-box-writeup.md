@@ -1,9 +1,13 @@
-date: 2016-09-06 00:00:00
-modified: 2016-09-06 00:00:00
-title: TWCTF 2016 - reverse_box writeup
-author: hugsy
-tags: twctf-2016,reverse,binary-ninja,gef,unicorn-engine
-category: ctf
++++
+title = "TWCTF 2016 - reverse_box writeup"
+authors = ["hugsy"]
+date = 2016-09-06T00:00:00Z
+updated = 2016-09-06T00:00:00Z
+
+[taxonomies]
+categories = ["ctf"]
+tags = ["twctf-2016","reverse","binary-ninja","gef","unicorn-engine"]
++++
 
 The `reverse_box` challenge of TWCTF 2016 was a warmup challenge (only 50
 points), not really hard. There
@@ -15,7 +19,7 @@ minutes. So I figured I could throw in my 50c and write this post.
 
 ### Info ###
 
-The vulnerable file (sha1: 1e11da1636e4a6b71683de5c23634b98827d3b3d) was given with the description:
+The vulnerable file (sha1: `1e11da1636e4a6b71683de5c23634b98827d3b3d`) was given with the description:
 
 ```bash
 $ ./reverse_box ${FLAG}
@@ -34,7 +38,7 @@ $ file ./reverse_box
 Using [Binary-Ninja](https://binary.ninja) disassembler, we can see that the
 `main` function is not doing much, but something like
 
-![binja-1](https://i.imgur.com/6B6g3Du.png)
+{{ img(src="https://i.imgur.com/6B6g3Du.png" title="binja-1") }}
 
 ```c
 fill_buffer(buffer[0x100]);
@@ -49,7 +53,7 @@ permutations and rotations on this buffer. This means that there is a finite
 number (exactly 256) of possible configurations for the buffer used to generate
 the hash.
 
-![binja-2](https://i.imgur.com/oPlPALo.png)
+{{ img(src="https://i.imgur.com/oPlPALo.png" title="binja-2") }}
 
 Since I was feeling lazy and didn't want to reverse the whole thing, I decided to
 use my tool [`gef`](https://github.com/hugsy/gef.git) and

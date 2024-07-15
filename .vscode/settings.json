@@ -1,0 +1,5 @@
+{
+    "files.associations": {
+        "themes/*/templates/*.html": "jinja-html"
+    },
+}

@@ -1,17 +1,23 @@
-date: 2017-01-24 00:00:00
-modified: 2017-01-24 00:00:00
-title: ARMPWN redux: canary reloaded
-author: hugsy
-tags: linux,pwn,arm,ssp,armpwn
-header-img: "img/canary-header.png"
-category: ctf
++++
+title = "ARMPWN redux: canary reloaded"
+authors = ["hugsy"]
+date = 2017-01-24T00:00:00Z
+updated = 2017-01-24T00:00:00Z
+
+[taxonomies]
+tags = ["linux","pwn","arm","ssp","armpwn"]
+categories = ["ctf"]
+
+[extra]
+header_img = "img/canary-header.png"
++++
 
 >
 > __TL;DR__: It is possible to defeat stack canary protection when a binary is vulnerable to
 > arbitrary file read.
 >
 
-## Intro ##
+# Intro
 
 First of, Happy New Year 2017 ✌
 
@@ -27,8 +33,8 @@ the `procfs` structure.
 All the details regarding the following attack on the canary are explained in
 this blog post, so I will assume that you are familiar with it. If you're not:
 
-  * the full article is [here](https://www.elttam.com.au/blog/playing-with-canaries){:target="_blank"}
-  * the code repository is [there](https://github.com/elttam/canary-fun){:target="_blank"}
+  * the full article is [here](https://www.elttam.com.au/blog/playing-with-canaries)
+  * the code repository is [there](https://github.com/elttam/canary-fun)
 
 In the article, I imagined the attack scenario would apply perfectly well to a
 Web or FTP server, and would occur following those steps:
@@ -36,7 +42,7 @@ Web or FTP server, and would occur following those steps:
   1. dump `/proc/self/auxv` to get the `AT_RANDOM` location
   2. read `/proc/self/mem` and force an `lseek` access to reach the location found
      above via
-     the [HTTP header Range](https://tools.ietf.org/html/rfc7233#page-8){:target="_blank"} (for
+     the [HTTP header Range](https://tools.ietf.org/html/rfc7233#page-8) (for
      instance `Range: bytes=<0xAT_RANDOM_LOCATION>-<0xAT_RANDOM_LOCATION+16>`)
   3. Truncate the received buffer to `sizeof(register)`
   4. Nullify the last byte (`result &= ~0xff`)
@@ -44,21 +50,21 @@ Web or FTP server, and would occur following those steps:
 That was the theory, which made perfect sense, but I wanted a practice
 case.
 
-Earlier this year, I [had some fun with ARMPWN](/posts/2016/06/13/armpwn-challenge-write-up.html){:target="_blank"}, a vulnerable web server
-created by  <a class="fa fa-twitter" href="https://twitter.com/5aelo" target="_blank"> @5aelo</a> to practice
+Earlier this year, I [had some fun with ARMPWN](/posts/2016/06/13/armpwn-challenge-write-up.html), a vulnerable web server
+created by  {{ twitter(user="5aelo") }} to practice
 exploitation on ARM, so I have decided to use it for a practical, yet very
 realistic exploit case.
 
 You can download:
 
-  - [the new websrv.c here](https://gist.github.com/00d74ecac86297efc6772e415f307176){:target="_blank"}
-  - [or simply the patch here](https://gist.github.com/c2dbc3e3c11836dcebf53a2189f35976){:target="_blank"}
+  - [the new websrv.c here](https://gist.github.com/00d74ecac86297efc6772e415f307176)
+  - [or simply the patch here](https://gist.github.com/c2dbc3e3c11836dcebf53a2189f35976)
 
 
 ## Patch analysis
 
 This cheap patch provides to the "new" `websrv` the (pseudo-)capability to
-[parse the HTTP Range header](https://gist.github.com/hugsy/00d74ecac86297efc6772e415f307176#file-websrv-c-L181-L201){:target="_blank"}
+[parse the HTTP Range header](https://gist.github.com/hugsy/00d74ecac86297efc6772e415f307176#file-websrv-c-L181-L201)
 provided by the client. This is basically how modern Web servers (Apache, nginx)
 treat this header.
 
@@ -95,7 +101,7 @@ Vector.
 This approach is a lot more stable and stealthier than canary brute-forcing,
 since we don't rely on any memory corruption/process crash to determine the
 valid bytes of the canary
-[as we did before](/2016/06/12/armpwn-challenge#leaking-the-canary){:target="_blank"}.
+[as we did before](/2016/06/12/armpwn-challenge#leaking-the-canary).
 
 
 ### Find AT_RANDOM from the Auxiliary Vector
@@ -135,17 +141,17 @@ m+= "Range: bytes={:d}-{:d}\r\n\r\n".format(at_random_address,at_random_address+
 s.send(m)
 ```
 
-
-<div markdown="span" class="alert-warning"><i class="fa fa-info-circle">&nbsp;Warning:</i> `yama/ptrace_scope` must be set to 0 to be able to read the process</div>
+{% note(type="warning") %}
+`yama/ptrace_scope` must be set to 0 to be able to read the process
 memory.
-
+{% end %}
 
 ### Fire!
 
 The final exploitation script which combines all the steps described above can
 be found [here](https://gist.github.com/hugsy/a462b398721bfb7e6bbd678b6d0e852b).
 
-```
+```bash
 $ python armpwn_leak_canary.py
 [+] Connected to 'rpi2-1:80'
 [+] Leaking AUVX
@@ -156,7 +162,7 @@ $ python armpwn_leak_canary.py
 
 To be we fetched the correct value for the canary of the remote process, we can use [this script](https://github.com/elttam/canary-fun/blob/master/read_canary_from_pid.py) locally to compare the values for the canary:
 
-![image_alt](https://i.imgur.com/IWpuMIy.png)
+{{ img(src="https://i.imgur.com/IWpuMIy.png" title="image_alt") }}
 
 
 

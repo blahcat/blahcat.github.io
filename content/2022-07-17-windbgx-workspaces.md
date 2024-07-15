@@ -1,9 +1,13 @@
-date: 2022-07-17 00:00:00
-modified: 2022-07-17 00:00:00
-title: WinDbgX undocumented workspace options
-author: hugsy
-category: minis
-tags: windows, windbg
++++
+title = "WinDbgX undocumented workspace options"
+authors = ["hugsy"]
+date = 2022-07-17T00:00:00Z
+updated = 2022-07-17T00:00:00Z
+
+[taxonomies]
+categories = ["minis"]
+tags = ["windows", "windbg"]
++++
 
 How to use WinDbgX workspaces to make debugging even easier.
 
@@ -80,13 +84,13 @@ Here with `CryptSvc`. Also make the border red so we can find the window easily!
     </TargetOptions>
 </TargetConfig>
 ```
-![image](https://user-images.githubusercontent.com/590234/179410823-7b10187c-cd85-46cc-a8c5-f44ff61a5db5.png)
+{{ img(src="https://user-images.githubusercontent.com/590234/179410823-7b10187c-cd85-46cc-a8c5-f44ff61a5db5.png" title="image") }}
 
 ### Setup a ARM64 Qemu debugging profile
 
 [Using EXDI](https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/configuring-the-exdi-debugger-transport), and the provided `ExdiGdbSrv.dll` (in `C:\Program Files\WindowsApps\Microsoft.WinDbg_1.2206.19001.0_x64__8wekyb3d8bbwe\amd64\ExdiGdbSrv.dll`)
 
-```
+```bat
 regsvr32 ExdiGdbSrv.dll
 ```
 

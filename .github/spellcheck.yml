@@ -8,6 +8,20 @@ matrix:
     - .github/wordlist.txt
     encoding: utf-8
   pipeline:
+  - pyspelling.filters.context:
+      context_visible_first: true
+      escapes: \\[\\`~]
+      delimiters:
+      # Ignore anything in {{ }}
+      - open: '(?s)(?P<open> *\{{2})'
+        close: '^(?P=open)$'
+      - open: '(?P<open>\}{2})'
+        close: '(?P=open)'
+      # Ignore frontmatter (+++ / +++)
+      - open: '(?s)^(?P<open> *\+{3})$'
+        close: '^(?P=open)$'
+      - open: '(?P<open>\+{3})$'
+        close: '(?P=open)'
   - pyspelling.filters.markdown:
       markdown_extensions:
       - pymdownx.superfences

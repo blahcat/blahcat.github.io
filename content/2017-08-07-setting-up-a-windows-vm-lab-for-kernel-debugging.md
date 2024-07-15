@@ -1,10 +1,16 @@
-date: 2017-08-07 00:00:00
-modified: 2017-08-07 00:00:00
-title: Setting up a Windows VM lab for kernel debugging
-tags: windows,kernel,debug,virtualbox
-author: hugsy
-cover: assets/images/win-kernel-debug/win8-setup-kernel-mode.png
-category: tutorial
++++
+title = "Setting up a Windows VM lab for kernel debugging"
+authors = ["hugsy"]
+date = 2017-08-07T00:00:00Z
+updated = 2017-08-07T00:00:00Z
+
+[taxonomies]
+categories = ["tutorial"]
+tags = ["windows","kernel","debug","virtualbox"]
+
+[extra]
+header_img = "/img/win-kernel-debug/win8-setup-kernel-mode.png"
++++
 
 This is the first on a series of posts on Windows kernel debugging and
 exploitation.
@@ -56,7 +62,7 @@ VirtualBox to do the following:
     pipe/socket" is **unchecked**.
 
 
-![image_alt](/assets/images/win-kernel-debug/dbg-uart-settings.png)
+{{ img(src="/img/win-kernel-debug/dbg-uart-settings.png" title="image_alt") }}
 
 
   * in the "Network" tab, on top of the the default NAT-ed network created by
@@ -64,14 +70,14 @@ VirtualBox to do the following:
     existing interface on the host (for example `vboxnet0`).
 
 
-![image_alt](/assets/images/win-kernel-debug/dbg-network-settings.png)
+{{ img(src="/img/win-kernel-debug/dbg-network-settings.png" title="image_alt") }}
 
 
 Now the debugger is ready, you need to install WinDBG as the kernel debugger. A
 quick way, is to use [`Chocolatey`](https://chocolatey.org/) in an administrator prompt to install it
 as such:
 
-```
+```ps1
 C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 <chocolatey is being installed...>
 C:\> choco install -y --force windbg
@@ -95,29 +101,30 @@ To enable it, start the Windows 7 debuggee VM, open a `cmd.exe` as
 Administrator, and add another entry to the boot loader
 using `bcdedit` utility:
 
-```
+```ps1
 C:\> bcdedit /copy {current} /d "Windows 7 with kernel debug via COM"
 ```
 
 Then enable debug mode on new entry UUID:
-```
+
+```ps1
 C:\> bcdedit /debug {UUID-RETURNED-BY-FORMER-COMMAND} on
 ```
 
-![image_alt](/assets/images/win-kernel-debug/win7-bcdedit-enable-debug.png)
+{{ img(src="/img/win-kernel-debug/win7-bcdedit-enable-debug.png" title="image_alt") }}
 
 Now instruct Windows serial communication as debugging medium, and use the
 "fastest" baud rate (i.e 115200 symbols/sec). Since we'll only use serial
 debugging for this VM, we can use the `bcdedit /dbgsettings` global switch.
 
-```
+```ps1
 C:\> bcdedit /dbgsettings serial debugport:1 baud rate:115200
 ```
 
 *Note*: if we wanted to set debug settings specific to one entry of the boot
 loader, we would've used `bcdedit /set` instead. For instance:
 
-```
+```ps1
 C:\> bcdedit /set {UUID-RETURNED-BY-FORMER-COMMAND} debugtype serial
 ```
 
@@ -127,7 +134,7 @@ Now, shutdown the VM and go to its settings on VirtualBox (**Machine** ->
 Pipe` as Port Mode. Last provide a path to file in the `Path/Address` field, for
 example `/tmp/win7-kd-pipe`.
 
-![image_alt](/assets/images/win-kernel-debug/win7-vbox-settings.png)
+{{ img(src="/img/win-kernel-debug/win7-vbox-settings.png" title="image_alt") }}
 
 The tickbox `Connect to existing pipe/socket` means that the debuggee will
 always have to be started **after** the debugger VM, or VirtualBox will throw an
@@ -141,11 +148,11 @@ error.
 Start the debugger VM first and prepare WinDBG for kernel-mode debugging
 (Ctrl-K) by selecting COM as debug vector:
 
-![image_alt](/assets/images/win-kernel-debug/win7-windbg-option.png)
+{{ img(src="/img/win-kernel-debug/win7-windbg-option.png" title="image_alt") }}
 
 WinDBG will then wait for communications on COM1.
 
-```
+```ps1
 Microsoft (R) Windows Debugger Version 6.3.9600.17298 X86
 Copyright (c) Microsoft Corporation. All rights reserved.
 
@@ -162,12 +169,12 @@ Deferred                                       srv*c:\syms*http://msdl.microsoft
 Start the debuggee, and when the boot loader menu shows up, select the entry
 named `Windows 7 with kernel debug via COM`.
 
-![image_alt](/assets/images/win-kernel-debug/win7-boot-manager.png)
+{{ img(src="/img/win-kernel-debug/win7-boot-manager.png" title="image_alt") }}
 
 As you see Windows already indicates that this entry will be in debug mode. And
 when you press Enter, the debugger VM will be attached to the debuggee.
 
-![image_alt](/assets/images/win-kernel-debug/win7-debug-session.png)
+{{ img(src="/img/win-kernel-debug/win7-debug-session.png" title="image_alt") }}
 
 You're now debugging the Windows 7 x86 VM kernel!! But as you'll see, Serial
 Port debugging will drastically slow down all operations on the debuggee. This
@@ -199,7 +206,7 @@ System -> Advanced system settings -> on the Hardware tab). Expand "Network
 adapters" and select the 2nd device's properties menu. On the new window, the
 "Location" field will be required to assignate this interface for debugging:
 
-![image_alt](/assets/images/win-kernel-debug/win8-network-controller-properties.png)
+{{ img(src="/img/win-kernel-debug/win8-network-controller-properties.png" title="image_alt") }}
 
 This indicates us the bus parameters we will need to provide `bcdedit` later on,
 with the format `<BusNumber>:<DeviceNumber>:<FunctionNumber>` (in this case
@@ -209,12 +216,12 @@ Now open an administrator prompt and use `bcdedit` utility to create a
 new entry to the boot manager like we did on Windows 7, and enable the debug
 mode for it. But unlike Windows 7, now we have to setup the network properties:
 
-```
+```ps1
 C:\> bcdedit /dbgsettings net hostip:ip.of.debugger.vm port:50000 key:Kernel.Debugging.Is.Fun
 C:\> bcdedit /set {dbgsettings} busparams <BusNumber>.<DeviceNumber>.<FunctionNumber>
 ```
 
-![image_alt](/assets/images/win-kernel-debug/win8-setup-kernel-mode.png)
+{{ img(src="/img/win-kernel-debug/win8-setup-kernel-mode.png" title="image_alt") }}
 
 ### Running the debugging session
 
@@ -224,7 +231,7 @@ Start the debugger VM first and prepare WinDBG for kernel-mode debugging
 (Ctrl-K) by selecting NET as debug vector, and set the Port and Key adequately.
 WinDBG will then be waiting for new connection:
 
-```
+```txt
 Microsoft (R) Windows Debugger Version 6.3.9600.17336 AMD64
 Copyright (c) Microsoft Corporation. All rights reserved.
 
@@ -238,13 +245,13 @@ Waiting to reconnect...
 Start the VM. When the boot loader menu shows up, select the one with the
 network kernel mode enabled
 
-![image_alt](/assets/images/win-kernel-debug/win8-boot-loader.png)
+{{ img(src="/img/win-kernel-debug/win8-boot-loader.png" title="image_alt") }}
 
 The debugger will show some activity immediately. Note that execution of the
 debuggee will not stop, so you may hit Ctrl-Break at any time to force an
 interruption:
 
-![image_alt](/assets/images/win-kernel-debug/win8-success.png)
+{{ img(src="/img/win-kernel-debug/win8-success.png" title="image_alt") }}
 
 
 In this post, we've presented 2 techniques for kernel debugging, depending on

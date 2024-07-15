@@ -1,9 +1,13 @@
-date: 2016-04-01 00:00:00
-modified: 2016-04-01 00:00:00
-title: HITB 2016 - Bakery write-up
-author: hugsy
-tags: pwn,hitb
-category: ctf
++++
+title = "HITB 2016 - Bakery write-up"
+authors = ["hugsy"]
+date = 2016-04-01T00:00:00Z
+updated = 2016-04-01T00:00:00Z
+
+[taxonomies]
+categories = ["ctf"]
+tags = ["pwn","hitb"]
++++
 
 I participated to [HITB Teaser CTF](https://ctftime.org/event/325/) only to have a bit of
 fun with there pwnable challenge(s) which I find usually fun and
@@ -34,7 +38,7 @@ It is a baking program, that allows to build your own recipe.
 
 After printing the available ingredients, the `main` function does this (at
 0x0400CBC)
-![image_alt](https://i.imgur.com/yrFucNx.png)
+{{ img(src="https://i.imgur.com/yrFucNx.png" title="image_alt") }}
 
 Which translates to the pseudo-code:
 ```c

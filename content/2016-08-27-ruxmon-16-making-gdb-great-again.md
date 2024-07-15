@@ -1,9 +1,13 @@
-title: Ruxmon 08/2016 - Making GDB great again
-date:   2016-08-27 11:52:34 +1100
-modified:   2016-08-27 11:52:34 +1100
-author: hugsy
-tags: ruxmon,gdb,python,gef
-category: talk
++++
+title = "Ruxmon 08/2016 - Making GDB great again"
+authors = ["hugsy"]
+date =   2016-08-27T11:52:34Z
+updated =   2016-08-27T11:52:34Z
+
+[taxonomies]
+categories = ["talk"]
+tags = ["ruxmon","gdb","python","gef"]
++++
 
 ### Ruxmon August 2016: Making GDB great again ###
 
@@ -13,6 +17,6 @@ I also gave demos of my tool [`gef`](https://github.com/hugsy/gef.git), an archi
 
 Find the [PDF slides here](http://christophe.alladoum.free.fr/public/ruxmon-08-16/ruxmon_2016-09_gdb_enhanced_features.pdf)
 
-And send me your insults/feedbacks on [gef new IRC channel](https://webchat.freenode.net/?channels=##gef)!
+And send me your insults/feedbacks on [gef new IRC channel](https://web.archive.org/web/20160303165817/https://webchat.freenode.net/?channels=##gef)!
 
-![trump-meme](https://i.imgur.com/jlkM0P6.jpg)
+{{ img(src="https://i.imgur.com/jlkM0P6.jpg" title="trump-meme") }}

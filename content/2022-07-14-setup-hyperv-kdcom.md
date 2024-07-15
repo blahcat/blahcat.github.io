@@ -1,9 +1,13 @@
-date: 2022-07-14 00:00:00
-modified: 2022-07-14 00:00:00
-title: Setup KDCOM for 2 Hyper-V VMs
-author: hugsy
-category: minis
-tags: windows, hyperv, kdcom
++++
+title = "Setup KDCOM for 2 Hyper-V VMs"
+authors = ["hugsy"]
+date = 2022-07-14T00:00:00Z
+updated = 2022-07-14T00:00:00Z
+
+[taxonomies]
+categories = ["minis"]
+tags = ["windows", "hyperv", "kdcom"]
++++
 
 How to use Hyper-V to debug using KdCOM from 2 VMs, one debugging the other.
 
@@ -30,6 +34,6 @@ Boot the debugger and make WinDbgX listen to that port
 windbgx -k com:pipe,port=\\.\com1,resets=0,reconnect
 ```
 
-Enjoy 
+Enjoy
 
-![image](https://user-images.githubusercontent.com/590234/179017302-76f5a1ca-acc3-48fb-a6d1-e7d13ba74a45.png)
+{{ img(src="https://user-images.githubusercontent.com/590234/179017302-76f5a1ca-acc3-48fb-a6d1-e7d13ba74a45.png" title="image") }}

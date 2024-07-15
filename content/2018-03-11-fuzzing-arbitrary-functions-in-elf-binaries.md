@@ -1,15 +1,21 @@
-date: 2018-03-11 00:00:00
-modified: 2018-03-11 00:00:00
-title: Fuzzing arbitrary functions in ELF binaries
-author: hugsy
-cover: assets/images/libfuzzer-lief/header.png
-category: research
-tags: fuzzing,elf,lief,libfuzzer,cve-2018-6789,exim
++++
+title = "Fuzzing arbitrary functions in ELF binaries"
+authors = ["hugsy"]
+date = 2018-03-11T00:00:00Z
+updated = 2018-03-11T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["fuzzing","elf","lief","libfuzzer","cve-2018-6789","exim"]
+
+[extra]
+header_img = "/img/libfuzzer-lief/header.png"
++++
 
 I decided to give a descent test to
 the [LIEF](https://lief-project.github.io/) project. Executable parsers are
-[not](https://github.com/eliben/pyelftools) [a new](https://github.com/erocarrera/pefile) [thing]() but
-that one picked my curiosity (just like most Quarkslab projects) because it
+not a new thing ([`pyelftools`](https://github.com/eliben/pyelftools), [`pefile`](https://github.com/erocarrera/pefile), etc...)
+but that one picked my curiosity (just like most Quarkslab projects) because it
 also provides dead simple instrumentation functions. To top it up, LIEF is easy
 to use and well documented, which is becoming a rare perk in the circus of
 infosec tools.
@@ -48,14 +54,14 @@ realized this technique was relevant to dig into, so I chose to put it to
 practice by trying to find real vulnerabilities.
 
 
-## Concrete example: finding CVE-2018-6789 ##
+# Concrete example: finding CVE-2018-6789
 
 What better way to illustrate this technique than with a concrete example: earlier this
-week, <a class="fa fa-twitter" href="https://twitter.com/mehqq_" target="_blank"> mehqq_</a> released [a great blog post about CVE-2018-6789](https://devco.re/blog/2018/03/06/exim-off-by-one-RCE-exploiting-CVE-2018-6789-en/) detailing the exploit steps for an off-by-one vulnerability she discovered in Exim. The issue was fixed in [cf3cd306062a08969c41a1cdd32c6855f1abecf1](https://github.com/Exim/exim/commit/cf3cd306062a08969c41a1cdd32c6855f1abecf1) and given the CVE 2018-6789.
+week, {{ twitter(user="mehqq_") }} released [a great blog post about CVE-2018-6789](https://devco.re/blog/2018/03/06/exim-off-by-one-RCE-exploiting-CVE-2018-6789-en/) detailing the exploit steps for an off-by-one vulnerability she discovered in Exim. The issue was fixed in [cf3cd306062a08969c41a1cdd32c6855f1abecf1](https://github.com/Exim/exim/commit/cf3cd306062a08969c41a1cdd32c6855f1abecf1) and given the CVE 2018-6789.
 
 [Exim](https://github.com/Exim/exim) is a MTA which once compiled is a standalone binary. So AFL would be of little help (network service), but it is a perfect practice case for LIEF + LibFuzzer.
 
-We must compile Exim as PIE (usually done with setting `-fPIC` in CFLAGS and `-pie` in `LDFLAGS`). But we also need the [address sanitizer]() since without them, off-by-one overflow in the heap may go unoticed.
+We must compile Exim as PIE (usually done with setting `-fPIC` in CFLAGS and `-pie` in `LDFLAGS`). But we also need the [address sanitizer](https://clang.llvm.org/docs/AddressSanitizer.html) since without them, off-by-one overflow in the heap may go unoticed.
 
 ### Compiling the target with ASAN & PIE ###
 
@@ -75,7 +81,9 @@ $ FULLECHO='' LFLAGS+="-L/usr/lib/llvm-6.0/lib/clang/6.0.0/lib/linux/ -lasan -pi
   LIBS+="-lasan -pie" make -e clean all
 ```
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i> in some cases, the use of ASAN fails to create the configuration file required</div>
+{% note() %}
+in some cases, the use of ASAN fails to create the configuration file required
+{% end %}
 for the compilation. So edit `$EXIM/src/scripts/Configure-config.h` shell script
 to avoid the premature ending:
 
@@ -93,7 +101,7 @@ index 75d366fc..a82a9c6a 100755
 # message. Ensure that a broken config.h gets deleted.
 ```
 
-The compilation will occur normally and once compiled we can use `checksec` from [pwntools]() on the binary and make
+The compilation will occur normally and once compiled we can use `checksec` from [pwntools](https://docs.pwntools.com/en/stable/) on the binary and make
 sure it's PIE and ASAN compatible:
 
 ```bash
@@ -110,7 +118,7 @@ $  checksec ./build-Linux-x86_64/exim
 ### Exporting the targeted functions ###
 
 From the write-up, the vulnerable function is `b64decode()` in `src/base64.c`
-whose [prototype](https://github.com/Exim/exim/blob/38e3d2dff7982736f1e6833e06d4aab4652f337a/src/src/base64.c#L152-L153){:target="_blank"} is:
+whose [prototype](https://github.com/Exim/exim/blob/38e3d2dff7982736f1e6833e06d4aab4652f337a/src/src/base64.c#L152-L153) is:
 
 ```c
 int b64decode(const uschar *code, uschar **ptr)
@@ -188,7 +196,7 @@ We can now use this skeleton to build a LibFuzzer-based fuzzer around this:
 
 Compile it, run it, and be amazed 😎 :
 
-```
+```bash
 $ clang-6.0 -DUSE_LIBFUZZER -O1 -g -fsanitize=fuzzer loader.cpp -no-pie -o fuzzer -ldl
 $ LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libasan.so.4.0.0 ./fuzzer
 INFO: Loaded 1 modules   (11 inline 8-bit counters): 11 [0x67d020, 0x67d02b),
@@ -203,16 +211,16 @@ INFO: A corpus is not provided, starting from an empty corpus
 We're running more than 1 million executions/second/core on the function
 `b64decode`, not bad eh?
 
-And in less than a 1 second, we get the heap overflow found by <a class="fa fa-twitter" href="https://twitter.com/mehqq_" target="_blank"> @mehqq_</a>, CVE-2018-6789:
+And in less than a 1 second, we get the heap overflow found by {{ twitter(user="mehqq_") }}, CVE-2018-6789:
 
-![image_alt](/assets/images/libfuzzer-lief/fuzz-result.png)
+{{ img(src="/img/libfuzzer-lief/fuzz-result.png" title="image_alt") }}
 
 >
-> **Note**: Earlier this week, I was notified by <a class="fa fa-twitter" href="https://twitter.com/mehqq_" target="_blank"> mehqq_</a> that this is OOB read is a different bug. I will post an update soon showcasing the actual bug instead. My bad for the confusion.
+> **Note**: Earlier this week, I was notified by {{ twitter(user="mehqq_") }} that this is OOB read is a different bug. I will post an update soon showcasing the actual bug instead. My bad for the confusion.
 >
 
 
-## Final words ##
+# Final words
 
 Although this technique is not as click-and-play like AFL since it requires a bit more work, it offers non-negligible pros:
 

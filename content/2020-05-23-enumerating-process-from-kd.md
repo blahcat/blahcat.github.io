@@ -1,9 +1,13 @@
-date: 2020-05-23 00:00:00
-modified: 2020-05-23 00:00:00
-title: Enumerating processes from KD
-author: hugsy
-category: minis
-tags: windows, kernel, process
++++
+title = "Enumerating processes from KD"
+authors = ["hugsy"]
+date = 2020-05-23T00:00:00Z
+updated = 2020-05-23T00:00:00Z
+
+[taxonomies]
+categories = ["minis"]
+tags = ["windows", "kernel", "process"]
++++
 
 
 This is tiny Post-It post to remind of different ways to enumerate processes from KD:

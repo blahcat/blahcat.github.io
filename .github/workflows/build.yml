@@ -20,10 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          submodules: true
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
           architecture: 'x64'
           cache: 'pip'
       - name: Build and publish the site
@@ -32,8 +33,6 @@ jobs:
           source ~/.bashrc
           git config --global user.name "hugsy"
           git config --global user.email "hugsy@users.noreply.github.com"
-          git clone https://github.com/hugsy/attila.git /tmp/themes/attila
-          pelican-themes --install /tmp/themes/attila
-          pelican content -o output -s pelicanconf.py
+          zola build -o output
           ghp-import output --no-jekyll --branch=gh-pages --message="Generated new content"
           git push --force origin gh-pages

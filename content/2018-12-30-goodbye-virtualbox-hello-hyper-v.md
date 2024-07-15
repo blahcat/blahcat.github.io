@@ -1,10 +1,16 @@
-date: 2018-12-30 00:00:00
-modified: 2018-12-30 00:00:00
-title: Goodbye VirtualBox, hello Hyper-V
-author: hugsy
-cover: assets/images/vbox-to-hyperv-header.png
-category: research
-tags: windows,,hyperv,,virtualbox,,cheatsheet
++++
+title = "Goodbye VirtualBox, hello Hyper-V"
+authors = ["hugsy"]
+date = 2018-12-30T00:00:00Z
+updated = 2018-12-30T00:00:00Z
+
+[taxonomies]
+categories = ["research"]
+tags = ["windows","hyperv","virtualbox","cheatsheet"]
+
+[extra]
+header_img = "/img/vbox-to-hyperv-header.png"
++++
 
 A few scrap notes about my migration from VirtualBox to Hyper-V (in case I attempt to do the same again in the future 😁)
 
@@ -47,7 +53,7 @@ $ sudo ./install.sh
 PS C:\Users\hugsy> Set-VM "Ubuntu 18.04 x64" -EnhancedSessionTransportType HvSocket
 ```
  4. Start the VM. When switching to the RDP session, Hyper-V Manager will prompt the desired resolution and show the XRDP prompt.
-    ![image_alt](https://github.com/Microsoft/linux-vm-tools/raw/master/wiki/media/xorglogin.PNG)
+    {{ img(src="https://github.com/Microsoft/linux-vm-tools/raw/master/wiki/media/xorglogin.PNG" title="image_alt") }}
  5. Login as usual and enjoy the enhanced mode.
 
 For Fedora/RedHat, it [may also be working](https://bugzilla.redhat.com/show_bug.cgi?id=1553453).
@@ -55,13 +61,13 @@ For Fedora/RedHat, it [may also be working](https://bugzilla.redhat.com/show_bug
 > Update (2019/04/28):
 > If you're using a different WM, you may also need to edit your `~/.xsession` to set proper WM value. For instance
 
-```text
+```txt
 env -u SESSION_MANAGER -u DBUS_SESSION_BUS_ADDRESS mate-session  # for mate (could be unity, xfce4-session, gnome3, etc.)
 ```
 
-<div markdown="span" class="alert-info"><i class="fa fa-info-circle">&nbsp;Note:</i><br>
+{% note() %}
 To switch back to the regular view, simply click on **View** → uncheck **Enhanced session**.
-</div>
+{% end %}
 
 
 ## Sharing folders
@@ -98,9 +104,9 @@ And this will conclude my pesky rant 😀
 
 Some links to conclude:
 
- - [https://github.com/Microsoft/linux-vm-tools](https://github.com/Microsoft/linux-vm-tools){:target="_blank"}
- - [https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/](https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/){:target="_blank"}
- - [https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v](https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v){:target="_blank"}
+ - [https://github.com/Microsoft/linux-vm-tools](https://github.com/Microsoft/linux-vm-tools)
+ - [https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/](https://blogs.technet.microsoft.com/virtualization/2018/02/28/sneak-peek-taking-a-spin-with-enhanced-linux-vms/)
+ - [https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v](https://nbsoftsolutions.com/blog/linux-virtualization-with-a-mounted-windows-share-on-client-hyper-v)
 
 
 Cheatsheet over...
