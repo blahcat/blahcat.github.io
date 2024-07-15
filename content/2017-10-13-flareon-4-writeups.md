@@ -294,8 +294,7 @@ use. This guessing game made me lose too much time. The hint was to use 2016 PE
 files from last year's FlareOn challenge.
 
 In the many folders of
-the [FlareOn3 archive](http://flare-on.com/files/Flare-On3_Challenges.zip)
-(pass: flare), we could find several PE files whose timestamps match perfectly
+the FlareOn3 Zip archive, we could find several PE files whose timestamps match perfectly
 with the ones we are looking for. All we need now is drop those files in the
 `flareon2016challenge` directory, and tweak `notepad.exe` to update its
 timestamp. After 4 executions we get the `key.bin` file properly filled:

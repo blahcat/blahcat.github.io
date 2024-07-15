@@ -17,6 +17,6 @@ I also gave demos of my tool [`gef`](https://github.com/hugsy/gef.git), an archi
 
 Find the [PDF slides here](http://christophe.alladoum.free.fr/public/ruxmon-08-16/ruxmon_2016-09_gdb_enhanced_features.pdf)
 
-And send me your insults/feedbacks on [gef new IRC channel](https://webchat.freenode.net/?channels=##gef)!
+And send me your insults/feedbacks on [gef new IRC channel](https://web.archive.org/web/20160303165817/https://webchat.freenode.net/?channels=##gef)!
 
 {{ img(src="https://i.imgur.com/jlkM0P6.jpg" title="trump-meme") }}
