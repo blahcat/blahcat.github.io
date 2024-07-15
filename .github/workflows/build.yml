@@ -27,9 +27,13 @@ jobs:
           python-version: '3.11'
           architecture: 'x64'
           cache: 'pip'
+      - name: Install Zola
+        uses: taiki-e/install-action@v2
+        with:
+          tool: zola@0.19.1
       - name: Build and publish the site
         run: |
-          pip install -r requirements.txt
+          python -m pip install --user -U ghp-import==2.1.0
           source ~/.bashrc
           git config --global user.name "hugsy"
           git config --global user.email "hugsy@users.noreply.github.com"
