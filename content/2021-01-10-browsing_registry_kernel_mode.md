@@ -518,7 +518,7 @@ Peace out ✌
  * [Enumerating Registry Hives - moyix](http://moyix.blogspot.com/2008/02/enumerating-registry-hives.html)
 
 
-[^0]: [RegistryExplorer.js](https://github.com/hugsy/windbg_js_scripts/blob/master/scripts/RegistryExplorer.js)
+[^0]: [RegistryExplorer.js](https://github.com/hugsy/windbg_js_scripts/blob/main/scripts/RegistryExplorer.js)
 [^1]: [Windows Kernel Internals NT Registry Implementation](https://web.archive.org/web/20220720121211/https://ivanlef0u.fr/repo/madchat/vxdevl/papers/winsys/wk_internals/registry.pdf)
 [^2]: [MSDN - Registry Hives](https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-hives)
 [^4]: [Dumping Windows Credentials](https://web.archive.org/web/20140127003901/https://www.securusglobal.com/community/2013/12/20/dumping-windows-credentials/) by {{ twitter(user="lanjelot") }}
