@@ -91,7 +91,7 @@ HRESULT hRes = NtQuerySystemInformation(
 ```
 
 If large enough the buffer `pBuffer` will be populated by the kernel by `N` entries of `SYSTEM_BIGPOOL_ENTRY` structured as follow:
-```text
+```txt
 0x00 NumberOfEntries
 
 Entry0
