@@ -3,6 +3,7 @@ title = "HITB 2016 - Bakery write-up"
 authors = ["hugsy"]
 date = 2016-04-01T00:00:00Z
 updated = 2016-04-01T00:00:00Z
+aliases = ["/posts/2016/04/01/hitb-teaser-2016-bakery.html"]
 
 [taxonomies]
 categories = ["ctf"]

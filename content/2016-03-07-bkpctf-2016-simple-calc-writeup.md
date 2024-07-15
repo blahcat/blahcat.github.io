@@ -3,6 +3,7 @@ title = "BKPCTF 2016 - Simple Calc"
 date =   2016-03-07T22:51:04Z
 updated =   2016-03-07T22:51:04Z
 authors = ["hugsy"]
+aliases = ["/posts/2016/03/07/bkpctf-2016-simple-calc-writeup.html"]
 
 [taxonomies]
 tags = ["pwn", "gef", "ida", "bkpctf-2016", "x86"]

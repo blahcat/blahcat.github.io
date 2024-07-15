@@ -3,6 +3,7 @@ title = "BKPCTF 2016 - Complex Calc"
 authors = ["hugsy"]
 date = 2016-03-08T00:00:00Z
 updated = 2016-03-08T00:00:00Z
+aliases = ["/posts/2016/03/08/bkpctf-2016-complex-calc.html"]
 
 [taxonomies]
 categories = ["ctf"]

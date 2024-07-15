@@ -3,6 +3,7 @@ title = "Insomni'Hack CTF 2017: bender_safer"
 authors = ["hugsy"]
 date = 2017-01-26T00:00:00Z
 updated = 2017-01-26T00:00:00Z
+aliases = ["/posts/2017/01/26/insomni-hack-ctf-2017-bender-safe.html"]
 
 [taxonomies]
 categories = ["ctf"]

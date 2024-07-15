@@ -3,6 +3,7 @@ title = "ARMPWN challenge write-up"
 authors = ["hugsy"]
 date = 2016-06-13T12:21:05Z
 updated = 2016-06-13T12:21:05Z
+aliases = ["/posts/2016/06/13/armpwn-challenge.html"]
 
 [taxonomies]
 categories = ["ctf", "research"]

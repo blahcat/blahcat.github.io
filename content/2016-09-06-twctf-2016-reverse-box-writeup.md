@@ -3,6 +3,7 @@ title = "TWCTF 2016 - reverse_box writeup"
 authors = ["hugsy"]
 date = 2016-09-06T00:00:00Z
 updated = 2016-09-06T00:00:00Z
+aliases = ["/posts/2016/09/06/twctf-2016-reverse-box-writeup.html"]
 
 [taxonomies]
 categories = ["ctf"]

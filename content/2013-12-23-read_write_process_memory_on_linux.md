@@ -3,6 +3,7 @@ title = "Using new syscalls for read/write arbitrary memory on Linux."
 authors = ["hugsy"]
 date = 2013-12-23T00:00:00Z
 updated = 2013-12-23T00:00:00Z
+aliases = ["/posts/2013/12/23/read-write-process-memory-on-linux.html"]
 
 [taxonomies]
 tags = ["linux", "kernel", "seccomp"]

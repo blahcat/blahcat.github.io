@@ -3,6 +3,7 @@ title = "Ruxmon 08/2016 - Making GDB great again"
 authors = ["hugsy"]
 date =   2016-08-27T11:52:34Z
 updated =   2016-08-27T11:52:34Z
+aliases = ["/posts/2016/08/27/ruxmon-16-making-gdb-great-again.html"]
 
 [taxonomies]
 categories = ["talk"]

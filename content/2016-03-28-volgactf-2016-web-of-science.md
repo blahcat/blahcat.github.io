@@ -3,6 +3,7 @@ title = "VolgaCTF 2016 - Web of Science"
 authors = ["hugsy"]
 date = 2016-03-28T00:00:00Z
 updated = 2016-03-28T00:00:00Z
+aliases = ["/posts/2016/03/28/volgactf-2016-web-of-science.html"]
 
 ["taxonomies"]
 tags = ["pwn","volgactf-2016","x86"]

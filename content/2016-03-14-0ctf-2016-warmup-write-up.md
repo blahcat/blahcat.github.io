@@ -3,6 +3,7 @@ title = "0ctf 2016 - Warmup write-up"
 authors = ["hugsy"]
 date = 2016-03-14T00:00:00Z
 updated = 2016-03-14T00:00:00Z
+aliases = ["/posts/2016/03/14/0ctf-2016-warmup-write-up.html"]
 
 [taxonomies]
 tags = ["pwn", "gef", "ida", "0ctf-2016", "x86"]

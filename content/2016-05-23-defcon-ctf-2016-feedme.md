@@ -3,6 +3,7 @@ title = "DEFCON CTF 2016 - feedme"
 authors = ["hugsy"]
 date = 2016-05-23T00:00:00Z
 updated = 2016-05-23T00:00:00Z
+aliases = ["/posts/2016/05/23/defcon-ctf-2016-feedme.html"]
 
 [taxonomies]
 categories = ["ctf"]
