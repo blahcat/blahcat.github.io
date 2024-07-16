@@ -3,6 +3,7 @@ title = "WinDbgX undocumented workspace options"
 authors = ["hugsy"]
 date = 2022-07-17T00:00:00Z
 updated = 2022-07-17T00:00:00Z
+aliases = ["/posts/2022/07/17/windbgx-undocumented-workspace-options.html"]
 
 [taxonomies]
 categories = ["minis"]

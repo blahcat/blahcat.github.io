@@ -3,6 +3,7 @@ title = "Quick visualization of a binary file"
 authors = ["hugsy"]
 date = 2018-12-02T00:00:00Z
 updated = 2018-12-02T00:00:00Z
+aliases = ["/posts/2018/12/02/quick-visualization-of-a-binary-file.html"]
 
 [taxonomies]
 categories = ["minis"]

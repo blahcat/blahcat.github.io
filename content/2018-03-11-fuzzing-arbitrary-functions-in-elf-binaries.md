@@ -3,6 +3,7 @@ title = "Fuzzing arbitrary functions in ELF binaries"
 authors = ["hugsy"]
 date = 2018-03-11T00:00:00Z
 updated = 2018-03-11T00:00:00Z
+aliases = ["/posts/2018/03/11/fuzzing-arbitrary-functions-in-elf-binaries.html"]
 
 [taxonomies]
 categories = ["research"]

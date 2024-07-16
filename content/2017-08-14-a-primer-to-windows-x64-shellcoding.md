@@ -3,6 +3,7 @@ title = "A Primer to Windows x64 shellcoding"
 authors = ["hugsy"]
 date = 2017-08-14T00:00:00Z
 updated = 2017-08-14T00:00:00Z
+aliases = ["/posts/2017/08/14/a-primer-to-windows-x64-shellcoding.html"]
 
 [taxonomies]
 categories = ["tutorial"]

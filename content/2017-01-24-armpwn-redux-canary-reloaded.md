@@ -3,6 +3,7 @@ title = "ARMPWN redux: canary reloaded"
 authors = ["hugsy"]
 date = 2017-01-24T00:00:00Z
 updated = 2017-01-24T00:00:00Z
+aliases = ["/posts/2017/01/24/armpwn-redux-canary-reloaded.html"]
 
 [taxonomies]
 tags = ["linux","pwn","arm","ssp","armpwn"]

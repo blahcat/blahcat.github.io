@@ -3,6 +3,7 @@ title = "GEF at Black Hat Arsenal US 2017"
 authors = ["hugsy"]
 date = 2017-08-01T00:00:00Z
 updated = 2017-08-01T00:00:00Z
+aliases = ["/posts/2017/08/01/gef-at-black-hat-arsenal-us-2017.html"]
 
 [taxonomies]
 categories = ["talk"]

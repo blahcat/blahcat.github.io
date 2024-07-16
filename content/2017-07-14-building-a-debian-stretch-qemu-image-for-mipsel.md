@@ -3,6 +3,7 @@ title = "Building a Debian Stretch QEMU image for MIPSel"
 authors = ["hugsy"]
 date = 2017-07-14T00:00:00Z
 updated = 2017-07-14T00:00:00Z
+aliases = ["/posts/2017/07/14/building-a-debian-stretch-qemu-image-for-mipsel.html"]
 
 [taxonomies]
 tags = ["howto","qemu","mipsel","mips64el"]

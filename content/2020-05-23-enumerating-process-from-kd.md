@@ -3,6 +3,7 @@ title = "Enumerating processes from KD"
 authors = ["hugsy"]
 date = 2020-05-23T00:00:00Z
 updated = 2020-05-23T00:00:00Z
+aliases = ["/posts/2020/05/23/enumerating-processes-from-kd.html"]
 
 [taxonomies]
 categories = ["minis"]

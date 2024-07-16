@@ -3,6 +3,7 @@ title = "I feel lucky - or why I wrote a FreeBSD 1-day in one day"
 authors = ["hugsy"]
 date = 2013-06-20T00:00:00Z
 updated = 2013-06-20T00:00:00Z
+aliases = ["/posts/2013/06/20/i-feel-lucky.html"]
 
 [taxonomies]
 categories = ["research"]

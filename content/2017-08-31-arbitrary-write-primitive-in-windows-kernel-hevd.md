@@ -3,6 +3,7 @@ date = 2017-08-31T00:00:00Z
 updated = 2017-08-31T00:00:00Z
 title = "Arbitrary Write primitive in Windows kernel (HEVD)"
 authors = ["hugsy"]
+aliases = ["/posts/2017/08/31/arbitrary-write-primitive-in-windows-kernel-hevd.html"]
 
 [taxonomies]
 categories = ["tutorial", "research"]
@@ -130,7 +131,7 @@ fffff802`f8cbc25b 7818            js      nt!KeQueryIntervalProfile+0x41 (fffff8
 So if we use the WWW vulnerability to overwrite `nt!HalDispatchTable[1]` with
 the address of our shellcode mapped in a RWX location in userland, then
 use the undocumented `NtQueryIntervalProfile` to trigger it, we will make the
-kernel execute our shellcode! And game over :)
+kernel execute our shellcode! And game over 😀
 
 For those unfamiliar with the [Hardware Abstraction Layer (or HAL)](https://wiki.osdev.org/Hardware_Abstraction_Layer),
 it is a software layer aiming to provide a common unified interface to heterogeneous hardware (motherboard, CPUs, network cards, etc.). On Windows, it resides in [`hal.dll`](https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/windows-kernel-mode-hal-library) that is invoked by `ntoskrnl.exe`:

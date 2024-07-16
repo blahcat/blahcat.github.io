@@ -3,6 +3,7 @@ title = "Some Time Travel musings"
 authors = ["hugsy"]
 date = 2018-11-02T00:00:00Z
 updated = 2018-11-02T00:00:00Z
+aliases = ["/posts/2018/11/02/some-time-travel-musings.html"]
 
 [taxonomies]
 categories = ["research"]

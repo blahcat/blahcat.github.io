@@ -3,6 +3,7 @@ title = "Section Objects as Kernel/User communication mode"
 authors = ["hugsy"]
 date = 2023-04-04T00:00:00Z
 updated = 2023-04-04T00:00:00Z
+aliases = ["/posts/2023/04/04/section-objects-as-kerneluser-communication-mode.html"]
 
 [taxonomies]
 categories = ["research"]

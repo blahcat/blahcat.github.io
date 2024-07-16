@@ -3,6 +3,7 @@ title = "Some Qemu images to play with"
 authors = ["hugsy"]
 date = 2017-06-25T00:00:00Z
 updated = 2017-06-25T00:00:00Z
+aliases = ["/posts/2017/06/25/qemu-images-to-play-with.html"]
 
 [taxonomies]
 categories = ["misc"]

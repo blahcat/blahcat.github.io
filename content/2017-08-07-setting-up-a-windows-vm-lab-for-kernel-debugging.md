@@ -3,6 +3,7 @@ title = "Setting up a Windows VM lab for kernel debugging"
 authors = ["hugsy"]
 date = 2017-08-07T00:00:00Z
 updated = 2017-08-07T00:00:00Z
+aliases = ["/posts/2017/08/07/setting-up-a-windows-vm-lab-for-kernel-debugging.html"]
 
 [taxonomies]
 categories = ["tutorial"]
