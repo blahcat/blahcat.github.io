@@ -1,0 +1,241 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><meta content=BlahCats name=author><meta content="Tales of a binary encoded life..." name=description><meta prefix="og: http://ogp.me/ns#" content=BlahCats property=og:site_name><meta prefix="og: http://ogp.me/ns#" content=blog property=og:type><meta content="Section Objects as Kernel/User communication mode" prefix="og: http://ogp.me/ns#" property=og:title><meta content="Section Objects as Kernel/User communication mode - by hugsy" prefix="og: http://ogp.me/ns#" property=og:description><meta prefix="og: http://ogp.me/ns#" content=en_US property=og:locale><meta prefix="og: http://ogp.me/ns#" content=https://blahcat.github.io/2023-04-04-section-objects-kernel-user-communication-mode property=og:url><meta prefix="og: http://ogp.me/ns#" content=https://blahcat.github.io/img/blog-cover.png property=og:image><meta content=summary_large_image name=twitter:card><meta content=@ctf_blahcat name=twitter:site><meta content=BlahCats name=twitter:title><meta content="Section Objects as Kernel/User communication mode - by hugsy" name=twitter:description><meta content=https://blahcat.github.io/2023-04-04-section-objects-kernel-user-communication-mode name=twitter:url><meta content=https://blahcat.github.io/img/blog-cover.png name=twitter:image:src><script type=application/ld+json>
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Website",
+      "name": " BlahCats",
+      "url" : "https://blahcat.github.io/2023-04-04-section-objects-kernel-user-communication-mode",
+      
+      "image": https://blahcat.github.io/img/blog-cover.png",
+      
+      
+      "description": Section Objects as Kernel&#x2F;User communication mode - by hugsy",
+      
+    }
+    </script><title>
+  Section Objects as Kernel/User communication mode
+</title><link href=https://blahcat.github.io/img/favicon.ico rel=icon type=image/x-icon><link href=https://blahcat.github.io/css/bootstrap.min.css rel=stylesheet><link href=" https://blahcat.github.io/css/all.min.css" rel=" stylesheet"><link href="https://fonts.googleapis.com/css?family=Roboto" rel=stylesheet><link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel=stylesheet><link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel=stylesheet><link href="https://fonts.googleapis.com/css?family=Montserrat:400,300" rel=stylesheet><link href="https://fonts.googleapis.com/css?family=Lato" -- <!-- custom for rel=stylesheet styles template this><link href=https://blahcat.github.io/css/clean-blog.css rel=stylesheet><link href=https://blahcat.github.io/css/overrides.css rel=stylesheet><link integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css referrerpolicy=no-referrer rel=stylesheet><body><nav class="navbar navbar-expand-lg navbar-light fixed-top" id=mainNav><div class=container><a class=navbar-brand href=https://blahcat.github.io>BlahCats Blog</a><button aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right" aria-controls=navbarResponsive aria-expanded=false data-target=#navbarResponsive data-toggle=collapse type=button>Menu <i class="fas fa-bars"></i></button><div class="collapse navbar-collapse" id=navbarResponsive><ul class="navbar-nav ml-auto"><li class=nav-item><a class=nav-link href=https://blahcat.github.io>Home</a><li class=nav-item><a class=nav-link href=https://blahcat.github.io/series>Series</a><li class=nav-item><a class=nav-link href=https://blahcat.github.io/notes>Notes</a><li class=nav-item><a class=nav-link href=https://blahcat.github.io/about>About</a><li class=nav-item><a class=nav-link href=https://blahcat.github.io/qemu>Qemu VMs</a></ul></div></div></nav><header class=masthead style=background-image:url(https://blahcat.github.io/img/blog-cover.png)><div class=overlay></div><div class=container><div class=row><div class="col-lg-8 col-md-10 mx-auto"><div class=post-heading><h1>Section Objects as Kernel/User communication mode</h1><span class=meta> <b> • <a href=/author/hugsy>hugsy</a> • </b> 4 April 2023 <br> <br> <i>Reading time: 12 min</i> </span></div></div></div></div></header><article><article class=post><div class=container><div class=row><div class="col-lg-8 col-md-10 mx-auto"><p>I’ve recently decided to read cover to cover some Windows Internals books, and currently reading the amazing book <a rel="noopener nofollow noreferrer" href=http://www.opening-windows.com/wmip/overview.htm target=_blank>“What Makes It Page”</a>, it gave me some ideas to play with <a rel="noopener nofollow noreferrer" href=https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/section-objects-and-views target=_blank>Section Objects</a> as they covered in great details. One thought that occurred to me was that even though a section is created from user or kernel land, its mapping can be in user-mode as much as in kernel (when called from the kernel).<h2 id=windows-section-objects>Windows Section Objects</h2><p>For quick reminder, a Section Object on Windows is a specific type of kernel object (of structure <a rel="noopener nofollow noreferrer" href=https://www.vergiliusproject.com/kernels/x64/Windows%2011/22H2%20(2022%20Update)/_SECTION target=_blank><code>nt!SECTION</code></a>) that represents a block of memory that processes can share between themselves or between a process and the kernel. It can be mapped to the paging file (i.e. backed by memory) or to a file on disk, but either can be handled using the same set of API, and even though they are allocated by the Object Manager, it is one of the many jobs of the Memory Manager to handle their access (handle access, permission, mapping etc.). In usermode the high level API is <a rel="noopener nofollow noreferrer" href=https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createfilemappinga target=_blank><code>kernel32!CreateFileMapping</code></a>, which after some hoops into <code>kernelbase</code>, boils down to <a rel="noopener nofollow noreferrer" href=https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-ntcreatesection target=_blank><code>ntdll!NtCreateSection</code></a></p><a href=/img/fc2d3446-f23b-43c9-8590-da132404c8ef.png target=_blank> <img alt=createfilemappingw src=/img/fc2d3446-f23b-43c9-8590-da132404c8ef.png title=createfilemappingw width=100%> </a><p>The signature is as follow:<pre class=language-c++ data-lang=c++ style=color:#c0c5ce;background-color:#2b303b><code class=language-c++ data-lang=c++><span>NTSTATUS
+</span><span>NTAPI
+</span><span style=color:#8fa1b3>NtCreateSection </span><span>(
+</span><span>    _Out_ PHANDLE </span><span style=color:#bf616a>SectionHandle</span><span>,
+</span><span>    _In_ ACCESS_MASK </span><span style=color:#bf616a>DesiredAccess</span><span>,
+</span><span>    _In_opt_ POBJECT_ATTRIBUTES </span><span style=color:#bf616a>ObjectAttributes</span><span>,
+</span><span>    _In_opt_ PLARGE_INTEGER </span><span style=color:#bf616a>MaximumSize</span><span>,
+</span><span>    _In_ ULONG </span><span style=color:#bf616a>SectionPageProtection</span><span>,
+</span><span>    _In_ ULONG </span><span style=color:#bf616a>AllocationAttributes</span><span>,
+</span><span>    _In_opt_ HANDLE FileHandle
+</span><span>    );
+</span></code></pre><p>If successful, the syscall will return a section handle in <code>SectionHandle</code>, which will refer to an instance of a <code>nt!_SECTION</code>. Therefore the handle will be added to the handle table of the calling process, accessible from kernel and user modes unless <code>OBJ_KERNEL_HANDLE</code> is specified in the <code>ObjectAttributes</code>. This will be important for us in the following, because it implies that if the process terminates, so will the section object.<p>In itself the Section Object doesn’t have a lot going on, unless it is mapped to memory. This is achieved through <code>kernel32!MapViewOfView(Ex)</code> which again, boils down to the syscall <code>ntdll!NtMapViewOfSection</code>, whose signature is as follow:<pre class=language-c data-lang=c style=color:#c0c5ce;background-color:#2b303b><code class=language-c data-lang=c><span style=color:#65737e>//
+</span><span style=color:#65737e>// Syscall entry point
+</span><span style=color:#65737e>//
+</span><span>NTSTATUS
+</span><span>NTAPI
+</span><span style=color:#8fa1b3>NtMapViewOfSection</span><span>(
+</span><span>        HANDLE </span><span style=color:#bf616a>SectionHandle</span><span>,
+</span><span>        HANDLE </span><span style=color:#bf616a>ProcessHandle</span><span>,
+</span><span>        PVOID *</span><span style=color:#bf616a>BaseAddress</span><span>,
+</span><span>        ULONG_PTR </span><span style=color:#bf616a>ZeroBits</span><span>,
+</span><span>        SIZE_T </span><span style=color:#bf616a>CommitSize</span><span>,
+</span><span>        PLARGE_INTEGER </span><span style=color:#bf616a>SectionOffset</span><span>,
+</span><span>        PSIZE_T </span><span style=color:#bf616a>ViewSize</span><span>,
+</span><span>        SECTION_INHERIT </span><span style=color:#bf616a>InheritDisposition</span><span>,
+</span><span>        ULONG </span><span style=color:#bf616a>AllocationType</span><span>,
+</span><span>        ULONG </span><span style=color:#bf616a>Win32Protect</span><span>)
+</span></code></pre><p>Reversing this function is relatively straight forward:<pre class=language-c data-lang=c style=color:#c0c5ce;background-color:#2b303b><code class=language-c data-lang=c><span>{
+</span><span>  [...]
+</span><span>  </span><span style=color:#b48ead>if </span><span>( </span><span style=color:#bf616a>NT_SUCCESS</span><span>(</span><span style=color:#bf616a>MiValidateZeroBits</span><span>(&ZeroBits)) )
+</span><span>  {
+</span><span>    AccessMode = </span><span style=color:#bf616a>KeGetCurrentThread</span><span>()->PreviousMode;
+</span><span>
+</span><span>    </span><span style=color:#65737e>//
+</span><span>    </span><span style=color:#65737e>// Internal function to the Memory Manager to map a view of a section
+</span><span>    </span><span style=color:#65737e>//
+</span><span>    Status = </span><span style=color:#bf616a>MiMapViewOfSectionCommon</span><span>(
+</span><span>               ProcessHandle,
+</span><span>               SectionHandle,
+</span><span>               </span><span style=color:#d08770>0</span><span>,
+</span><span>               BaseAddress,
+</span><span>               ViewSize,
+</span><span>               SectionOffset,
+</span><span>               Win32Protect,
+</span><span>               ZeroBits,
+</span><span>               AccessMode,
+</span><span>               &SectionParameter);
+</span><span>[...]
+</span></code></pre><p>which makes us jump to:<pre class=language-c data-lang=c style=color:#c0c5ce;background-color:#2b303b><code class=language-c data-lang=c><span>NTSTATUS  </span><span style=color:#8fa1b3>MiMapViewOfSectionCommon</span><span>(
+</span><span>        HANDLE </span><span style=color:#bf616a>ProcessHandle</span><span>,
+</span><span>        HANDLE </span><span style=color:#bf616a>SectionHandle</span><span>,
+</span><span>        ACCESS_MASK </span><span style=color:#bf616a>DesiredAccess</span><span>,
+</span><span>        PVOID </span><span style=color:#bf616a>BaseAddress</span><span>,
+</span><span>        uint64_t </span><span style=color:#bf616a>ViewSize</span><span>,
+</span><span>        uint64_t </span><span style=color:#bf616a>SectionOffset</span><span>,
+</span><span>        uint32_t </span><span style=color:#bf616a>Win32Protect</span><span>,
+</span><span>        uint8_t </span><span style=color:#bf616a>ZeroBits</span><span>,
+</span><span>        KPROCESSOR_MODE </span><span style=color:#bf616a>AccessMode</span><span>,
+</span><span>        SECTION_PARAMETER *</span><span style=color:#bf616a>SectionParameter</span><span>)
+</span><span>{
+</span><span>    [...]
+</span><span>    </span><span style=color:#65737e>//
+</span><span>    </span><span style=color:#65737e>//  Get a reference to the asking process
+</span><span>    </span><span style=color:#65737e>//
+</span><span>    Status = </span><span style=color:#bf616a>ObpReferenceObjectByHandleWithTag</span><span>(ProcessHandle, (DesiredAccess + </span><span style=color:#d08770>8</span><span>), ProcessType, AccessMode, '</span><span style=color:#a3be8c>MmVw</span><span>', &SectionParameter->ProcessObject, nullptr, nullptr);
+</span><span>    </span><span style=color:#b48ead>if </span><span>(Status >= </span><span style=color:#d08770>0</span><span>)
+</span><span>    {
+</span><span>        PSECTION* SectionObject = nullptr;
+</span><span>        pSectionObject = &SectionObject;
+</span><span>        </span><span style=color:#65737e>//
+</span><span>        </span><span style=color:#65737e>//  Get a reference to the section
+</span><span>        </span><span style=color:#65737e>//
+</span><span>        Status = </span><span style=color:#bf616a>ObReferenceObjectByHandle</span><span>(SectionHandle, &MmMakeSectionAccess[((uint64_t)SectionParameter->ProtectMaskForAccess)], MmSectionObjectType, AccessMode, pSectionObject, nullptr);
+</span><span>        SectionParameter->SectionObject = SectionObject;
+</span><span>        </span><span style=color:#b48ead>if </span><span>(Status < </span><span style=color:#d08770>0</span><span>)
+</span><span>        {
+</span><span>            </span><span style=color:#bf616a>ObfDereferenceObjectWithTag</span><span>(SectionParameter->ProcessObject, '</span><span style=color:#a3be8c>MmVw</span><span>');
+</span><span>        }
+</span><span>    }
+</span><span>    [...]
+</span><span>
+</span><span>    </span><span style=color:#b48ead>if </span><span>(AccessMode == KernelMode)
+</span><span>    {
+</span><span>        </span><span style=color:#65737e>//
+</span><span>        </span><span style=color:#65737e>//  In KM, do whatever
+</span><span>        </span><span style=color:#65737e>//
+</span><span>        ViewSize_1 = ViewSize;
+</span><span>    }
+</span><span>    </span><span style=color:#b48ead>else
+</span><span>    {
+</span><span>        PVOID* pBaseAddress_1 = BaseAddress;
+</span><span>        </span><span style=color:#65737e>//
+</span><span>        </span><span style=color:#65737e>//  With a request coming from UM, validate the BaseAddress is within UM bounds
+</span><span>        </span><span style=color:#65737e>//
+</span><span>        </span><span style=color:#b48ead>if </span><span>(BaseAddress >= </span><span style=color:#d08770>0x7fffffff0000</span><span>)
+</span><span>        {
+</span><span>            pBaseAddress_1 = </span><span style=color:#d08770>0x7fffffff0000</span><span>;
+</span><span>        }
+</span><span>        *(int64_t*)pBaseAddress_1 = *(int64_t*)pBaseAddress_1;
+</span><span>        ViewSize_1 = ViewSize;
+</span><span>        uint64_t r8_2 = ViewSize_1;
+</span><span>        </span><span style=color:#b48ead>if </span><span>(ViewSize_1 >= </span><span style=color:#d08770>0x7fffffff0000</span><span>)
+</span><span>        {
+</span><span>            r8_2 = </span><span style=color:#d08770>0x7fffffff0000</span><span>;
+</span><span>        }
+</span><span>        *(int64_t*)r8_2 = *(int64_t*)r8_2;
+</span><span>    }
+</span><span>    SectionParameter->BaseAddress = *(int64_t*)BaseAddress;
+</span><span>    SectionParameter->ViewSize = *(int64_t*)ViewSize_1;
+</span><span>
+</span><span>  [...]
+</span><span>}
+</span></code></pre><p>What matters the most here would be the <code>BaseAddress</code> argument which will hold the UM address of the mapping. Meaning that Section Objects can be used to create communication channels between kernel &LT-> user mode (on top of obviously user &LT-> user). This is particularly nice especially because it allows to control finely the permission to the area: for instance a driver could create a section as read-writable, map its own view as RW, but expose to any process as RO. As a matter of fact, this is exactly how Windows 11 decided to protect the <code>(K)USER_SHARED_DATA</code> memory region, frequently used by kernel exploit since it’s read/writable in ring-0 at a well-known address, making it a perfect way to bypass ALSR. The protection was added in 22H1 global variable which is initialized at boot-time and mapped as RW from the kernel through the <code>nt!MmWriteableUserSharedData</code>; however from user-mode only a read-only view is exposed to processes. For complete details about that protection, I invite the reader to refer to Connor McGarr’s in-depth <a rel="noopener nofollow noreferrer" href=https://connormcgarr.github.io/kuser-shared-data-changes-win-11/ target=_blank>excellent blog post</a> on the subject.<h2 id=section-object-as-a-kernel-user-communication-vector>Section Object as a Kernel/User Communication Vector</h2><p>Purely coincidentally, a colleague of mine stumbled upon a problem where they wanted to be able to capture the user-mode context of a thread from a driver, through <code>PsGetThreadContext</code>. The tricky part here was that <code>PsGetThreadContext()</code> follows the following signature:<pre class=language-c data-lang=c style=color:#c0c5ce;background-color:#2b303b><code class=language-c data-lang=c><span>NTSTATUS
+</span><span>PSAPI
+</span><span style=color:#8fa1b3>PsGetThreadContext</span><span>(
+</span><span>    IN PETHREAD </span><span style=color:#bf616a>Thread</span><span>,
+</span><span>    IN OUT PCONTEXT </span><span style=color:#bf616a>ThreadContext</span><span>,
+</span><span>    IN KPROCESSOR_MODE PreviousMode
+</span><span>    );
+</span></code></pre><p><a rel="noopener nofollow noreferrer" href=https://github.com/fengjixuchui/ApiSetSchema/blob/7dd5f58c527df37212aa1a596057e79afa44af3d/driver/process.h#L138-L144 target=_blank>Link</a><p>Where <code>ThreadContext</code> is the linear address to write the thread <code>CONTEXT</code> passed as first argument. However, the 3rd argument, <code>PreviousMode</code> matters the most: if specified as <code>UserMode</code> (1), the function performs a check to make sure the <code>ThreadContext</code> linear address resides within the usermode address range. Since I really love turning theory into practice, I figured this would be a perfect practice case for the technique mentioned above, so I ended up writing a PoC driver to serve that purpose in a (IMHO) fairly nice way. This actually didn’t take long thanks to my <a rel="noopener nofollow noreferrer" href=https://github.com/hugsy/modern-cpp-windows-driver-template target=_blank>driver template</a> and all I had to do was implement the steps which were:<ol><li>Create a section in the <code>System</code> process. Why in <code>System</code>? Simply because section handles must be tight to a process: therefore if the section is created in a “normal” process, the handle to it will be close when/if said process terminates, effectively closing the section. So we can use the <code>DriverEntry</code> to make sure the section handle is stored in the <code>System</code> kernel handle table. Save the handle in a global variable.</ol><pre class=language-c++ data-lang=c++ style=color:#c0c5ce;background-color:#2b303b><code class=language-c++ data-lang=c++><span>    </span><span style=color:#65737e>// create section
+</span><span>    {
+</span><span>        OBJECT_ATTRIBUTES </span><span style=color:#bf616a>oa </span><span>{};
+</span><span>        </span><span style=color:#bf616a>InitializeObjectAttributes</span><span>(
+</span><span>            &oa,
+</span><span>            </span><span style=color:#d08770>nullptr</span><span>,
+</span><span>            OBJ_EXCLUSIVE | OBJ_KERNEL_HANDLE | OBJ_FORCE_ACCESS_CHECK,
+</span><span>            </span><span style=color:#d08770>nullptr</span><span>,
+</span><span>            </span><span style=color:#d08770>nullptr</span><span>);
+</span><span>        LARGE_INTEGER </span><span style=color:#bf616a>li </span><span>{.</span><span style=color:#bf616a>QuadPart </span><span>= </span><span style=color:#d08770>0x1000</span><span>};
+</span><span>        Status =
+</span><span>            ::</span><span style=color:#bf616a>ZwCreateSection</span><span>(&Globals.</span><span style=color:#bf616a>SectionHandle</span><span>, SECTION_MAP_WRITE, &oa, &li, PAGE_READWRITE, SEC_COMMIT, </span><span style=color:#d08770>NULL</span><span>);
+</span><span>        </span><span style=color:#bf616a>EXIT_IF_FAILED</span><span>(</span><span style=color:#b48ead>L</span><span>"</span><span style=color:#a3be8c>ZwCreateSection</span><span>");
+</span><span>    }
+</span></code></pre><p><a rel="noopener nofollow noreferrer" href=https://github.com/hugsy/shared-kernel-user-section-driver/blob/main/MiniFilter/MinifilterDriver.cpp#L124-L137 target=_blank>Link</a><p>By breakpointing at the end of DriverEntry we confirm that the handle resides in the System process.<pre class=language-txt data-lang=txt style=color:#c0c5ce;background-color:#2b303b><code class=language-txt data-lang=txt><span>[*] Loading CHANGEME
+</span><span>[+] PsGetContextThread = FFFFF8061670B5B0
+</span><span>[+] Section at FFFFFFFF80002FB4
+</span><span>[+] Loaded fs filter CHANGEME
+</span><span>Break instruction exception - code 80000003 (first chance)
+</span><span>MinifilterDriver+0x7275:
+</span><span>fffff806`1aa57275 cc              int     3
+</span></code></pre><a href=/img/d4b64773-6412-46dc-a9f4-f21e703e2659.png target=_blank> <img alt=windbg-output-1 src=/img/d4b64773-6412-46dc-a9f4-f21e703e2659.png title=windbg-output-1 width=100%> </a><ol start=2><li>Then I can use any callback (process/image notification, minifilter callbacks etc.) to invoke <code>ZwMapViewOfSection</code>, reusing the section handle from the step earlier, and <code>NtCurrentProcess()</code> as process handle.</ol><pre class=language-c++ data-lang=c++ style=color:#c0c5ce;background-color:#2b303b><code class=language-c++ data-lang=c++><span>    NTSTATUS Status = ::</span><span style=color:#bf616a>ZwMapViewOfSection</span><span>(
+</span><span>        Globals.</span><span style=color:#bf616a>SectionHandle</span><span>,
+</span><span>        </span><span style=color:#bf616a>NtCurrentProcess</span><span>(),
+</span><span>        &BaseAddress,
+</span><span>        </span><span style=color:#d08770>0</span><span style=color:#b48ead>L</span><span>,
+</span><span>        </span><span style=color:#d08770>0</span><span style=color:#b48ead>L</span><span>,
+</span><span>        </span><span style=color:#d08770>NULL</span><span>,
+</span><span>        &ViewSize,
+</span><span>        ViewUnmap,
+</span><span>        </span><span style=color:#d08770>0</span><span style=color:#b48ead>L</span><span>,
+</span><span>        PAGE_READWRITE);
+</span><span>    </span><span style=color:#bf616a>EXIT_IF_FAILED</span><span>(</span><span style=color:#b48ead>L</span><span>"</span><span style=color:#a3be8c>ZwMapViewOfSection</span><span>");
+</span></code></pre><p><a rel="noopener nofollow noreferrer" href=https://github.com/hugsy/shared-kernel-user-section-driver/blob/main/MiniFilter/MinifilterDriver.cpp#L204-L215 target=_blank>Link</a><p><code>BaseAddress</code> will return an 64KB-aligned address located randomly (ASLR). The best thing here, is that we also control <code>ZeroBits</code>, allowing to (partly) control where that address will land.<ol start=3><li>We’re free to call <code>PsGetThreadContext()</code> with the returned <code>BaseAddress</code> value.</ol><pre class=language-c++ data-lang=c++ style=color:#c0c5ce;background-color:#2b303b><code class=language-c++ data-lang=c++><span>    PCONTEXT ctx      = reinterpret_cast&LTPCONTEXT>(BaseAddress);
+</span><span>    ctx-></span><span style=color:#bf616a>ContextFlags </span><span>= CONTEXT_FULL;
+</span><span>    Status = Globals.</span><span style=color:#bf616a>PsGetContextThread</span><span>(</span><span style=color:#bf616a>PsGetCurrentThread</span><span>(), ctx, UserMode);
+</span><span>    </span><span style=color:#bf616a>EXIT_IF_FAILED</span><span>(</span><span style=color:#b48ead>L</span><span>"</span><span style=color:#a3be8c>PsGetContextThread</span><span>");
+</span><span>
+</span><span>    </span><span style=color:#bf616a>DbgBreakPoint</span><span>();
+</span></code></pre><p><a rel="noopener nofollow noreferrer" href=https://github.com/hugsy/shared-kernel-user-section-driver/blob/main/MiniFilter/MinifilterDriver.cpp#L224-L228 target=_blank>Link</a><p>To prevent any inadverted permission drop of the view (and therefore BSoD-ing us during the call to <code>PsGetThreadContext</code>), we can secure the location using <code>MmSecureVirtualMemory</code>.<p>From WinDbg we can confirm the VAD is mapped when the breakpoint is hit:</p><a href=/img/03ba2044-6cd9-4efe-8570-524044a87d7f.png target=_blank> <img alt=windbg-output-2 src=/img/03ba2044-6cd9-4efe-8570-524044a87d7f.png title=windbg-output-2 width=100%> </a><p>And as soon as the syscall returns, we’re unmapped:</p><a href=/img/748def89-0331-44bb-a112-9ded9992da45.png target=_blank> <img alt=sysinformer-output-1 src=/img/748def89-0331-44bb-a112-9ded9992da45.png title=sysinformer-output-1 width=100%> </a><ol start=4><li>Close the section in the driver unload callback.</ol><p>That’s pretty much it: what we’ve got at the end is kernel driver controlled communication vector to any process in usermode: as the section handle is part of System kernel handle table, it’s untouchable from ring-3 unless the driver dictates otherwise by creating a view (with proper permissions) to it. This approach is great as it allows the driver to control everything, but if we want to give a user-mode process some say into it, it’s also possible simply by turning the anonymous section we created for this PoC into a named one, then call sequentially <code>OpenFileMapping(SectionName)</code> then <code>MapViewOfFile()</code>. In addition, it could very well be ported to a process &LT-> process communication but here I wanted to play with the minifilter callbacks as an on-demand mechanism.<h2 id=side-track>Side-track</h2><p>The careful reader will have notice that the step introduce a tiny race condition window, where another thread can also access the memory region. That bothered me, so I also examined more advanced options relying on the shared section objects. By nature they involve 2 PTEs:<ul><li>the “real” PTE (hardware PTE), effectively used for VA -> PA translation;<li>along with a prototype PTE.</ul><p>When the view is created, the memory manager will create empty PTEs but expect a page fault. This is verified quickly by breaking right after the call to <code>ZwMapViewOfSection</code><pre class=language-txt data-lang=txt style=color:#c0c5ce;background-color:#2b303b><code class=language-txt data-lang=txt><span>[*] Loading CHANGEME
+</span><span>[+] PsGetContextThread = FFFFF8061670B5B0
+</span><span>[+] Section at FFFFFFFF800035E4
+</span><span>[+] Loaded fs filter CHANGEME
+</span><span>[+] in PID=3292/TID=4676 , MappedSection=0000018D40BF0000
+</span><span>Break instruction exception - code 80000003 (first chance)
+</span><span>MinifilterDriver+0x17a7:
+</span><span>fffff806`1aa517a7 cc              int     3
+</span><span>kd> !pte2 0x000018D40BF0000
+</span><span>@$pte2(0x000018D40BF0000)
+</span><span>    va               : 0x18d40bf0000
+</span><span>    cr3              : 0x3e64d000
+</span><span>    pml4e_offset     : 0x3
+</span><span>    pdpe_offset      : 0x35
+</span><span>    pde_offset       : 0x5
+</span><span>    cr3_flags        : [- -]
+</span><span>    pml4e            : PDE(PA=3e66d000, PFN=3e66d, Flags=[P RW U - - A D - -])
+</span><span>    pdpe             : PDE(PA=3df0e000, PFN=3df0e, Flags=[P RW U - - A D - -])
+</span><span>    pde              : PDE(PA=d97b6000, PFN=d97b6, Flags=[P RW U - - A D - -])
+</span><span>    pte_offset       : 0x1f0
+</span><span>    pte              : PTE(PA=0, PFN=0, Flags=[- RO K - - - - - -])
+</span><span>    kernel_pxe       : 0xffffeb00c6a05f80
+</span><span>kd> dx -r1 @$pte2(0x000018D40BF0000).pte
+</span><span>@$pte2(0x000018D40BF0000).pte                 : PTE(PA=0, PFN=0, Flags=[- RO K - - - - - -])
+</span><span>    address          : 0xd97b6f80
+</span><span>    value            : 0x0
+</span><span>    [...]
+</span><span>    PhysicalPageAddress : 0x0
+</span><span>    Pte              : 0x0 [Type: _MMPTE *]  <<<<
+</span></code></pre><p>However, after the call to <code>PsGetThreadContext</code> the entry is correctly populated:<pre class=language-txt data-lang=txt style=color:#c0c5ce;background-color:#2b303b><code class=language-txt data-lang=txt><span>kd> g
+</span><span>[+] Rip=00007ffa42e8d724
+</span><span>[+] Rbp=00000020eccff550
+</span><span>[+] Rsp=00000020eccff448
+</span><span>[+] Rax=0000000000000033
+</span><span>[+] Rbx=0000000000214040
+</span><span>[+] Rcx=00000020eccff490
+</span><span>[+] Rdx=0000000000100080
+</span><span>[+] Rdx=0000000000100080
+</span><span>[+] PsGetContextThread() succeeded
+</span><span>Break instruction exception - code 80000003 (first chance)
+</span><span>MinifilterDriver+0x1936:
+</span><span>fffff806`1aa51936 cc              int     3
+</span><span>kd> dx -r1 @$pte2(0x000018D40BF0000)
+</span><span>@$pte2(0x000018D40BF0000)                 : VA=0x18d40bf0000, PA=0xe23a0000, Offset=0x0
+</span><span>    va               : 0x18d40bf0000
+</span><span>    cr3              : 0x3e64d000
+</span><span>    pml4e_offset     : 0x3
+</span><span>    pdpe_offset      : 0x35
+</span><span>    pde_offset       : 0x5
+</span><span>    cr3_flags        : [- -]
+</span><span>    pml4e            : PDE(PA=3e66d000, PFN=3e66d, Flags=[P RW U - - A D - -])
+</span><span>    pdpe             : PDE(PA=3df0e000, PFN=3df0e, Flags=[P RW U - - A D - -])
+</span><span>    pde              : PDE(PA=d97b6000, PFN=d97b6, Flags=[P RW U - - A D - -])
+</span><span>    pte_offset       : 0x1f0
+</span><span>    pte              : PTE(PA=e23a0000, PFN=e23a0, Flags=[P RW U - - A D - -])
+</span><span>    offset           : 0x0
+</span><span>    pa               : 0xe23a0000
+</span><span>    kernel_pxe       : 0xffffeb00c6a05f80
+</span></code></pre><p>The PTE is valid:<pre class=language-txt data-lang=txt style=color:#c0c5ce;background-color:#2b303b><code class=language-txt data-lang=txt><span>kd> dx -r1 @$pte2(0x000018D40BF0000).pte
+</span><span>@$pte2(0x000018D40BF0000).pte                 : PTE(PA=e23a0000, PFN=e23a0, Flags=[P RW U - - A D - -])
+</span><span>    address          : 0xd97b6f80
+</span><span>    value            : 0xc0000000e23a0867
+</span><span>    Flags            : Flags=[P RW U - - A D - -]
+</span><span>    PageFrameNumber  : 0xe23a0
+</span><span>    Pfn              [Type: _MMPFN]
+</span><span>    PhysicalPageAddress : 0xe23a0000
+</span><span>    Pte              : 0xffff9480f55f81d0 [Type: _MMPTE *]
+</span></code></pre><p>So this means we have a great way to determine whether a physical page was accessed, using <code>MmGetPhysicalAddress()</code>. To test this we invoke it after the mapping (where we expect a null value) and a second time after the call to <code>PsGetThreadContext</code>: <a href=/img/ac738af0-04fe-4b85-a9d2-ea3911be93cb.png target=_blank> <img alt=windbg-output-3 src=/img/ac738af0-04fe-4b85-a9d2-ea3911be93cb.png title=windbg-output-3 width=100%> </a><p>The 2nd value for <code>PhyBaseAddress</code> points to the physical address where the function output is stored. At that point, I thought it would be sufficient to stop because we have an effective way to honeypot potential corruptions attempts:<ul><li>Create a section with many pages (the more the better)<li>During the preparation to the invocation of <code>PsGetThreadContext</code>, choose randomly one page that will receive the <code>CONTEXT</code><li>Map all the pages separately<li>Call <code>PsGetThreadContext</code></ul><p>Once the call is over, we can use the method above to validate whether any other page than the one we know valid were accessed. If so, discard the result.<p>Isn’t Windows awesome?<h1 id=end>End</h1><p>There are a lot of possible fun uses of sections, and since I want to try to document more of my “stuff”. Some offensive cool use case would be for instance, would be to expose code “on-demand” to a specific thread/process, removing the mapped execution page(s) from the process VAD as soon as we’re done. I’ll try to post follow-up updates.<p>For those interested in the code, you would find a minifilter driver ready to build & compile on the Github project: <a class="fab fa-github" rel="noopener nofollow noreferrer" href=https://github.com/hugsy/shared-kernel-user-section-driver target=_blank> <code>hugsy/shared-kernel-user-section-driver</code> </a><p>So, see you next time?<p>Credits & References:<ul><li><a rel="noopener nofollow noreferrer" href=https://www.amazon.com/What-Makes-Page-Windows-Virtual/dp/1479114294 target=_blank>What Makes It Page</a><li><a rel="noopener nofollow noreferrer" href=https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189 target=_blank>Windows Internals 7th edition, Part 1</a><li><a rel="noopener nofollow noreferrer" href=https://www.vergiliusproject.com/ target=_blank>Vergilius Project</a><li><a rel="noopener nofollow noreferrer" href=https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/managing-memory-sections target=_blank>MSDN - Managing Memory Sections</a></ul><aside class=post-tags><p>Categories: <a href=https://blahcat.github.io/categories/research/>#research</a><p>Tags: <a href=https://blahcat.github.io/tags/windows/>#windows</a> <a href=https://blahcat.github.io/tags/memory-manager/>#memory-manager</a> <a href=https://blahcat.github.io/tags/section/>#section</a> <a href=https://blahcat.github.io/tags/backdoor/>#backdoor</a></aside><aside class=post-discussion>Join the Discussion on <a href="https://github.com/blahcat/blahcat.github.io/discussions?discussions_q=Section Objects as Kernel/User communication mode" target=_blank> <i class="fab fa-github fa-lg"></i> GitHub </a></aside><aside class=post-nav><div class=container><div class=row><div class=col><b>Next:</b><br><a class=post-nav-prev href=https://blahcat.github.io/2024-01-27-tapping-into-the-potential-of-memory-dump-emulation/> <section class=post-nav-teaser><b class=post-nav-title>Tapping into the potential of Memory Dump Emulation</b><p class=post-nav-excerpt>This post summarizes some of the work I’ve been doing for the past few mont…</section> </a></div><div class=col><b>Previous:</b><br><a class=post-nav-next href=https://blahcat.github.io/2022-08-06-install-hyperv-sandbox-win10home/> <section class=post-nav-teaser><b class=post-nav-title>Install Hyper-V & Sandbox on Windows 10/11 Home</b><p class=post-nav-excerpt>Another lie, probably put in place from MS marketing team to force the hand…</section> </a></div></div></div></aside></div></div><hr><footer><div class=container><div class=row><div class="col-lg-8 col-md-10 mx-auto"><ul class="list-inline text-center"><li class=list-inline-item><a href=https://blahcat.github.io/atom.xml> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fas fa-rss fa-stack-1x fa-inverse"></i> </span> </a><li class=list-inline-item><a href=https://twitter.com/ctf_blahcat> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-twitter fa-stack-1x fa-inverse"></i> </span> </a><li class=list-inline-item><a href=https://github.com/blahcat> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-github fa-stack-1x fa-inverse"></i> </span> </a><li class=list-inline-item><a href=https://www.youtube.com/channel/UCDrgY65mRZWVoMiB5-VMqfg> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-youtube fa-stack-1x fa-inverse"></i> </span> </a><li class=list-inline-item><a href=https://discord.gg/hSbqxxBgRX> <span class="fa-stack fa-lg"> <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-discord fa-stack-1x fa-inverse"></i> </span> </a></ul><p class="copyright text-muted">Made with ❤ with Zola</div></div></div></footer><script src=https://blahcat.github.io/js/jquery.min.js></script><script src=https://blahcat.github.io/js/bootstrap.bundle.min.js></script><script src=https://blahcat.github.io/js/clean-blog.min.js></script><script src=//cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.1/mermaid.min.js></script><div class=mermaidTooltip style=opacity:0></div>
