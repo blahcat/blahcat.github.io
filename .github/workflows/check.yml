@@ -19,19 +19,19 @@ jobs:
       contents: read
     steps:
       - name: checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v5
         with:
           submodules: true
 
       - name: Restore lychee cache
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4
         with:
           path: .lycheecache
           key: cache-lychee-${{ github.sha }}
           restore-keys: cache-lychee-
 
       - name: Check links
-        uses: lycheeverse/lychee-action@v1.9.3
+        uses: lycheeverse/lychee-action@v2.0.2
         env:
           GITHUB_TOKEN: ${{secrets.LYCHEE_TOKEN}}
         with:
@@ -55,7 +55,7 @@ jobs:
       contents: read
     steps:
       - name: checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v5
 
       - name: Spellcheck
         uses: rojopolis/spellcheck-github-actions@0.38.0
